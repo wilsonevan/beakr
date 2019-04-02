@@ -6,10 +6,12 @@ import Register from './components/Register';
 import FetchUser from './components/FetchUser';
 import { Switch, Route } from 'react-router-dom';
 import { Container, } from 'semantic-ui-react';
+import Navbar from './components/Navbar';
 
 const App = () => (
   <>
     <FetchUser>
+      <Navbar />
       <Container>
         <Switch>
           <Route exact path='/' component={Home} />
