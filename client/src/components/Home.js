@@ -5,9 +5,8 @@ import { Link, } from 'react-router-dom';
 const Home = () => (
   <>
     <Header as='h3' textAlign='center'>Beakr</Header>
-    <Button as={Link} to='/login' content='Login' />
-    <Button as={Link} to='/register' content='Register' />
-    <Button as={Link} to='/dashboard' content='Dashboard' />
+    {/* <Button as={Link} to='/login' content='Login' /> */}
+    {/* <Button as={Link} to='/register' content='Register' /> */}
   </>
 )
 
