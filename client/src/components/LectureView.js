@@ -11,8 +11,7 @@ class LectureView extends React.Component {
     const { unit_id, id } = this.props.match.params
     axios.get(`/api/units/${unit_id}/contents/${id}`)
       .then( res => {
-        // this.setState({ title, content })
-        debugger
+        this.setState( res.data )
       })
   }
 
@@ -24,15 +23,10 @@ class LectureView extends React.Component {
         <Header as={Link} to='/section/:section_id' content='< Course Work' color='green' size='huge' textAlign='left'/>
         <BasicHeader style={{ color: '#23A24D' }}>
           <Icon name='block layout' color='green' />
-            Lecture Title
-            {/* {title} */}
+            {title}
         </BasicHeader>
         <SegmentContent>
-          <BasicHeader>First Subsection</BasicHeader>
-          First Subsection content.
-          <BasicHeader>Second Subsection</BasicHeader>
-          Second Subsection content.
-          {/* {content} */}
+          {content}
         </SegmentContent>
       </>
     )
