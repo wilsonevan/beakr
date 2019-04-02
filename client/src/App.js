@@ -7,6 +7,7 @@ import FetchUser from './components/FetchUser';
 import { Switch, Route } from 'react-router-dom';
 import { Container, } from 'semantic-ui-react';
 import Navbar from './components/Navbar';
+import CourseWork from "./components/CourseWork";
 
 const App = () => (
   <>
@@ -17,6 +18,7 @@ const App = () => (
           <Route exact path='/' component={Home} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/register' component={Register} />
+          <Route exact path='/coursework' component={CourseWork} />
           <Route component={NoMatch} />
         </Switch>
       </Container>
