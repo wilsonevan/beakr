@@ -5,13 +5,11 @@ User.destroy_all
   course = Course.create(
     title: Faker::Educator.course_name
   )
-  binding.pry
   15.times do
     section = Section.create(
       title: Faker::ProgrammingLanguage.name,
       course_id: course.id
     )
-    binding.pry
     5.times do
       unit = Unit.create(
         title: Faker::Hacker.noun,
