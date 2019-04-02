@@ -11,15 +11,16 @@ import Navbar from './components/Navbar';
 const App = () => (
   <>
     <FetchUser>
-      <Navbar />
-      <Container>
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route exact path='/login' component={Login} />
-          <Route exact path='/register' component={Register} />
-          <Route component={NoMatch} />
-        </Switch>
-      </Container>
+      <Navbar>
+        <Container>
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/register' component={Register} />
+            <Route component={NoMatch} />
+          </Switch>
+        </Container>
+      </Navbar>
     </FetchUser>
   </>
 )
