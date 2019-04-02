@@ -2,8 +2,7 @@ import React from 'react';
 import { AuthConsumer, } from '../providers/AuthProvider';
 import { NavLink, } from 'react-router-dom';
 import styled from 'styled-components';
-import logo from '../logo.svg'
-import './Navbar.css'
+import logo from '../logo.svg';
 
 class Navbar extends React.Component {
 
@@ -19,7 +18,6 @@ class Navbar extends React.Component {
 	
 	rightNavItems = () => {
 		const { auth: { user, handleLogout, }, history } = this.props;
-		// const { activeItem, } = this.state;
 		
 		if (user) {
 			return(
@@ -64,7 +62,15 @@ class Navbar extends React.Component {
 			<Menu borderless>
 				<NavLink to='/' onClick={() => this.activateItem(0)}>
 					<MenuItem>
-						<img src={logo} className="App-logo" alt="logo"></img>
+						<img 
+							src={logo}
+							alt="logo"
+							style={{ 
+								height: '4vh', 
+								marginLeft: '2vw',
+								marginTop: '8px',
+							}} 
+						/>
 					</MenuItem>
 				</NavLink>
 				{this.rightNavItems()}
@@ -72,15 +78,6 @@ class Navbar extends React.Component {
 		)
 	}
 }
-
-// const styles = {
-// 	activeItem: {
-// 		borderBottom: '1px',
-// 	},
-// 	inactiveItem: {
-// 		borderBottom: '0px',
-// 	},
-// }
 
 const MenuItem = styled.li`
 	float: left;
@@ -114,8 +111,6 @@ const RightMenu = styled.div`
 	display: flex;
 	justify-content: flex-end;
 `;
-
-
 
 const ConnectedNavbar = (props) => (
 	<AuthConsumer>
