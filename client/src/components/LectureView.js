@@ -8,7 +8,12 @@ class LectureView extends React.Component {
   state = { title: '', content: '' }
 
   componentDidMount() {
-    // fetch lecture info
+    const { unit_id, id } = this.props.match.params
+    axios.get(`/api/units/${unit_id}/contents/${id}`)
+      .then( res => {
+        // this.setState({ title, content })
+        debugger
+      })
   }
 
   render() {
