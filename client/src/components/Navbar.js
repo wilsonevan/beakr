@@ -41,13 +41,13 @@ class Navbar extends React.Component {
 		} else {	
 			return(
 				<RightMenu position='right'>
-					<NavLink to='/login'>
-						<MenuItem>
+					<NavLink to='/login' onClick={() => this.activateItem(3)}>
+						<MenuItem as={this.isActive(3)}>
 							<Item>Login</Item>
 						</MenuItem>
 					</NavLink>
-					<NavLink to='/register'>
-						<MenuItem>
+					<NavLink to='/register' onClick={() => this.activateItem(4)}>
+						<MenuItem as={this.isActive(4)}>
 							<Item>Register</Item>
 						</MenuItem>
 					</NavLink>
@@ -59,7 +59,7 @@ class Navbar extends React.Component {
 	render() {
 		return(
 			<Menu borderless>
-				<NavLink to='/'>
+				<NavLink to='/' onClick={() => this.activateItem(0)}>
 					<MenuItem>
 						<Item>Home</Item>
 					</MenuItem>
@@ -72,7 +72,7 @@ class Navbar extends React.Component {
 
 const styles = {
 	activeItem: {
-		borderBottom: '2px',
+		borderBottom: '1px',
 	},
 	inactiveItem: {
 		borderBottom: '0px',
@@ -85,7 +85,17 @@ const MenuItem = styled.li`
 
 const ActiveMenuItem = styled.li`
 	float: left;
-	border-bottom: 2px solid green;
+	border-bottom: #23a24d;
+	border-bottom-width: thin;
+	border-bottom-style: solid;
+`;
+
+const Item = styled.p`
+	display: block;
+	color: black;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
 `;
 
 const Menu = styled.li`
@@ -102,13 +112,6 @@ const RightMenu = styled.div`
 	justify-content: flex-end;
 `;
 
-const Item = styled.a`
-	display: block;
-	color: grey;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-`;
 
 
 const ConnectedNavbar = (props) => (
