@@ -1,25 +1,25 @@
 import React from "react";
-import Units from "./Units";
+import Unit from "./Unit";
 
 class CourseSection extends React.Component {
   state = {
     opened: false,
     units: [
       {
-        name: "Arrays",
-        contents: ["Ruby Arrays"],
+        title: "Arrays",
+        contents: [{ title: "Ruby Arrays" }],
         quizzes: [""],
         assignments: [""]
       },
       {
-        name: "Hashes",
-        contents: ["Ruby Hashes"],
+        title: "Hashes",
+        contents: [{ title: "Ruby Hashes" }],
         quizzes: [""],
         assignments: [""]
       },
       {
-        name: "Methods",
-        contents: ["Ruby Methods"],
+        title: "Methods",
+        contents: [{ title: "Ruby Methods" }],
         quizzes: [""],
         assignments: [""]
       }
@@ -30,25 +30,29 @@ class CourseSection extends React.Component {
     this.setState({ opened: !this.state.opened });
   };
 
+  renderUnits = () => {
+    return this.state.units.map((unit, index) => {
+      return <Unit key={index} unit={unit} />;
+    });
+  };
+
   render() {
-    const { name } = this.props;
+    const { title } = this.props;
 
     if (this.state.opened) {
       return (
         <>
           <div className="section-opened" onClick={this.handleClick}>
-            {" "}
-            {name} <div className="section-icon">-</div>{" "}
+            {title} <div className="section-icon">-</div>
           </div>
-          <Units units={this.state.units} />
+          <div className="units-container">{this.renderUnits()}</div>
         </>
       );
     } else {
       return (
         <>
           <div className="section" onClick={this.handleClick}>
-            {" "}
-            {name} <div className="section-icon">+</div>{" "}
+            {title} <div className="section-icon">+</div>
           </div>
         </>
       );

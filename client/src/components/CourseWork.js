@@ -3,11 +3,19 @@ import "../coursework.css";
 import CourseSection from "./CourseSection";
 
 class CourseWork extends React.Component {
-  state = { names: ["week1", "week2", "week3", "week4", "week5"] };
+  state = {
+    courses: [
+      { title: "week1" },
+      { title: "week2" },
+      { title: "week3" },
+      { title: "week4" },
+      { title: "week5" }
+    ]
+  };
 
   renderSections = () => {
-    return this.state.names.map((name, index) => {
-      return <CourseSection key={index} name={name} />;
+    return this.state.courses.map((course, index) => {
+      return <CourseSection key={index} title={course.title} />;
     });
   };
 
