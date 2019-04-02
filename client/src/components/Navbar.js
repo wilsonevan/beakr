@@ -1,8 +1,9 @@
 import React from 'react';
 import { AuthConsumer, } from '../providers/AuthProvider';
-// import { Header, Menu, } from 'semantic-ui-react';
 import { NavLink, } from 'react-router-dom';
 import styled from 'styled-components';
+import logo from '../logo.svg'
+import './Navbar.css'
 
 class Navbar extends React.Component {
 
@@ -22,7 +23,7 @@ class Navbar extends React.Component {
 		
 		if (user) {
 			return(
-				<RightMenu position='right'>
+				<RightMenu>
 					<NavLink to='/coursework' onClick={() => this.activateItem(1)}>
 						<MenuItem as={this.isActive(1)}>
 							<Item>Coursework</Item>
@@ -33,14 +34,16 @@ class Navbar extends React.Component {
 							<Item>Attendance</Item>
 						</MenuItem>
 					</NavLink>
-					<MenuItem onClick={() => handleLogout( history )}>
-						<Item>Logout</Item>
-					</MenuItem>
+					<NavLink to='/login'onClick={() => handleLogout( history )}>
+						<MenuItem>
+							<Item>Logout</Item>
+						</MenuItem>
+					</NavLink>
 				</RightMenu>
 			)
 		} else {	
 			return(
-				<RightMenu position='right'>
+				<RightMenu>
 					<NavLink to='/login' onClick={() => this.activateItem(3)}>
 						<MenuItem as={this.isActive(3)}>
 							<Item>Login</Item>
@@ -61,7 +64,7 @@ class Navbar extends React.Component {
 			<Menu borderless>
 				<NavLink to='/' onClick={() => this.activateItem(0)}>
 					<MenuItem>
-						<Item>Home</Item>
+						<img src={logo} className="App-logo" alt="logo"></img>
 					</MenuItem>
 				</NavLink>
 				{this.rightNavItems()}
@@ -70,14 +73,14 @@ class Navbar extends React.Component {
 	}
 }
 
-const styles = {
-	activeItem: {
-		borderBottom: '1px',
-	},
-	inactiveItem: {
-		borderBottom: '0px',
-	},
-}
+// const styles = {
+// 	activeItem: {
+// 		borderBottom: '1px',
+// 	},
+// 	inactiveItem: {
+// 		borderBottom: '0px',
+// 	},
+// }
 
 const MenuItem = styled.li`
 	float: left;
@@ -94,7 +97,7 @@ const Item = styled.p`
 	display: block;
 	color: black;
 	text-align: center;
-	padding: 14px 16px;
+	padding: 14px 16px 5px 16px;
 	text-decoration: none;
 `;
 
