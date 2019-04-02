@@ -19,11 +19,8 @@ const App = () => (
           <Route exact path='/' component={Home} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/register' component={Register} />
-<<<<<<< HEAD
           <Route exact path='/lecture' component={LectureView} />
-=======
           <Route exact path='/coursework' component={CourseWork} />
->>>>>>> a1cad708338d838747e5d7e73c3ad84cf3f9aca7
           <Route component={NoMatch} />
         </Switch>
       </Container>
