@@ -1,0 +1,27 @@
+.App-logo {
+	height: 4vh;
+	margin-left: 2vw;
+	margin-top: 8px;
+}
+
+.expanded {
+	display: block;
+}
+
+.compact {
+	display: none;
+}
+
+.ui.inverted.menu {
+	background: #23a24d !important;
+}
+
+@media screen and (max-width: 37.5em) {
+  div.expanded {
+    display: none;
+	}
+	
+	div.compact {
+		display: block;
+	}
+}
