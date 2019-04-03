@@ -3,10 +3,12 @@ import { AuthConsumer, } from '../providers/AuthProvider';
 import { NavLink, } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../logo.svg';
+import './Navbar.css'
+import { Button, Icon, Sidebar, Menu } from 'semantic-ui-react'
 
 class Navbar extends React.Component {
 
-	state = { activeItem: 0, }
+	state = { activeItem: 0, visible: false, }
 
 	activateItem = (MenuItem) => {
 		this.setState( { activeItem: MenuItem, } )
@@ -15,29 +17,74 @@ class Navbar extends React.Component {
 	isActive(MenuItem){
     return ( (MenuItem===this.state.activeItem) ? ActiveMenuItem : null);
 	}
+
+	handleMenuToggle = () => this.setState({ visible: !this.state.visible })
+  handleSidebarHide = () => this.setState({ visible: false })
 	
 	rightNavItems = () => {
 		const { auth: { user, handleLogout, }, history } = this.props;
 		
 		if (user) {
+			const { visible } = this.state
 			return(
-				<RightMenu>
-					<NavLink to='/coursework' onClick={() => this.activateItem(1)}>
-						<MenuItem as={this.isActive(1)}>
-							<Item>Coursework</Item>
-						</MenuItem>
-					</NavLink>
-					<NavLink to='/attendance' onClick={() => this.activateItem(2)}>
-						<MenuItem as={this.isActive(2)}>
-							<Item>Attendance</Item>
-						</MenuItem>
-					</NavLink>
-					<NavLink to='/login'onClick={() => handleLogout( history )}>
-						<MenuItem>
-							<Item>Logout</Item>
-						</MenuItem>
-					</NavLink>
-				</RightMenu>
+				<>
+					<div className='expanded'>
+						<RightMenu>
+							<NavLink to='/coursework' onClick={() => this.activateItem(1)}>
+								<MenuItem as={this.isActive(1)}>
+									<Item>Coursework</Item>
+								</MenuItem>
+							</NavLink>
+							<NavLink to='/attendance' onClick={() => this.activateItem(2)}>
+								<MenuItem as={this.isActive(2)}>
+									<Item>Attendance</Item>
+								</MenuItem>
+							</NavLink>
+							<NavLink to='/login' onClick={() => handleLogout( history )}>
+								<MenuItem>
+									<Item>Logout</Item>
+								</MenuItem>
+							</NavLink>
+						</RightMenu>
+					</div>
+
+					<div className='compact'>
+						<RightMenu>
+							<Item>
+								<Button compact icon onClick={this.handleMenuToggle}>
+									<Icon name='bars' />
+								</Button>
+							</Item>
+						</RightMenu>
+						<Sidebar
+							as={Menu}
+							animation='overlay'
+							icon='labeled'
+							inverted
+							onHide={this.handleSidebarHide}
+							vertical
+							visible={visible}
+							width='thin'
+							direction='right'
+						>
+							<NavLink to='/coursework'>
+								<Menu.Item>
+									Coursework
+								</Menu.Item>
+							</NavLink>
+							<NavLink to='/attendance'>
+								<Menu.Item>
+									Attendance
+								</Menu.Item>
+							</NavLink>
+							<NavLink to='/login'>
+								<Menu.Item>
+									Logout
+								</Menu.Item>
+							</NavLink>
+						</Sidebar>
+					</div>
+				</>
 			)
 		} else {	
 			return(
@@ -58,23 +105,28 @@ class Navbar extends React.Component {
 	}
 
 	render() {
+		const { visible } = this.state
+
 		return(
-			<Menu borderless>
-				<NavLink to='/' onClick={() => this.activateItem(0)}>
-					<MenuItem>
-						<img 
-							src={logo}
-							alt="logo"
-							style={{ 
-								height: '4vh', 
-								marginLeft: '2vw',
-								marginTop: '8px',
-							}} 
-						/>
-					</MenuItem>
-				</NavLink>
-				{this.rightNavItems()}
-			</Menu>
+			<>
+				<Sidebar.Pushable>
+					<NavMenu borderless>
+						<NavLink to='/' onClick={() => this.activateItem(0)}>
+							<MenuItem>
+								<img
+									src={logo}
+									alt="logo"
+									className='App-logo'
+								/>
+							</MenuItem>
+						</NavLink>
+						{this.rightNavItems()}
+					</NavMenu>
+					<Sidebar.Pusher dimmed={visible}>
+						{this.props.children}
+					</Sidebar.Pusher>
+				</Sidebar.Pushable>
+			</>
 		)
 	}
 }
@@ -94,14 +146,12 @@ const Item = styled.p`
 	display: block;
 	color: black;
 	text-align: center;
-	padding: 14px 16px 5px 16px;
+	padding: 10px 16px 5px 16px;
 	text-decoration: none;
 `;
 
-const Menu = styled.li`
+const NavMenu = styled.ul`
 	list-style-type: none;
-	// margin: 10px;
-	// padding: 10px;
 	overflow: hidden;
 `;
 
