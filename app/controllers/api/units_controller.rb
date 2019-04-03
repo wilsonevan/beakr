@@ -1,6 +1,6 @@
 class Api::UnitsController < ApplicationController
   before_action :set_section
-  before_action :set_unit, only: (:show, :update, :destroy)
+  before_action :set_unit, only: [:show, :update, :destroy]
 
   def index
     render json: @section.units
