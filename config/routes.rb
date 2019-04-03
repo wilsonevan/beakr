@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
     resources :enrollments, only: [:create, :update, :destroy]
 
+    resources :users, only: [:index]
+    
     resources :courses do
       resources :sections
     end
@@ -16,5 +18,7 @@ Rails.application.routes.draw do
     resources :units, only: [] do
       resources :contents
     end
+
+    get 'user_courses', to: 'courses#user_courses'
   end
 end
