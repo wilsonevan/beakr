@@ -14,6 +14,7 @@ import CourseWork from "./components/CourseWork";
 const App = () => (
   <>
     <FetchUser>
+<<<<<<< Updated upstream
       <Navbar />
       <Container>
         <Switch>
@@ -26,6 +27,21 @@ const App = () => (
           <Route component={NoMatch} />
         </Switch>
       </Container>
+=======
+      <Navbar>
+        <Container as={AppContainer}>
+          <Switch>
+            <ProtectedRoute exact path='/' component={Home} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/register' component={Register} />
+            <ProtectedRoute exact path='/units/:unit_id/contents/:id' component={ContentView} />
+            <ProtectedRoute exact path='/dashboard' component={Dashboard} />
+            <ProtectedRoute exact path='/courses/:id' component={CourseWork} />
+            <Route component={NoMatch} />
+          </Switch>
+        </Container>
+      </Navbar>
+>>>>>>> Stashed changes
     </FetchUser>
   </>
 )
