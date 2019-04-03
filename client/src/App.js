@@ -9,7 +9,7 @@ import FetchUser from "./components/FetchUser";
 import { Switch, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import Navbar from "./components/Navbar";
-import CourseWork from "./components/CourseWork";
+import CourseWork from "./components/course-work/CourseWork";
 import styled from "styled-components";
 
 const App = () => (
