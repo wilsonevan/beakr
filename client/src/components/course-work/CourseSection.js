@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import Unit from "./Unit";
 
 class CourseSection extends React.Component {
@@ -24,6 +25,23 @@ class CourseSection extends React.Component {
         assignments: [""]
       }
     ]
+  };
+
+  componentDidMount = () => {
+    // console.log(this.props.section);
+    axios
+      .get(`/api/sections/${this.props.section.id}/units`)
+      .then(res => {
+        ///// Here we add quizzes and assignments just to have filler data
+        ///// Delete this when those models actually exist
+        const units = res.data.map(unit => {
+          unit.quizzes = [""];
+          unit.assignments = [""];
+          return unit;
+        });
+        this.setState({ units });
+      })
+      .catch(err => console.log(err));
   };
 
   handleClick = event => {

@@ -1,21 +1,28 @@
 import React from "react";
+import axios from "axios";
 import "./coursework.css";
 import CourseSection from "./CourseSection";
 
 class CourseWork extends React.Component {
-  state = {
-    courses: [
-      { title: "week1" },
-      { title: "week2" },
-      { title: "week3" },
-      { title: "week4" },
-      { title: "week5" }
-    ]
-  };
+  state = { sections: [] };
+
+  componentDidMount() {
+    axios
+      .get(`/api/courses`)
+      .then(res =>
+        axios.get(`/api/courses/${this.props.match.params.id}/sections`)
+      )
+      .then(res => {
+        this.setState({ sections: res.data });
+      })
+      .catch(err => console.log(err));
+  }
 
   renderSections = () => {
-    return this.state.courses.map((course, index) => {
-      return <CourseSection key={index} title={course.title} />;
+    return this.state.sections.map((section, index) => {
+      return (
+        <CourseSection key={index} title={section.title} section={section} />
+      );
     });
   };
 
@@ -25,8 +32,7 @@ class CourseWork extends React.Component {
         <div className="course-work__container">
           <div className="section-container">
             <h2 className="section-heading">Course Work</h2>
-
-            {this.renderSections()}
+            {this.state.sections.length > 0 && this.renderSections()}
           </div>
         </div>
       </>
