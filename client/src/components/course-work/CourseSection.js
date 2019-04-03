@@ -5,30 +5,10 @@ import Unit from "./Unit";
 class CourseSection extends React.Component {
   state = {
     opened: false,
-    units: [
-      {
-        title: "Arrays",
-        contents: [{ title: "Ruby Arrays" }],
-        quizzes: [""],
-        assignments: [""]
-      },
-      {
-        title: "Hashes",
-        contents: [{ title: "Ruby Hashes" }],
-        quizzes: [""],
-        assignments: [""]
-      },
-      {
-        title: "Methods",
-        contents: [{ title: "Ruby Methods" }],
-        quizzes: [""],
-        assignments: [""]
-      }
-    ]
+    units: []
   };
 
   componentDidMount = () => {
-    // console.log(this.props.section);
     axios
       .get(`/api/sections/${this.props.section.id}/units`)
       .then(res => {
@@ -61,7 +41,8 @@ class CourseSection extends React.Component {
       return (
         <>
           <div className="section-opened" onClick={this.handleClick}>
-            {title} <div className="section-icon">-</div>
+            <div className="section-title">{title}</div>
+            <div className="section-icon">-</div>
           </div>
           <div className="units-container">{this.renderUnits()}</div>
         </>
@@ -70,7 +51,8 @@ class CourseSection extends React.Component {
       return (
         <>
           <div className="section" onClick={this.handleClick}>
-            {title} <div className="section-icon">+</div>
+            <div className="section-title">{title}</div>
+            <div className="section-icon">+</div>
           </div>
         </>
       );
