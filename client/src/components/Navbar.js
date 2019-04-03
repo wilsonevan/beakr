@@ -11,153 +11,123 @@ class Navbar extends React.Component {
 	state = { activeItem: 0, visible: false, }
 
 	activateItem = (MenuItem) => {
-		this.setState( { activeItem: MenuItem, } )
+			this.setState( { activeItem: MenuItem, } )
 	}
 
 	isActive(MenuItem){
-    return ( (MenuItem===this.state.activeItem) ? ActiveMenuItem : null);
+	return ( (MenuItem===this.state.activeItem) ? ActiveMenuItem : null);
 	}
 
 	handleMenuToggle = () => this.setState({ visible: !this.state.visible })
-  handleSidebarHide = () => this.setState({ visible: false })
+handleSidebarHide = () => this.setState({ visible: false })
 	
 	rightNavItems = () => {
-		const { auth: { user, handleLogout, }, history } = this.props;
-		
-		if (user) {
-			const { visible } = this.state
-			return(
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-				<RightMenu>
-					<NavLink to='/coursework' onClick={() => this.activateItem(1)}>
-						<MenuItem as={this.isActive(1)}>
-							<Item>Coursework</Item>
-						</MenuItem>
-					</NavLink>
-					<NavLink to='/attendance' onClick={() => this.activateItem(2)}>
-						<MenuItem as={this.isActive(2)}>
-							<Item>Attendance</Item>
-						</MenuItem>
-					</NavLink>
-					<NavLink to='/login'onClick={() => handleLogout( history )}>
-						<MenuItem>
-							<Item>Logout</Item>
-						</MenuItem>
-					</NavLink>
-				</RightMenu>
-=======
-=======
->>>>>>> 41523a8656f738a25bc9babb4a1347dfb83dc30c
-				<>
-					<div className='expanded'>
-						<RightMenu>
-							<NavLink to='/coursework' onClick={() => this.activateItem(1)}>
-								<MenuItem as={this.isActive(1)}>
-									<Item>Coursework</Item>
-								</MenuItem>
-							</NavLink>
-							<NavLink to='/attendance' onClick={() => this.activateItem(2)}>
-								<MenuItem as={this.isActive(2)}>
-									<Item>Attendance</Item>
-								</MenuItem>
-							</NavLink>
-							<NavLink to='/login' onClick={() => handleLogout( history )}>
-								<MenuItem>
-									<Item>Logout</Item>
-								</MenuItem>
-							</NavLink>
-						</RightMenu>
-					</div>
+			const { auth: { user, handleLogout, }, history } = this.props;
+			
+			if (user) {
+					const { visible } = this.state
+					return(
+							<>
+									<div className='expanded'>
+											<RightMenu>
+													<NavLink to='/coursework' onClick={() => this.activateItem(1)}>
+															<MenuItem as={this.isActive(1)}>
+																	<Item>Coursework</Item>
+															</MenuItem>
+													</NavLink>
+													<NavLink to='/attendance' onClick={() => this.activateItem(2)}>
+															<MenuItem as={this.isActive(2)}>
+																	<Item>Attendance</Item>
+															</MenuItem>
+													</NavLink>
+													<NavLink to='/login' onClick={() => handleLogout( history )}>
+															<MenuItem>
+																	<Item>Logout</Item>
+															</MenuItem>
+													</NavLink>
+											</RightMenu>
+									</div>
 
-					<div className='compact'>
-						<RightMenu>
-							<Item>
-								<Button compact icon onClick={this.handleMenuToggle}>
-									<Icon name='bars' />
-								</Button>
-							</Item>
-						</RightMenu>
-						<Sidebar
-							as={Menu}
-							animation='overlay'
-							icon='labeled'
-							inverted
-							onHide={this.handleSidebarHide}
-							vertical
-							visible={visible}
-							width='thin'
-							direction='right'
-						>
-<<<<<<< HEAD
-							<NavLink to='/dashboard'>
-=======
-							<NavLink to='/coursework'>
->>>>>>> 41523a8656f738a25bc9babb4a1347dfb83dc30c
-								<Menu.Item>
-									Coursework
-								</Menu.Item>
-							</NavLink>
-							<NavLink to='/attendance'>
-								<Menu.Item>
-									Attendance
-								</Menu.Item>
-							</NavLink>
-							<NavLink to='/login'>
-								<Menu.Item>
-									Logout
-								</Menu.Item>
-							</NavLink>
-						</Sidebar>
-					</div>
-				</>
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> 41523a8656f738a25bc9babb4a1347dfb83dc30c
-			)
-		} else {	
-			return(
-				<RightMenu>
-					<NavLink to='/login' onClick={() => this.activateItem(3)}>
-						<MenuItem as={this.isActive(3)}>
-							<Item>Login</Item>
-						</MenuItem>
-					</NavLink>
-					<NavLink to='/register' onClick={() => this.activateItem(4)}>
-						<MenuItem as={this.isActive(4)}>
-							<Item>Register</Item>
-						</MenuItem>
-					</NavLink>
-				</RightMenu>
-			)
-		}
+									<div className='compact'>
+											<RightMenu>
+													<Item>
+															<Button compact icon onClick={this.handleMenuToggle}>
+																	<Icon name='bars' />
+															</Button>
+													</Item>
+											</RightMenu>
+											<Sidebar
+													as={Menu}
+													animation='overlay'
+													icon='labeled'
+													inverted
+													onHide={this.handleSidebarHide}
+													vertical
+													visible={visible}
+													width='thin'
+													direction='right'
+											>
+													<NavLink to='/coursework'>
+															<Menu.Item>
+																	Coursework
+															</Menu.Item>
+													</NavLink>
+													<NavLink to='/attendance'>
+															<Menu.Item>
+																	Attendance
+															</Menu.Item>
+													</NavLink>
+													<NavLink to='/login'>
+															<Menu.Item>
+																	Logout
+															</Menu.Item>
+													</NavLink>
+											</Sidebar>
+									</div>
+							</>
+					)
+			} else {    
+					return(
+							<RightMenu>
+									<NavLink to='/login' onClick={() => this.activateItem(3)}>
+											<MenuItem as={this.isActive(3)}>
+													<Item>Login</Item>
+											</MenuItem>
+									</NavLink>
+									<NavLink to='/register' onClick={() => this.activateItem(4)}>
+											<MenuItem as={this.isActive(4)}>
+													<Item>Register</Item>
+											</MenuItem>
+									</NavLink>
+							</RightMenu>
+					)
+			}
 	}
 
 	render() {
-		const { visible } = this.state
+			const { visible } = this.state
 
-		return(
-			<>
-				<Sidebar.Pushable>
-					<NavMenu borderless>
-						<NavLink to='/' onClick={() => this.activateItem(0)}>
-							<MenuItem>
-								<img
-									src={logo}
-									alt="logo"
-									className='App-logo'
-								/>
-							</MenuItem>
-						</NavLink>
-						{this.rightNavItems()}
-					</NavMenu>
-					<Sidebar.Pusher dimmed={visible}>
-						{this.props.children}
-					</Sidebar.Pusher>
-				</Sidebar.Pushable>
-			</>
-		)
+			return(
+					<>
+							<Sidebar.Pushable>
+									<NavMenu borderless>
+											<NavLink to='/' onClick={() => this.activateItem(0)}>
+													<MenuItem>
+															<img
+																	src={logo}
+																	alt="logo"
+																	className='App-logo'
+															/>
+													</MenuItem>
+											</NavLink>
+											{this.rightNavItems()}
+									</NavMenu>
+									<Sidebar.Pusher dimmed={visible}>
+											{this.props.children}
+									</Sidebar.Pusher>
+							</Sidebar.Pushable>
+					</>
+			)
 	}
 }
 

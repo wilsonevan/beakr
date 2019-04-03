@@ -17,7 +17,7 @@ import styled from "styled-components";
 const App = () => (
   <>
     <FetchUser>
-      <Navbar />
+      <Navbar>
         <Container as={AppContainer}>
           <Switch>
             <Route exact path='/' component={Home} />
@@ -29,6 +29,7 @@ const App = () => (
             <Route component={NoMatch} />
           </Switch>
         </Container>
+      </Navbar>
     </FetchUser>
   </>
 );
