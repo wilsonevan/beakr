@@ -29,11 +29,11 @@ const App = () => (
       </Container>
     </FetchUser>
   </>
-)
+);
 
 // This styling allows any App view and the Sidebar to fill up the entire page height
 const AppContainer = styled.div`
   height: 100vh;
-`
+`;
 
 export default App;
