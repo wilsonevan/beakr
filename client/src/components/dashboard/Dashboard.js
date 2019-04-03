@@ -2,11 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import { Grid, Input,  Menu, Segment, Header, } from 'semantic-ui-react'
 import { AuthConsumer } from '../../providers/AuthProvider';
+import axios from 'axios';
+import { Link, } from 'react-router-dom'
 
 class Dashboard extends React.Component {
-  state = { name: '', activeItem: 'courses'}
+  state = { name: '', activeItem: 'courses', courses: []}
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
+  // courseMap = () => 
 
 
 
@@ -16,7 +20,14 @@ class Dashboard extends React.Component {
       case 'todo':
         return (<p>Whatsup</p>)
       case 'courses':
-        return (<p>This is a list of your courses</p>)
+       return this.state.courses.map( course => {
+          return (
+          <Link to={`/courses/${course.id}`} >
+            <Header>{course.title}</Header>
+          </Link>
+          )
+        })
+   
       case 'calendar':
         return (<p>your calendar will go here</p>)
       case 'grade':
@@ -30,7 +41,14 @@ class Dashboard extends React.Component {
     }
 
 
-  
+  componentDidMount(){
+    axios.get(`/api/user_courses`)
+    .then(res => {
+      this.setState({ courses: res.data });
+    })
+  }
+
+
   render() {
     const { auth: { user, }, } = this.props;
     const { activeItem } = this.state

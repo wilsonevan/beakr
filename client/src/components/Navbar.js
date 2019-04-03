@@ -21,6 +21,7 @@ class Navbar extends React.Component {
 		
 		if (user) {
 			return(
+<<<<<<< Updated upstream
 				<RightMenu>
 					<NavLink to='/coursework' onClick={() => this.activateItem(1)}>
 						<MenuItem as={this.isActive(1)}>
@@ -38,6 +39,66 @@ class Navbar extends React.Component {
 						</MenuItem>
 					</NavLink>
 				</RightMenu>
+=======
+				<>
+					<div className='expanded'>
+						<RightMenu>
+							<NavLink to='/coursework' onClick={() => this.activateItem(1)}>
+								<MenuItem as={this.isActive(1)}>
+									<Item>Coursework</Item>
+								</MenuItem>
+							</NavLink>
+							<NavLink to='/attendance' onClick={() => this.activateItem(2)}>
+								<MenuItem as={this.isActive(2)}>
+									<Item>Attendance</Item>
+								</MenuItem>
+							</NavLink>
+							<NavLink to='/login' onClick={() => handleLogout( history )}>
+								<MenuItem>
+									<Item>Logout</Item>
+								</MenuItem>
+							</NavLink>
+						</RightMenu>
+					</div>
+
+					<div className='compact'>
+						<RightMenu>
+							<Item>
+								<Button compact icon onClick={this.handleMenuToggle}>
+									<Icon name='bars' />
+								</Button>
+							</Item>
+						</RightMenu>
+						<Sidebar
+							as={Menu}
+							animation='overlay'
+							icon='labeled'
+							inverted
+							onHide={this.handleSidebarHide}
+							vertical
+							visible={visible}
+							width='thin'
+							direction='right'
+						>
+							<NavLink to='/dashboard'>
+								<Menu.Item>
+									Coursework
+								</Menu.Item>
+							</NavLink>
+							<NavLink to='/attendance'>
+								<Menu.Item>
+									Attendance
+								</Menu.Item>
+							</NavLink>
+							<NavLink to='/login'>
+								<Menu.Item>
+									Logout
+								</Menu.Item>
+							</NavLink>
+						</Sidebar>
+					</div>
+				</>
+>>>>>>> Stashed changes
 			)
 		} else {	
 			return(

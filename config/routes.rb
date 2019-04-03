@@ -16,5 +16,7 @@ Rails.application.routes.draw do
     resources :units, only: [] do
       resources :contents
     end
+
+    get 'user_courses', to: 'courses#user_courses'
   end
 end
