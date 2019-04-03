@@ -29,7 +29,6 @@ const App = () => (
             <Route component={NoMatch} />
           </Switch>
         </Container>
-       </Navbar>
     </FetchUser>
   </>
 );
