@@ -48,12 +48,18 @@ class Dashboard extends React.Component {
     })
   }
 
-
-  render() {
-    const { auth: { user, }, } = this.props;
+  renderadmin = () => {
+    const { auth: {user}, } = this.props
     const { activeItem } = this.state
-    return (
-      <>
+
+    return <Header>{user.first_name}</Header>
+  }
+
+  renderStudentMenu = () => {
+    const { auth: {user}, } = this.props
+    const { activeItem } = this.state
+
+    return(
       <Segment basic>
           <Header as='h1'>
             Welcome {user.first_name}
@@ -63,27 +69,27 @@ class Dashboard extends React.Component {
               name='courses' 
               active={activeItem === 'courses'} 
               onClick={this.handleItemClick} 
-            />
+              />
             <Menu.Item
               name='calendar'
               active={activeItem === 'calendar'}
               onClick={this.handleItemClick}
-            />
+              />
             <Menu.Item 
               name='todo' 
               active={activeItem === 'todo'} 
               onClick={this.handleItemClick} 
-            />
+              />
             <Menu.Item
               name='grade'
               active={activeItem === 'grade'}
               onClick={this.handleItemClick}
-            />
+              />
             <Menu.Item
               name='attendance'
               active={activeItem === 'attendance'}
               onClick={this.handleItemClick}
-            />
+              />
           </Menu>
 
         <Segment attached='bottom'>
@@ -91,6 +97,17 @@ class Dashboard extends React.Component {
         </Segment>
 
       </Segment>
+    )
+
+}
+
+
+render() {
+  const { auth: { user, }, } = this.props;
+  
+  return (
+    <>
+        { user.admin ? this.renderadmin() : this.renderStudentMenu() }
       </>
     )
   }
