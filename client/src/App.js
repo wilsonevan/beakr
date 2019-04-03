@@ -23,9 +23,9 @@ const App = () => (
             <Route exact path='/' component={Home} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/register' component={Register} />
-            <Route exact path='/units/:unit_id/contents/:id' component={ContentView} />
-            <Route exact path='/dashboard' component={Dashboard} />
-            <Route exact path='/courses/:id' component={CourseWork} />
+            <ProtectedRoute exact path='/units/:unit_id/contents/:id' component={ContentView} />
+            <ProtectedRoute exact path='/dashboard' component={Dashboard} />
+            <ProtectedRoute exact path='/courses/:id' component={CourseWork} />
             <Route component={NoMatch} />
           </Switch>
         </Container>

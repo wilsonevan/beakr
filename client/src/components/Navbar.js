@@ -19,7 +19,7 @@ class Navbar extends React.Component {
 	}
 
 	handleMenuToggle = () => this.setState({ visible: !this.state.visible })
-handleSidebarHide = () => this.setState({ visible: false })
+	handleSidebarHide = () => this.setState({ visible: false })
 	
 	rightNavItems = () => {
 			const { auth: { user, handleLogout, }, history } = this.props;
@@ -111,7 +111,7 @@ handleSidebarHide = () => this.setState({ visible: false })
 					<>
 							<Sidebar.Pushable>
 									<NavMenu borderless>
-											<NavLink to='/' onClick={() => this.activateItem(0)}>
+											<NavLink to='/dashboard' onClick={() => this.activateItem(0)}>
 													<MenuItem>
 															<img
 																	src={logo}

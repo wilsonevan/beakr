@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Link, } from 'react-router-dom'
 
 class Dashboard extends React.Component {
-  state = { name: '', activeItem: 'courses', courses: [], users: [],}
+  state = { name: '', activeItem: 'courses', userCourses: [], users: [], allCourses: []}
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
@@ -14,57 +14,72 @@ class Dashboard extends React.Component {
 
 
 
-  renderItem = () => {
-    switch (this.state.activeItem) {
+  renderItems = () => {
+    const { auth: {user}, } = this.props
+    if (user.admin === false) {
 
-      case 'todo':
+      switch (this.state.activeItem) {
+        case 'todo':
         return (<p>Whatsup</p>)
-      case 'courses':
-       return this.state.courses.map( course => {
+        case 'courses':
+        return this.state.userCourses.map( course => {
           return (
-          <Link to={`/courses/${course.id}`} >
+            <Link to={`/courses/${course.id}`} key={course.id}>
             <Header>{course.title}</Header>
           </Link>
           )
         })
-   
-      case 'calendar':
+        case 'calendar':
         return (<p>your calendar will go here</p>)
-      case 'grade':
+        case 'grade':
         return (<p>Dont fail</p>)
-      case 'attendance':
+        case 'attendance':
         return (<p>Dont play hooky</p>)
-      default:
+        default:
         return (<p>This is a list of your courses</p>)
       }
       
+    } else {
+      switch (this.state.activeItem) {
+        case 'todo':
+        return (<p>You are an admin</p>)
+        case 'courses':
+        return this.state.allCourses.map( course => {
+          return (
+            <Link to={`/courses/${course.id}`} key={course.id} >
+              <Header>{course.title} `(admin)`</Header>
+            </Link>
+          )
+        })
+        case 'calendar':
+        return (<p>you are an admin fro calendar</p>)
+        case 'grade':
+        return (<p>you are an admin for grades</p>)
+        case 'attendance':
+        return (<p>You are an admin for attendance</p>)
+        default:
+        return (<p>You are currently not enrolled in any courses</p>)
+      }
     }
+  }
 
 
   componentDidMount(){
     axios.get(`/api/user_courses`)
     .then(res => {
-      this.setState({ courses: res.data });
+      this.setState({ userCourses: res.data });
     })
     axios.get(`/api/users`)
       .then(res => {
         this.setState({ users: res.data })
       })
+    axios.get(`/api/courses`)
+      .then(res => {
+        this.setState({ allCourses: res.data })
+      })
   }
 
-  renderadmin = () => {
-    const { auth: {user}, } = this.props
-    const { activeItem } = this.state
-
-    return (
-    <>
-      <Header>{user.first_name}</Header>
-
-    </>
-    )
-  }
-
-  renderStudentMenu = () => {
+  renderUserMenu = () => {
     const { auth: {user}, } = this.props
     const { activeItem } = this.state
 
@@ -102,7 +117,7 @@ class Dashboard extends React.Component {
           </Menu>
 
         <Segment attached='bottom'>
-          {this.renderItem()}
+          {this.renderItems()}
         </Segment>
 
       </Segment>
@@ -116,7 +131,7 @@ render() {
   
   return (
     <>
-        { user.admin ? this.renderadmin() : this.renderStudentMenu() }
+      {this.renderUserMenu() }
       </>
     )
   }
