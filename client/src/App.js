@@ -12,9 +12,11 @@ import { Container } from "semantic-ui-react";
 import Navbar from "./components/Navbar";
 import CourseWork from "./components/course-work/CourseWork";
 import styled from "styled-components";
+import { GlobalStyles } from "./styles/global-styles/GlobalStyles";
 
 const App = () => (
   <>
+    <GlobalStyles />
     <FetchUser>
       <Navbar />
       <Container as={AppContainer}>
