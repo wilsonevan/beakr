@@ -19,11 +19,7 @@ class ContentView extends React.Component {
 
     return (
       <>
-<<<<<<< HEAD
         <Header as={Link} to='' onClick={() => this.props.history.goBack()} content='< Course Work' color='green' size='huge' textAlign='left'/>
-=======
-        <Header as={Link} to='/section/:section_id' content='< Course Work' color='green' size='huge' textAlign='left'/>
->>>>>>> 41523a8656f738a25bc9babb4a1347dfb83dc30c
         <Header style={{ color: '#23A24D' }}>
           <Icon name='block layout' color='green' />
             {title}
