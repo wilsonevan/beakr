@@ -15,21 +15,24 @@
 
 .section {
   position: relative;
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 1rem;
   margin-bottom: 2rem;
   background-color: #21ba45;
   color: white;
-  font-size: 1.5rem;
   cursor: pointer;
+}
+.section-title {
   font-family: "Poppins", sans-serif;
   letter-spacing: 2px;
   font-size: 1.3rem;
+  width: 95%;
 }
+
 .section-opened {
   position: relative;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   padding: 1rem;
   margin-bottom: 0.5rem;
   background-color: #21ba45;
@@ -46,6 +49,7 @@
   transform: translate(-50%, -50%);
   right: 0.75rem;
   top: 50%;
+  font-size: 1.5rem;
 }
 
 .units-container {
@@ -88,9 +92,20 @@
   padding: 0.25rem;
   font-size: 0.9rem;
   cursor: pointer;
+  width: calc(100% - 1.5rem);
+  transition-duration: 0.1s;
 }
 .opened-model-item {
   color: black;
+}
+
+.unit-models-item:hover {
+  color: #21ba45;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.unit-models-item:active {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .unit-models-item:first-of-type {
