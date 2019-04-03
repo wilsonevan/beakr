@@ -3,10 +3,12 @@ import { AuthConsumer, } from '../providers/AuthProvider';
 import { NavLink, } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../logo.svg';
+import './Navbar.css'
+import { Button, Icon, Sidebar, Menu } from 'semantic-ui-react'
 
 class Navbar extends React.Component {
 
-	state = { activeItem: 0, }
+	state = { activeItem: 0, visible: false, }
 
 	activateItem = (MenuItem) => {
 		this.setState( { activeItem: MenuItem, } )
@@ -15,12 +17,17 @@ class Navbar extends React.Component {
 	isActive(MenuItem){
     return ( (MenuItem===this.state.activeItem) ? ActiveMenuItem : null);
 	}
+
+	handleMenuToggle = () => this.setState({ visible: !this.state.visible })
+  handleSidebarHide = () => this.setState({ visible: false })
 	
 	rightNavItems = () => {
 		const { auth: { user, handleLogout, }, history } = this.props;
 		
 		if (user) {
+			const { visible } = this.state
 			return(
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 				<RightMenu>
 					<NavLink to='/coursework' onClick={() => this.activateItem(1)}>
@@ -40,6 +47,8 @@ class Navbar extends React.Component {
 					</NavLink>
 				</RightMenu>
 =======
+=======
+>>>>>>> 41523a8656f738a25bc9babb4a1347dfb83dc30c
 				<>
 					<div className='expanded'>
 						<RightMenu>
@@ -80,7 +89,11 @@ class Navbar extends React.Component {
 							width='thin'
 							direction='right'
 						>
+<<<<<<< HEAD
 							<NavLink to='/dashboard'>
+=======
+							<NavLink to='/coursework'>
+>>>>>>> 41523a8656f738a25bc9babb4a1347dfb83dc30c
 								<Menu.Item>
 									Coursework
 								</Menu.Item>
@@ -98,7 +111,10 @@ class Navbar extends React.Component {
 						</Sidebar>
 					</div>
 				</>
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> 41523a8656f738a25bc9babb4a1347dfb83dc30c
 			)
 		} else {	
 			return(
@@ -119,23 +135,28 @@ class Navbar extends React.Component {
 	}
 
 	render() {
+		const { visible } = this.state
+
 		return(
-			<Menu borderless>
-				<NavLink to='/' onClick={() => this.activateItem(0)}>
-					<MenuItem>
-						<img 
-							src={logo}
-							alt="logo"
-							style={{ 
-								height: '4vh', 
-								marginLeft: '2vw',
-								marginTop: '8px',
-							}} 
-						/>
-					</MenuItem>
-				</NavLink>
-				{this.rightNavItems()}
-			</Menu>
+			<>
+				<Sidebar.Pushable>
+					<NavMenu borderless>
+						<NavLink to='/' onClick={() => this.activateItem(0)}>
+							<MenuItem>
+								<img
+									src={logo}
+									alt="logo"
+									className='App-logo'
+								/>
+							</MenuItem>
+						</NavLink>
+						{this.rightNavItems()}
+					</NavMenu>
+					<Sidebar.Pusher dimmed={visible}>
+						{this.props.children}
+					</Sidebar.Pusher>
+				</Sidebar.Pushable>
+			</>
 		)
 	}
 }
@@ -155,14 +176,12 @@ const Item = styled.p`
 	display: block;
 	color: black;
 	text-align: center;
-	padding: 14px 16px 5px 16px;
+	padding: 10px 16px 5px 16px;
 	text-decoration: none;
 `;
 
-const Menu = styled.li`
+const NavMenu = styled.ul`
 	list-style-type: none;
-	// margin: 10px;
-	// padding: 10px;
 	overflow: hidden;
 `;
 

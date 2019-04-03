@@ -1,20 +1,34 @@
 import React from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 class Unit extends React.Component {
-  state = { opened: false };
+  state = { contents: [], opened: false };
+
+  componentDidMount() {
+    axios
+      .get(`/api/units/${this.props.unit.id}/contents`)
+      .then(res => {
+        this.setState({ contents: res.data });
+      })
+      .catch(err => console.log(err));
+  }
 
   handleClick = event => {
     this.setState({ opened: !this.state.opened });
   };
 
   renderContents = () => {
-    const { contents } = this.props.unit;
-    return contents.map((content, index) => {
+    return this.state.contents.map((content, index) => {
       return (
-        <div className="unit-models-item opened-model-item" key={index}>
+        <Link
+          to={`/units/${this.props.unit.id}/contents/${content.id}`}
+          className="unit-models-item opened-model-item"
+          key={index}
+        >
           <div className="models-icon" />
           {content.title}
-        </div>
+        </Link>
       );
     });
   };
@@ -22,10 +36,14 @@ class Unit extends React.Component {
     const { quizzes } = this.props.unit;
     return quizzes.map((quiz, index) => {
       return (
-        <div className="unit-models-item opened-model-item" key={index}>
+        <Link
+          to={`/dashboard`}
+          className="unit-models-item opened-model-item"
+          key={index}
+        >
           <div className="models-icon" />
           Quiz
-        </div>
+        </Link>
       );
     });
   };
@@ -33,10 +51,14 @@ class Unit extends React.Component {
     const { assignments } = this.props.unit;
     return assignments.map((assignment, index) => {
       return (
-        <div className="unit-models-item opened-model-item" key={index}>
+        <Link
+          to={`/dashboard`}
+          className="unit-models-item opened-model-item"
+          key={index}
+        >
           <div className="models-icon" />
           Assignment
-        </div>
+        </Link>
       );
     });
   };

@@ -1,6 +1,6 @@
 class Api::ContentsController < ApplicationController
   before_action :set_unit
-  before_action :set_content, only: (:show, :update, :destroy)
+  before_action :set_content, only: [:show, :update, :destroy]
 
   def index
     render json: @unit.contents
