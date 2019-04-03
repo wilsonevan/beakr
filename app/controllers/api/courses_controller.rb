@@ -5,6 +5,11 @@ class Api::CoursesController < ApplicationController
     render json: Course.all
   end
 
+  def user_courses
+    courses = current_user.courses
+    render json: courses
+  end
+
   def show
     render json: @course
   end
