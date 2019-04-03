@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Link, } from 'react-router-dom'
 
 class Dashboard extends React.Component {
-  state = { name: '', activeItem: 'courses', courses: []}
+  state = { name: '', activeItem: 'courses', courses: [], users: [],}
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
@@ -46,13 +46,22 @@ class Dashboard extends React.Component {
     .then(res => {
       this.setState({ courses: res.data });
     })
+    axios.get(`/api/users`)
+      .then(res => {
+        this.setState({ users: res.data })
+      })
   }
 
   renderadmin = () => {
     const { auth: {user}, } = this.props
     const { activeItem } = this.state
 
-    return <Header>{user.first_name}</Header>
+    return (
+    <>
+      <Header>{user.first_name}</Header>
+
+    </>
+    )
   }
 
   renderStudentMenu = () => {
