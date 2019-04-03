@@ -1,5 +1,5 @@
 import React from "react";
-import "../coursework.css";
+import "./coursework.css";
 import CourseSection from "./CourseSection";
 
 class CourseWork extends React.Component {
