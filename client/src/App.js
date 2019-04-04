@@ -8,6 +8,8 @@ import Register from './components/Register';
 import Dashboard from './components/dashboard/Dashboard'
 import ContentView from './components/ContentView';
 import FetchUser from './components/FetchUser';
+import NewEnrollment from './components/admin/NewEnrollment';
+import AddContent from './components/admin/AddContent';
 import { Switch, Route } from 'react-router-dom';
 import { Container, } from 'semantic-ui-react';
 import Navbar from './components/Navbar';
@@ -26,6 +28,8 @@ const App = () => (
             <ProtectedRoute exact path='/units/:unit_id/contents/:id' component={ContentView} />
             <ProtectedRoute exact path='/dashboard' component={Dashboard} />
             <ProtectedRoute exact path='/courses/:id' component={CourseWork} />
+            <ProtectedRoute exact path='/courses/:id/new' component={NewEnrollment} />
+            <ProtectedRoute exact path='/content/new' component={AddContent} />
             <Route component={NoMatch} />
           </Switch>
         </Container>

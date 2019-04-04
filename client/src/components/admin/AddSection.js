@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Form, Header, } from 'semantic-ui-react';
 
-class AddCourse extends React.Component {
+class AddSection extends React.Component {
   state = { title: '' }
 
   handleChange = (e) => {
@@ -12,10 +12,11 @@ class AddCourse extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const { id } = this.props.match.params
     const { title } = this.state
-    axios.post('/api/courses', title)
+    axios.post(`/api/courses/${id}/sections`, title)
       .then( res => {
-        this.props.history.push(`/courses/${res.data.id}`)
+        this.setState({ title: '' })
       })
       .catch (res => {
         console.log(res);
@@ -25,10 +26,10 @@ class AddCourse extends React.Component {
   render() {
     return (
       <>
-        <Header style={{ color: '#23A24D' }} content='Add Course' />
+        <Header style={{ color: '#23A24D' }} content='Add Section' />
         <Form onSubmit={this.handleSubmit}>
           <Form.Input
-            label='Course Title'
+            label='Section Title'
             required
             autoFocus
             name='title'
@@ -43,4 +44,4 @@ class AddCourse extends React.Component {
   }
 }
 
-export default AddCourse
+export default AddSection
