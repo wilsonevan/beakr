@@ -28,14 +28,15 @@ class CourseWork extends React.Component {
   };
 
   render() {
+    const { sections, course } = this.state;
     return (
       <>
         <div as={CourseWorkContainer}>
           <div className="section-container">
             <SectionHeading>
-              {this.state.course && this.state.course.title} > Course Work
+              {course.title && `${course.title} > Course Work`}
             </SectionHeading>
-            {this.state.sections.length > 0 && this.renderSections()}
+            {sections.length > 0 && this.renderSections()}
           </div>
         </div>
       </>
