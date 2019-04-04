@@ -8,11 +8,16 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'devise_token_auth', '~> 1.0.0'
+gem 'cloudinary'
 
 group :development, :test do
   gem 'pry'
   gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
+<<<<<<< HEAD
   gem 'rb-readline'
+=======
+  gem 'dotenv-rails'
+>>>>>>> 8b130585d8c55a3618e900c7987b0142948a7914
 end
 
 group :development do

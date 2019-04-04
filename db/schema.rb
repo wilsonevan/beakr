@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2019_04_04_162354) do
+=======
+ActiveRecord::Schema.define(version: 2019_04_04_160702) do
+>>>>>>> 8b130585d8c55a3618e900c7987b0142948a7914
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +92,8 @@ ActiveRecord::Schema.define(version: 2019_04_04_162354) do
     t.json "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "biography"
+    t.date "birth_date"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
