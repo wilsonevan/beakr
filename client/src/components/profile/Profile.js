@@ -6,11 +6,11 @@ import { Form, Grid, Image, Container, Divider, Header, Button, Segment, } from 
 // const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/15724-200.png';
 
 class Profile extends React.Component {
-  state = { editing: false, formValues: { first_name: '', last_name: '', email: '', }, };
+  state = { editing: false, formValues: { first_name: '', last_name: '', email: '', biography: '', birth_date: '', }, };
   
   componentDidMount() {
-    const { auth: { user: { first_name, last_name, email, }, }, } = this.props;
-    this.setState({ formValues: { first_name, last_name, email, }, });
+    const { auth: { user: { first_name, last_name, email, biography, birth_date, }, }, } = this.props;
+    this.setState({ formValues: { first_name, last_name, email, biography, birth_date, }, });
   }
   
   toggleEdit = () => {
@@ -41,7 +41,10 @@ class Profile extends React.Component {
         <Grid.Column width={8}>
         <Segment>
           <Header as="h1">{user.first_name} {user.last_name}</Header>
-          <Header as="h3">{user.email}</Header>
+          <Header as="h2">{user.biography}</Header>
+          <Header as="h2">{user.birth_date}</Header>
+
+          <Header as="h1">{user.email}</Header>
         </Segment>
         <Button onClick={this.toggleEdit}>{editing ? 'Cancel' : 'Edit'}</Button>
         <Link to='/dashboard'>
@@ -57,7 +60,7 @@ class Profile extends React.Component {
     const { editing, } = this.state;
 
     const { auth: { user }, } = this.props;
-    const { formValues: { first_name, last_name, email } } = this.state;
+    const { formValues: { first_name, last_name, email, biography, birth_date, } } = this.state;
     return (
       <>
         <Grid.Column width={4}>
@@ -76,6 +79,19 @@ class Profile extends React.Component {
               name="last_name"
               value={last_name}
               required
+              onChange={this.handleChange}
+            />
+            <Form.Input
+              type='date'
+              label="Birth Date"
+              name="birth_date"
+              value={birth_date}
+              onChange={this.handleChange}
+            />
+            <Form.TextArea
+              label="Biography"
+              name="biography"
+              value={biography}
               onChange={this.handleChange}
             />
             <Form.Input
