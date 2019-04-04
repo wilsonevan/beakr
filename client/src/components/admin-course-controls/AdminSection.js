@@ -85,9 +85,10 @@ class AdminSection extends React.Component {
 
 const Section = styled.div`
   position: relative;
+  width: 90%;
   border-radius: 10px;
   padding: 1.1rem;
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem auto;
   background-color: #23a24d;
   color: white;
   cursor: pointer;
@@ -101,10 +102,11 @@ const Section = styled.div`
 
 const SectionOpened = styled.div`
   position: relative;
+  width: 90%;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   padding: 1.1rem;
-  margin-bottom: 0.5rem;
+  margin: 0 auto 0.5rem auto;
   background-color: #23a24d;
   color: white;
   cursor: pointer;

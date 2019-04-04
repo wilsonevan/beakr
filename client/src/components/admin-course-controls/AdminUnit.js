@@ -105,11 +105,11 @@ class AdminUnit extends React.Component {
 }
 
 const SectionUnit = styled.div`
-  flex-shrink: 100%;
   color: grey;
   position: relative;
-  left: 1rem;
-  margin-bottom: 1rem;
+  width: 85%;
+  // left: 1rem;
+  margin: 0 auto 1rem auto;
   font-weight: lighter;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
@@ -122,11 +122,11 @@ const SectionUnit = styled.div`
 `;
 
 const OpenedSectionUnit = styled.div`
-  flex-shrink: 100%;
   color: black;
   position: relative;
-  left: 1rem;
-  margin-bottom: 1rem;
+  width: 85%;
+  // left: 1rem;
+  margin: 0 auto 1rem auto;
   font-weight: lighter;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
