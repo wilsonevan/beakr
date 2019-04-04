@@ -18,7 +18,7 @@ User.destroy_all
       5.times do
         Content.create(
           title: Faker::Hacker.verb,
-          content: Faker::Lorem.paragraph,
+          body: Faker::Lorem.paragraph,
           unit_id: unit.id
         )
       end

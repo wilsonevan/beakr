@@ -13,10 +13,10 @@ class AddSection extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { id } = this.props.match.params
-    const { title } = this.state
-    axios.post(`/api/courses/${id}/sections`, title)
+    const section = this.state
+    axios.post(`/api/courses/${id}/sections`, section)
       .then( res => {
-        this.setState({ title: '' })
+        this.props.history.push(`/courses/${res.data.id}`)
       })
       .catch (res => {
         console.log(res);
@@ -24,6 +24,8 @@ class AddSection extends React.Component {
   }
 
   render() {
+    const { title } = this.state
+
     return (
       <>
         <Header style={{ color: '#23A24D' }} content='Add Section' />

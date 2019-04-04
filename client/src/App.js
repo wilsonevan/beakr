@@ -8,8 +8,9 @@ import Dashboard from './components/dashboard/Dashboard'
 import ContentView from './components/ContentView';
 import Profile from './components/profile/Profile'
 import FetchUser from './components/FetchUser';
-import NewEnrollment from './components/admin/NewEnrollment';
 import AddContent from './components/admin/AddContent';
+import AddCourse from './components/admin/AddCourse';
+import AddSection from './components/admin/AddSection';
 import { Switch, Route } from 'react-router-dom';
 import { Container, } from 'semantic-ui-react';
 import Navbar from './components/Navbar';
@@ -30,9 +31,10 @@ const App = () => (
             <ProtectedRoute exact path='/units/:unit_id/contents/:id' component={ContentView} />
             <ProtectedRoute exact path='/dashboard' component={Dashboard} />
             <ProtectedRoute exact path='/profile' component={Profile} />
+            <ProtectedRoute exact path='/courses/new' component={AddCourse} />
             <ProtectedRoute exact path='/courses/:id' component={CourseWork} />
-            <ProtectedRoute exact path='/courses/:id/new' component={NewEnrollment} />
             <ProtectedRoute exact path='/content/new' component={AddContent} />
+            <ProtectedRoute exact path='/courses/:id/sections/new' component={AddSection} />
             <Route component={NoMatch} />
           </Switch>
         </Container>

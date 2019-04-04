@@ -13,8 +13,8 @@ class AddUnit extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { id } = this.props
-    const { title } = this.state
-    axios.post(`/api/sections/${id}/units`, title)
+    const unit = this.state
+    axios.post(`/api/sections/${id}/units`, unit)
       .then( res => {
         this.setState({ title: '' })
       })

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Segment, Header, Icon, } from 'semantic-ui-react';
 
 class ContentView extends React.Component {
-  state = { title: '', content: '' }
+  state = { title: '', body: '' }
 
   componentDidMount() {
     const { unit_id, id } = this.props.match.params
@@ -14,8 +14,12 @@ class ContentView extends React.Component {
       })
   }
 
+  createMarkup = (html) => {
+    return { __html: html };
+  };
+
   render() {
-    const { title, content, } = this.state
+    const { title, body, } = this.state
 
     return (
       <>
@@ -25,7 +29,11 @@ class ContentView extends React.Component {
             {title}
         </Header>
         <Segment>
-          {content}
+          <div 
+            dangerouslySetInnerHTML=
+            {this.createMarkup(body)}
+            style={{padding: '15px'}}
+          />
         </Segment>
       </>
     )

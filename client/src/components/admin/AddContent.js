@@ -4,7 +4,7 @@ import { Header, Form, } from 'semantic-ui-react';
 import axios from 'axios';
 
 class AddContent extends React.Component {
-  state = { title: '', content: '', };
+  state = { title: '', body: '', };
 
   handleChange = (e) => {
     const { name, value } = e.target
@@ -12,7 +12,7 @@ class AddContent extends React.Component {
   }
 
   handleQuillChange = (value) => {
-    this.setState({ content: value })
+    this.setState({ body: value })
   }
 
   handleSubmit = (e) => {
@@ -25,7 +25,7 @@ class AddContent extends React.Component {
   }
 
   render() {
-    const { title, content } = this.state
+    const { title, body } = this.state
 
     return(
       <>
@@ -41,8 +41,8 @@ class AddContent extends React.Component {
             onChange={this.handleChange}
           />
           <ReactQuill 
-            name='content'
-            value={content}
+            name='body'
+            value={body}
             onChange={this.handleQuillChange} 
           />
           <Form.Button content='Submit' />

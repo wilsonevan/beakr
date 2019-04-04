@@ -12,8 +12,8 @@ class AddCourse extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { title } = this.state
-    axios.post('/api/courses', title)
+    const course = this.state
+    axios.post('/api/courses', course)
       .then( res => {
         this.props.history.push(`/courses/${res.data.id}`)
       })
@@ -23,6 +23,8 @@ class AddCourse extends React.Component {
   }
 
   render() {
+    const {title} = this.state
+
     return (
       <>
         <Header style={{ color: '#23A24D' }} content='Add Course' />
