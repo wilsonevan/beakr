@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "animejs": "^3.0.1",
     "axios": "^0.18.0",
     "devise-axios": "^1.0.24",
     "react": "^16.8.6",
