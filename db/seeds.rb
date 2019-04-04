@@ -1,5 +1,6 @@
 Course.destroy_all
 User.destroy_all
+Content.destroy_all
 
 1.times do
   course = Course.create(
@@ -16,13 +17,18 @@ User.destroy_all
         section_id: section.id
       )
       5.times do
-        Content.create(
+        content = Content.create(
           title: Faker::Hacker.verb,
           content: Faker::Lorem.paragraph,
-          unit_id: unit.id
+        )
+
+        UnitContent.create(
+          unit_id: unit.id,
+          content_id: content.id,
         )
       end
     end
+    
   end
 end
 
