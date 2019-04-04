@@ -9,7 +9,6 @@ class StudentDashboard extends React.Component {
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
   renderItems = () => {
-    const { auth: {user}, } = this.props
       switch (this.state.activeItem) {
       case 'todo':
         return (<p>Whatsup</p>)
@@ -95,7 +94,6 @@ class StudentDashboard extends React.Component {
 
 
 render() {
-  const { auth: { user, }, } = this.props;
   
   return (
       <>

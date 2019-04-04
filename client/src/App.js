@@ -11,6 +11,7 @@ import FetchUser from './components/FetchUser';
 import AddContent from './components/admin/AddContent';
 import AddCourse from './components/admin/AddCourse';
 import AddSection from './components/admin/AddSection';
+import AddUser from './components/admin/AddUser';
 import { Switch, Route } from 'react-router-dom';
 import { Container, } from 'semantic-ui-react';
 import Navbar from './components/Navbar';
@@ -35,6 +36,7 @@ const App = () => (
             <ProtectedRoute exact path='/courses/:id' component={CourseWork} />
             <ProtectedRoute exact path='/content/new' component={AddContent} />
             <ProtectedRoute exact path='/courses/:id/sections/new' component={AddSection} />
+            <ProtectedRoute exact path='/users/new' component={AddUser} />
             <Route component={NoMatch} />
           </Switch>
         </Container>

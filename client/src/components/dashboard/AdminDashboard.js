@@ -9,9 +9,7 @@ class AdminDashboard extends React.Component {
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
-  renderItems = () => {
-    const { auth: {user}, } = this.props
-      
+  renderItems = () => {   
     switch (this.state.activeItem) {
       case 'todo':
         return (<p>You are an admin</p>)
@@ -38,6 +36,23 @@ class AdminDashboard extends React.Component {
         return (<p>you are an admin for grades</p>)
       case 'attendance':
         return (<p>You are an admin for attendance</p>)
+      case 'users':
+        return (
+          <>
+          {this.state.users.map( user => {
+            return (
+            <div key={user.id}>
+             {user.first_name} {user.last_name}
+            </div>
+            )
+          })}
+            <Link to={'/users/new'}>
+              <ButtonGreen>
+                Add User
+              </ButtonGreen>
+            </Link>
+          </>
+        )
       default:
         return (<p>You are currently not enrolled in any courses</p>)
     }
@@ -94,6 +109,11 @@ class AdminDashboard extends React.Component {
               active={activeItem === 'attendance'}
               onClick={this.handleItemClick}
               />
+            <Menu.Item
+              name='users'
+              active={activeItem === 'users'}
+              onClick={this.handleItemClick}
+              />
             <Menu.Menu position='right'>
               <Link to='/profile'>
                 <Menu.Item>
@@ -114,8 +134,6 @@ class AdminDashboard extends React.Component {
 
 
 render() {
-  const { auth: { user, }, } = this.props;
-  
   return (
       <>
         {this.renderUserMenu() }
