@@ -12,7 +12,7 @@ import { Container } from "semantic-ui-react";
 import Navbar from "./components/Navbar";
 import CourseWork from "./components/course-work/CourseWork";
 import styled from "styled-components";
-import { GlobalStyles } from "./styles/global-styles/GlobalStyles";
+import { GlobalStyles } from "./styles/GlobalStyles";
 
 const App = () => (
   <>
@@ -24,13 +24,13 @@ const App = () => (
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          <Route
+          <ProtectedRoute
             exact
             path="/units/:unit_id/contents/:id"
             component={ContentView}
           />
-          <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/courses/:id" component={CourseWork} />
+          <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+          <ProtectedRoute exact path="/courses/:id" component={CourseWork} />
           <Route component={NoMatch} />
         </Switch>
       </Container>
