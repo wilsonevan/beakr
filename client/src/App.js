@@ -7,6 +7,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/dashboard/Dashboard'
 import ContentView from './components/ContentView';
+import Profile from './components/profile/Profile'
 import FetchUser from './components/FetchUser';
 import { Switch, Route } from 'react-router-dom';
 import { Container, } from 'semantic-ui-react';
@@ -25,6 +26,7 @@ const App = () => (
             <Route exact path='/register' component={Register} />
             <ProtectedRoute exact path='/units/:unit_id/contents/:id' component={ContentView} />
             <ProtectedRoute exact path='/dashboard' component={Dashboard} />
+            <ProtectedRoute exact path='/profile' component={Profile} />
             <ProtectedRoute exact path='/courses/:id' component={CourseWork} />
             <Route component={NoMatch} />
           </Switch>

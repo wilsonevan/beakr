@@ -20,45 +20,45 @@ class Dashboard extends React.Component {
 
       switch (this.state.activeItem) {
         case 'todo':
-        return (<p>Whatsup</p>)
+          return (<p>Whatsup</p>)
         case 'courses':
-        return this.state.userCourses.map( course => {
-          return (
-            <Link to={`/courses/${course.id}`} key={course.id}>
-            <Header>{course.title}</Header>
-          </Link>
-          )
-        })
+          return this.state.userCourses.map( course => {
+            return (
+              <Link to={`/courses/${course.id}`} key={course.id}>
+                <Header>{course.title}</Header>
+              </Link>
+            )
+          })
         case 'calendar':
-        return (<p>your calendar will go here</p>)
+          return (<p>your calendar will go here</p>)
         case 'grade':
-        return (<p>Dont fail</p>)
+          return (<p>Dont fail</p>)
         case 'attendance':
-        return (<p>Dont play hooky</p>)
+          return (<p>Dont play hooky</p>)
         default:
-        return (<p>This is a list of your courses</p>)
+          return (<p>This is a list of your courses</p>)
       }
       
     } else {
       switch (this.state.activeItem) {
         case 'todo':
-        return (<p>You are an admin</p>)
+          return (<p>You are an admin</p>)
         case 'courses':
-        return this.state.allCourses.map( course => {
-          return (
-            <Link to={`/courses/${course.id}`} key={course.id} >
-              <Header>{course.title} `(admin)`</Header>
-            </Link>
-          )
-        })
+          return this.state.allCourses.map( course => {
+            return (
+              <Link to={`/courses/${course.id}`} key={course.id} >
+                <Header>{course.title} `(admin)`</Header>
+              </Link>
+            )
+          })
         case 'calendar':
-        return (<p>you are an admin fro calendar</p>)
+          return (<p>you are an admin fro calendar</p>)
         case 'grade':
-        return (<p>you are an admin for grades</p>)
+          return (<p>you are an admin for grades</p>)
         case 'attendance':
-        return (<p>You are an admin for attendance</p>)
+          return (<p>You are an admin for attendance</p>)
         default:
-        return (<p>You are currently not enrolled in any courses</p>)
+          return (<p>You are currently not enrolled in any courses</p>)
       }
     }
   }
@@ -114,6 +114,13 @@ class Dashboard extends React.Component {
               active={activeItem === 'attendance'}
               onClick={this.handleItemClick}
               />
+            <Menu.Menu position='right'>
+              <Link to='/profile'>
+                <Menu.Item>
+                  Profile
+                </Menu.Item>
+              </Link>
+            </Menu.Menu>
           </Menu>
 
         <Segment attached='bottom'>
