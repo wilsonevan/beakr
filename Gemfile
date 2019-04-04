@@ -13,11 +13,8 @@ gem 'cloudinary'
 group :development, :test do
   gem 'pry'
   gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
-<<<<<<< HEAD
   gem 'rb-readline'
-=======
   gem 'dotenv-rails'
->>>>>>> 8b130585d8c55a3618e900c7987b0142948a7914
 end
 
 group :development do
