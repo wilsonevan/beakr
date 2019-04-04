@@ -19,7 +19,7 @@ Content.destroy_all
       5.times do
         content = Content.create(
           title: Faker::Hacker.verb,
-          content: Faker::Lorem.paragraph,
+          body: Faker::Lorem.paragraph,
         )
 
         UnitContent.create(
@@ -28,7 +28,6 @@ Content.destroy_all
         )
       end
     end
-    
   end
 end
 

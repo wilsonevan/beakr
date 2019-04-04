@@ -41,6 +41,6 @@ class Api::ContentsController < ApplicationController
   end
 
   def content_params
-    params.require(:content).permit(:title, :content)
+    params.require(:content).permit(:title, :body)
   end
 end

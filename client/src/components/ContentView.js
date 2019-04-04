@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Segment, Header, Icon, } from 'semantic-ui-react';
 
 class ContentView extends React.Component {
-  state = { title: '', content: '' }
+  state = { title: '', body: '' }
 
   componentDidMount() {
     const { unit_id, id } = this.props.match.params
@@ -14,18 +14,26 @@ class ContentView extends React.Component {
       })
   }
 
+  createMarkup = (html) => {
+    return { __html: html };
+  };
+
   render() {
-    const { title, content, } = this.state
+    const { title, body, } = this.state
 
     return (
       <>
-        <Header as={Link} to='/section/:section_id' content='< Course Work' color='green' size='huge' textAlign='left'/>
+        <Header as={Link} to='' onClick={() => this.props.history.goBack()} content='< Course Work' color='green' size='huge' textAlign='left'/>
         <Header style={{ color: '#23A24D' }}>
           <Icon name='block layout' color='green' />
             {title}
         </Header>
         <Segment>
-          {content}
+          <div 
+            dangerouslySetInnerHTML=
+            {this.createMarkup(body)}
+            style={{padding: '15px'}}
+          />
         </Segment>
       </>
     )
