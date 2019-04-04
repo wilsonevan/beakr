@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Link, } from 'react-router-dom'
 
 class Dashboard extends React.Component {
-  state = { name: '', activeItem: 'courses', userCourses: [], users: [], allCourses: []}
+  state = {activeItem: 'courses', userCourses: [], users: [], allCourses: []}
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
