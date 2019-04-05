@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  require 'tinify'
   before_action :authenticate_user!, if: proc { request.controller_class.parent == Api }
   include DeviseTokenAuth::Concerns::SetUserByToken
 

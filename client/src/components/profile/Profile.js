@@ -1,22 +1,42 @@
 import React from 'react';
 import { Link, } from 'react-router-dom';
 import { AuthConsumer, } from "../../providers/AuthProvider";
-import { Form, Grid, Image, Container, Divider, Header, Button, Segment, } from 'semantic-ui-react';
+import { Form, Grid, Container, Divider, Header, Button, Segment, Card, Image } from 'semantic-ui-react';
+import Dropzone from 'react-dropzone';
 
-// const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/15724-200.png';
+
+const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/15724-200.png';
 
 class Profile extends React.Component {
-  state = { editing: false, formValues: { first_name: '', last_name: '', email: '', biography: '', birth_date: '', }, };
+  state = { editing: false, formValues: { first_name: '', last_name: '', email: '', biography: '', birth_date: '', file: 'dddd', }, };
   
   componentDidMount() {
-    const { auth: { user: { first_name, last_name, email, biography, birth_date, }, }, } = this.props;
-    this.setState({ formValues: { first_name, last_name, email, biography, birth_date, }, });
+    const { auth: { user: { first_name, last_name, email, biography, birth_date,}, }, } = this.props;
+    this.setState({ formValues: { first_name, last_name, email, biography, birth_date, file: '', }, });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const { formValues: { first_name, last_name, email, biography, birth_date, file, }, } = this.state;
+    const { auth: { user, updateUser, }, } = this.props;
+    updateUser(user.id, { first_name, last_name, email, biography, birth_date, file, });
+    this.setState({
+      editing: false,
+      formValues: {
+        ...this.state.formValues,
+        file: "",
+      },
+    });
   }
   
   toggleEdit = () => {
     this.setState( state => {
       return { editing: !state.editing, };
     })
+  }
+
+  onDrop = (files) => {
+    this.setState({ formValues: { ...this.state.formValues, file: files[0], } });
   }
   
   handleChange = (e) => {
@@ -58,14 +78,33 @@ class Profile extends React.Component {
   
   editView = () => {
     const { editing, } = this.state;
+    const { auth: {user, }, } = this.props
 
-    const { auth: { user }, } = this.props;
     const { formValues: { first_name, last_name, email, biography, birth_date, } } = this.state;
     return (
       <>
         <Grid.Column width={4}>
+        <Dropzone
+          onDrop={this.onDrop}
+          multiple={false}
+        >
+          {({ getRootProps, getInputProps, isDragActive }) => {
+            return (
+              <Card
+                {...getRootProps()}
+                
+              >
+                <input {...getInputProps()} />
+                { isDragActive ? <p>Drop files here...</p> 
+                : <Image src={user.image || defaultImage} />
+
+                }
+              </Card>
+            )
+          }}
+        </Dropzone>
         </Grid.Column>
-        <Grid.Column width={8}>
+        <Grid.Column width={12}>
           <Form onSubmit={this.handleSubmit}>
             <Form.Input
               label="First Name"

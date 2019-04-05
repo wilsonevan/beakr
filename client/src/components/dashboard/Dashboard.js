@@ -1,6 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Grid, Input,  Menu, Segment, Header, } from 'semantic-ui-react'
+import { Menu, Segment, Header, } from 'semantic-ui-react'
 import { AuthConsumer } from '../../providers/AuthProvider';
 import axios from 'axios';
 import { Link, } from 'react-router-dom'
@@ -134,8 +133,6 @@ class Dashboard extends React.Component {
 
 
 render() {
-  const { auth: { user, }, } = this.props;
-  
   return (
     <>
       {this.renderUserMenu() }
