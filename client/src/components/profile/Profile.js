@@ -165,7 +165,9 @@ class Profile extends React.Component {
     const { editing, } = this.state;
     return (
       <Container>
-        <Header as={Link} to='/dashboard' content='< Dashboard' color='green' size='huge' textAlign='left'/>
+        <Link to='/dashboard'>
+        <h1> {`<`} Dashboard </h1> 
+        </Link>
         <Divider hidden />
         <Grid>
           <Grid.Row>

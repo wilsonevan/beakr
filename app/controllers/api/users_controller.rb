@@ -1,7 +1,6 @@
 
 class Api::UsersController < ApplicationController
   before_action :authenticate_admin, only: [:index]
-  before_action :authenticate_user!
 
 
   def index
@@ -18,7 +17,6 @@ class Api::UsersController < ApplicationController
     user.birth_date = params[:birth_date] ? params[:birth_date] : user.birth_date
     file = params[:file]
     if file != ""
-      binding.pry
       Tinify.key = ENV["TINY_PNG"]
       image_name = params.keys.first
       source = Tinify.from_file(file.tempfile)
