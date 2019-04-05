@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, } from 'react-router-dom';
 import { AuthConsumer, } from "../../providers/AuthProvider";
-import { Form, Grid, Image, Container, Divider, Header, Button, Segment, } from 'semantic-ui-react';
+import { Form, Grid, Container, Divider, Header, Button, Segment, } from 'semantic-ui-react';
 
 // const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/15724-200.png';
 
@@ -59,7 +59,6 @@ class Profile extends React.Component {
   editView = () => {
     const { editing, } = this.state;
 
-    const { auth: { user }, } = this.props;
     const { formValues: { first_name, last_name, email, biography, birth_date, } } = this.state;
     return (
       <>
