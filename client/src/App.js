@@ -51,11 +51,7 @@ const App = () => (
             component={AdminEditSection}
           />
           <ProtectedRoute exact path="/content/new" component={AddContent} />
-          <ProtectedRoute
-            exact
-            path="/courses/:id/sections/new"
-            component={AddSection}
-          />
+          <ProtectedRoute exact path='/users/new' component={AddUser} />
           <Route component={NoMatch} />
         </Switch>
       </Container>
