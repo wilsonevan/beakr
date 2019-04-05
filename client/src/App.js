@@ -10,8 +10,8 @@ import ContentView from "./components/ContentView";
 import Profile from "./components/profile/Profile";
 import FetchUser from "./components/FetchUser";
 import AddContent from "./components/admin-course-controls/AddContent";
+import AddUser from './components/admin/AddUser'
 import AddCourse from "./components/admin/AddCourse";
-import AddSection from "./components/admin-course-controls/AddSection";
 import { Switch, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import Navbar from "./components/Navbar";
