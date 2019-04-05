@@ -3,6 +3,8 @@ import axios from "axios";
 import anime from "animejs";
 import styled from "styled-components";
 import AdminUnit from "./AdminUnit";
+import { ButtonBlue } from "../../styles/Components";
+import { Link } from "react-router-dom";
 
 class AdminSection extends React.Component {
   state = {
@@ -95,7 +97,11 @@ class AdminSection extends React.Component {
             ref={this.sectionRef}
           >
             <SectionTitle>{title}</SectionTitle>
-            <SectionIcon>-</SectionIcon>
+            <SectionIcon>
+              <Link to={`/admin/sections/${this.props.section.id}`}>
+                <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
+              </Link>
+            </SectionIcon>
           </Section>
           <UnitsContainer
             ref={this.unitContainerRef}
@@ -110,7 +116,11 @@ class AdminSection extends React.Component {
         <>
           <Section ref={this.sectionRef} onClick={this.handleClick}>
             <SectionTitle>{title}</SectionTitle>
-            <SectionIcon>+</SectionIcon>
+            <SectionIcon>
+              <Link to={`/admin/sections/${this.props.section.id}`}>
+                <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
+              </Link>
+            </SectionIcon>
           </Section>
         </>
       );
@@ -135,22 +145,6 @@ const Section = styled.div`
   );
 `;
 
-// const SectionOpened = styled.div`
-//   position: relative;
-//   width: 90%;
-//   padding: 1.1rem;
-//   margin: 0 auto 0.5rem auto;
-//   background-color: #23a24d;
-//   color: white;
-//   cursor: pointer;
-//   background-image: linear-gradient(
-//     to right,
-//     rgba(75, 255, 100, 0.2) 15%,
-//     #23a24d,
-//     rgba(75, 255, 100, 0.2) 85%
-//   );
-// `;
-
 const SectionTitle = styled.div`
   letter-spacing: 3.5px;
   font-size: 1.3rem;
@@ -159,8 +153,8 @@ const SectionTitle = styled.div`
 
 const SectionIcon = styled.div`
   position: absolute;
-  transform: translate(-50%, -50%);
-  right: 0.75rem;
+  transform: translateY(-50%);
+  right: 0.5rem;
   top: 50%;
   font-size: 1.5rem;
 `;
@@ -174,5 +168,9 @@ const UnitsContainer = styled.div`
   max-height: 500vh;
   opacity: 0;
 `;
+
+const buttonStyles = {
+  padding: "0.8rem 1rem"
+};
 
 export default AdminSection;
