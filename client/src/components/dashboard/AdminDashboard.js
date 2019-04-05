@@ -1,13 +1,33 @@
 import React from 'react'
 import { Menu, Segment, Header } from 'semantic-ui-react'
 import axios from 'axios';
+import AddCourse from '../admin/AddCourse';
+import AddUser from '../admin/AddUser';
 import { ButtonGreen } from '../../styles/Components';
 import { Link, } from 'react-router-dom'
 
 class AdminDashboard extends React.Component {
-  state = { name: '', activeItem: 'courses', userCourses: [], users: [], allCourses: []}
+  state = { name: '', activeItem: 'courses', userCourses: [], users: [], allCourses: [], toggleNewCourse: false, toggleNewUser: false, }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
+  toggleNewCourse = () => this.setState({ toggleNewCourse: !this.state.toggleNewCourse })
+
+  resetCourseList = () => {
+    axios.get(`/api/courses`)
+      .then(res => {
+        this.setState({ allCourses: res.data })
+      })
+  }
+
+  toggleNewUser = () => this.setState({ toggleNewUser: !this.state.toggleNewUser })
+
+  resetUserList = () => {
+    axios.get(`/api/users`)
+      .then(res => {
+        this.setState({ users: res.data })
+      })
+  }
 
   renderItems = () => {   
     switch (this.state.activeItem) {
@@ -16,18 +36,23 @@ class AdminDashboard extends React.Component {
       case 'courses':
         return (
           <>
-            {this.state.allCourses.map( course => {
-              return (
-                <Link to={`/courses/${course.id}`} key={course.id} >
-                  <Header>{course.title} `(admin)`</Header>
-                </Link>
-              )
-            })}
-            <Link to={'/courses/new'}>
-              <ButtonGreen>
-                Add Course
-              </ButtonGreen>
-            </Link>
+            { 
+              this.state.toggleNewCourse ? 
+                <AddCourse toggleNewCourse={this.toggleNewCourse} resetCourseList={this.resetCourseList} />
+            :
+              <>
+                {this.state.allCourses.map( course => {
+                  return (
+                    <Link to={`/courses/${course.id}`} key={course.id} >
+                      <Header>{course.title} `(admin)`</Header>
+                    </Link>
+                  )
+                })}
+                <ButtonGreen onClick={this.toggleNewCourse}>
+                  Add Course
+                </ButtonGreen>
+              </>
+            }
           </>         
         )
       case 'calendar':
@@ -39,18 +64,23 @@ class AdminDashboard extends React.Component {
       case 'users':
         return (
           <>
-          {this.state.users.map( user => {
-            return (
-            <div key={user.id}>
-             {user.first_name} {user.last_name}
-            </div>
-            )
-          })}
-            <Link to={'/users/new'}>
-              <ButtonGreen>
-                Add User
-              </ButtonGreen>
-            </Link>
+            {
+              this.state.toggleNewUser ?
+              <AddUser toggleNewUser={this.toggleNewUser} resetUserList={this.resetUserList} />
+            :
+              <>
+                {this.state.users.map( user => {
+                  return (
+                    <div key={user.id}>
+                      {user.first_name} {user.last_name}
+                    </div>
+                  )
+                })}
+                <ButtonGreen onClick={this.toggleNewUser}>
+                    Add User
+                </ButtonGreen>
+              </>
+            }
           </>
         )
       default:

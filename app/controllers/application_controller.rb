@@ -7,6 +7,12 @@ class ApplicationController < ActionController::API
 
   protected
 
+  def authorize_admin
+    if !current_user.admin
+      render json: 'Unauthorized!', status: 401
+    end
+  end
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :admin ])
   end

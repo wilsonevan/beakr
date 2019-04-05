@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Button, Form, Segment, Header, } from 'semantic-ui-react';
+import { ButtonGreen, } from '../../styles/Components';
+import { Form, Segment, Header, } from 'semantic-ui-react';
 
 class AddUser extends React.Component {
   state = { email: '', password: '', password_confirmation: '', first_name: '', last_name: ''};
@@ -9,12 +10,12 @@ class AddUser extends React.Component {
     e.preventDefault();
     const { password, password_confirmation } = this.state;
     const user = this.state;
-    const { history, } = this.props;
 
     if (password === password_confirmation)
       axios.post('/api/auth', user)
         .then( res => {
-          history.push('/dashboard');
+          this.props.toggleNewUser();
+          this.props.resetUserList();
         })
     else
       alert('Passwords Do Not Match!')
@@ -76,9 +77,14 @@ class AddUser extends React.Component {
             onChange={this.handleChange}
           />
           <Segment textAlign='center' basic>
-            <Button primary type='submit'>Submit</Button>
+            <ButtonGreen>
+              Submit
+            </ButtonGreen>
           </Segment>
         </Form>
+        <ButtonGreen onClick={this.props.toggleNewUser}>
+          Back to Course List
+        </ButtonGreen>
       </Segment>
     )
   }
