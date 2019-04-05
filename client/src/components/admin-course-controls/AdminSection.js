@@ -87,6 +87,7 @@ class AdminSection extends React.Component {
 
   render() {
     const { title } = this.props;
+    const { loaded, units } = this.state;
 
     if (this.state.opened) {
       return (
@@ -96,7 +97,9 @@ class AdminSection extends React.Component {
             onClick={this.handleClick}
             ref={this.sectionRef}
           >
-            <SectionTitle>{title}</SectionTitle>
+            <SectionTitle>
+              {loaded && units.length === 0 && "(No Units)"} {title}
+            </SectionTitle>
             <SectionIcon>
               <Link to={`/admin/sections/${this.props.section.id}`}>
                 <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
@@ -115,7 +118,9 @@ class AdminSection extends React.Component {
       return (
         <>
           <Section ref={this.sectionRef} onClick={this.handleClick}>
-            <SectionTitle>{title}</SectionTitle>
+            <SectionTitle>
+              {loaded && units.length === 0 && "(No Units)"} {title}
+            </SectionTitle>
             <SectionIcon>
               <Link to={`/admin/sections/${this.props.section.id}`}>
                 <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
