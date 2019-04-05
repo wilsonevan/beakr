@@ -1,49 +1,76 @@
-import React from 'react';
-import axios from 'axios';
-import { Form, Header, } from 'semantic-ui-react';
+import React from "react";
+import axios from "axios";
+import { Form, Header } from "semantic-ui-react";
+import { ButtonGreen } from "../../styles/Components";
+import styled from "styled-components";
 
 class AddSection extends React.Component {
-  state = { title: '' }
+  state = { title: "" };
 
-  handleChange = (e) => {
+  handleChange = e => {
     const { name, value } = e.target;
-    this.setState({ [name]: value, });
-  }
+    this.setState({ [name]: value });
+  };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
-    const { id } = this.props.match.params
-    const section = this.state
-    axios.post(`/api/courses/${id}/sections`, section)
-      .then( res => {
-        this.props.history.push(`/courses/${res.data.id}`)
+    const id = this.props.courseId;
+    const section = this.state;
+    axios
+      .post(`/api/courses/${id}/sections`, section)
+      .then(res => {
+        this.props.addSection(res.data);
+        this.setState({ title: "" });
       })
-      .catch (res => {
+      .catch(res => {
         console.log(res);
-      })
-  }
+      });
+  };
 
   render() {
-    const { title } = this.state
+    const { title } = this.state;
 
     return (
       <>
-        <Header style={{ color: '#23A24D' }} content='Add Section' />
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} style={styles.form}>
+          <FormHeading>
+            <InputLabel htmlFor="title">Add Section</InputLabel>
+            <ButtonGreen>Submit</ButtonGreen>
+          </FormHeading>
           <Form.Input
-            label='Section Title'
+            id="title"
             required
             autoFocus
-            name='title'
+            name="title"
             value={title}
-            placeholder='Title'
+            placeholder="Section Title"
             onChange={this.handleChange}
           />
-          <Form.Button color='green' content='submit' /> 
         </Form>
       </>
-    )
+    );
   }
 }
 
-export default AddSection
+const FormHeading = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  width: 100%;
+`;
+
+const InputLabel = styled.label`
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #23a24d;
+`;
+
+const styles = {
+  form: {
+    width: "90%",
+    margin: "0 auto 2rem auto"
+  }
+};
+
+export default AddSection;
