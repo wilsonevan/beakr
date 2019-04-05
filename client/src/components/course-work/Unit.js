@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 class Unit extends React.Component {
-  state = { contents: [], opened: false };
+  state = { contents: [], opened: false, loaded: false };
 
   unitModelsRef = React.createRef();
 
@@ -13,27 +13,49 @@ class Unit extends React.Component {
     axios
       .get(`/api/units/${this.props.unit.id}/contents`)
       .then(res => {
-        this.setState({ contents: res.data });
+        this.setState({ contents: res.data, loaded: true });
       })
       .catch(err => console.log(err));
   }
 
   handleClick = event => {
-    this.setState({ opened: !this.state.opened }, () => {
-      if (!this.state.opened) return null;
+    if (!this.state.opened && this.state.loaded) {
+      this.setState({ opened: !this.state.opened }, () => {
+        anime({
+          targets: this.unitModelsRef.current,
+          opacity: "1",
+          height: `${this.state.contents.length * 1.6}rem`,
+          duration: this.state.contents.length * 40,
+          easing: "linear"
+        });
+        anime({
+          targets: this.props.unitContainerRef.current,
+          height: `${parseFloat(
+            this.props.unitContainerRef.current.style.height
+          ) +
+            this.state.contents.length * 1.75}rem`,
+          easing: "linear",
+          duration: this.state.contents.length * 40
+        });
+      });
+    } else {
       anime({
         targets: this.unitModelsRef.current,
-        maxHeight: "200vh",
-        duration: "2000",
+        opacity: "0",
+        height: 0,
+        duration: this.state.contents.length * 40,
         easing: "linear"
       });
       anime({
-        targets: this.unitModelsRef.current,
-        duration: "400",
-        opacity: "1",
-        easing: "linear"
-      });
-    });
+        targets: this.props.unitContainerRef.current,
+        height: `${parseFloat(
+          this.props.unitContainerRef.current.style.height
+        ) -
+          this.state.contents.length * 1.75}rem`,
+        easing: "linear",
+        duration: this.state.contents.length * 45
+      }).finished.then(() => this.setState({ opened: !this.state.opened }));
+    }
   };
 
   renderContents = () => {
@@ -145,7 +167,7 @@ const UnitModelsContainer = styled.div`
   border-left: 1px solid grey;
   overflow: hidden;
   opacity: 0;
-  max-height: 0;
+  height: 0;
 `;
 
 const UnitModelsItem = styled.div`

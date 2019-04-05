@@ -6,11 +6,13 @@ import AdminUnit from "./AdminUnit";
 
 class AdminSection extends React.Component {
   state = {
+    laoded: false,
     opened: false,
     units: []
   };
 
   unitContainerRef = React.createRef();
+  sectionRef = React.createRef();
 
   componentDidMount = () => {
     axios
@@ -23,32 +25,61 @@ class AdminSection extends React.Component {
           unit.assignments = [""];
           return unit;
         });
-        this.setState({ units });
+        this.setState({ units, loaded: true });
       })
       .catch(err => console.log(err));
   };
 
   handleClick = event => {
-    this.setState({ opened: !this.state.opened }, () => {
-      if (!this.state.opened) return null;
+    if (!this.state.opened && this.state.loaded) {
+      this.setState({ opened: !this.state.opened }, () => {
+        anime({
+          targets: this.unitContainerRef.current,
+          height: `${this.state.units.length * 2.25}rem`,
+          duration: `${this.state.units.length * 50}`,
+          easing: "linear"
+        });
+        anime({
+          targets: this.unitContainerRef.current,
+          duration: `${this.state.units.length * 50}`,
+          opacity: "1",
+          easing: "linear"
+        });
+        anime({
+          targets: this.sectionRef.current,
+          borderBottomLeftRadius: "0",
+          borderBottomRightRadius: "0",
+          duration: `${this.state.units.length * 50}`,
+          easing: "linear"
+        });
+      });
+    } else {
       anime({
-        targets: this.unitContainerRef.current,
-        maxHeight: "500vh",
-        duration: "5000",
+        targets: this.sectionRef.current,
+        borderBottomLeftRadius: "10px",
+        borderBottomRightRadius: "10px",
+        duration: `${this.state.units.length * 50}`,
         easing: "linear"
       });
       anime({
         targets: this.unitContainerRef.current,
-        duration: "400",
-        opacity: "1",
+        height: "0",
+        opacity: "0",
+        duration: `${this.state.units.length * 55}`,
         easing: "linear"
-      });
-    });
+      }).finished.then(() => this.setState({ opened: !this.state.opened }));
+    }
   };
 
   renderUnits = () => {
     return this.state.units.map((unit, index) => {
-      return <AdminUnit key={index} unit={unit} />;
+      return (
+        <AdminUnit
+          key={index}
+          unit={unit}
+          unitContainerRef={this.unitContainerRef}
+        />
+      );
     });
   };
 
@@ -58,10 +89,14 @@ class AdminSection extends React.Component {
     if (this.state.opened) {
       return (
         <>
-          <SectionOpened onClick={this.handleClick}>
+          <Section
+            style={{ marginBottom: "0.5rem" }}
+            onClick={this.handleClick}
+            ref={this.sectionRef}
+          >
             <SectionTitle>{title}</SectionTitle>
             <SectionIcon>-</SectionIcon>
-          </SectionOpened>
+          </Section>
           <UnitsContainer
             ref={this.unitContainerRef}
             className="units-container"
@@ -73,7 +108,7 @@ class AdminSection extends React.Component {
     } else {
       return (
         <>
-          <Section onClick={this.handleClick}>
+          <Section ref={this.sectionRef} onClick={this.handleClick}>
             <SectionTitle>{title}</SectionTitle>
             <SectionIcon>+</SectionIcon>
           </Section>
@@ -100,23 +135,21 @@ const Section = styled.div`
   );
 `;
 
-const SectionOpened = styled.div`
-  position: relative;
-  width: 90%;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  padding: 1.1rem;
-  margin: 0 auto 0.5rem auto;
-  background-color: #23a24d;
-  color: white;
-  cursor: pointer;
-  background-image: linear-gradient(
-    to right,
-    rgba(75, 255, 100, 0.2) 15%,
-    #23a24d,
-    rgba(75, 255, 100, 0.2) 85%
-  );
-`;
+// const SectionOpened = styled.div`
+//   position: relative;
+//   width: 90%;
+//   padding: 1.1rem;
+//   margin: 0 auto 0.5rem auto;
+//   background-color: #23a24d;
+//   color: white;
+//   cursor: pointer;
+//   background-image: linear-gradient(
+//     to right,
+//     rgba(75, 255, 100, 0.2) 15%,
+//     #23a24d,
+//     rgba(75, 255, 100, 0.2) 85%
+//   );
+// `;
 
 const SectionTitle = styled.div`
   letter-spacing: 3.5px;
@@ -137,7 +170,8 @@ const UnitsContainer = styled.div`
   flex-direction: column;
   margin-bottom: 2rem;
   overflow: hidden;
-  max-height: 0;
+  height: 0;
+  max-height: 500vh;
   opacity: 0;
 `;
 
