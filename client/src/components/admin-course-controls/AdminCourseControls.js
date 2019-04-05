@@ -3,7 +3,7 @@ import axios from "axios";
 import AdminSection from "./AdminSection";
 import styled from "styled-components";
 import AdminControlsNav from "./AdminControlsNav";
-import AddSection from "../admin/AddSection";
+import AddSection from "./AddSection";
 
 class AdminCourseControl extends React.Component {
   state = { course: {}, sections: [], selected: "edit" };

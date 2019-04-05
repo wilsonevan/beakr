@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Form, Header } from "semantic-ui-react";
+import { Form } from "semantic-ui-react";
 import { ButtonGreen } from "../../styles/Components";
 import styled from "styled-components";
 

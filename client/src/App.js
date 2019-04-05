@@ -9,14 +9,15 @@ import Dashboard from "./components/dashboard/Dashboard";
 import ContentView from "./components/ContentView";
 import Profile from "./components/profile/Profile";
 import FetchUser from "./components/FetchUser";
-import AddContent from "./components/admin/AddContent";
+import AddContent from "./components/admin-course-controls/AddContent";
 import AddCourse from "./components/admin/AddCourse";
-import AddSection from "./components/admin/AddSection";
+import AddSection from "./components/admin-course-controls/AddSection";
 import { Switch, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import Navbar from "./components/Navbar";
 import CourseWork from "./components/course-work/CourseWork";
 import AdminCourseControls from "./components/admin-course-controls/AdminCourseControls";
+import AdminEditSection from "./components/admin-course-controls/AdminEditSection";
 import styled from "styled-components";
 import { GlobalStyles } from "./styles/GlobalStyles";
 
@@ -43,6 +44,11 @@ const App = () => (
             exact
             path="/admin/courses/:id"
             component={AdminCourseControls}
+          />
+          <AdminRoute
+            exact
+            path="/admin/sections/:id"
+            component={AdminEditSection}
           />
           <ProtectedRoute exact path="/content/new" component={AddContent} />
           <ProtectedRoute

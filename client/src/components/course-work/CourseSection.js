@@ -134,21 +134,6 @@ const Section = styled.div`
   );
 `;
 
-const SectionOpened = styled.div`
-  position: relative;
-  padding: 1.1rem;
-  margin-bottom: 0.5rem;
-  background-color: #23a24d;
-  color: white;
-  cursor: pointer;
-  background-image: linear-gradient(
-    to right,
-    rgba(75, 255, 100, 0.2) 15%,
-    #23a24d,
-    rgba(75, 255, 100, 0.2) 85%
-  );
-`;
-
 const SectionTitle = styled.div`
   letter-spacing: 3.5px;
   font-size: 1.3rem;
