@@ -1,22 +1,42 @@
 import React from 'react';
 import { Link, } from 'react-router-dom';
 import { AuthConsumer, } from "../../providers/AuthProvider";
-import { Form, Grid, Container, Divider, Header, Button, Segment, } from 'semantic-ui-react';
+import { Form, Grid, Container, Divider, Header, Segment, Card, Image } from 'semantic-ui-react';
+import Dropzone from 'react-dropzone';
+import { ButtonGreen, ButtonGrey, } from '../../styles/Components'
 
-// const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/15724-200.png';
+const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/15724-200.png';
 
 class Profile extends React.Component {
-  state = { editing: false, formValues: { first_name: '', last_name: '', email: '', biography: '', birth_date: '', }, };
+  state = { editing: false, formValues: { first_name: '', last_name: '', email: '', biography: '', birth_date: '', file: '', }, };
   
   componentDidMount() {
-    const { auth: { user: { first_name, last_name, email, biography, birth_date, }, }, } = this.props;
-    this.setState({ formValues: { first_name, last_name, email, biography, birth_date, }, });
+    const { auth: { user: { first_name, last_name, email, biography, birth_date,}, }, } = this.props;
+    this.setState({ formValues: { first_name, last_name, email, biography, birth_date, file: '', }, });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const { formValues: { first_name, last_name, email, biography, birth_date, file, }, } = this.state;
+    const { auth: { user, updateUser, }, } = this.props;
+    updateUser(user.id, { first_name, last_name, email, biography, birth_date, file, });
+    this.setState({
+      editing: false,
+      formValues: {
+        ...this.state.formValues,
+        file: "",
+      },
+    });
   }
   
   toggleEdit = () => {
     this.setState( state => {
       return { editing: !state.editing, };
     })
+  }
+
+  onDrop = (files) => {
+    this.setState({ formValues: { ...this.state.formValues, file: files[0], } });
   }
   
   handleChange = (e) => {
@@ -36,21 +56,33 @@ class Profile extends React.Component {
     return (
       <>
         <Grid.Column width={4}>
-          {/* <Image src={user.image || defaultImage} /> */}
+        <Card>
+          <Image src={user.image || defaultImage} />
+        </Card>
         </Grid.Column>
-        <Grid.Column width={8}>
+        <Grid.Column width={12}>
         <Segment>
           <Header as="h1">{user.first_name} {user.last_name}</Header>
-          <Header as="h2">{user.biography}</Header>
-          <Header as="h2">{user.birth_date}</Header>
-
-          <Header as="h1">{user.email}</Header>
+          <Header as='h3'>
+            Biography:
+          </Header>
+          <div style={{marginLeft: '20px'}}>
+            <Header as="h5">{user.biography}</Header>
+          </div>
+          <Header as='h3'>
+            Birthday:
+          </Header>
+          <div style={{marginLeft: '20px'}}>
+            <Header as="h5">{user.birth_date}</Header>
+          </div>
+          <Header as='h3'>
+            Email:
+          </Header>
+          <div style={{marginLeft: '20px'}}>
+            <Header as="h5">{user.email}</Header>
+          </div>
         </Segment>
-        <Button onClick={this.toggleEdit}>{editing ? 'Cancel' : 'Edit'}</Button>
-        <Link to='/dashboard'>
-          <Button>Back to Dashboard</Button>
-        </Link>
-
+        <ButtonGrey style={{margin: '5px'}} onClick={this.toggleEdit}>{editing ? 'Cancel' : 'Edit'}</ButtonGrey>
         </Grid.Column>
       </>
     )
@@ -58,13 +90,33 @@ class Profile extends React.Component {
   
   editView = () => {
     const { editing, } = this.state;
+    const { auth: {user, }, } = this.props
 
     const { formValues: { first_name, last_name, email, biography, birth_date, } } = this.state;
     return (
       <>
         <Grid.Column width={4}>
+        <Dropzone
+          onDrop={this.onDrop}
+          multiple={false}
+        >
+          {({ getRootProps, getInputProps, isDragActive }) => {
+            return (
+              <Card
+                {...getRootProps()}
+                
+              >
+                <input {...getInputProps()} />
+                { isDragActive ? <p>Drop files here...</p> 
+                : <Image src={user.image || defaultImage} />
+
+                }
+              </Card>
+            )
+          }}
+        </Dropzone>
         </Grid.Column>
-        <Grid.Column width={8}>
+        <Grid.Column width={12}>
           <Form onSubmit={this.handleSubmit}>
             <Form.Input
               label="First Name"
@@ -100,8 +152,8 @@ class Profile extends React.Component {
               required
               onChange={this.handleChange}
             />
-            <Button>Update</Button>
-            <Button onClick={this.toggleEdit}>{editing ? 'Cancel' : 'Edit'}</Button>
+            <ButtonGreen style={{margin: '5px'}}>Update</ButtonGreen>
+            <ButtonGrey onClick={this.toggleEdit} style={{margin: '5px'}}>{editing ? 'Cancel' : 'Edit'}</ButtonGrey>
 
           </Form>
         </Grid.Column>
@@ -113,6 +165,9 @@ class Profile extends React.Component {
     const { editing, } = this.state;
     return (
       <Container>
+        <Link to='/dashboard'>
+        <h1> {`<`} Dashboard </h1> 
+        </Link>
         <Divider hidden />
         <Grid>
           <Grid.Row>

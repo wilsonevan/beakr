@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
     resources :enrollments, only: [:create, :update, :destroy]
 
-    resources :users, only: [:index]
+    resources :users, only: [:index, :update]
     resources :user_contents, only: [:index, :create, :destroy]
     
     resources :courses do
