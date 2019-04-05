@@ -47,7 +47,7 @@ const App = () => (
           />
           <AdminRoute
             exact
-            path="/admin/sections/:id"
+            path="/admin/courses/:course_id/sections/:id"
             component={AdminEditSection}
           />
           <ProtectedRoute exact path="/content/new" component={AddContent} />

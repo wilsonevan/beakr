@@ -101,7 +101,11 @@ class AdminSection extends React.Component {
               {loaded && units.length === 0 && "(No Units)"} {title}
             </SectionTitle>
             <SectionIcon>
-              <Link to={`/admin/sections/${this.props.section.id}`}>
+              <Link
+                to={`/admin/courses/${this.props.section.course_id}/sections/${
+                  this.props.section.id
+                }`}
+              >
                 <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
               </Link>
             </SectionIcon>
@@ -122,7 +126,11 @@ class AdminSection extends React.Component {
               {loaded && units.length === 0 && "(No Units)"} {title}
             </SectionTitle>
             <SectionIcon>
-              <Link to={`/admin/sections/${this.props.section.id}`}>
+              <Link
+                to={`/admin/courses/${this.props.section.course_id}/sections/${
+                  this.props.section.id
+                }`}
+              >
                 <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
               </Link>
             </SectionIcon>
