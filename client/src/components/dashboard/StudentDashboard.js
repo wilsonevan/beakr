@@ -107,7 +107,6 @@ render() {
 }
 
 const CourseOptions = styled.div`
-  margin: 10px 2px;
   color: #23a24d
 
   :hover {
