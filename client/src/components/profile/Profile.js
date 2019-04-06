@@ -4,6 +4,7 @@ import { AuthConsumer, } from "../../providers/AuthProvider";
 import { Form, Grid, Container, Divider, Header, Segment, Card, Image } from 'semantic-ui-react';
 import Dropzone from 'react-dropzone';
 import { ButtonGreen, ButtonGrey, } from '../../styles/Components'
+import Moment from 'react-moment'
 
 const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/15724-200.png';
 
@@ -67,13 +68,17 @@ class Profile extends React.Component {
             Biography:
           </Header>
           <div style={{marginLeft: '20px'}}>
-            <Header as="h5">{user.biography}</Header>
+            <Header as="h5">
+                {user.biography}
+            </Header>
           </div>
           <Header as='h3'>
             Birthday:
           </Header>
           <div style={{marginLeft: '20px'}}>
-            <Header as="h5">{user.birth_date}</Header>
+            <Header as="h5">
+            <Moment format='MMM D, YYYY'date={user.birth_date} />
+            </Header>
           </div>
           <Header as='h3'>
             Email:
