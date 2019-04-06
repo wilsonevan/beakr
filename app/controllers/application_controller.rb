@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  require 'tinify'
   before_action :authenticate_user!, if: proc { request.controller_class.parent == Api }
   include DeviseTokenAuth::Concerns::SetUserByToken
 
@@ -9,9 +10,9 @@ class ApplicationController < ActionController::API
 
   protected
 
-  def authenticate_admin
-    if current_user.admin != true
-      render json: 'unauthorized', status: 401
+  def authorize_admin
+    if !current_user.admin
+      render json: 'Unauthorized!', status: 401
     end
   end
 

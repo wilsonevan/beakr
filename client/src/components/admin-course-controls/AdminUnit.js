@@ -4,7 +4,7 @@ import anime from "animejs";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-class Unit extends React.Component {
+class AdminUnit extends React.Component {
   state = { contents: [], opened: false, loaded: false };
 
   unitModelsRef = React.createRef();
@@ -114,8 +114,8 @@ class Unit extends React.Component {
             {unit.title}
             <UnitModelsContainer ref={this.unitModelsRef}>
               {this.renderContents()}
-              {this.renderQuizzes()}
-              {this.renderAssignments()}
+              {/* {this.renderQuizzes()}
+              {this.renderAssignments()} */}
             </UnitModelsContainer>
           </OpenedSectionUnit>
         </>
@@ -127,11 +127,10 @@ class Unit extends React.Component {
 }
 
 const SectionUnit = styled.div`
-  flex-shrink: 100%;
   color: grey;
   position: relative;
-  left: 1rem;
-  margin-bottom: 1rem;
+  width: 85%;
+  margin: 0 auto 1rem auto;
   font-weight: lighter;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
@@ -144,11 +143,10 @@ const SectionUnit = styled.div`
 `;
 
 const OpenedSectionUnit = styled.div`
-  flex-shrink: 100%;
   color: black;
   position: relative;
-  left: 1rem;
-  margin-bottom: 1rem;
+  width: 85%;
+  margin: 0 auto 1rem auto;
   font-weight: lighter;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
@@ -211,4 +209,4 @@ const UnitModelsIcon = styled.div`
   margin-right: 0.5rem;
 `;
 
-export default Unit;
+export default AdminUnit;

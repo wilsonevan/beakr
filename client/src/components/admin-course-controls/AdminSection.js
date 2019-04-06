@@ -2,12 +2,14 @@ import React from "react";
 import axios from "axios";
 import anime from "animejs";
 import styled from "styled-components";
-import Unit from "./Unit";
+import AdminUnit from "./AdminUnit";
+import { ButtonBlue } from "../../styles/Components";
+import { Link } from "react-router-dom";
 
-class CourseSection extends React.Component {
+class AdminSection extends React.Component {
   state = {
+    laoded: false,
     opened: false,
-    loaded: false,
     units: []
   };
 
@@ -74,7 +76,7 @@ class CourseSection extends React.Component {
   renderUnits = () => {
     return this.state.units.map((unit, index) => {
       return (
-        <Unit
+        <AdminUnit
           key={index}
           unit={unit}
           unitContainerRef={this.unitContainerRef}
@@ -85,17 +87,28 @@ class CourseSection extends React.Component {
 
   render() {
     const { title } = this.props;
+    const { loaded, units } = this.state;
 
     if (this.state.opened) {
       return (
         <>
           <Section
-            ref={this.sectionRef}
-            onClick={this.handleClick}
             style={{ marginBottom: "0.5rem" }}
+            onClick={this.handleClick}
+            ref={this.sectionRef}
           >
-            <SectionTitle>{title}</SectionTitle>
-            <SectionIcon>-</SectionIcon>
+            <SectionTitle>
+              {loaded && units.length === 0 && "(No Units)"} {title}
+            </SectionTitle>
+            <SectionIcon>
+              <Link
+                to={`/admin/courses/${this.props.section.course_id}/sections/${
+                  this.props.section.id
+                }`}
+              >
+                <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
+              </Link>
+            </SectionIcon>
           </Section>
           <UnitsContainer
             ref={this.unitContainerRef}
@@ -109,8 +122,18 @@ class CourseSection extends React.Component {
       return (
         <>
           <Section ref={this.sectionRef} onClick={this.handleClick}>
-            <SectionTitle>{title}</SectionTitle>
-            <SectionIcon>+</SectionIcon>
+            <SectionTitle>
+              {loaded && units.length === 0 && "(No Units)"} {title}
+            </SectionTitle>
+            <SectionIcon>
+              <Link
+                to={`/admin/courses/${this.props.section.course_id}/sections/${
+                  this.props.section.id
+                }`}
+              >
+                <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
+              </Link>
+            </SectionIcon>
           </Section>
         </>
       );
@@ -120,9 +143,10 @@ class CourseSection extends React.Component {
 
 const Section = styled.div`
   position: relative;
+  width: 90%;
   border-radius: 10px;
   padding: 1.1rem;
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem auto;
   background-color: #23a24d;
   color: white;
   cursor: pointer;
@@ -142,8 +166,8 @@ const SectionTitle = styled.div`
 
 const SectionIcon = styled.div`
   position: absolute;
-  transform: translate(-50%, -50%);
-  right: 0.75rem;
+  transform: translateY(-50%);
+  right: 0.5rem;
   top: 50%;
   font-size: 1.5rem;
 `;
@@ -154,7 +178,12 @@ const UnitsContainer = styled.div`
   margin-bottom: 2rem;
   overflow: hidden;
   height: 0;
+  max-height: 500vh;
   opacity: 0;
 `;
 
-export default CourseSection;
+const buttonStyles = {
+  padding: "0.8rem 1rem"
+};
+
+export default AdminSection;

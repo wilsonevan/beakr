@@ -9,10 +9,12 @@ gem 'puma', '~> 3.11'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'devise_token_auth', '~> 1.0.0'
 gem 'cloudinary'
+gem "tinify"
 
 group :development, :test do
   gem 'pry'
   gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
+  gem 'rb-readline'
   gem 'dotenv-rails'
 end
 
