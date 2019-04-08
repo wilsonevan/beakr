@@ -6,9 +6,12 @@ import SearchBar from "../SearchBar";
 import AddContentLink from "./AddContentLink";
 import ContentBlock from "./ContentBlock";
 import EditUnitTitle from "./EditUnitTitle";
+import anime from "animejs";
 
 class UnitControls extends React.Component {
   state = { editing: false, unit: this.props.unit, contents: [] };
+
+  formRef = React.createRef();
 
   componentDidMount() {
     axios
@@ -50,7 +53,38 @@ class UnitControls extends React.Component {
   };
 
   toggleEditing = () => {
-    this.setState({ editing: !this.state.editing });
+    if (!this.state.editing) {
+      this.setState({ editing: true }, () => {
+        anime
+          .timeline({
+            targets: this.formRef.current
+          })
+          .add({
+            height: "33rem",
+            easing: "linear",
+            duration: 100
+          })
+          .add({
+            opacity: 1,
+            duration: 100
+          });
+      });
+    } else {
+      anime
+        .timeline({
+          targets: this.formRef.current
+        })
+        .add({
+          height: "1.75rem",
+          easing: "linear",
+          duration: 200
+        })
+        .add({
+          opacity: 0,
+          duration: 375
+        })
+        .finished.then(() => this.setState({ editing: false }));
+    }
   };
 
   renderUnitContents = () => {
@@ -75,7 +109,7 @@ class UnitControls extends React.Component {
       );
     else
       return (
-        <UnitForm onSubmit={this.handleSubmit}>
+        <UnitForm onSubmit={this.handleSubmit} ref={this.formRef}>
           <FormTop>
             <div>
               <ButtonGreen
@@ -173,7 +207,7 @@ const UnitText = styled.p`
   margin: 0 auto;
   padding-top: 2rem;
   cursor: pointer;
-  transition-duration: 0.1s;
+  // transition-duration: 0.1s;
 
   :hover {
     color: #0029ff;
@@ -193,12 +227,15 @@ const ContentHeading = styled.div`
 `;
 
 const UnitForm = styled.div`
+  height: 2rem;
+  opacity: 0;
   width: 90%;
   margin: 2rem auto 0 auto;
   border: 1px solid #bdbdbd;
   border-top: none;
   border-radius: 5px;
   overflow: hidden;
+  transition-duration: 0.5s;
 `;
 
 const FormTop = styled.div`
