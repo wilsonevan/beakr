@@ -28,7 +28,8 @@ class Api::SectionsController < ApplicationController
   end
 
   def destroy
-    @section.delete
+    @section.destroy()
+    render( json: "Data Deleted" )
   end
 
   private

@@ -3,9 +3,10 @@ import styled from "styled-components";
 import axios from "axios";
 import AddUnit from "./AddUnit";
 import UnitControls from "./UnitControls";
+import EditSectionTitle from "./EditSectionTitle";
 
 class AdminEditSection extends React.Component {
-  state = { section: {}, units: [] };
+  state = { section: {}, units: [], editing: false };
 
   componentDidMount() {
     const { course_id, id } = this.props.match.params;
@@ -19,29 +20,96 @@ class AdminEditSection extends React.Component {
       .catch(err => console.log(err));
   }
 
+  updateSection = sectionTitle => {
+    const { course_id, id } = this.props.match.params;
+    axios
+      .put(`/api/courses/${course_id}/sections/${id}`, sectionTitle)
+      .then(res => {
+        this.setState({ section: res.data, editing: false });
+      })
+      .catch(err => console.log(err));
+  };
+
+  deleteSection = id => {
+    const courseId = this.props.match.params.course_id;
+    axios
+      .delete(`/api/courses/${courseId}/sections/${id}`)
+      .then(res => {
+        this.props.history.push(`/admin/courses/${courseId}`);
+      })
+      .catch(err => console.log(err));
+  };
+
   addUnit = unit => {
     const units = [unit, ...this.state.units];
     this.setState({ units });
   };
 
+  updateUnit = newUnit => {
+    const units = this.state.units.map(unit => {
+      if (unit.id === newUnit.id) return newUnit;
+      return unit;
+    });
+    this.setState({ units });
+  };
+
+  deleteUnit = id => {
+    axios
+      .delete(`/api/sections/${this.state.section.id}/units/${id}`)
+      .then(res => {
+        const units = this.state.units.filter(unit => {
+          if (unit.id !== id) return true;
+        });
+        this.setState({ units });
+      })
+      .catch(err => console.log(err));
+  };
+
   renderUnits = () => {
     return this.state.units.map(unit => {
       return (
-        <UnitControls key={unit.id} unit={unit} section={this.state.section} />
+        <UnitControls
+          key={unit.id}
+          unit={unit}
+          section={this.state.section}
+          deleteUnit={this.deleteUnit}
+          updateUnit={this.updateUnit}
+        />
       );
     });
   };
 
+  toggleEditing = () => {
+    this.setState({ editing: !this.state.editing });
+  };
+
   render() {
-    const { section } = this.state;
+    const { section, editing } = this.state;
     return (
       <>
         <div className="admin-edit-section__container">
           <div>
             <Heading onClick={() => this.props.history.goBack()}>
-              {"< Section"} {section.title}{" "}
+              {"< Section"} {!editing && section.title}
             </Heading>
-            <BlueLink>Edit Name</BlueLink>
+            {!editing ? (
+              <>
+                <BlueLink onClick={() => this.toggleEditing()}>
+                  Edit Name
+                </BlueLink>
+                <span style={{ color: "#0029ff", fontSize: "0.7rem" }}>
+                  &nbsp;or&nbsp;
+                </span>
+                <BlueLink onClick={() => this.deleteSection(section.id)}>
+                  Delete
+                </BlueLink>
+              </>
+            ) : (
+              <EditSectionTitle
+                section={section}
+                updateSection={this.updateSection}
+              />
+            )}
           </div>
           <AdminControls>
             <AddUnit id={section.id} addUnit={this.addUnit} />
@@ -55,7 +123,7 @@ class AdminEditSection extends React.Component {
 
 const Heading = styled.div`
   display: inline-block;
-  margin: 0 1rem 3rem 0;
+  margin: 0 0.25rem 3rem 0;
   font-size: 2.25rem;
   font-weight: 600;
   color: #23a24d;
@@ -69,8 +137,8 @@ const BlueLink = styled.button`
   border: none;
   color: #0029ff;
   font-family: "Poppins";
-  //   font-weight: 600;
-  letter-spacing: 2px;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
   cursor: pointer;
 
   :hover {

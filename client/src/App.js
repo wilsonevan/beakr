@@ -10,7 +10,7 @@ import ContentView from "./components/ContentView";
 import Profile from "./components/profile/Profile";
 import FetchUser from "./components/FetchUser";
 import AddContent from "./components/admin-course-controls/AddContent";
-import AddUser from './components/admin/AddUser'
+import AddUser from "./components/admin/AddUser";
 import AddCourse from "./components/admin/AddCourse";
 import { Switch, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
@@ -51,7 +51,7 @@ const App = () => (
             component={AdminEditSection}
           />
           <ProtectedRoute exact path="/content/new" component={AddContent} />
-          <ProtectedRoute exact path='/users/new' component={AddUser} />
+          <ProtectedRoute exact path="/users/new" component={AddUser} />
           <Route component={NoMatch} />
         </Switch>
       </Container>

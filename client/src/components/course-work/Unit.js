@@ -18,6 +18,10 @@ class Unit extends React.Component {
       .catch(err => console.log(err));
   }
 
+  componentWillUnmount() {
+    anime.remove(this.unitModelsRef.current);
+  }
+
   handleClick = event => {
     if (!this.state.opened && this.state.loaded) {
       this.setState({ opened: !this.state.opened }, () => {
