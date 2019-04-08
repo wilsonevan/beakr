@@ -22,6 +22,8 @@ const ButtonBlue = styled.button`
   border: none;
   border-radius: 5px;
   padding: 1rem 1.8rem;
+  // background-color: #2979ff;
+  // background-color: #4b7bec;
   background-color: #0029ff;
   color: white;
   letter-spacing: 1.5px;
@@ -32,6 +34,7 @@ const ButtonBlue = styled.button`
   transition-duration: 0.1s;
 
   :hover {
+    color: white;
     background-color: #1577ff;
   }
 
@@ -57,6 +60,7 @@ const ButtonGreen = styled.button`
   transition-duration: 0.1s;
 
   :hover {
+    color: white;
     background-color: #41c36c;
   }
 
@@ -82,6 +86,7 @@ const ButtonGrey = styled.button`
   transition-duration: 0.1s;
 
   :hover {
+    color: white;
     background-color: #cecece;
   }
 
