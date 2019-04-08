@@ -1,9 +1,17 @@
 class Api::ContentsController < ApplicationController
-  before_action :set_unit
+  before_action :set_unit, except: [:search_contents]
   before_action :set_content, only: [:show, :update, :destroy]
 
   def index
     render json: @unit.contents
+  end
+
+  def search_contents
+    render( json: Content.search_contents(params[:input]) )
+  end
+
+  def search_contents_not_in_unit
+    render( json: Content.search_contents_not_in_unit(params[:input], params[:unit_id]) )
   end
 
   def show
@@ -12,6 +20,7 @@ class Api::ContentsController < ApplicationController
 
   def create
     content = @unit.contents.new(content_params)
+
     if content.save
       render json: content
     else
