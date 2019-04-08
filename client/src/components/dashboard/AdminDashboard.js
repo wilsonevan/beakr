@@ -5,6 +5,7 @@ import AddCourse from '../admin/AddCourse';
 import AddUser from '../admin/AddUser';
 import { ButtonGreen } from '../../styles/Components';
 import { Link, } from 'react-router-dom'
+import Calendar from '../attendance/Calendar';
 
 class AdminDashboard extends React.Component {
   state = { name: '', activeItem: 'courses', userCourses: [], users: [], allCourses: [], toggleNewCourse: false, toggleNewUser: false, }
@@ -56,7 +57,7 @@ class AdminDashboard extends React.Component {
           </>         
         )
       case 'calendar':
-        return (<p>you are an admin fro calendar</p>)
+        return (<Calendar />)
       case 'grade':
         return (<p>you are an admin for grades</p>)
       case 'attendance':

@@ -2,6 +2,7 @@ import React from 'react'
 import { Menu, Segment, Header } from 'semantic-ui-react'
 import axios from 'axios';
 import { Link, } from 'react-router-dom'
+import Calendar from '../attendance/Calendar';
 
 class StudentDashboard extends React.Component {
   state = { name: '', activeItem: 'courses', userCourses: [],}
@@ -21,7 +22,7 @@ class StudentDashboard extends React.Component {
           )
         })
       case 'calendar':
-        return (<p>your calendar will go here</p>)
+        return (<Calendar />)
       case 'grade':
         return (<p>Dont fail</p>)
       case 'attendance':
