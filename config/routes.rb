@@ -5,8 +5,12 @@ Rails.application.routes.draw do
 
     resources :enrollments, only: [:create, :update, :destroy]
 
+
     resources :users, only: [:index, :update]
-    resources :user_contents, only: [:index, :create, :destroy]
+    get 'user_courses', to: 'courses#user_courses'
+    
+    resources :unit_contents, only: [:index, :create, :destroy]
+    delete '/unit/:unit_id/contents/:content_id/unit_content', to: '/api/unit_contents#delete_by_unit_and_content'
     
     resources :courses do
       resources :sections
@@ -20,6 +24,7 @@ Rails.application.routes.draw do
       resources :contents
     end
 
-    get 'user_courses', to: 'courses#user_courses'
+    post 'contents/search', to: '/api/contents#search_contents'
+    post 'contents/search/:unit_id', to: '/api/contents#search_contents_not_in_unit'
   end
 end

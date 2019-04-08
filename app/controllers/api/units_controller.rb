@@ -28,7 +28,8 @@ class Api::UnitsController < ApplicationController
   end
   
   def destroy
-    @unit.delete
+    @unit.destroy()
+    render( json: "Data Deleted");
   end
 
   private

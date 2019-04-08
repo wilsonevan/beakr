@@ -32,6 +32,10 @@ class AdminSection extends React.Component {
       .catch(err => console.log(err));
   };
 
+  componentWillUnmount() {
+    anime.remove(this.unitContainerRef.current, this.sectionRef.current);
+  }
+
   handleClick = event => {
     if (!this.state.opened && this.state.loaded) {
       this.setState({ opened: !this.state.opened }, () => {
@@ -71,6 +75,7 @@ class AdminSection extends React.Component {
         easing: "linear"
       }).finished.then(() => this.setState({ opened: !this.state.opened }));
     }
+    // this.setState({ opened: !this.state.opened });
   };
 
   renderUnits = () => {
