@@ -5,6 +5,7 @@ import AddCourse from '../admin/AddCourse';
 import AddUser from '../admin/AddUser';
 import { ButtonGreen } from '../../styles/Components';
 import { Link, } from 'react-router-dom'
+import styled from 'styled-components'
 import Calendar from '../attendance/Calendar';
 
 class AdminDashboard extends React.Component {
@@ -45,11 +46,13 @@ class AdminDashboard extends React.Component {
                 {this.state.allCourses.map( course => {
                   return (
                     <Link to={`/courses/${course.id}`} key={course.id} >
-                      <Header>{course.title} `(admin)`</Header>
+                      <CourseOptions>
+                        <h3>{course.title} `(admin)`</h3>
+                      </CourseOptions>
                     </Link>
                   )
                 })}
-                <ButtonGreen onClick={this.toggleNewCourse}>
+                <ButtonGreen onClick={this.toggleNewCourse} style={{marginTop: '5px'}}>
                   Add Course
                 </ButtonGreen>
               </>
@@ -172,5 +175,16 @@ render() {
     )
   }
 }
+
+const CourseOptions = styled.div`
+  margin-bottom: 10px;
+  margin-left: 2px;
+  color: #23a24d
+
+  :hover {
+    color: #41c36c
+  }
+  
+`
 
 export default AdminDashboard

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  enrollment: one
+  record_date: 2019-04-08
+  record: MyString
+
+two:
+  enrollment: two
+  record_date: 2019-04-08
+  record: MyString
