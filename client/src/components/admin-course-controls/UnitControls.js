@@ -22,6 +22,10 @@ class UnitControls extends React.Component {
       .catch(err => console.log(err));
   }
 
+  componentWillUnmount() {
+    anime.remove(this.formRef.current);
+  }
+
   createUnitContent = content_id => {
     axios
       .post(`/api/unit_contents`, { content_id, unit_id: this.props.unit.id })
