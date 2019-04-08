@@ -30,6 +30,10 @@ class CourseSection extends React.Component {
       .catch(err => console.log(err));
   };
 
+  componentWillUnmount() {
+    anime.remove(this.unitContainerRef.current, this.sectionRef.current);
+  }
+
   handleClick = event => {
     if (!this.state.opened && this.state.loaded) {
       this.setState({ opened: !this.state.opened }, () => {
