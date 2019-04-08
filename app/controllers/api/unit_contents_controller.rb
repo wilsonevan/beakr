@@ -4,9 +4,12 @@ class Api::UnitContentsController < ApplicationController
     end
 
     def create
-        unit_content = Unitcontent.create(unit_content_params)
+        unit_content = UnitContent.new(unit_content_params)
+        duplicate = Unit.find(params[:unit_id]).contents.select() {|old_content| 
+            unit_content.content_id === old_content.id 
+        }
 
-        if(unit_content.save())
+        if(duplicate.length == 0 && unit_content.save())
             render( json: unit_content )
         else
             render( json: {errors: unit_content.errors}, status: 422)
@@ -18,8 +21,18 @@ class Api::UnitContentsController < ApplicationController
         render( json: "Data Deleted" )
     end
 
+    def delete_by_unit_and_content
+        unit_id = Unit.find(params[:unit_id]).id
+        unit_content = Content.find(params[:content_id]).unit_contents.select() {|unit_content|
+            unit_content.unit_id == unit_id
+        }
+
+        unit_content.first.destroy()
+        render(json: "Data Deleted" )
+    end
+
     private
         def unit_content_params
-            return params.require(:unit_contents).permit(:unit_id, :content_id)
+            return params.require(:unit_content).permit(:unit_id, :content_id)
         end
 end
