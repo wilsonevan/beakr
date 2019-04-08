@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Form, Header, } from 'semantic-ui-react';
+import { ButtonGreen, } from '../../styles/Components';
 
 class AddCourse extends React.Component {
   state = { title: '' }
@@ -15,7 +16,8 @@ class AddCourse extends React.Component {
     const course = this.state
     axios.post('/api/courses', course)
       .then( res => {
-        this.props.history.push(`/courses/${res.data.id}`)
+        this.props.toggleNewCourse()
+        this.props.resetCourseList()
       })
       .catch (res => {
         console.log(res);
@@ -38,8 +40,14 @@ class AddCourse extends React.Component {
             placeholder='Title'
             onChange={this.handleChange}
           />
-          <Form.Button color='green' content='submit' /> 
+          <ButtonGreen>
+            Submit
+          </ButtonGreen> 
         </Form>
+        <br />
+        <ButtonGreen onClick={this.props.toggleNewCourse}>
+          Back to Course List
+        </ButtonGreen> 
       </>
     )
   }

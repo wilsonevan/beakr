@@ -32,6 +32,14 @@ export class AuthProvider extends React.Component {
       });
   };
 
+  updateUser = (id, user) => {
+    let data = new FormData();
+    data.append('file', user.file);
+    axios.put(`/api/users/${id}?first_name=${user.first_name}&last_name=${user.last_name}&biography=${user.biography}&email=${user.email}&birth_date=${user.birth_date}`, data)
+      .then( res => this.setState({ user: res.data, }) )
+  }
+
+
   handleLogout = history => {
     axios
       .delete("/api/auth/sign_out")
@@ -53,6 +61,7 @@ export class AuthProvider extends React.Component {
           handleRegister: this.handleRegister,
           handleLogin: this.handleLogin,
           handleLogout: this.handleLogout,
+          updateUser: this.updateUser,
           setUser: user => this.setState({ user })
         }}
       >

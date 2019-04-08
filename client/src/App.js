@@ -10,6 +10,7 @@ import ContentView from "./components/ContentView";
 import Profile from "./components/profile/Profile";
 import FetchUser from "./components/FetchUser";
 import AddContent from "./components/admin-course-controls/AddContent";
+import AddUser from "./components/admin/AddUser";
 import AddCourse from "./components/admin/AddCourse";
 import { Switch, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
@@ -17,7 +18,6 @@ import Navbar from "./components/Navbar";
 import CourseWork from "./components/course-work/CourseWork";
 import AdminCourseControls from "./components/admin-course-controls/AdminCourseControls";
 import AdminEditSection from "./components/admin-course-controls/AdminEditSection";
-import AddUser from "./components/admin/AddUser";
 import styled from "styled-components";
 import { GlobalStyles } from "./styles/GlobalStyles";
 

@@ -27,6 +27,14 @@ body {
     background-color: #f7f7f7 !important;
     background: #f7f7f7 !important;
 }
+
+h1 {
+    font-family: "Poppins", sans-serif !important;
+    letter-spacing: 1.25px !important;
+    font-weight: 300 !important;
+    color: #23a24d !important;
+
+}
 `;
 
 export { GlobalStyles };
