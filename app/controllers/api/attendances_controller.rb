@@ -5,14 +5,16 @@ class Api::AttendancesController < ApplicationController
     render json: current_user.attendances.all 
   end
 
-  # def admin_index
+  def get_attendances
+    render json: attendance = Attendance.get_attendances(params[:id])
   #   render json: @course.attendances.all
-  # end
+  end
 
   def create
   end
 
   def update
+    
   end
 
   private
