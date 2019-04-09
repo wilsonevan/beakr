@@ -8,30 +8,26 @@ class Api::AttendancesController < ApplicationController
   end
 
   def get_attendances
-    # render json: attendances = Attendance.get_attendances(params[:id])
-    #render json: @course.attendances.all
 
-    attendanceinfo = @course.users.map(){|user| 
-      {
-        user_id: user.id, 
-        first_name: user.first_name, 
-        last_name: user.last_name, 
-        attendances: user.attendances
-      }
+    # This loop rejects all users from the attendance data, who are not students of the desired course
+    attendanceinfo = @course.users.reject(){|user| 
+      set_flag = false
+      user.enrollments.each do |enrollment| 
+        if enrollment.role != 'student' && enrollment.course_id == @course.id 
+          set_flag = true
+        end
+      end
+      set_flag == true
+    }.map(){|user| # This map adds relevant user data to the attendance data
+        {
+          image: user.image,
+          user_id: user.id, 
+          first_name: user.first_name, 
+          last_name: user.last_name, 
+          attendances: user.attendances
+        }
     }
     render( json: attendanceinfo )
-    # newattendances = []
-    # recordinfo = []
-    # attendances.each do |attendance|
-    #   record = []
-    #   recordinfo << attendance.attendance_id
-    #   recordinfo << attendance.record_date
-    #   recordinfo << attendance.attendance_record
-    #   newattendances << recordinfo
-    #   newattendances << attendance.id
-    #   newattendances << attendanc.first_name
-    #   newattendances << attendance.last_name
-    # end 
     
   end
 

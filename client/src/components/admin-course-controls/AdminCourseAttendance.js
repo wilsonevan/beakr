@@ -5,49 +5,57 @@ import dateFns from "date-fns";
 import { Table, Header, Image } from 'semantic-ui-react';
 
 class AdminCourseAttendance extends React.Component {
-	state = { attendances: [], attendanceDates: [], users: [], }
+	state = { attendanceData: [], attendanceDates: [], users: [], }
 
 	componentDidMount() {
 		// Make axios request to fetch all of the students enrolled in the course
 		// Then, make an axios request for all of the existing attendance attendances for the cours
-		axios.get(`/api/get_attendances`, { params: {id: this.props.courseId} } )
-			.then( res => { this.setState( { attendances: res.data } )})
+		axios.get(`/api/get_attendances`, { params: {course_id: this.props.courseId} } )
+			.then( res => { 
+				this.setState( { attendanceData: res.data } )
+			})
 	}
 
 	renderDays() {
-		const { attendances, attendanceDates } = this.state
-		// debugger
-		return attendances.map( record => {
-			// this.setState({ attendanceDates: [...attendanceDates, record.record_date, ], })
-			const columnDate = dateFns.format(dateFns.parse(record.record_date), 'MM/DD/YY')
-			// debugger
-			return(
-				<Table.HeaderCell textAlign='center'>{columnDate}</Table.HeaderCell>
-			)
-		})
+		const { attendanceData, attendanceDates } = this.state
+		let newAttendanceDates = attendanceDates
+
+		// Identify all dates with records, currently based only on the First User
+		if (attendanceData.length > 0){
+			return attendanceData[0].attendances.map( record => {
+				// Format dates for user readability
+				const columnDate = dateFns.format(dateFns.parse(record.record_date), 'MM/DD/YY');
+
+				// Finally, return the header cell with the date
+				return(
+					<Table.HeaderCell textAlign='center'>{columnDate}</Table.HeaderCell>
+				)
+			})
+		} 
 	}
 
 	renderAttendance() {
-		const { attendances, attendance_dates, users, } = this.state;
+		const { attendanceData, attendanceDates, users, } = this.state;
+		// debugger
 		return(
 			<Table.Body>
-				{attendances.map( records => {
+				{attendanceData.map( user => {
 					return(
 						<Table.Row>
 							<Table.Cell singleLine>
 								<Header as='h4' image>
-									<Image src='https://react.semantic-ui.com/images/avatar/small/lena.png' rounded size='mini' />
-									{records.first_name} {records.last_name}
+									<Image src={user.image} rounded size='mini' />
+									{user.first_name} {user.last_name}
 								</Header>
 							</Table.Cell>
 							{/* Loop through all of the days for each of the users */}
-							{/* {records.attendance_record.forEach( record => {
+							{user.attendances.map( record => {
 								return(
-								<Table.Cell>
-									{record.attendance}
-								</Table.Cell>
+									<Table.Cell textAlign='center'>
+										{record.attendance_record}
+									</Table.Cell>
 								)
-							})} */}
+							})}
 						</Table.Row>
 					)
 				})}
@@ -82,6 +90,7 @@ const AttendanceContainer = styled.div`
   // align-items: center;
   // position: relative;
   padding-left: 1rem;
+  padding-right: 1rem;
   overflow-x: scroll;
 	// background-color: white;
 `;

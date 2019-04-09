@@ -10,8 +10,8 @@ class AdminCourseControl extends React.Component {
   state = { course: {}, sections: [], selected: "edit" };
 
   componentDidMount() {
-    axios.get(`/api/get_attendances`, { params: {course_id: this.props.match.params.id} } )
-      .then( res => { this.setState( { attendances: res.data } )})
+    // axios.get(`/api/get_attendances`, { params: {course_id: this.props.match.params.id} } )
+    //   .then( res => { this.setState( { attendances: res.data } )})
     axios
       .get(`/api/courses/${this.props.match.params.id}`)
       .then(res => {
