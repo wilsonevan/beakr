@@ -14,12 +14,8 @@ class Content < ApplicationRecord
   def self.search_contents_not_in_unit(input, unit_id)
     Content.find_by_sql(["
       SELECT c.* FROM contents AS c
-      INNER JOIN unit_contents as uc
-        ON c.id = uc.content_id
       WHERE c.title ILIKE ?
-      AND uc.unit_id <> ?
-      GROUP BY c.id
       ORDER BY c.title
-    ", "#{input}%", unit_id])
+    ", "#{input}%"])
   end
 end

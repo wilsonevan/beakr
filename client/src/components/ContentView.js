@@ -7,8 +7,8 @@ class ContentView extends React.Component {
   state = { title: '', body: '' }
 
   componentDidMount() {
-    const { unit_id, id } = this.props.match.params
-    axios.get(`/api/units/${unit_id}/contents/${id}`)
+    const { id } = this.props.match.params
+    axios.get(`/api/contents/${id}`)
       .then( res => {
         this.setState( res.data )
       })

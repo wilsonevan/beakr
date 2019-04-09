@@ -14,7 +14,7 @@ const ContentBlock = ({ content, unit, index, deleteUnitContent }) => (
         Remove
       </ButtonLeft>
       <ButtonRight
-        href={`/units/${unit.id}/contents/${content.id}`}
+        href={`/contents/${content.id}`}
         target="_blank"
       >
         View
