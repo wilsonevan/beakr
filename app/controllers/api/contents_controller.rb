@@ -37,7 +37,7 @@ class Api::ContentsController < ApplicationController
   end
 
   def destroy
-    @content.delete
+    @content.destroy
   end
 
   private
