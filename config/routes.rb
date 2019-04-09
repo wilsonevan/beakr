@@ -28,5 +28,7 @@ Rails.application.routes.draw do
 
     post 'contents/search', to: '/api/contents#search_contents'
     post 'contents/search/:unit_id', to: '/api/contents#search_contents_not_in_unit'
+    post 'assignments/search', to: '/api/assignments#search_assignments'
+    post 'assignments/search/:unit_id', to: '/api/assignments#search_assignments_not_in_unit'
   end
 end
