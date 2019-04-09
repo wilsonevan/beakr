@@ -117,7 +117,7 @@ class Profile extends React.Component {
               >
                 <input {...getInputProps()} />
                 { isDragActive ? <Card.Content>Drop files here...</Card.Content> 
-                : <Image src={ blob.size === 0 ? user.image : url } />
+                : <Image src={ blob.size === 0 ? user.image || defaultImage : url } />
 
                 }
               </Card>

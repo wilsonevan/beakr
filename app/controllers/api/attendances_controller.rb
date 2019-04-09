@@ -8,9 +8,6 @@ class Api::AttendancesController < ApplicationController
   end
 
   def get_attendances
-    # render json: attendances = Attendance.get_attendances(params[:id])
-    #render json: @course.attendances.all
-
     attendanceinfo = @course.users.map(){|user| 
       {
         user_id: user.id, 
@@ -20,19 +17,6 @@ class Api::AttendancesController < ApplicationController
       }
     }
     render( json: attendanceinfo )
-    # newattendances = []
-    # recordinfo = []
-    # attendances.each do |attendance|
-    #   record = []
-    #   recordinfo << attendance.attendance_id
-    #   recordinfo << attendance.record_date
-    #   recordinfo << attendance.attendance_record
-    #   newattendances << recordinfo
-    #   newattendances << attendance.id
-    #   newattendances << attendanc.first_name
-    #   newattendances << attendance.last_name
-    # end 
-    
   end
 
   def create
