@@ -20,10 +20,12 @@ class AddAssignment extends React.Component {
     this.setState({ body: value })
   }
   
-  handleSubmit = (e) => {
-    e.preventDefault();
+  handleSubmit = () => {
     const assignment = {...this.state}
-    // axios call
+    axios.post('/api/assignments', assignment)
+      .then( res => {
+        this.props.history.push(`/assignments/${res.data.id}`)
+      })
   }
 
   render() {
@@ -32,30 +34,28 @@ class AddAssignment extends React.Component {
     return (
       <>
         <Header style={{color: '#23A24D'}} content="Add Assignment" />
-        <form onSubmit={this.handleSubmit}>
-          <input
-            label='Assignment Title'
-            required
-            autoFocus
-            name='title'
-            value={title}
-            placeholder='Title'
-            onChange={this.handleChange}
-          />
-        </form>
-          <DateTimePicker 
-            label='Due Date'
-            required
-            value={due_date}
-            disableClock
-            onChange={this.handleDateChange}
-          />
-          <ReactQuill 
-            name='body'
-            value={body}
-            onChange={this.handleQuillChange} 
-          />
-          <Button content='Submit' />
+        <input
+          label='Assignment Title'
+          required
+          autoFocus
+          name='title'
+          value={title}
+          placeholder='Title'
+          onChange={this.handleChange}
+        />
+        <DateTimePicker 
+          label='Due Date'
+          required
+          value={due_date}
+          disableClock
+          onChange={this.handleDateChange}
+        />
+        <ReactQuill 
+          name='body'
+          value={body}
+          onChange={this.handleQuillChange} 
+        />
+        <Button content='Submit' onClick={this.handleSubmit} />
       </>
     )
   }

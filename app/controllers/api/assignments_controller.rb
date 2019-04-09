@@ -50,6 +50,6 @@ class Api::AssignmentsController < ApplicationController
   end
 
   def assignment_params
-    params.require(:assignment).permit(:title, :content, :due_date)
+    params.require(:assignment).permit(:title, :body, :due_date)
   end
 end

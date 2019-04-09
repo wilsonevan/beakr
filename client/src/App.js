@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/dashboard/Dashboard";
 import ContentView from "./components/ContentView";
+import AssignmentView from "./components/AssignmentView";
 import Profile from "./components/profile/Profile";
 import FetchUser from "./components/FetchUser";
 import AddContent from "./components/admin-course-controls/AddContent";
@@ -53,6 +54,7 @@ const App = () => (
             component={ContentView}
           />
           <ProtectedRoute exact path="/assignments/new" component={AddAssignment} />
+          <ProtectedRoute exact path="/assignments/:id" component={AssignmentView} />
           <ProtectedRoute exact path="/users/new" component={AddUser} />
           <Route component={NoMatch} />
         </Switch>

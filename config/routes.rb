@@ -11,6 +11,9 @@ Rails.application.routes.draw do
     
     resources :unit_contents, only: [:index, :create, :destroy]
     delete '/unit/:unit_id/contents/:content_id/unit_content', to: '/api/unit_contents#delete_by_unit_and_content'
+
+    resources :unit_assignments, only: [:index, :create, :destroy]
+    delete '/unit/:unit_id/assignments/:assignment_id/unit_assignment', to: '/api/unit_assignments#delete_by_unit_and_assignment'
     
     resources :courses do
       resources :sections
@@ -22,9 +25,11 @@ Rails.application.routes.draw do
   
     resources :units, only: [] do
       resources :contents, only: [:index]
+      resources :assignments, only: [:index]
     end
 
     resources :contents, only: [:show, :create, :update, :destroy]
+    resources :assignments, only: [:show, :create, :update, :destroy]
 
     post 'contents/search', to: '/api/contents#search_contents'
     post 'contents/search/:unit_id', to: '/api/contents#search_contents_not_in_unit'
