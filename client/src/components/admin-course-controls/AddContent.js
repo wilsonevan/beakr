@@ -18,9 +18,9 @@ class AddContent extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const content = {...this.state}
-    axios.post('/api/units/1/contents', content)
+    axios.post('/api/contents', content)
       .then( res => {
-        this.props.history.push(`units/1/contents/${res.data.id}`)
+        this.props.history.push(`/contents/${res.data.id}`)
       })
   }
 

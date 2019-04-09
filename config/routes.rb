@@ -21,8 +21,10 @@ Rails.application.routes.draw do
     end
   
     resources :units, only: [] do
-      resources :contents
+      resources :contents, only: [:index]
     end
+
+    resources :contents, only: [:show, :create, :update, :destroy]
 
     post 'contents/search', to: '/api/contents#search_contents'
     post 'contents/search/:unit_id', to: '/api/contents#search_contents_not_in_unit'
