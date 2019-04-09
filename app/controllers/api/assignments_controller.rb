@@ -6,13 +6,13 @@ class Api::AssignmentsController < ApplicationController
     render json: @unit.assignments
   end
 
-  # def search_contents
-  #   render( json: Content.search_contents(params[:input]) )
-  # end
+  def search_assignments
+    render( json: Assignment.search_assignments(params[:input]) )
+  end
 
-  # def search_contents_not_in_unit
-  #   render( json: Content.search_contents_not_in_unit(params[:input], params[:unit_id]) )
-  # end
+  def search_assignments_not_in_unit
+    render( json: Assignment.search_assignments_not_in_unit(params[:input], params[:unit_id]) )
+  end
 
   def show
     render json: @assignment
