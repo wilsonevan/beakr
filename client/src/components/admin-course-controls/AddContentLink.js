@@ -7,7 +7,7 @@ const AddContentLink = ({ result, unit, createUnitContent }) => {
     <ContentText onClick={() => createUnitContent(result.id)}>
       {result.title}
       <ViewLink
-        href={`/units/${unit.id}/contents/${result.id}`}
+        href={`/contents/${result.id}`}
         target="_blank"
       >
         view

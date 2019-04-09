@@ -31,11 +31,6 @@ const App = () => (
           <ProtectedRoute exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          <ProtectedRoute
-            exact
-            path="/units/:unit_id/contents/:id"
-            component={ContentView}
-          />
           <ProtectedRoute exact path="/dashboard" component={Dashboard} />
           <ProtectedRoute exact path="/profile" component={Profile} />
           <ProtectedRoute exact path="/courses/new" component={AddCourse} />
@@ -50,7 +45,12 @@ const App = () => (
             path="/admin/courses/:course_id/sections/:id"
             component={AdminEditSection}
           />
-          <ProtectedRoute exact path="/content/new" component={AddContent} />
+          <ProtectedRoute exact path="/contents/new" component={AddContent} />
+          <ProtectedRoute
+            exact
+            path="/contents/:id"
+            component={ContentView}
+          />
           <ProtectedRoute exact path="/users/new" component={AddUser} />
           <Route component={NoMatch} />
         </Switch>
