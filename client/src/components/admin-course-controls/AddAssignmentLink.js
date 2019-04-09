@@ -1,21 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 
-const AddContentLink = ({ result, unit, createUnitContent }) => {
+const AddAssignmentLink = ({ result, unit, createUnitAssignment }) => {
   return (
-    <ContentText onClick={() => createUnitContent(result.id)}>
+    <AssignmentText onClick={() => createUnitAssignment(result.id)}>
       {result.title}
       <ViewLink
-        href={`/contents/${result.id}`}
+        href={`/assignments/${result.id}`}
         target="_blank"
       >
         view
       </ViewLink>
-    </ContentText>
+    </AssignmentText>
   );
 };
 
-const ContentText = styled.button`
+const AssignmentText = styled.button`
   display: block;
   width: 100%;
   text-align: left;
@@ -43,4 +43,4 @@ const ViewLink = styled.a`
   }
 `;
 
-export default AddContentLink;
+export default AddAssignmentLink;
