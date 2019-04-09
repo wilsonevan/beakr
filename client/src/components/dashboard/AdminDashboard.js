@@ -3,7 +3,7 @@ import { Menu, Segment, Header } from 'semantic-ui-react'
 import axios from 'axios';
 import AddCourse from '../admin/AddCourse';
 import AddUser from '../admin/AddUser';
-import { ButtonGreen } from '../../styles/Components';
+import { ButtonGreen, Bar } from '../../styles/Components';
 import { Link, } from 'react-router-dom'
 import styled from 'styled-components'
 import Calendar from '../attendance/Calendar';
@@ -64,7 +64,17 @@ class AdminDashboard extends React.Component {
       case 'grade':
         return (<p>you are an admin for grades</p>)
       case 'attendance':
-        return (<p>You are an admin for attendance</p>)
+          return this.state.allCourses.map( course => {
+              return (
+              <>
+                <Bar style={{marginBottom: '10px'}}>
+                  <h4>{course.title}</h4>
+                </Bar>
+                {/* <AdminAttendance course={course} /> */}
+              </>
+              )
+
+            })
       case 'users':
         return (
           <>

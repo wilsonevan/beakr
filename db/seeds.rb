@@ -42,11 +42,32 @@ end
     admin: false
   )
   1.times do
-    Enrollment.create(
+    e = Enrollment.create(
       user_id: user.id,
       course_id: Course.first.id,
       role: 'student'
     )
+      1.times do 
+        Attendance.create(
+          enrollment_id: e.id,
+          attendance_record: 'present',
+          record_date: '2019-04-08'
+        )
+      end
+      1.times do 
+        Attendance.create(
+          enrollment_id: e.id,
+          attendance_record: 'absent',
+          record_date: '2019-04-09'
+        )
+      end
+      1.times do 
+        Attendance.create(
+          enrollment_id: e.id,
+          attendance_record: 'late',
+          record_date: '2019-04-10'
+        )
+    end
   end
 end
 
