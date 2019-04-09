@@ -10,6 +10,7 @@ import ContentView from "./components/ContentView";
 import Profile from "./components/profile/Profile";
 import FetchUser from "./components/FetchUser";
 import AddContent from "./components/admin-course-controls/AddContent";
+import AddAssignment from "./components/admin-course-controls/AddAssignment";
 import AddUser from "./components/admin/AddUser";
 import AddCourse from "./components/admin/AddCourse";
 import { Switch, Route } from "react-router-dom";
@@ -51,6 +52,7 @@ const App = () => (
             path="/contents/:id"
             component={ContentView}
           />
+          <ProtectedRoute exact path="/assignments/new" component={AddAssignment} />
           <ProtectedRoute exact path="/users/new" component={AddUser} />
           <Route component={NoMatch} />
         </Switch>
