@@ -42,11 +42,18 @@ end
     admin: false
   )
   1.times do
-    Enrollment.create(
+    enroll = Enrollment.create(
       user_id: user.id,
       course_id: Course.first.id,
       role: 'student'
     )
+    5.times do
+      Attendance.create(
+        record_date: Faker::Date.between( 20190401, 20190420 ),
+        enrollment_id: enroll.id,
+        attendance_record: 'present',
+      )
+    end
   end
 end
 
