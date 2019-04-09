@@ -27,7 +27,7 @@ class OptionsMenu extends React.Component {
 						type="checkbox" 
 						name="Assignments" 
 						value="assignments" 
-						/> Assignments
+						/> Assignments (TBD)
 						<br />
 				</form>
 				<br />
