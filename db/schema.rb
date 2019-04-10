@@ -23,6 +23,15 @@ ActiveRecord::Schema.define(version: 2019_04_10_162933) do
     t.text "body"
   end
 
+  create_table "attendances", force: :cascade do |t|
+    t.bigint "enrollment_id"
+    t.date "record_date"
+    t.string "attendance_record"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["enrollment_id"], name: "index_attendances_on_enrollment_id"
+  end
+
   create_table "contents", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
@@ -129,6 +138,7 @@ ActiveRecord::Schema.define(version: 2019_04_10_162933) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "attendances", "enrollments"
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "users"
   add_foreign_key "sections", "courses"
