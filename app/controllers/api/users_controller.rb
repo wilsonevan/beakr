@@ -8,6 +8,19 @@ class Api::UsersController < ApplicationController
     render json: users
   end
 
+  def search_users_with_role
+    render( json: User.search_users_with_role(params[:input], params[:course_id]) )
+  end
+  
+  def search_staff_enrolled
+    render( json: User.search_staff_enrolled(params[:input], params[:id]) )
+  end
+
+  def search_students_enrolled
+    render( json: User.search_students_enrolled(params[:input], params[:id]) )
+  end
+
+
   def update
     user = User.find(params[:id])
     user.first_name = params[:first_name] ? params[:first_name] : user.first_name
