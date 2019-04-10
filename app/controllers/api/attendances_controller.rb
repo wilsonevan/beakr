@@ -21,10 +21,10 @@ class Api::AttendancesController < ApplicationController
     }.map(){|user| # This map adds relevant user data to the attendance data
         {
           image: user.image,
-          user_id: user.id, 
-          first_name: user.first_name, 
-          last_name: user.last_name, 
-          attendances: user.attendances
+          user_id: user.id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          attendances: user.attendances.order(:record_date),
         }
     }
     render( json: attendanceinfo )
@@ -37,13 +37,17 @@ class Api::AttendancesController < ApplicationController
   end
 
   def update
-    Attendance.update_attendance(attendance_params, @attendance.id)
+    if @attendance.update(attendance_params)
+      render json: @attendance
+    else
+      render json: @attendance.errors, status: 422
+    end
   end
 
   private
 
   def attendance_params
-    params.permit(:attendance).require(:record_date, :attendance_record)
+    params.require(:attendance).permit(:record_date, :attendance_record, :enrollment_id)
   end
 
   def set_enrollment
@@ -51,7 +55,7 @@ class Api::AttendancesController < ApplicationController
   end
 
   def set_attendance
-    @attendance = Attendance.find(params[:attendance_id])
+    @attendance = Attendance.find(params[:id])
   end
 
   def set_course

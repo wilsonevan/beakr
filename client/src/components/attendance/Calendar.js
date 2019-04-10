@@ -3,8 +3,7 @@ import dateFns from "date-fns";
 import './Calendar.css';
 import OptionsMenu from './OptionsMenu'
 import AttendanceMarks from "./AttendanceMarks";
-// import {Form} from 'semantic-ui-react';
-// import axios from 'axios';
+import axios from "axios";
 
 class Calendar extends React.Component {
   state = {
@@ -13,11 +12,11 @@ class Calendar extends React.Component {
     monthEvents: [],
     attendanceView: true,
     assignmentsView: true,
+    attendanceRecords: [],
   };
 
   componentDidMount() {
-    // Get the events for this month - start with course start-date and end-date
-    // Set the state with an array of these events
+    // Get all of the attendance records for this course
   }
 
   renderHeader() {

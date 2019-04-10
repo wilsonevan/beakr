@@ -36,4 +36,10 @@ class Attendance < ApplicationRecord
       WHERE a.id = ?
     ;", p[:record_date], p[:attendance_record], DateTime.now, id])
   end
+
+  # def self.sorted_by_date
+  #   self.order(:record_date)
+  #   binding.pry
+  # end
+
 end
