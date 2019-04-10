@@ -10,6 +10,10 @@ class Api::CoursesController < ApplicationController
     render json: courses
   end
 
+  def search_courses
+    render( json: Course.search_courses(params[:input]) )
+  end
+
   def show
     render json: @course
   end
@@ -32,7 +36,8 @@ class Api::CoursesController < ApplicationController
   end
 
   def destroy
-    @course.destroy
+    @course.destroy()
+    render( json: "Data Deleted")
   end
 
   private

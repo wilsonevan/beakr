@@ -14,15 +14,22 @@ PROPS___________________
         ^^ in order for overflow-y scroll to work, the height must be an absolut value (no percentages) 
         ^^ width is set to 100% and height is set to 30rem by default when no prop is passed
     (use only one of render or component)
+    'updateFromParent' this prop can be set to any value, and when that value from the parent is toggled,
+        the searchbar will resubmit its request and obtain new data. (Very useful when you need to
+        force and update, albeit slightly questionable practice)
 
-RESULT_PROP_______
+RESULT_PROP____________
 * The component passed has a 'result' prop that is a reference to the items return from the query.
   Each result is one item.
 
-STYLING_________________
-* wrap the component in a container, and style the height and width of the container
+UPDATE_SEARCH_PROP_____
+* While the 'updateFromParent' prop is used to update the searchbar from the parent component, 
+  the 'updateSearch' function is used to update the searchbar from the child component in the results list.
+  Once a request has been made, call this.props.updateSearch from the component you passed into the
+  render prop to update the searchbar. Make sure you call this function in THE CALLBACK OR .THEN METHOD of
+  a promise, or else the query will likely finish before the prior request updates the database.
 
-    Example) 
+EXAMPLES________________
         // component to be rendered
         const TestLink = ({ result, someProp }) => (
             <Link onClick={() => someProp()} >{result.title}</Link>
@@ -48,11 +55,19 @@ STYLING_________________
             height="20rem"
         />
 
+        // using updateSearch in render prop component//
+          const TestLink = ({ result, deleteSomething, updateSearch }) => {
+            const handleClick = () => {
+              deleteSomething(result.id)
+              .then(() => updateSearch()) <---- calling from callback is important
+            }
+            <Link onClick={() => handleClick()} >{result.title}</Link>
+          }
 
 ////////////////////*/
 
 class SearchBar extends React.Component {
-  state = { input: "", results: [] };
+  state = { input: "", results: [], update: false };
 
   timeout = null;
 
@@ -63,6 +78,28 @@ class SearchBar extends React.Component {
         this.setState({ results: res.data });
       })
       .catch(err => console.log(err));
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.route !== this.props.route) {
+      axios.post(this.props.route, { input: this.state.input })
+      .then(res =>  this.setState({ results: res.data }))
+      .catch(err => console.log(err));
+
+    } else if(prevState.update !== this.state.update) {
+      axios.post(this.props.route, { input: this.state.input })
+      .then(res =>  this.setState({ results: res.data }))
+      .catch(err => console.log(err));
+
+    } else if(prevProps.updateFromParent !== this.props.updateFromParent) {
+      axios.post(this.props.route, { input: this.state.input })
+      .then(res =>  this.setState({ results: res.data }))
+      .catch(err => console.log(err));
+    } 
+  }
+
+  updateSearch = () => {
+    this.setState({ update: !this.state.update });
   }
 
   handleChange = event => {
@@ -80,28 +117,27 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <SearchContainer>
+      <SearchContainer style={{ width: this.props.width ? this.props.width : "100%" }}>
         <SearchInput
           type="text"
           value={this.state.input}
           name="input"
           onChange={this.handleChange}
           placeholder={this.props.placeholder}
-          style={{ width: this.props.width ? this.props.width : "100%" }}
         />
         <SearchResults
           results={this.state.results}
           component={this.props.component}
           render={this.props.render}
           height={this.props.height}
-          width={this.props.width}
+          updateSearch={this.updateSearch}
         />
       </SearchContainer>
     );
   }
 }
 
-const SearchResults = ({ results, render, component, height, width }) => {
+const SearchResults = ({ results, render, component, height, width, updateSearch }) => {
   const Component = component;
 
   if (render)
@@ -109,11 +145,10 @@ const SearchResults = ({ results, render, component, height, width }) => {
       <ResultsContainer
         style={{
           height: height ? height : "30rem",
-          width: width ? width : "100%"
         }}
       >
         {results.map(result => (
-          <Fragment key={result.id}>{render({ result })}</Fragment>
+          <Fragment key={result.id}>{render({ result, updateSearch})}</Fragment>
         ))}
       </ResultsContainer>
     );
@@ -122,11 +157,10 @@ const SearchResults = ({ results, render, component, height, width }) => {
       <ResultsContainer
         style={{
           height: height ? height : "30rem",
-          width: width ? width : "100%"
         }}
       >
         {results.map(result => (
-          <Component key={result.id} result={result} />
+          <Component key={result.id} result={result} updateSearch={this.updateSearch} />
         ))}
       </ResultsContainer>
     );
@@ -134,14 +168,16 @@ const SearchResults = ({ results, render, component, height, width }) => {
 
 const SearchContainer = styled.div`
   position: relative;
+  display: inline-block;
   margin-top: 0;
 `;
 
 const SearchInput = styled.input`
   position: absolute;
-  top: -3rem;
+  top: 0;
   left: 0;
   margin-top: 0;
+  width: 100%;
   height: 3rem;
   padding-left: 1rem;
   background-color: #f7f7f7;
@@ -153,14 +189,15 @@ const SearchInput = styled.input`
 `;
 
 const ResultsContainer = styled.div`
-  margin-top: 3rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
-  padding-left: 1rem;
-  overflow-y: scroll;
+  margin-top: 3rem;
+  width: 100%;
+  // padding-left: 1rem;
+  overflow-y: auto;
   background-color: white;
 `;
 
