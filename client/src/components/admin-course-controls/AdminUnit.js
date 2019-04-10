@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 class AdminUnit extends React.Component {
-  state = { contents: [], opened: false, loaded: false };
+  state = { contents: [], assignments: [], opened: false, loaded: false };
 
   unitModelsRef = React.createRef();
 
@@ -13,9 +13,16 @@ class AdminUnit extends React.Component {
     axios
       .get(`/api/units/${this.props.unit.id}/contents`)
       .then(res => {
-        this.setState({ contents: res.data, loaded: true });
+        this.setState({ contents: res.data});
       })
       .catch(err => console.log(err));
+    axios
+      .get(`/api/units/${this.props.unit.id}/assignments`)
+      .then(res => {
+        this.setState({ assignments: res.data})
+      })
+      .catch(err=>console.log(err));
+    this.setState({ loaded: true })
   }
 
   componentWillUnmount() {
@@ -66,7 +73,7 @@ class AdminUnit extends React.Component {
     return this.state.contents.map((content, index) => {
       return (
         <Link
-          to={`/units/${this.props.unit.id}/contents/${content.id}`}
+          to={`/contents/${content.id}`}
           key={index}
         >
           <UnitModelsItem>
@@ -95,13 +102,15 @@ class AdminUnit extends React.Component {
     });
   };
   renderAssignments = () => {
-    const { assignments } = this.props.unit;
-    return assignments.map((assignment, index) => {
+    return this.state.assignments.map((assignment, index) => {
       return (
-        <Link as={UnitModelsItem} to={`/dashboard`} key={index}>
+        <Link
+          to={`/assignments/${assignment.id}`}
+          key={index}
+        >
           <UnitModelsItem>
             <UnitModelsIcon className="models-icon" />
-            Assignment
+            {assignment.title}
           </UnitModelsItem>
         </Link>
       );
@@ -118,8 +127,8 @@ class AdminUnit extends React.Component {
             {unit.title}
             <UnitModelsContainer ref={this.unitModelsRef}>
               {this.renderContents()}
-              {/* {this.renderQuizzes()}
-              {this.renderAssignments()} */}
+              {/* {this.renderQuizzes()} */}
+              {this.renderAssignments()}
             </UnitModelsContainer>
           </OpenedSectionUnit>
         </>

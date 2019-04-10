@@ -5,11 +5,13 @@ import { ButtonGreen, ButtonBlue } from "../../styles/Components";
 import SearchBar from "../SearchBar";
 import AddContentLink from "./AddContentLink";
 import ContentBlock from "./ContentBlock";
+import AddAssignmentLink from "./AddAssignmentLink";
+import AssignmentBlock from "./AssignmentBlock";
 import EditUnitTitle from "./EditUnitTitle";
 import anime from "animejs";
 
 class UnitControls extends React.Component {
-  state = { editing: false, unit: this.props.unit, contents: [] };
+  state = { editing: false, unit: this.props.unit, contents: [], assignments: [], };
 
   formRef = React.createRef();
 
@@ -18,6 +20,12 @@ class UnitControls extends React.Component {
       .get(`/api/units/${this.props.unit.id}/contents`)
       .then(res => {
         this.setState({ contents: res.data });
+      })
+      .catch(err => console.log(err));
+    axios
+      .get(`/api/units/${this.props.unit.id}/assignments`)
+      .then(res => {
+        this.setState({ assignments: res.data })
       })
       .catch(err => console.log(err));
   }
@@ -38,6 +46,15 @@ class UnitControls extends React.Component {
       .catch(err => console.log(err));
   };
 
+  createUnitAssignment = assignment_id => {
+    axios
+      .post(`/api/unit_assignments`, { assignment_id, unit_id: this.props.unit.id })
+      .then(res => {
+        this.setState({ assignments: res.data });
+      })
+      .catch(err => console.log(err));
+  };
+
   deleteUnitContent = content_id => {
     const unit_id = this.props.unit.id;
     axios
@@ -52,9 +69,27 @@ class UnitControls extends React.Component {
       .catch(err => console.log(err));
   };
 
+  deleteUnitAssignment = assignment_id => {
+    const unit_id = this.props.unit.id;
+    axios
+      .delete(`/api/unit/${unit_id}/assignments/${assignment_id}/unit_assignment`)
+      .then(res => {
+        console.log(res.data);
+        const assignments = this.state.assignments.filter(assignment => {
+          if (assignment.id !== assignment_id) return this.renderUnitAssignments;
+        });
+        this.setState({ assignments });
+      })
+      .catch(err => console.log(err));
+  }
+
   AddContentLinkWithProps = () => {
     return <AddContentLink createUnitContent={this.createUnitContent} />;
   };
+
+  AddAssignmentLinkWithProps = () => {
+    return <AddAssignmentLink createUnitAssignment={this.createUnitAssignment} />;
+  }
 
   toggleEditing = () => {
     if (!this.state.editing) {
@@ -105,6 +140,20 @@ class UnitControls extends React.Component {
     });
   };
 
+  renderUnitAssignments = () => {
+    return this.state.assignments.map((assignment, index) => {
+      return (
+        <AssignmentBlock
+          key={assignment.id}
+          assignment={assignment}
+          unit={this.props.unit}
+          index={index}
+          deleteUnitAssignment={this.deleteUnitAssignment}
+        />
+      );
+    });
+  };
+
   render() {
     const { unit, updateUnit, deleteUnit } = this.props;
     if (!this.state.editing)
@@ -118,7 +167,7 @@ class UnitControls extends React.Component {
             <div>
               <ButtonGreen
                 as="a"
-                href="/content/new"
+                href="/contents/new"
                 target="_blank"
                 style={{ padding: "0.325rem 0.75rem" }}
               >
@@ -195,6 +244,7 @@ class UnitControls extends React.Component {
                 />
               </ContentHeading>
               {this.renderUnitContents()}
+              {this.renderUnitAssignments()}
             </FormBottomRight>
           </FormBottom>
         </UnitForm>

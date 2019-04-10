@@ -1,33 +1,34 @@
 import React from 'react';
 import axios from 'axios';
+import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 import { Segment, Header, Icon, } from 'semantic-ui-react';
 
-class ContentView extends React.Component {
-  state = { title: '', body: '' }
+class AssignmentView extends React.Component {
+  state = { title: '', body: '', due_date: '', }
 
   componentDidMount() {
     const { id } = this.props.match.params
-    axios.get(`/api/contents/${id}`)
+    axios.get(`/api/assignments/${id}`)
       .then( res => {
         this.setState( res.data )
       })
-  }
+  };
 
   createMarkup = (html) => {
     return { __html: html };
   };
 
   render() {
-    const { title, body, } = this.state
-
+    const { title, body, due_date, } = this.state
     return (
       <>
         <Header as={Link} to='' onClick={() => this.props.history.goBack()} content='< Course Work' color='green' size='huge' textAlign='left'/>
-        <Header style={{ color: '#23A24D' }}>
-          <Icon name='block layout' color='green' />
-            {title}
-        </Header>
+          <Header style={{ color: '#23A24D' }}>
+            <Icon name='block layout' color='green' />
+              {title}
+          </Header>
+          <Moment format='ddd, MMM D, LT' date={due_date} />
         <Segment>
           <div 
             dangerouslySetInnerHTML=
@@ -40,4 +41,4 @@ class ContentView extends React.Component {
   }
 }
 
-export default ContentView
+export default AssignmentView
