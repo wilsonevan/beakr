@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_09_215815) do
+ActiveRecord::Schema.define(version: 2019_04_10_162933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,13 @@ ActiveRecord::Schema.define(version: 2019_04_09_215815) do
     t.index ["user_id"], name: "index_enrollments_on_user_id"
   end
 
+  create_table "quizzes", force: :cascade do |t|
+    t.string "title"
+    t.datetime "due_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "sections", force: :cascade do |t|
     t.string "title"
     t.bigint "course_id"
@@ -70,6 +77,15 @@ ActiveRecord::Schema.define(version: 2019_04_09_215815) do
     t.datetime "updated_at", null: false
     t.index ["content_id"], name: "index_unit_contents_on_content_id"
     t.index ["unit_id"], name: "index_unit_contents_on_unit_id"
+  end
+
+  create_table "unit_quizzes", force: :cascade do |t|
+    t.bigint "unit_id"
+    t.bigint "quiz_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quiz_id"], name: "index_unit_quizzes_on_quiz_id"
+    t.index ["unit_id"], name: "index_unit_quizzes_on_unit_id"
   end
 
   create_table "units", force: :cascade do |t|
@@ -120,5 +136,7 @@ ActiveRecord::Schema.define(version: 2019_04_09_215815) do
   add_foreign_key "unit_assignments", "units"
   add_foreign_key "unit_contents", "contents"
   add_foreign_key "unit_contents", "units"
+  add_foreign_key "unit_quizzes", "quizzes"
+  add_foreign_key "unit_quizzes", "units"
   add_foreign_key "units", "sections"
 end

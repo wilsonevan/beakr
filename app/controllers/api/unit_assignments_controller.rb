@@ -23,7 +23,7 @@ class Api::UnitAssignmentsController < ApplicationController
 
   def delete_by_unit_and_assignment
     unit_id = Unit.find(params[:unit_id]).id
-    unit_assignment = Assignment.find(params[:content_id]).unit_assigments.select() {|unit_assignment|
+    unit_assignment = Assignment.find(params[:assignment_id]).unit_assigments.select() {|unit_assignment|
         unit_assignment.unit_id == unit_id
     }
 
