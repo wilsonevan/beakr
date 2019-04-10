@@ -15,7 +15,7 @@ class Attendance < ApplicationRecord
   end
 
 
-  def self.create_attendance(p, id)
+  def self.create_attendances(p, id)
     Attendance.find_by_sql(["
       INSERT INTO attendances (record_date, attendance_record, enrollment_id, created_at, updated_at)
       VALUES (:record_date, :attendance_record, :enrollment_id, :created_at, :updated_at);
@@ -37,9 +37,12 @@ class Attendance < ApplicationRecord
     ;", p[:record_date], p[:attendance_record], DateTime.now, id])
   end
 
-  # def self.sorted_by_date
-  #   self.order(:record_date)
-  #   binding.pry
-  # end
+
+  def self.delete_attendance(p)
+    Attendance.find_by_sql(["
+      DELETE FROM attendances AS a
+      WHERE a.id = ?
+    ;", p[:id] ])
+  end
 
 end

@@ -1,7 +1,8 @@
 class Api::AttendancesController < ApplicationController
-  # before_action :set_enrollment, only: [:create]
-  before_action :set_attendance, only: [:update]
-  before_action :set_course, only: [:get_attendances]
+  before_action :set_enrollment, only: [:create, ]
+  before_action :set_attendance, only: [:update, :destroy, ]
+  before_action :set_course, only: [:get_attendances, :destroy_column, ]
+  before_action :set_date, only: [:destroy_column, ]
 
   def index
     render json: current_user.attendances.all 
@@ -10,7 +11,7 @@ class Api::AttendancesController < ApplicationController
   def get_attendances
 
     # This loop rejects all users from the attendance data, who are not students of the desired course
-    attendanceinfo = @course.users.reject(){|user| 
+    attendanceinfo = @course.users.order(:first_name).reject(){|user| 
       set_flag = false
       user.enrollments.each do |enrollment| 
         if enrollment.role != 'student' && enrollment.course_id == @course.id 
@@ -49,6 +50,19 @@ class Api::AttendancesController < ApplicationController
     end
   end
 
+  def destroy
+    Attendance.delete_attendance(@attendance)
+  end
+
+  def destroy_column
+    Attendance.all.each do |record|
+      # If the record date and the course id for that record match the column date which is to be deleted, delete that record
+      if (record.record_date == Date.strptime(@date, '%Y-%m-%d')) && (Enrollment.find(record.enrollment_id).course_id == @course.id)
+        record.destroy
+      end
+    end
+  end
+
   private
 
   def attendance_params
@@ -70,4 +84,9 @@ class Api::AttendancesController < ApplicationController
   def set_course
     @course = Course.find(params[:course_id])
   end
+
+  def set_date
+    @date = params[:record_date]
+  end
+
 end
