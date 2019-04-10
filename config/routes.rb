@@ -5,7 +5,8 @@ Rails.application.routes.draw do
 
     resources :enrollments, only: [:create, :update, :destroy]
 
-
+    resources :attendances
+    
     resources :users, only: [:index, :update]
     get 'user_courses', to: 'courses#user_courses'
     
@@ -18,19 +19,17 @@ Rails.application.routes.draw do
     resources :courses do
       resources :sections
     end
-  
+    
     resources :sections, only: [] do
       resources :units
     end
-  
+    
     resources :units, only: [] do
       resources :contents, only: [:index]
       resources :assignments, only: [:index]
     end
-
-    resources :contents, only: [:show, :create, :update, :destroy]
-    resources :assignments, only: [:show, :create, :update, :destroy]
-
+    
+    get 'get_attendances', to: '/api/attendances#get_attendances'
     post 'contents/search', to: '/api/contents#search_contents'
     post 'contents/search/:unit_id', to: '/api/contents#search_contents_not_in_unit'
     post 'assignments/search', to: '/api/assignments#search_assignments'
