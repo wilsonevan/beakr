@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
   def self.search_users(input)
     Course.find_by_sql(["
       SELECT * FROM users
-      WHERE ( u.first_name ILIKE ? OR u.last_name ILIKE ? )
+      WHERE ( first_name ILIKE ? OR last_name ILIKE ? )
+      ORDER BY first_name, last_name
       ", "#{input}%", "#{input}%"])
   end
 
