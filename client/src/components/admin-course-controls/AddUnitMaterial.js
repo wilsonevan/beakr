@@ -1,6 +1,5 @@
 import React from 'react'
 import AddContent from './AddContent';
-import { Header, } from 'semantic-ui-react';
 import styled from 'styled-components'
 import AddAssignment from './AddAssignment';
 
@@ -106,7 +105,7 @@ const AdminControlsContainer = styled.div`
 
 const AdminControls = styled.div`
   background-color: white;
-  min-height: 50vh;
+  min-height: 20vh;
   border-bottom-radius: 5px;
   overflow: hidden;
   box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1);
