@@ -1,20 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 
-const ContentBlock = ({ content, unit, index, deleteUnitContent }) => (
+const AssignmentBlock = ({ assignment, unit, index, deleteUnitAssignment }) => (
   <BlockContainer>
     <Knob>
       <Number>{index + 1}</Number>
     </Knob>
-    <ContentBlockText onClick={() => deleteUnitContent(content.id)}>
-      <Tag>content:</Tag> {content.title}
-    </ContentBlockText>
+    <AssignmentBlockText onClick={() => deleteUnitAssignment(assignment.id)}>
+      <Tag>assignment:</Tag> {assignment.title}
+    </AssignmentBlockText>
     <Buttons>
-      <ButtonLeft onClick={() => deleteUnitContent(content.id)}>
+      <ButtonLeft onClick={() => deleteUnitAssignment(assignment.id)}>
         Remove
       </ButtonLeft>
       <ButtonRight
-        href={`/contents/${content.id}`}
+        href={`/assignments/${assignment.id}`}
         target="_blank"
       >
         View
@@ -32,7 +32,7 @@ const BlockContainer = styled.div`
   margin: 1rem auto;
 `;
 
-const ContentBlockText = styled.button`
+const AssignmentBlockText = styled.button`
   display: inline-block;
   width: 60%;
   min-width: 30%;
@@ -111,4 +111,4 @@ const Number = styled.div`
   color: #0029ff;
 `;
 
-export default ContentBlock;
+export default AssignmentBlock;
