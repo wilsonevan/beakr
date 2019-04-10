@@ -4,6 +4,7 @@ import { AuthConsumer, } from "../../providers/AuthProvider";
 import { Form, Grid, Container, Divider, Header, Segment, Card, Image } from 'semantic-ui-react';
 import Dropzone from 'react-dropzone';
 import { ButtonGreen, ButtonGrey, } from '../../styles/Components'
+import Moment from 'react-moment'
 
 const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/15724-200.png';
 
@@ -67,13 +68,17 @@ class Profile extends React.Component {
             Biography:
           </Header>
           <div style={{marginLeft: '20px'}}>
-            <Header as="h5">{user.biography}</Header>
+            <Header as="h5">
+                {user.biography}
+            </Header>
           </div>
           <Header as='h3'>
             Birthday:
           </Header>
           <div style={{marginLeft: '20px'}}>
-            <Header as="h5">{user.birth_date}</Header>
+            <Header as="h5">
+            <Moment format='MMM D, YYYY'date={user.birth_date} />
+            </Header>
           </div>
           <Header as='h3'>
             Email:
@@ -92,13 +97,17 @@ class Profile extends React.Component {
     const { editing, } = this.state;
     const { auth: {user, }, } = this.props
 
-    const { formValues: { first_name, last_name, email, biography, birth_date, } } = this.state;
+    const { formValues: { first_name, last_name, email, biography, birth_date, file } } = this.state;
+    const blob = new Blob([file], {type: 'image/png'});
+    const url = URL.createObjectURL(blob);
+    console.log(url)
     return (
       <>
         <Grid.Column width={4}>
         <Dropzone
           onDrop={this.onDrop}
           multiple={false}
+          previewContainer={true}
         >
           {({ getRootProps, getInputProps, isDragActive }) => {
             return (
@@ -107,8 +116,8 @@ class Profile extends React.Component {
                 
               >
                 <input {...getInputProps()} />
-                { isDragActive ? <p>Drop files here...</p> 
-                : <Image src={user.image || defaultImage} />
+                { isDragActive ? <Card.Content>Drop files here...</Card.Content> 
+                : <Image src={ blob.size === 0 ? user.image : url } />
 
                 }
               </Card>

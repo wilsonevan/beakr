@@ -1,9 +1,17 @@
 class Api::ContentsController < ApplicationController
-  before_action :set_unit
+  before_action :set_unit, only: [:index]
   before_action :set_content, only: [:show, :update, :destroy]
 
   def index
     render json: @unit.contents
+  end
+
+  def search_contents
+    render( json: Content.search_contents(params[:input]) )
+  end
+
+  def search_contents_not_in_unit
+    render( json: Content.search_contents_not_in_unit(params[:input], params[:unit_id]) )
   end
 
   def show
@@ -11,7 +19,8 @@ class Api::ContentsController < ApplicationController
   end
 
   def create
-    content = @unit.contents.new(content_params)
+    content = Content.new(content_params)
+
     if content.save
       render json: content
     else
@@ -28,7 +37,7 @@ class Api::ContentsController < ApplicationController
   end
 
   def destroy
-    @content.delete
+    @content.destroy
   end
 
   private
@@ -37,7 +46,7 @@ class Api::ContentsController < ApplicationController
   end
 
   def set_content
-    @content = @unit.contents.find(params[:id])
+    @content = Content.find(params[:id])
   end
 
   def content_params
