@@ -4,11 +4,14 @@ import AdminSection from "./AdminSection";
 import styled from "styled-components";
 import AdminControlsNav from "./AdminControlsNav";
 import AddSection from "./AddSection";
+import AdminCourseAttendance from './AdminCourseAttendance';
 
 class AdminCourseControl extends React.Component {
   state = { course: {}, sections: [], selected: "edit" };
 
   componentDidMount() {
+    // axios.get(`/api/get_attendances`, { params: {course_id: this.props.match.params.id} } )
+    //   .then( res => { this.setState( { attendances: res.data } )})
     axios
       .get(`/api/courses/${this.props.match.params.id}`)
       .then(res => {
@@ -19,6 +22,7 @@ class AdminCourseControl extends React.Component {
         this.setState({ sections: res.data });
       })
       .catch(err => console.log(err));
+   
   }
 
   setSelected = selected => {
@@ -47,6 +51,13 @@ class AdminCourseControl extends React.Component {
             addSection={this.addSection}
           />
           {this.state.sections.length > 0 && this.renderSections()}
+        </div>
+      ),
+      attendance: (
+        <div className="section-container">
+          <AdminCourseAttendance 
+            courseId={this.state.course.id}
+          />
         </div>
       )
 
