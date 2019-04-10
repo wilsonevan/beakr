@@ -5,6 +5,8 @@ import AddCourse from "../admin/AddCourse";
 import AddUser from "../admin/AddUser";
 import { Link } from "react-router-dom";
 import NewEnrollment from "../admin/NewEnrollment";
+import CoursesIndex from "../admin/CourseIndex";
+import UserIndex from "../admin/UserIndex";
 import styled from 'styled-components';
 import { ButtonGreen, Bar } from '../../styles/Components';
 import Calendar from '../attendance/Calendar';
@@ -45,25 +47,25 @@ class AdminDashboard extends React.Component {
       case "courses":
         return (
           <>
-            {this.state.toggleNewCourse ? (
+            {this.state.toggleNewCourse 
+            ? (
               <AddCourse
                 toggleNewCourse={this.toggleNewCourse}
                 resetCourseList={this.resetCourseList}
               />
-            ) : (
+              ) 
+            : 
+              (
               <>
-                {this.state.allCourses.map(course => {
-                  return (
-                    <Link to={`/courses/${course.id}`} key={course.id} >
-                      <CourseOptions>
-                        <h3>{course.title} `(admin)`</h3>
-                      </CourseOptions>
-                    </Link>
-                  );
-                })}
-                <ButtonGreen onClick={this.toggleNewCourse} style={{marginTop: '5px'}}>
-                  Add Course
-                </ButtonGreen>
+                <ListHeader>
+                  All Courses
+                  <ButtonGreen 
+                    onClick={this.toggleNewCourse} 
+                    style={{margin: "0 1rem"}}>
+                    Add Course
+                  </ButtonGreen>
+                </ListHeader>
+                <CoursesIndex />
               </>
             )}
           </>         
@@ -94,14 +96,15 @@ class AdminDashboard extends React.Component {
               />
             ) : (
               <>
-                {this.state.users.map(user => {
-                  return (
-                    <div key={user.id}>
-                      {user.first_name} {user.last_name}
-                    </div>
-                  );
-                })}
-                <ButtonGreen onClick={this.toggleNewUser}>Add User</ButtonGreen>
+                <ListHeader>
+                  All Users
+                  <ButtonGreen 
+                    onClick={this.toggleNewUser}
+                    style={{margin: "0 1rem"}}>
+                    Add User
+                  </ButtonGreen>
+                </ListHeader>
+                <UserIndex />
               </>
             )}
           </>
@@ -177,15 +180,16 @@ class AdminDashboard extends React.Component {
   }
 }
 
-const CourseOptions = styled.div`
-  margin-bottom: 10px;
-  margin-left: 2px;
-  color: #23a24d
-
-  :hover {
-    color: #41c36c
-  }
-  
+const ListHeader = styled.h1`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+  font-family: "Poppins";
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 2px;
 `
 
 export default AdminDashboard

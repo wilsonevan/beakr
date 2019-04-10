@@ -8,6 +8,10 @@ class Api::UsersController < ApplicationController
     render json: users
   end
 
+  def search_users
+    render( json: User.search_users(params[:input]))
+  end
+
   def search_users_with_role
     render( json: User.search_users_with_role(params[:input], params[:course_id]) )
   end
