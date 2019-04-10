@@ -6,6 +6,7 @@ import AddUser from "../admin/AddUser";
 import { ButtonGreen } from "../../styles/Components";
 import { Link } from "react-router-dom";
 import NewEnrollment from "../admin/NewEnrollment";
+import CoursesIndex from "../admin/CourseIndex";
 import styled from 'styled-components';
 
 class AdminDashboard extends React.Component {
@@ -44,25 +45,25 @@ class AdminDashboard extends React.Component {
       case "courses":
         return (
           <>
-            {this.state.toggleNewCourse ? (
+            {this.state.toggleNewCourse 
+            ? (
               <AddCourse
                 toggleNewCourse={this.toggleNewCourse}
                 resetCourseList={this.resetCourseList}
               />
-            ) : (
+              ) 
+            : 
+              (
               <>
-                {this.state.allCourses.map(course => {
-                  return (
-                    <Link to={`/courses/${course.id}`} key={course.id} >
-                      <CourseOptions>
-                        <h3>{course.title} `(admin)`</h3>
-                      </CourseOptions>
-                    </Link>
-                  );
-                })}
-                <ButtonGreen onClick={this.toggleNewCourse} style={{marginTop: '5px'}}>
-                  Add Course
-                </ButtonGreen>
+                <ListHeader>
+                  All Courses
+                  <ButtonGreen 
+                    onClick={this.toggleNewCourse} 
+                    style={{margin: "2rem 1rem"}}>
+                    Add Course
+                  </ButtonGreen>
+                </ListHeader>
+                <CoursesIndex />
               </>
             )}
           </>
@@ -171,8 +172,17 @@ const CourseOptions = styled.div`
 
   :hover {
     color: #41c36c
-  }
-  
+  } 
+`
+
+const ListHeader = styled.h1`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins";
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 2px;
 `
 
 export default AdminDashboard
