@@ -14,15 +14,22 @@ PROPS___________________
         ^^ in order for overflow-y scroll to work, the height must be an absolut value (no percentages) 
         ^^ width is set to 100% and height is set to 30rem by default when no prop is passed
     (use only one of render or component)
+    'updateFromParent' this prop can be set to any value, and when that value from the parent is toggled,
+        the searchbar will resubmit its request and obtain new data. (Very useful when you need to
+        force and update, albeit slightly questionable practice)
 
-RESULT_PROP_______
+RESULT_PROP____________
 * The component passed has a 'result' prop that is a reference to the items return from the query.
   Each result is one item.
 
-STYLING_________________
-* wrap the component in a container, and style the height and width of the container
+UPDATE_SEARCH_PROP_____
+* While the 'updateFromParent' prop is used to update the searchbar from the parent component, 
+  the 'updateSearch' function is used to update the searchbar from the child component in the results list.
+  Once a request has been made, call this.props.updateSearch from the component you passed into the
+  render prop to update the searchbar. Make sure you call this function in THE CALLBACK OR .THEN METHOD of
+  a promise, or else the query will likely finish before the prior request updates the database.
 
-    Example) 
+EXAMPLES________________
         // component to be rendered
         const TestLink = ({ result, someProp }) => (
             <Link onClick={() => someProp()} >{result.title}</Link>
@@ -48,6 +55,14 @@ STYLING_________________
             height="20rem"
         />
 
+        // using updateSearch in render prop component//
+          const TestLink = ({ result, deleteSomething, updateSearch }) => {
+            const handleClick = () => {
+              deleteSomething(result.id)
+              .then(() => updateSearch()) <---- calling from callback is important
+            }
+            <Link onClick={() => handleClick()} >{result.title}</Link>
+          }
 
 ////////////////////*/
 
