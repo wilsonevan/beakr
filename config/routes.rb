@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
     resources :users, only: [:index, :update]
     get 'user_courses', to: 'courses#user_courses'
+    post '/search_users', to: '/api/users#search_users'
     post '/search_users_with_role/:course_id', to: '/api/users#search_users_with_role'
     post '/search_staff_enrolled/:id', to: '/api/users#search_staff_enrolled'
     post '/search_students_enrolled/:id', to: '/api/users#search_students_enrolled'

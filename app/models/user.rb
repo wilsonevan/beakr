@@ -10,6 +10,13 @@ class User < ActiveRecord::Base
   has_many :enrollments, dependent: :destroy
   has_many :courses, through: :enrollments
 
+  def self.search_users(input)
+    Course.find_by_sql(["
+      SELECT * FROM users
+      WHERE ( u.first_name ILIKE ? OR u.last_name ILIKE ? )
+      ", "#{input}%", "#{input}%"])
+  end
+
   def self.search_users_with_role(input, course_id)
     User.find_by_sql(["
       SELECT u.*,  
