@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_10_162933) do
+ActiveRecord::Schema.define(version: 2019_04_10_220023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 2019_04_10_162933) do
     t.bigint "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "sequence"
     t.index ["course_id"], name: "index_sections_on_course_id"
   end
 
@@ -75,6 +76,7 @@ ActiveRecord::Schema.define(version: 2019_04_10_162933) do
     t.bigint "assignment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "sequence"
     t.index ["assignment_id"], name: "index_unit_assignments_on_assignment_id"
     t.index ["unit_id"], name: "index_unit_assignments_on_unit_id"
   end
@@ -84,6 +86,7 @@ ActiveRecord::Schema.define(version: 2019_04_10_162933) do
     t.bigint "unit_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "sequence"
     t.index ["content_id"], name: "index_unit_contents_on_content_id"
     t.index ["unit_id"], name: "index_unit_contents_on_unit_id"
   end
@@ -93,6 +96,7 @@ ActiveRecord::Schema.define(version: 2019_04_10_162933) do
     t.bigint "quiz_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "sequence"
     t.index ["quiz_id"], name: "index_unit_quizzes_on_quiz_id"
     t.index ["unit_id"], name: "index_unit_quizzes_on_unit_id"
   end
@@ -102,6 +106,7 @@ ActiveRecord::Schema.define(version: 2019_04_10_162933) do
     t.bigint "section_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "sequence"
     t.index ["section_id"], name: "index_units_on_section_id"
   end
 
