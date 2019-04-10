@@ -32,7 +32,8 @@ class Api::CoursesController < ApplicationController
   end
 
   def destroy
-    @course.destroy
+    @course.destroy()
+    render( json: "Data Deleted")
   end
 
   private
