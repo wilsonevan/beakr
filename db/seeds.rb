@@ -69,4 +69,17 @@ end
   end
 end
 
+19.times do
+  user = User.create(
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    email: Faker::Internet.email,
+    biography: Faker::TvShows::MichaelScott.quote,
+    birth_date: Faker::Date.birthday(18, 65),
+    password: 'password',
+    admin: false
+  )
+end
+
+
 puts 'Planted the seeds'
