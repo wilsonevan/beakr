@@ -19,7 +19,6 @@ class ACAAR extends Component {
         // this.props.handleCreateColumn()
         this.handleNewColumn()
       })
-      .catch( res => {debugger})
   }
 
   handleNewColumn() {
