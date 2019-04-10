@@ -10,6 +10,10 @@ class Api::CoursesController < ApplicationController
     render json: courses
   end
 
+  def search_courses
+    render( json: Course.search_courses(params[:input]) )
+  end
+
   def show
     render json: @course
   end
