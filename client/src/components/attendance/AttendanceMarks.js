@@ -24,12 +24,12 @@ class AttendanceMarks extends React.Component {
 						<p><Icon name='circle' size='small' color='yellow' />Late</p>
 					</div>
 				)
-			default:
-				return (
-					<div className='absentStatus'>
-						<p> <Icon name='circle outline' size='small' /> No Record </p>
-					</div>
-				)
+			// default:
+			// 	return (
+			// 		<div className='absentStatus'>
+			// 			<p> <Icon name='circle outline' size='small' /></p>
+			// 		</div>
+			// 	)
 		}
 	}
 

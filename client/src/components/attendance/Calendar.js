@@ -17,6 +17,11 @@ class Calendar extends React.Component {
 
   componentDidMount() {
     // Get all of the attendance records for this course
+    axios.get('/api/attendances')
+      .then( res => {
+        // debugger
+        this.setState({ attendanceRecords: res.data })
+      })
   }
 
   renderHeader() {
@@ -58,7 +63,7 @@ class Calendar extends React.Component {
   }
 
   renderCells() {
-    const { currentMonth, selectedDate, attendanceView, assignmentsView,  } = this.state;
+    const { currentMonth, selectedDate, attendanceView, attendanceRecords, } = this.state;
     const monthStart = dateFns.startOfMonth(currentMonth);
     const monthEnd = dateFns.endOfMonth(monthStart);
     const startDate = dateFns.startOfWeek(monthStart);
@@ -72,8 +77,22 @@ class Calendar extends React.Component {
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
+
         formattedDate = dateFns.format(day, dateFormat);
         const cloneDay = day;
+
+        // Find today's attendance record
+        const formattedDateFull = dateFns.format(day, 'YYYY-MM-DD')
+        let todaysRecord = '';
+        if (attendanceRecords.length > 0) {
+          attendanceRecords.map(record => {
+            if (record.record_date == formattedDateFull) {
+              todaysRecord = record.attendance_record
+            }
+          })
+        }
+
+        // Push all of the data for each specific day
         days.push(
           <div
             className={`col cell ${
@@ -89,7 +108,7 @@ class Calendar extends React.Component {
             {/* <p>{ this.dailyEvents(day) }</p> */}
             {/* <p className='absentStatus'></p> */}
             { attendanceView ? 
-              <AttendanceMarks attendance={ {record: 'present'} }/>
+              <AttendanceMarks attendance={ {record: todaysRecord} }/>
               :
               null
             }
