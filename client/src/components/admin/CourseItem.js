@@ -19,6 +19,13 @@ const Item = styled.div`
     padding: 1.5rem 1rem;
     border-bottom: 1px solid rgba(100,100,100, 0.1);
     text-align: left;
+    transition-duration: 0.1s;
+    cursor: pointer;
+
+    :hover {
+        color: #0029ff;
+        background-color: #f7f7f7;
+    }
 `
 
 export default CourseItem;
