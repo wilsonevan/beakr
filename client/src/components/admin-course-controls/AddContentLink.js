@@ -25,6 +25,7 @@ const ContentText = styled.button`
   cursor: pointer;
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+  padding-left: 1rem;
 
   :hover {
     color: #0029ff;

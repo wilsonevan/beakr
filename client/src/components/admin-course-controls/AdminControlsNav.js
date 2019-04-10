@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom"
 
 class AdminControlsNav extends React.Component {
   highlightIf = itemName => {
@@ -20,12 +21,9 @@ class AdminControlsNav extends React.Component {
         >
           Edit
         </AdminItem>
-        <AdminItem
-          style={this.highlightIf("view")}
-          onClick={() => this.handleClick("view")}
-        >
-          View
-        </AdminItem>
+        <Link to={`/courses/${this.props.courseId}`} >
+          <AdminItem>View</AdminItem>
+        </Link>
         <AdminItem
           style={this.highlightIf("students")}
           onClick={() => this.handleClick("students")}
