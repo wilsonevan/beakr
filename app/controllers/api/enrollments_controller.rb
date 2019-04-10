@@ -25,11 +25,16 @@ class Api::EnrollmentsController < ApplicationController
   end
 
   def destroy
-    @enrollment.destroy
+    @enrollment.destroy()
+    render( json: "Data Deleted" )
   end
 
   private
   def enrollment_params
     params.require(:enrollment).permit(:role, :user_id, :course_id)
+  end
+
+  def set_enrollment
+    @enrollment = Enrollment.find_by_user_and_course(params[:user_id], params[:course_id])
   end
 end
