@@ -7,11 +7,13 @@ import AddContentLink from "./AddContentLink";
 import ContentBlock from "./ContentBlock";
 import AddAssignmentLink from "./AddAssignmentLink";
 import AssignmentBlock from "./AssignmentBlock";
+import AddQuizLink from "./AddQuizLink";
+import QuizBlock from "./QuizBlock";
 import EditUnitTitle from "./EditUnitTitle";
 import anime from "animejs";
 
 class UnitControls extends React.Component {
-  state = { editing: false, unit: this.props.unit, contents: [], assignments: [], };
+  state = { editing: false, unit: this.props.unit, contents: [], assignments: [], quizzes: [], };
 
   formRef = React.createRef();
 
@@ -28,6 +30,11 @@ class UnitControls extends React.Component {
         this.setState({ assignments: res.data })
       })
       .catch(err => console.log(err));
+    axios
+      .get(`/api/units/${this.props.unit.id}/quizzes`)
+      .then(res => {
+        this.setState({ quizzes: res.data })
+      })
   }
 
   componentWillUnmount() {
@@ -50,10 +57,25 @@ class UnitControls extends React.Component {
     axios
       .post(`/api/unit_assignments`, { assignment_id, unit_id: this.props.unit.id })
       .then(res => {
+        return axios.get(`/api/units/${this.props.unit.id}/assignments`);
+      })
+      .then(res => {
         this.setState({ assignments: res.data });
       })
       .catch(err => console.log(err));
   };
+
+  createUnitQuiz = quiz_id => {
+    axios
+      .post(`/api/unit_quizzes`, { quiz_id, unit_id: this.props.unit.id})
+      .then(res => {
+        return axios.get(`/api/units/${this.props.unit.id}/quizzes`);
+      })
+      .then(res => {
+        this.setState({ quizzes: res.data });
+      })
+      .catch(err => console.log(err));
+  }
 
   deleteUnitContent = content_id => {
     const unit_id = this.props.unit.id;
@@ -83,12 +105,30 @@ class UnitControls extends React.Component {
       .catch(err => console.log(err));
   }
 
+  deleteUnitQuiz = quiz_id => {
+    const unit_id = this.props.unit.id;
+    axios
+    .delete(`/api/unit/${unit_id}/quizzes/${quiz_id}/unit_quiz`)
+    .then(res => {
+      console.log(res.data);
+      const quizzes = this.state.quizzes.filter(quiz => {
+        if (quiz.id !== quiz_id) return this.renderUnitQuizzes;
+      });
+      this.setState({ quizzes });
+    })
+    .catch(err => console.log(err));
+  }
+
   AddContentLinkWithProps = () => {
     return <AddContentLink createUnitContent={this.createUnitContent} />;
   };
 
   AddAssignmentLinkWithProps = () => {
     return <AddAssignmentLink createUnitAssignment={this.createUnitAssignment} />;
+  }
+
+  AddQuizLinkWithProps = () => {
+    return <AddQuizLink createUnitQuiz={this.createUnitQuiz} />;
   }
 
   toggleEditing = () => {
@@ -149,6 +189,20 @@ class UnitControls extends React.Component {
           unit={this.props.unit}
           index={index}
           deleteUnitAssignment={this.deleteUnitAssignment}
+        />
+      );
+    });
+  };
+
+  renderUnitQuizzes = () => {
+    return this.state.quizzes.map((quiz, index) => {
+      return (
+        <QuizBlock
+          key={quiz.id}
+          quiz={quiz}
+          unit={this.props.unit}
+          index={index}
+          deleteUnitQuiz={this.deleteUnitQuiz}
         />
       );
     });
@@ -229,6 +283,7 @@ class UnitControls extends React.Component {
                     {...props}
                     createUnitContent={this.createUnitContent}
                     unit={unit}
+                    // Going to add switch statment for determining searchbar soon.
                   />
                 )}
                 placeholder="Search Contents To Add ..."
@@ -245,6 +300,7 @@ class UnitControls extends React.Component {
               </ContentHeading>
               {this.renderUnitContents()}
               {this.renderUnitAssignments()}
+              {this.renderUnitQuizzes()}
             </FormBottomRight>
           </FormBottom>
         </UnitForm>

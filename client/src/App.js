@@ -8,10 +8,12 @@ import Register from "./components/Register";
 import Dashboard from "./components/dashboard/Dashboard";
 import ContentView from "./components/ContentView";
 import AssignmentView from "./components/AssignmentView";
+import QuizView from "./components/QuizView";
 import Profile from "./components/profile/Profile";
 import FetchUser from "./components/FetchUser";
 import AddContent from "./components/admin-course-controls/AddContent";
 import AddAssignment from "./components/admin-course-controls/AddAssignment";
+import AddQuiz from "./components/admin-course-controls/AddQuiz";
 import AddUser from "./components/admin/AddUser";
 import AddCourse from "./components/admin/AddCourse";
 import { Switch, Route } from "react-router-dom";
@@ -55,6 +57,8 @@ const App = () => (
           />
           <ProtectedRoute exact path="/assignments/new" component={AddAssignment} />
           <ProtectedRoute exact path="/assignments/:id" component={AssignmentView} />
+          <ProtectedRoute exact path="/quizzes/new" component={AddQuiz} />
+          <ProtectedRoute exact path="/quizzes/:id" component={QuizView} />
           <ProtectedRoute exact path="/users/new" component={AddUser} />
           <Route component={NoMatch} />
         </Switch>
