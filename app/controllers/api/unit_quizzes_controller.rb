@@ -5,7 +5,7 @@ class Api::UnitQuizzesController < ApplicationController
 
   def create
     unit_quiz = UnitQuiz.new(unit_quiz_params)
-    duplicate = Unit.find(params[:unit_id]).quizzes.select() {|old_quizzes| 
+    duplicate = Unit.find(params[:unit_id]).quizzes.select() {|old_quiz| 
         unit_quiz.quiz_id === old_quiz.id 
     }
 
