@@ -5,14 +5,32 @@ import dateFns from "date-fns";
 import { Table, Header, Image, } from 'semantic-ui-react';
 
 class AdminCourseAttendance extends React.Component {
-	state = { attendanceData: [], }
+	state = { attendanceData: [], dates: [], }
+
+	identifyDates() {
+		const { attendanceData, } = this.state;
+		let datesArray = []
+
+		if (attendanceData.length > 0){
+			attendanceData[0].attendances.map( record => {
+				datesArray.push(record.record_date)
+			})
+		}
+		return datesArray
+		
+	}
+
 
 	componentDidMount() {
 		axios.get(`/api/get_attendances`, { params: {course_id: this.props.courseId} } )
 			.then( res => { 
 				this.setState( { attendanceData: res.data } )
 			})
+			.then( res => { // Saves the list of the dates used for the first row
+				this.setState({ dates: this.identifyDates(),  })	
+			})
 	}
+
 
 	handleAttendanceChange(record, currentUser) {
 		const oldStatus = record.attendance_record;
@@ -34,9 +52,7 @@ class AdminCourseAttendance extends React.Component {
 		// Make the Axios PUT request to update the DB accordingly, and then update state
 		axios.put(`/api/attendances/${record.id}`, {...record, attendance_record: newStatus, })
 			.then( res => {
-				// debugger
 				let newData = attendanceData.map( user => {
-					// debugger
 					if (user.user_id == currentUser.user_id ) {
 						user.attendances = user.attendances.map( record => {
 							if (record.id == res.data.id) {
@@ -55,23 +71,79 @@ class AdminCourseAttendance extends React.Component {
 			})
 	}
 
-	renderDays() {
-		const { attendanceData, } = this.state;
+	// isInColumn(record) {
 
-		// Identify all dates with records, currently based only on the First User
-		if (attendanceData.length > 0){
-			return attendanceData[0].attendances.map( record => {
+	// }
 
-				// Format dates for user readability
-				const columnDate = dateFns.format(dateFns.parse(record.record_date), 'MM/DD/YY');
 
+	handleColumnDelete(columnDate) {
+		let { attendanceData, dates, } = this.state;
+
+		axios.delete('/api/destroy_column', { params: {course_id: this.props.courseId, record_date: columnDate, } } )
+			.then( res => {
+				
+				// First, filter out records with the date to be deleted
+				let newData = attendanceData.map( user => {
+					user.attendances = user.attendances.filter( record => {
+						// This statement determines what will actually filter out deleted records
+						if (record.record_date == columnDate) {
+							return false;
+						}
+						else {
+							return true;
+						}
+					})
+					return user
+				})
+				
+				// Then, filter out the date from the dates array
+				// This updates the first row, and the options row at the bottom
+				let newDates = dates.filter( date => {
+					if (date == columnDate) {
+						return false;
+					}
+					else {
+						return true;
+					}
+				})
+
+				this.setState( { attendanceData: newData, dates: newDates, });
+			})
+	}
+
+
+	renderColumnOptions() {
+		const { dates, } = this.state;
+
+		if (dates.length > 0){
+			return dates.map( columnDate => {
 				// Finally, return the header cell with each date
 				return(
-					<Table.HeaderCell textAlign='center'>{columnDate}</Table.HeaderCell>
+					<Table.Cell textAlign='center' onClick={() => this.handleColumnDelete(columnDate)} style={{cursor: 'pointer', }} >
+						<div style={{borderTop: '1px solid red', padding: '5px',}}>
+							Delete Day
+						</div>
+					</Table.Cell>
 				)
 			})
 		} 
 	}
+	
+
+	renderDays() {
+		const { dates, } = this.state;
+		
+		// Identify all dates with records, currently based only on the First User
+		if (dates.length > 0){
+			return dates.map( columnDate => {
+				// Finally, return the header cell with each date
+				return(
+					<Table.HeaderCell textAlign='center'>{dateFns.format(dateFns.parse(columnDate), 'MM/DD/YY')}</Table.HeaderCell>
+				)
+			})
+		} 
+	}
+
 
 	renderAttendance() {
 		const { attendanceData, } = this.state;
@@ -86,6 +158,7 @@ class AdminCourseAttendance extends React.Component {
 									{user.first_name} {user.last_name}
 								</Header>
 							</Table.Cell>
+
 							{/* Loop through all of the days for each of the users */}
 							{user.attendances.map( record => {
 								const status = record.attendance_record;
@@ -119,6 +192,10 @@ class AdminCourseAttendance extends React.Component {
 						</Table.Row>
 					)
 				})}
+				<Table.Row>
+					<Table.Cell textAlign='center'></Table.Cell>
+					{this.renderColumnOptions()}
+				</Table.Row>
 			</Table.Body>
 		)
 	}
@@ -147,9 +224,5 @@ const AttendanceContainer = styled.div`
   padding: 1rem;
   overflow-x: scroll;
 `;
-
-// const ClickableCell = styled.div`
-// 	cursor: pointer;
-// `;
 
 export default AdminCourseAttendance

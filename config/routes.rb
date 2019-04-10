@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     end
     
     get 'get_attendances', to: '/api/attendances#get_attendances'
+    delete 'destroy_column', to: '/api/attendances#destroy_column'
 
     resources :contents, only: [:show, :create, :update, :destroy]
     resources :assignments, only: [:show, :create, :update, :destroy]
