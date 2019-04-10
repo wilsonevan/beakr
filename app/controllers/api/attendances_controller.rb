@@ -1,5 +1,5 @@
 class Api::AttendancesController < ApplicationController
-  before_action :set_enrollment, only: [:create]
+  # before_action :set_enrollment, only: [:create]
   before_action :set_attendance, only: [:update]
   before_action :set_course, only: [:get_attendances]
 
@@ -32,8 +32,13 @@ class Api::AttendancesController < ApplicationController
   end
 
   def create
-    attendance = Attendance.create_attendances(attendance_params, @enrollment.id)
-    render json: error
+    @course = Course.find(params[:course_id])
+
+    @course.enrollments.all.each do |enrollment|
+      enrollment.attendances.create(attendance_params)
+    end
+
+    # get_attendances()
   end
 
   def update
@@ -47,7 +52,11 @@ class Api::AttendancesController < ApplicationController
   private
 
   def attendance_params
-    params.require(:attendance).permit(:record_date, :attendance_record, :enrollment_id)
+    params.require(:attendance).permit(:record_date, :attendance_record)
+  end
+
+  def newatt_params
+    params.require(:attendance).permit(:record_date)
   end
 
   def set_enrollment

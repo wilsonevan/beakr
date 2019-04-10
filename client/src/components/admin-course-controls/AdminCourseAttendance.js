@@ -3,6 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import dateFns from "date-fns";
 import { Table, Header, Image, } from 'semantic-ui-react';
+import ACAAR from './AdminCourseAttendanceAddRecord';
 
 class AdminCourseAttendance extends React.Component {
 	state = { attendanceData: [], }
@@ -12,6 +13,13 @@ class AdminCourseAttendance extends React.Component {
 			.then( res => { 
 				this.setState( { attendanceData: res.data } )
 			})
+	}
+
+	handleCreateColumn() {
+		axios.get(`/api/get_attendances`, { params: {course_id: this.props.courseId} } )
+		.then( res => { 
+			this.setState( { attendanceData: res.data } )
+		})
 	}
 
 	handleAttendanceChange(record, currentUser) {
@@ -77,6 +85,7 @@ class AdminCourseAttendance extends React.Component {
 		const { attendanceData, } = this.state;
 		return(
 			<Table.Body>
+				{/* <ACAAR/> */}
 				{attendanceData.map( user => {
 					return(
 						<Table.Row>
@@ -137,6 +146,7 @@ class AdminCourseAttendance extends React.Component {
 					</Table.Header>
 					{this.renderAttendance()}
 				</Table>
+				<ACAAR attendanceData={this.state.attendanceData} course_id={this.props.courseId} handleCreateColumn={this.handleCreateColumn}/>
 			</AttendanceContainer>
 		)
 	}
