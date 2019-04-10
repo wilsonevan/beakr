@@ -30,6 +30,10 @@ Rails.application.routes.draw do
     end
     
     get 'get_attendances', to: '/api/attendances#get_attendances'
+
+    resources :contents, only: [:show, :create, :update, :destroy]
+    resources :assignments, only: [:show, :create, :update, :destroy]
+
     post 'contents/search', to: '/api/contents#search_contents'
     post 'contents/search/:unit_id', to: '/api/contents#search_contents_not_in_unit'
     post 'assignments/search', to: '/api/assignments#search_assignments'
