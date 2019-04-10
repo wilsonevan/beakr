@@ -22,6 +22,7 @@ import AdminCourseControls from "./components/admin-course-controls/AdminCourseC
 import AdminEditSection from "./components/admin-course-controls/AdminEditSection";
 import styled from "styled-components";
 import { GlobalStyles } from "./styles/GlobalStyles";
+import AddUnitStuffNav from "./components/admin-course-controls/AddUnitStuffNav";
 
 const App = () => (
   <>
@@ -48,6 +49,7 @@ const App = () => (
             component={AdminEditSection}
           />
           <ProtectedRoute exact path="/contents/new" component={AddContent} />
+          <ProtectedRoute exact path="/newunitstuff" component={AddUnitStuffNav} />
           <ProtectedRoute
             exact
             path="/contents/:id"
