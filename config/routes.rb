@@ -6,7 +6,8 @@ Rails.application.routes.draw do
     resources :enrollments, only: [:create, :update]
     delete '/users/:user_id/courses/:course_id/enrollments', to: '/api/enrollments#destroy'
 
-
+    resources :attendances
+    
     resources :users, only: [:index, :update]
     get 'user_courses', to: 'courses#user_courses'
     post '/search_users_with_role/:course_id', to: '/api/users#search_users_with_role'
@@ -18,26 +19,35 @@ Rails.application.routes.draw do
 
     resources :unit_assignments, only: [:index, :create, :destroy]
     delete '/unit/:unit_id/assignments/:assignment_id/unit_assignment', to: '/api/unit_assignments#delete_by_unit_and_assignment'
+
+    resources :unit_quizzes, only: [:index, :create, :destroy]
+    delete '/unit/:unit_id/quizzes/:quiz_id/unit_quiz', to: '/api/unit_quizzes#delete_by_unit_and_quiz'
     
     resources :courses do
       resources :sections
     end
-  
+    
     resources :sections, only: [] do
       resources :units
     end
-  
+    
     resources :units, only: [] do
       resources :contents, only: [:index]
       resources :assignments, only: [:index]
+      resources :quizzes, only: [:index]
     end
+    
+    get 'get_attendances', to: '/api/attendances#get_attendances'
 
     resources :contents, only: [:show, :create, :update, :destroy]
     resources :assignments, only: [:show, :create, :update, :destroy]
+    resources :quizzes, only: [:show, :create, :update, :destroy]
 
     post 'contents/search', to: '/api/contents#search_contents'
     post 'contents/search/:unit_id', to: '/api/contents#search_contents_not_in_unit'
     post 'assignments/search', to: '/api/assignments#search_assignments'
     post 'assignments/search/:unit_id', to: '/api/assignments#search_assignments_not_in_unit'
+    post 'quizzes/search', to: '/api/quizzes#search_quizzes'
+    post 'quizzes/search/:unit_id', to: '/api/quizzes#search_quizzes_not_in_unit'
   end
 end

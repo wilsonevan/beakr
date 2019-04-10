@@ -3,10 +3,11 @@ import { Menu, Segment, Header } from "semantic-ui-react";
 import axios from "axios";
 import AddCourse from "../admin/AddCourse";
 import AddUser from "../admin/AddUser";
-import { ButtonGreen } from "../../styles/Components";
 import { Link } from "react-router-dom";
 import NewEnrollment from "../admin/NewEnrollment";
 import styled from 'styled-components';
+import { ButtonGreen, Bar } from '../../styles/Components';
+import Calendar from '../attendance/Calendar';
 
 class AdminDashboard extends React.Component {
   state = {
@@ -65,13 +66,25 @@ class AdminDashboard extends React.Component {
                 </ButtonGreen>
               </>
             )}
-          </>
-        );
-      case "calendar":
-        return <p>you are an admin fro calendar</p>;
-      case "grade":
-        return <p>you are an admin for grades</p>;
-      case "users":
+          </>         
+        )
+      case 'calendar':
+        return (<Calendar />)
+      case 'grade':
+        return (<p>you are an admin for grades</p>)
+      case 'attendance':
+          return this.state.allCourses.map( course => {
+              return (
+              <>
+                <Bar style={{marginBottom: '10px'}}>
+                  <h4>{course.title}</h4>
+                </Bar>
+                {/* <AdminAttendance course={course} /> */}
+              </>
+              )
+
+            })
+      case 'users':
         return (
           <>
             {this.state.toggleNewUser ? (

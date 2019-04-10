@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
 
   has_many :enrollments, dependent: :destroy
   has_many :courses, through: :enrollments
+  has_many :attendances, through: :enrollments
 
   def self.search_users_with_role(input, course_id)
     User.find_by_sql(["
@@ -48,4 +49,5 @@ class User < ActiveRecord::Base
       ORDER BY u.first_name
     ", course_id, "#{input}%", "#{input}%" ])
   end
+
 end
