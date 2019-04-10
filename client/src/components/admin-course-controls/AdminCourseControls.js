@@ -68,6 +68,7 @@ class AdminCourseControl extends React.Component {
           <AdminControlsNav
             selected={selected}
             setSelected={this.setSelected}
+            courseId={this.props.match.params.id}
           />
           {this.renderContent()}
         </AdminControls>
