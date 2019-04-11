@@ -39,7 +39,7 @@ state = { active: 'Content'}
     const { active } = this.state
     return (
       <>
-      <h1>Add {active}</h1>
+      <CourseHeading>Add {active}</CourseHeading>
       <NavContainer style={{marginBottom: 0}}>
         <AdminItem
           style={this.highlightIf("Content")}
@@ -122,6 +122,12 @@ const SectionHeading = styled.h2`
   color: #23a24d;
   letter-spacing: 2px;
   width: 80%;
+`;
+
+const CourseHeading = styled.h2`
+  color: #23a24d;
+  text-align: center;
+  font-family: "Poppins";
 `;
 
 
