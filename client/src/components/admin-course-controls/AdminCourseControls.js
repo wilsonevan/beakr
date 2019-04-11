@@ -59,6 +59,11 @@ class AdminCourseControl extends React.Component {
             courseId={this.state.course.id}
           />
         </div>
+      ),
+      students: (
+        <div className="section-container">
+          Student grades and access to their info will go here
+        </div>
       )
 
       //   view: this.props.history.push(`/courses/${this.props.match.params.id}`);
