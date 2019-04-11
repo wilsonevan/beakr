@@ -153,16 +153,6 @@ class AdminDashboard extends React.Component {
             active={activeItem === "enrollments"}
             onClick={this.handleItemClick}
           />
-          <Menu.Item
-            name="calendar"
-            active={activeItem === "calendar"}
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item
-            name="grade"
-            active={activeItem === "grade"}
-            onClick={this.handleItemClick}
-          />
           <Menu.Menu position="right">
             <Link to="/profile">
               <Menu.Item>Profile</Menu.Item>
