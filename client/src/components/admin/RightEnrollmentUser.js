@@ -27,15 +27,11 @@ const UserContainer = styled.div`
 `
 
 const MinusContainer = styled.button`
-    position: relative;
-    height: 1.25rem;
-    width: 1.25rem;
-    padding: 0;
-    background-color: #0029ff;
-    color: white;
+    background-color: transparent;
+    font-size: 1.25rem;
+    font-weight: 600;
     border: none;
-    border-radius: 100px;
-    margin-left: 0.5rem;
+    color: #0029ff;
     cursor: pointer;
 `
 

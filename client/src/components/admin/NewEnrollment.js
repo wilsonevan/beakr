@@ -187,22 +187,30 @@ const SearchHeading = styled.div`
 `
 const SearchHeadingText = styled.h2`
   margin: 0;
-  color: #23a24d;
+  color: white;
+  font-family: "Poppins";
+  letter-spacing: 2px;
 `
 
 const RightContainer = styled.div`
-  width: 45%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 47.5%;
+  padding: 0.75rem;
+  background-color: #23a24d;
+  border-radius: 10px;
 `
 const LeftContainer = styled.div`
-  width: 45%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 47.5%;
+  padding: 0.75rem;
+  background-color: #23a24d;
+  border-radius: 10px;
 `
 
 
