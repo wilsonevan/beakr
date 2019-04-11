@@ -6,6 +6,8 @@ import axios from 'axios';
 class AddContent extends React.Component {
   state = { title: '', body: '', };
 
+  divRef = React.createRef()
+
   handleChange = (e) => {
     const { name, value } = e.target
     this.setState({ [name]: value })
@@ -13,6 +15,8 @@ class AddContent extends React.Component {
 
   handleQuillChange = (value) => {
     this.setState({ body: value })
+    console.log(this.divRef)
+    this.divRef.current.focus()
   }
 
   handleSubmit = (e) => {
@@ -42,8 +46,12 @@ class AddContent extends React.Component {
           <ReactQuill 
             name='body'
             value={body}
-            onChange={this.handleQuillChange} 
-          />
+            onChange={this.handleQuillChange}
+            style={{minHeight: "30rem"}} 
+            ref={this.divRef}
+          >
+            <div style={{minHeight: "30rem"}}/>
+          </ReactQuill>
           <Form.Button content='Submit' />
         </Form>
       </>
