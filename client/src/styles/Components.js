@@ -50,7 +50,7 @@ const ButtonGreen = styled.button`
   border: none;
   border-radius: 5px;
   padding: 1rem 1.8rem;
-  background-color: #E1a359;
+  background-color: #23a24d;
   color: white;
   letter-spacing: 1.5px;
   cursor: pointer;
