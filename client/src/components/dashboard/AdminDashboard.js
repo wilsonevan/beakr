@@ -70,10 +70,6 @@ class AdminDashboard extends React.Component {
             )}
           </>         
         )
-      case 'calendar':
-        return (<Calendar />)
-      case 'grade':
-        return (<p>you are an admin for grades</p>)
       case 'attendance':
           return this.state.allCourses.map( course => {
               return (
