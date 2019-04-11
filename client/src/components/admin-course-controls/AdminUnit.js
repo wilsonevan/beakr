@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 class AdminUnit extends React.Component {
-  state = { contents: [], assignments: [], opened: false, loaded: false };
+  state = { contents: [], assignments: [], quizzes: [], opened: false, loaded: false };
 
   unitModelsRef = React.createRef();
 
@@ -21,7 +21,13 @@ class AdminUnit extends React.Component {
       .then(res => {
         this.setState({ assignments: res.data})
       })
-      .catch(err=>console.log(err));
+      .catch(err => console.log(err));
+    axios
+      .get(`/api/units/${this.props.unit.id}/quizzes`)
+      .then(res => {
+        this.setState({ quizzes: res.data})
+      })
+      .catch(err => console.log(err))
     this.setState({ loaded: true })
   }
 
@@ -85,17 +91,15 @@ class AdminUnit extends React.Component {
     });
   };
   renderQuizzes = () => {
-    const { quizzes } = this.props.unit;
-    return quizzes.map((quiz, index) => {
+    return this.state.quizzes.map((quiz, index) => {
       return (
         <Link
-          to={`/dashboard`}
-          className="unit-models-item opened-model-item"
+          to={`/quizzes/${quiz.id}`}
           key={index}
         >
           <UnitModelsItem>
             <UnitModelsIcon className="models-icon" />
-            Quiz
+            {quiz.title}
           </UnitModelsItem>
         </Link>
       );
@@ -127,7 +131,7 @@ class AdminUnit extends React.Component {
             {unit.title}
             <UnitModelsContainer ref={this.unitModelsRef}>
               {this.renderContents()}
-              {/* {this.renderQuizzes()} */}
+              {this.renderQuizzes()}
               {this.renderAssignments()}
             </UnitModelsContainer>
           </OpenedSectionUnit>

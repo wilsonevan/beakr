@@ -18,8 +18,12 @@ class NewEnrollment extends React.Component {
       .catch(res => console.log(res));
   }
 
-  toggleTeacher = () => {
-    this.setState({ teacher: !this.state.teacher });
+  setTeacherTrue = () => {
+    this.setState({ teacher: true });
+  }
+
+  setTeacherFalse = () => {
+    this.setState({ teacher: false });
   }
 
   updateSearch = () => {
@@ -142,8 +146,8 @@ class NewEnrollment extends React.Component {
               <SearchHeading>
                 <SearchHeadingText>Enrolled Users</SearchHeadingText>
                 <div>
-                  <TeacherButton onClick={() => this.toggleTeacher()} style={teacher? {backgroundColor: "#1577ff"} : null} > Teachers </TeacherButton>
-                  <TeacherButton onClick={() => this.toggleTeacher()} style={!teacher? {backgroundColor: "#1577ff"} : null} > Students </TeacherButton>
+                  <TeacherButton onClick={() => this.setTeacherTrue()} style={teacher? {backgroundColor: "#1577ff"} : null} > Teachers </TeacherButton>
+                  <TeacherButton onClick={() => this.setTeacherFalse()} style={!teacher? {backgroundColor: "#1577ff"} : null} > Students </TeacherButton>
                 </div>
               </SearchHeading>
               { this.renderSearch() }
@@ -183,22 +187,30 @@ const SearchHeading = styled.div`
 `
 const SearchHeadingText = styled.h2`
   margin: 0;
-  color: #23a24d;
+  color: white;
+  font-family: "Poppins";
+  letter-spacing: 2px;
 `
 
 const RightContainer = styled.div`
-  width: 45%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 47.5%;
+  padding: 0.75rem;
+  background-color: #23a24d;
+  border-radius: 10px;
 `
 const LeftContainer = styled.div`
-  width: 45%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 47.5%;
+  padding: 0.75rem;
+  background-color: #23a24d;
+  border-radius: 10px;
 `
 
 

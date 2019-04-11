@@ -1,11 +1,10 @@
 import React from 'react';
-import ReactQuill from 'react-quill';
 import DateTimePicker from 'react-datetime-picker';
 import { Header, Button } from 'semantic-ui-react';
 import axios from 'axios';
 
-class AddAssignment extends React.Component {
-  state = {title: '', body: '', due_date: '', }
+class AddQuiz extends React.Component {
+  state = { title: '', due_date: '', }
 
   handleChange = (e) => {
     const { name, value } = e.target
@@ -16,31 +15,29 @@ class AddAssignment extends React.Component {
     this.setState({ due_date: value })
   }
 
-  handleQuillChange = (value) => {
-    this.setState({ body: value })
-  }
-  
-  handleSubmit = () => {
-    const assignment = {...this.state}
-    axios.post('/api/assignments', assignment)
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const quiz = {...this.state}
+    axios.post('/api/quizzes', quiz)
       .then( res => {
-        this.props.history.push(`/assignments/${res.data.id}`)
+        this.props.history.push(`/quizzes/${res.data.id}`)
       })
   }
 
   render() {
-    const { title, body, due_date } = this.state
+    const { title, due_date } = this.state
 
     return (
       <>
-        <input
-          label='Assignment Title'
+        <Header style={{color: '23A24D'}} content='Add Quiz' />
+        <input 
+          label='Quiz Title'
           required
           autoFocus
           name='title'
           value={title}
-          placeholder='Title'
           onChange={this.handleChange}
+          placeholder='Title'
         />
         <DateTimePicker 
           label='Due Date'
@@ -49,15 +46,10 @@ class AddAssignment extends React.Component {
           disableClock
           onChange={this.handleDateChange}
         />
-        <ReactQuill 
-          name='body'
-          value={body}
-          onChange={this.handleQuillChange} 
-        />
         <Button content='Submit' onClick={this.handleSubmit} />
       </>
     )
   }
 }
 
-export default AddAssignment
+export default AddQuiz
