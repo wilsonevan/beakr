@@ -28,8 +28,6 @@ class StudentDashboard extends React.Component {
         return (<Calendar />)
       case 'grade':
         return (<p>Dont fail</p>)
-      case 'attendance':
-        return (<p>Dont play hooky</p>)
       default:
         return (<p>This is a list of your courses</p>)
     }
@@ -71,11 +69,6 @@ class StudentDashboard extends React.Component {
             <Menu.Item
               name='grade'
               active={activeItem === 'grade'}
-              onClick={this.handleItemClick}
-              />
-            <Menu.Item
-              name='attendance'
-              active={activeItem === 'attendance'}
               onClick={this.handleItemClick}
               />
             <Menu.Menu position='right'>
