@@ -27,11 +27,35 @@ Content.destroy_all
           content_id: content.id,
         )
       end
+      1.times do
+        assignment = Assignment.create(
+          title: Faker::Science.element,
+          body: Faker::Movies::Ghostbusters.quote,
+          due_date: Faker::Date.forward(60),
+          kind: "github",
+        )
+
+        UnitAssignment.create(
+          unit_id: unit.id,
+          assignment_id: assignment.id
+        )
+      end
+      1.times do
+        quiz = Quiz.create(
+          title: Faker::Currency.name,
+          due_date: Faker::Date.forward(60),
+        )
+
+        UnitQuiz.create(
+          unit_id: unit.id,
+          quiz_id: quiz.id
+        )
+      end
     end
   end
 end
 
-19.times do
+18.times do
   user = User.create(
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
@@ -68,6 +92,25 @@ end
         record_date: '2019-04-10'
       )
     end
+  end
+end
+
+1.times do
+  user = User.create(
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    email: 'student@test.com',
+    biography: Faker::TvShows::MichaelScott.quote,
+    birth_date: Faker::Date.birthday(18, 65),
+    password: 'password',
+    admin: false
+  )
+  1.times do
+    e = Enrollment.create(
+      user_id: user.id,
+      course_id: Course.first.id,
+      role: 'student'
+    )
     1.times do 
       Attendance.create(
         enrollment_id: e.id,
