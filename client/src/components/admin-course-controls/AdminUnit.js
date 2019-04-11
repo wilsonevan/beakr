@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 class AdminUnit extends React.Component {
-  state = { contents: [], assignments: [], opened: false, loaded: false };
+  state = { contents: [], assignments: [], quizzes: [], opened: false, loaded: false };
 
   unitModelsRef = React.createRef();
 
@@ -21,7 +21,13 @@ class AdminUnit extends React.Component {
       .then(res => {
         this.setState({ assignments: res.data})
       })
-      .catch(err=>console.log(err));
+      .catch(err => console.log(err));
+    axios
+      .get(`/api/units/${this.props.unit.id}/quizzes`)
+      .then(res => {
+        this.setState({ quizzes: res.data})
+      })
+      .catch(err => console.log(err))
     this.setState({ loaded: true })
   }
 
@@ -30,13 +36,15 @@ class AdminUnit extends React.Component {
   }
 
   handleClick = event => {
+    const { contents, assignments, quizzes } = this.state
+
     if (!this.state.opened && this.state.loaded) {
       this.setState({ opened: !this.state.opened }, () => {
         anime({
           targets: this.unitModelsRef.current,
           opacity: "1",
-          height: `${this.state.contents.length * 1.6}rem`,
-          duration: this.state.contents.length * 40,
+          height: `${(contents.length + assignments.length + quizzes.length) * 1.6}rem`,
+          duration: (contents.length + assignments.length + quizzes.length) * 40,
           easing: "linear"
         });
         anime({
@@ -44,9 +52,9 @@ class AdminUnit extends React.Component {
           height: `${parseFloat(
             this.props.unitContainerRef.current.style.height
           ) +
-            this.state.contents.length * 1.75}rem`,
+            (contents.length + assignments.length + quizzes.length) * 1.75}rem`,
           easing: "linear",
-          duration: this.state.contents.length * 40
+          duration: (contents.length + assignments.length + quizzes.length) * 40
         });
       });
     } else {
@@ -54,7 +62,7 @@ class AdminUnit extends React.Component {
         targets: this.unitModelsRef.current,
         opacity: "0",
         height: 0,
-        duration: this.state.contents.length * 40,
+        duration: (contents.length + assignments.length + quizzes.length) * 40,
         easing: "linear"
       });
       anime({
@@ -62,9 +70,9 @@ class AdminUnit extends React.Component {
         height: `${parseFloat(
           this.props.unitContainerRef.current.style.height
         ) -
-          this.state.contents.length * 1.75}rem`,
+          (contents.length + assignments.length + quizzes.length) * 1.75}rem`,
         easing: "linear",
-        duration: this.state.contents.length * 45
+        duration: (contents.length + assignments.length + quizzes.length) * 45
       }).finished.then(() => this.setState({ opened: !this.state.opened }));
     }
   };
@@ -85,17 +93,15 @@ class AdminUnit extends React.Component {
     });
   };
   renderQuizzes = () => {
-    const { quizzes } = this.props.unit;
-    return quizzes.map((quiz, index) => {
+    return this.state.quizzes.map((quiz, index) => {
       return (
         <Link
-          to={`/dashboard`}
-          className="unit-models-item opened-model-item"
+          to={`/quizzes/${quiz.id}`}
           key={index}
         >
           <UnitModelsItem>
             <UnitModelsIcon className="models-icon" />
-            Quiz
+            {quiz.title}
           </UnitModelsItem>
         </Link>
       );
@@ -127,7 +133,7 @@ class AdminUnit extends React.Component {
             {unit.title}
             <UnitModelsContainer ref={this.unitModelsRef}>
               {this.renderContents()}
-              {/* {this.renderQuizzes()} */}
+              {this.renderQuizzes()}
               {this.renderAssignments()}
             </UnitModelsContainer>
           </OpenedSectionUnit>
