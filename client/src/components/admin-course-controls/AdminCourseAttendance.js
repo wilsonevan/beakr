@@ -3,23 +3,9 @@ import axios from "axios";
 import styled from "styled-components";
 import dateFns from "date-fns";
 import { Table, Header, Image, Form, Button, } from 'semantic-ui-react';
-// import ACAAR from './AdminCourseAttendanceAddRecord';
 
 class AdminCourseAttendance extends React.Component {
 	state = { attendanceData: [], dates: [], recordDate: '', newRecords: [], courseId: '' }
-
-	identifyDates() {
-		const { attendanceData, } = this.state;
-		let datesArray = []
-
-		if (attendanceData.length > 0){
-			attendanceData[0].attendances.map( record => {
-				datesArray.push(record.record_date)
-			})
-		}
-		return datesArray
-	}
-
 
 	componentDidMount() {
 		const {courseId} = this.props
@@ -33,9 +19,7 @@ class AdminCourseAttendance extends React.Component {
 	}
 
 	handleCreateColumn(recordDate, courseId) {
-
 		let newData = []
-
 		axios.post(`/api/attendances`, {record_date: recordDate, course_id: courseId , } )
       .then( res => {
 				newData = res.data
@@ -85,10 +69,6 @@ class AdminCourseAttendance extends React.Component {
 				this.setState( { attendanceData: newData });
 			})
 	}
-
-	// isInColumn(record) {
-
-	// }
 
 
 	handleColumnDelete(columnDate) {
@@ -145,6 +125,19 @@ class AdminCourseAttendance extends React.Component {
 	}
 	
 
+	identifyDates() {
+		const { attendanceData, } = this.state;
+		let datesArray = []
+
+		if (attendanceData.length > 0){
+			attendanceData[0].attendances.map( record => {
+				datesArray.push(record.record_date)
+			})
+		}
+		return datesArray
+	}
+
+
 	renderDays() {
 		const { dates, } = this.state;
 		
@@ -164,7 +157,6 @@ class AdminCourseAttendance extends React.Component {
 		const { attendanceData, } = this.state;
 		return(
 			<Table.Body>
-				{/* <ACAAR/> */}
 				{attendanceData.map( user => {
 					return(
 						<Table.Row>
@@ -175,32 +167,31 @@ class AdminCourseAttendance extends React.Component {
 								</Header>
 							</Table.Cell>
 
-							{/* Loop through all of the days for each of the users */}
+							{/* Loop through all of the days with an attendance record, for each user */}
 							{user.attendances.map( record => {
 								const status = record.attendance_record;
-							
 								switch(status) {
 									case 'present':
 										return(
-											<Table.Cell textAlign='center' positive onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer'}} >
+											<Table.Cell textAlign='center' positive onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer', userSelect: 'none', }} >
 													{status}
 											</Table.Cell>
 										)
 									case 'absent':
 										return(
-											<Table.Cell textAlign='center' negative onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer'}} >
+											<Table.Cell textAlign='center' negative onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer', userSelect: 'none', }} >
 													{status}
 											</Table.Cell>
 										)
 									case 'late':
 										return(
-											<Table.Cell textAlign='center' warning onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer'}} >
+											<Table.Cell textAlign='center' warning onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer', userSelect: 'none', }} >
 													{status}
 											</Table.Cell>
 										)
 									default:
 										return(
-											<Table.Cell onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer'}}>
+											<Table.Cell onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer', userSelect: 'none', }}>
 											</Table.Cell>
 										)
 								}
@@ -216,13 +207,13 @@ class AdminCourseAttendance extends React.Component {
 		)
 	}
 
+
 	handleSubmit = (e) => {
     e.preventDefault();
     const { recordDate, courseId } = this.state
-		// const courseId = attendanceData[0].course_id
-		// debugger
     this.handleCreateColumn(recordDate, courseId)
   }
+
 
   handleChange = (e) => {
     const { name, value } = e.target;
@@ -247,7 +238,6 @@ class AdminCourseAttendance extends React.Component {
 	}
 	
 
-	// The challenge with rendering the table is that you must render it by each row, and therefore by each user's attendance record
 	render() {
 		return (
 			<AttendanceContainer>
@@ -261,8 +251,6 @@ class AdminCourseAttendance extends React.Component {
 					</Table.Header>
 					{this.renderAttendance()}
 				</Table>
-				
-				{/* <ACAAR attendanceData={this.state.attendanceData} course_id={this.props.courseId} handleCreateColumn={this.handleCreateColumn}/> */}
 			</AttendanceContainer>
 		)
 	}

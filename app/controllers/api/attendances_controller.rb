@@ -8,6 +8,8 @@ class Api::AttendancesController < ApplicationController
     render json: current_user.attendances.all 
   end
 
+
+  # Move bulk of this code to a model method (fat model, skinny controllers)
   def get_attendances
 
     # This loop rejects all users from the attendance data, who are not students of the desired course
