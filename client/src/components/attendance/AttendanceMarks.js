@@ -36,10 +36,8 @@ class AttendanceMarks extends React.Component {
 	render() {
 		return (
 			<div>
-				{/* {this.chooseMarks(this.props.attendance.record)} */}
+				{this.chooseMarks(this.props.attendance.record)}
 			</div>
-
-			
 		)
 	}
 }
