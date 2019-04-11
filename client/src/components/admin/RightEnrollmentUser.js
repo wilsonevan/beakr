@@ -16,6 +16,7 @@ const UserContainer = styled.div`
     align-items: center;
     width: 100%;
     padding: 0.5rem;
+    color: rgba(0,0,0,0.65);
     border-bottom: 1px solid rgba(100,100,100, 0.1);
     cursor: pointer;
     transition-duration: 0.1s;
