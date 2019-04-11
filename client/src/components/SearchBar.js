@@ -184,7 +184,6 @@ const SearchInput = styled.input`
   color: grey;
   border-radius: 5px;
   border: 1px solid #bdbdbd;
-  z-index: 10;
   font-size: 1.25rem;
 `;
 
