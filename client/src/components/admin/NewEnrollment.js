@@ -18,8 +18,12 @@ class NewEnrollment extends React.Component {
       .catch(res => console.log(res));
   }
 
-  toggleTeacher = () => {
-    this.setState({ teacher: !this.state.teacher });
+  setTeacherTrue = () => {
+    this.setState({ teacher: true });
+  }
+
+  setTeacherFalse = () => {
+    this.setState({ teacher: false });
   }
 
   updateSearch = () => {
@@ -142,8 +146,8 @@ class NewEnrollment extends React.Component {
               <SearchHeading>
                 <SearchHeadingText>Enrolled Users</SearchHeadingText>
                 <div>
-                  <TeacherButton onClick={() => this.toggleTeacher()} style={teacher? {backgroundColor: "#1577ff"} : null} > Teachers </TeacherButton>
-                  <TeacherButton onClick={() => this.toggleTeacher()} style={!teacher? {backgroundColor: "#1577ff"} : null} > Students </TeacherButton>
+                  <TeacherButton onClick={() => this.setTeacherTrue()} style={teacher? {backgroundColor: "#1577ff"} : null} > Teachers </TeacherButton>
+                  <TeacherButton onClick={() => this.setTeacherFalse()} style={!teacher? {backgroundColor: "#1577ff"} : null} > Students </TeacherButton>
                 </div>
               </SearchHeading>
               { this.renderSearch() }
