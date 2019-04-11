@@ -3,6 +3,7 @@ import { Menu, Segment, Header } from "semantic-ui-react";
 import axios from "axios";
 import AddCourse from "../admin/AddCourse";
 import AddUser from "../admin/AddUser";
+import AddUnitMaterial from "../admin-course-controls/AddUnitMaterial";
 import { Link } from "react-router-dom";
 import NewEnrollment from "../admin/NewEnrollment";
 import CoursesIndex from "../admin/CourseIndex";
@@ -111,6 +112,8 @@ class AdminDashboard extends React.Component {
         );
       case "enrollments":
         return <NewEnrollment />;
+      case "materials":
+        return <AddUnitMaterial />;
       default:
         return <p>You are currently not enrolled in any courses</p>;
     }
@@ -151,6 +154,11 @@ class AdminDashboard extends React.Component {
           <Menu.Item
             name="enrollments"
             active={activeItem === "enrollments"}
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            name="materials"
+            active={activeItem === "materials"}
             onClick={this.handleItemClick}
           />
           <Menu.Item
