@@ -5,7 +5,7 @@ class Api::UnitAssignmentsController < ApplicationController
 
   def create
     unit_assignment = UnitAssignment.new(unit_assignment_params)
-    duplicate = Unit.find(params[:unit_id]).assignments.select() {|old_assignments| 
+    duplicate = Unit.find(params[:unit_id]).assignments.select() {|old_assignment| 
         unit_assignment.assignment_id === old_assignment.id 
     }
 
@@ -23,7 +23,7 @@ class Api::UnitAssignmentsController < ApplicationController
 
   def delete_by_unit_and_assignment
     unit_id = Unit.find(params[:unit_id]).id
-    unit_assignment = Assignment.find(params[:assignment_id]).unit_assigments.select() {|unit_assignment|
+    unit_assignment = Assignment.find(params[:assignment_id]).unit_assignments.select() {|unit_assignment|
         unit_assignment.unit_id == unit_id
     }
 

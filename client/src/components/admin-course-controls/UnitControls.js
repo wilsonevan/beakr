@@ -13,7 +13,8 @@ import EditUnitTitle from "./EditUnitTitle";
 import anime from "animejs";
 
 class UnitControls extends React.Component {
-  state = { editing: false, unit: this.props.unit, contents: [], assignments: [], quizzes: [], };
+
+  state = { editing: false, unit: this.props.unit, contents: [], assignments: [], quizzes: [], search: "contents" };
 
   formRef = React.createRef();
 
@@ -139,7 +140,7 @@ class UnitControls extends React.Component {
             targets: this.formRef.current
           })
           .add({
-            height: "33rem",
+            height: "36rem",
             easing: "linear",
             duration: 100
           })
@@ -208,6 +209,64 @@ class UnitControls extends React.Component {
     });
   };
 
+  toggleSearchBar = (e) => {
+    const {value} = e.target
+    this.setState({ search: value })
+  }
+
+  renderSearchBar = () => {
+    const { unit } = this.props
+
+    switch (this.state.search) {
+      case "contents":
+        return (
+          <SearchBar
+            route={`/api/contents/search/${unit.id}`}
+            render={props => (
+              <AddContentLink
+                  {...props}
+                  createUnitContent={this.createUnitContent}
+                  unit={unit}
+              />
+            )}
+            placeholder="Search Contents To Add ..."
+            width="100%"
+          />
+        )
+      case "assignments":
+        return (
+          <SearchBar
+            route={`/api/assignments/search/${unit.id}`}
+            render={props => (
+              <AddAssignmentLink
+                {...props}
+                createUnitAssignment={this.createUnitAssignment}
+                unit={unit}
+              />
+            )}
+            placeholder="Search Assignments To Add ..."
+            width="100%"
+          />
+        )
+      case "quizzes":
+        return (
+          <SearchBar
+            // route={`/api/quizzes/search/${unit.id}`}
+            // render={props => (
+            //   <AddQuizLink
+            //     {...props}
+            //     createUnitQuiz={this.createUnitQuiz}
+            //     unit={unit}
+            //   />
+            // )}
+            placeholder="Search Quizzes To Add ..."
+            width="100%"
+          />
+        )
+    }
+  }
+
+
   render() {
     const { unit, updateUnit, deleteUnit } = this.props;
     if (!this.state.editing)
@@ -232,6 +291,8 @@ class UnitControls extends React.Component {
                   padding: "0.5rem 0.75rem",
                   marginLeft: "0.5rem"
                 }}
+                value='contents'
+                onClick={this.toggleSearchBar}
               >
                 Contents
               </ButtonBlue>
@@ -240,6 +301,8 @@ class UnitControls extends React.Component {
                   padding: "0.5rem 0.75rem",
                   marginLeft: "0.5rem"
                 }}
+                value='assignments'
+                onClick={this.toggleSearchBar}
               >
                 Assignments
               </ButtonBlue>
@@ -248,6 +311,8 @@ class UnitControls extends React.Component {
                   padding: "0.5rem 0.75rem",
                   marginLeft: "0.5rem"
                 }}
+                value='quizzes'
+                onClick={this.toggleSearchBar}
               >
                 Quizzes
               </ButtonBlue>
@@ -276,19 +341,9 @@ class UnitControls extends React.Component {
           </FormTop>
           <FormBottom>
             <FormBottomLeft>
-              <SearchBar
-                route={`/api/contents/search/${this.props.unit.id}`}
-                render={props => (
-                  <AddContentLink
-                    {...props}
-                    createUnitContent={this.createUnitContent}
-                    unit={unit}
-                    // Going to add switch statment for determining searchbar soon.
-                  />
-                )}
-                placeholder="Search Contents To Add ..."
-                width="100%"
-              />
+
+              {this.renderSearchBar()}
+
             </FormBottomLeft>
             <FormBottomRight>
               <ContentHeading>
