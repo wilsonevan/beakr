@@ -251,14 +251,14 @@ class UnitControls extends React.Component {
       case "quizzes":
         return (
           <SearchBar
-            // route={`/api/quizzes/search/${unit.id}`}
-            // render={props => (
-            //   <AddQuizLink
-            //     {...props}
-            //     createUnitQuiz={this.createUnitQuiz}
-            //     unit={unit}
-            //   />
-            // )}
+            route={`/api/quizzes/search/${unit.id}`}
+            render={props => (
+              <AddQuizLink
+                {...props}
+                createUnitQuiz={this.createUnitQuiz}
+                unit={unit}
+              />
+            )}
             placeholder="Search Quizzes To Add ..."
             width="100%"
           />

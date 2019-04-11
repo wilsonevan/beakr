@@ -2,6 +2,7 @@ import React from 'react'
 import AddContent from './AddContent';
 import styled from 'styled-components'
 import AddAssignment from './AddAssignment';
+import AddQuiz from './AddQuiz';
 
 
 class AddUnitStuffNav extends React.Component {
@@ -22,10 +23,13 @@ state = { active: 'Content'}
     const { active, } = this.state
     switch (active) {
       case "Content":
-        return <AddContent />
+        return <AddContent history={this.props.history} />
         break
       case "Assignment":
-        return <AddAssignment />
+        return <AddAssignment history={this.props.history}/>
+        break
+      case "Quiz":
+        return <AddQuiz history={this.props.history}/>
         break
     }
   }
