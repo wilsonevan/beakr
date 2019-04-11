@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 class Unit extends React.Component {
-  state = { contents: [], opened: false, loaded: false };
+  state = { contents: [], assignments: [], quizzes: [], opened: false, loaded: false };
 
   unitModelsRef = React.createRef();
 
@@ -13,9 +13,21 @@ class Unit extends React.Component {
     axios
       .get(`/api/units/${this.props.unit.id}/contents`)
       .then(res => {
-        this.setState({ contents: res.data, loaded: true });
+        this.setState({ contents: res.data, });
       })
       .catch(err => console.log(err));
+    axios
+      .get(`/api/units/${this.props.unit.id}/assignments`)
+      .then(res => {
+        this.setState({ assignments: res.data, })
+      })
+      .catch(err => console.log(err));
+    axios
+      .get(`/api/units/${this.props.unit.id}/quizzes`)
+      .then(res => {
+        this.setState({ quizzes: res.data, })
+      })
+    this.setState({ loaded: true })
   }
 
   componentWillUnmount() {
@@ -78,30 +90,30 @@ class Unit extends React.Component {
     });
   };
   renderQuizzes = () => {
-    const { quizzes } = this.props.unit;
-    return quizzes.map((quiz, index) => {
+    return this.state.quizzes.map((quiz, index) => {
       return (
         <Link
-          to={`/dashboard`}
-          className="unit-models-item opened-model-item"
+          to={`/quizzes/${quiz.id}`}
           key={index}
         >
           <UnitModelsItem>
             <UnitModelsIcon className="models-icon" />
-            Quiz
+            {quiz.title}
           </UnitModelsItem>
         </Link>
       );
     });
   };
   renderAssignments = () => {
-    const { assignments } = this.props.unit;
-    return assignments.map((assignment, index) => {
+    return this.state.assignments.map((assignment, index) => {
       return (
-        <Link as={UnitModelsItem} to={`/dashboard`} key={index}>
+        <Link 
+          to={`/assignments/${assignment.id}`} 
+          key={index}
+        >
           <UnitModelsItem>
             <UnitModelsIcon className="models-icon" />
-            Assignment
+            {assignment.title}
           </UnitModelsItem>
         </Link>
       );

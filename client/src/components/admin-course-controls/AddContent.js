@@ -29,7 +29,6 @@ class AddContent extends React.Component {
 
     return(
       <>
-        <Header style={{color: '#23A24D'}} content="Add Content" />
         <Form onSubmit={this.handleSubmit}>
           <Form.Input
             label='Content Title'
