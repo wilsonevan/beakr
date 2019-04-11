@@ -6,7 +6,7 @@ const LeftEnrollmentUser = ({result, createEnrollment, selectedCourseId, updateS
         return (
             <EnrolledUserContainer>
                 { result.first_name } { result.last_name } 
-                <RoleText> ({ result.role }) </RoleText>
+                <RoleText> { result.role } </RoleText>
             </EnrolledUserContainer>
         )
     else return (
@@ -23,6 +23,7 @@ const UserContainer = styled.div`
     align-items: center;
     width: 100%;
     padding: 0.5rem;
+    color: rgba(0,0,0,0.65);
     border-bottom: 1px solid rgba(100,100,100, 0.1);
     cursor: pointer;
     transition-duration: 0.1s;
@@ -38,19 +39,16 @@ const EnrolledUserContainer = styled.div`
     align-items: center;
     width: 100%;
     padding: 0.5rem;
+    color: rgba(0,0,0,0.65);
     border-bottom: 1px solid rgba(100,100,100, 0.1);
 `
 
 const PlusContainer = styled.button`
-    position: relative;
-    height: 1.25rem;
-    width: 1.25rem;
-    padding: 0;
-    background-color: #23a24d;
-    color: white;
+    background-color: transparent;
+    font-size: 1.25rem;
+    font-weight: 600;
     border: none;
-    border-radius: 100px;
-    margin-left: 0.5rem;
+    color: #23a24d;
     cursor: pointer;
 `
 

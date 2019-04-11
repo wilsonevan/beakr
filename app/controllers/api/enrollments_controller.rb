@@ -9,7 +9,11 @@ class Api::EnrollmentsController < ApplicationController
 
   def create
     enrollment = Enrollment.new(enrollment_params)
-    if enrollment.save
+    duplicate = Course.find(params[:course_id]).enrollments.select() {|old_enrollment| 
+        enrollment.user_id === old_enrollment.id 
+    }
+
+    if(duplicate.length == 0 && enrollment.save)
       render json: enrollment
     else
       render json: enrollment.errors, status: 422

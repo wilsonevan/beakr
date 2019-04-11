@@ -182,9 +182,9 @@ const SearchInput = styled.input`
   padding-left: 1rem;
   background-color: #f7f7f7;
   color: grey;
-  border-radius: 5px;
-  border: 1px solid #bdbdbd;
-  z-index: 10;
+  border: none;
+  // border-radius: 5px;
+  // border: 1px solid #bdbdbd;
   font-size: 1.25rem;
 `;
 
