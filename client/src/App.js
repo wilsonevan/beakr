@@ -11,8 +11,6 @@ import AssignmentView from "./components/AssignmentView";
 import QuizView from "./components/QuizView";
 import Profile from "./components/profile/Profile";
 import FetchUser from "./components/FetchUser";
-import AddContent from "./components/admin-course-controls/AddContent";
-import AddAssignment from "./components/admin-course-controls/AddAssignment";
 import AddQuiz from "./components/admin-course-controls/AddQuiz";
 import AddUser from "./components/admin/AddUser";
 import AddCourse from "./components/admin/AddCourse";
@@ -24,6 +22,7 @@ import AdminCourseControls from "./components/admin-course-controls/AdminCourseC
 import AdminEditSection from "./components/admin-course-controls/AdminEditSection";
 import styled from "styled-components";
 import { GlobalStyles } from "./styles/GlobalStyles";
+import AddUnitMaterial from "./components/admin-course-controls/AddUnitMaterial";
 
 const App = () => (
   <>
@@ -49,13 +48,12 @@ const App = () => (
             path="/admin/courses/:course_id/sections/:id"
             component={AdminEditSection}
           />
-          <ProtectedRoute exact path="/contents/new" component={AddContent} />
+          <ProtectedRoute exact path="/addunitmaterial" component={AddUnitMaterial} />
           <ProtectedRoute
             exact
             path="/contents/:id"
             component={ContentView}
           />
-          <ProtectedRoute exact path="/assignments/new" component={AddAssignment} />
           <ProtectedRoute exact path="/assignments/:id" component={AssignmentView} />
           <ProtectedRoute exact path="/quizzes/new" component={AddQuiz} />
           <ProtectedRoute exact path="/quizzes/:id" component={QuizView} />

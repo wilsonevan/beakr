@@ -221,7 +221,7 @@ class UnitControls extends React.Component {
             <div>
               <ButtonGreen
                 as="a"
-                href="/contents/new"
+                href="/addunitmaterial"
                 target="_blank"
                 style={{ padding: "0.325rem 0.75rem" }}
               >
