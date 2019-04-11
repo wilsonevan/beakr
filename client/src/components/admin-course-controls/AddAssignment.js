@@ -33,7 +33,6 @@ class AddAssignment extends React.Component {
 
     return (
       <>
-        <Header style={{color: '#23A24D'}} content="Add Assignment" />
         <input
           label='Assignment Title'
           required
