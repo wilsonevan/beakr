@@ -1,5 +1,4 @@
 class Api::AttendancesController < ApplicationController
-  # before_action :set_enrollment, only: [:create, ]
   before_action :set_attendance, only: [:update, :destroy, ]
   before_action :set_course, only: [:get_attendances, :destroy_column, ]
   before_action :set_date, only: [:destroy_column, ]
@@ -7,7 +6,6 @@ class Api::AttendancesController < ApplicationController
   def index
     render json: current_user.attendances.all 
   end
-
 
   # Move bulk of this code to a model method (fat model, skinny controllers)
   def get_attendances
@@ -31,7 +29,6 @@ class Api::AttendancesController < ApplicationController
         }
     }
     render( json: attendanceinfo )
-    
   end
 
   def create
@@ -68,14 +65,6 @@ class Api::AttendancesController < ApplicationController
 
   def attendance_params
     params.require(:attendance).permit(:record_date, :attendance_record, :enrollment_id)
-  end
-
-  def newatt_params
-    params.require(:attendance).permit(:record_date)
-  end
-
-  def set_enrollment
-    @enrollment = Enrollment.find(params[:enrollment_id])
   end
 
   def set_attendance
