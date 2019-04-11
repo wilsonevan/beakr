@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2019_04_11_070858) do
   create_table "attendances", force: :cascade do |t|
     t.bigint "enrollment_id"
     t.date "record_date"
-    t.string "attendance_record"
+    t.string "attendance_record", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["enrollment_id"], name: "index_attendances_on_enrollment_id"
