@@ -25,7 +25,7 @@ class UserIndex extends React.Component {
 const UsersContainer = styled.div`
     width: 75%;
     margin: 0 auto 3rem auto;
-    padding: 2rem;
+    padding: 1.25rem;
     text-align: center;
     background-color: #23a24d;
     border-radius: 10px;
