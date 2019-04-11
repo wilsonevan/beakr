@@ -24,7 +24,7 @@ const ButtonBlue = styled.button`
   padding: 1rem 1.8rem;
   // background-color: #2979ff;
   // background-color: #4b7bec;
-  background-color: #0029ff;
+  background-color:   #0029ff;
   color: white;
   letter-spacing: 1.5px;
   cursor: pointer;
