@@ -36,13 +36,15 @@ class AdminUnit extends React.Component {
   }
 
   handleClick = event => {
+    const { contents, assignments, quizzes } = this.state
+
     if (!this.state.opened && this.state.loaded) {
       this.setState({ opened: !this.state.opened }, () => {
         anime({
           targets: this.unitModelsRef.current,
           opacity: "1",
-          height: `${this.state.contents.length * 1.6}rem`,
-          duration: this.state.contents.length * 40,
+          height: `${(contents.length + assignments.length + quizzes.length) * 1.6}rem`,
+          duration: (contents.length + assignments.length + quizzes.length) * 40,
           easing: "linear"
         });
         anime({
@@ -50,9 +52,9 @@ class AdminUnit extends React.Component {
           height: `${parseFloat(
             this.props.unitContainerRef.current.style.height
           ) +
-            this.state.contents.length * 1.75}rem`,
+            (contents.length + assignments.length + quizzes.length) * 1.75}rem`,
           easing: "linear",
-          duration: this.state.contents.length * 40
+          duration: (contents.length + assignments.length + quizzes.length) * 40
         });
       });
     } else {
@@ -60,7 +62,7 @@ class AdminUnit extends React.Component {
         targets: this.unitModelsRef.current,
         opacity: "0",
         height: 0,
-        duration: this.state.contents.length * 40,
+        duration: (contents.length + assignments.length + quizzes.length) * 40,
         easing: "linear"
       });
       anime({
@@ -68,9 +70,9 @@ class AdminUnit extends React.Component {
         height: `${parseFloat(
           this.props.unitContainerRef.current.style.height
         ) -
-          this.state.contents.length * 1.75}rem`,
+          (contents.length + assignments.length + quizzes.length) * 1.75}rem`,
         easing: "linear",
-        duration: this.state.contents.length * 45
+        duration: (contents.length + assignments.length + quizzes.length) * 45
       }).finished.then(() => this.setState({ opened: !this.state.opened }));
     }
   };

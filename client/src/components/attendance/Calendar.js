@@ -4,6 +4,7 @@ import './Calendar.css';
 import OptionsMenu from './OptionsMenu'
 import AttendanceMarks from "./AttendanceMarks";
 import axios from "axios";
+import { Icon, } from 'semantic-ui-react';
 
 class Calendar extends React.Component {
   state = {
@@ -31,14 +32,16 @@ class Calendar extends React.Component {
       <div className="header row flex-middle">
         <div className="col col-start">
           <div className="icon" onClick={this.prevMonth}>
-            chevron_left
+            <Icon name='chevron left' />
           </div>
         </div>
         <div className="col col-center">
           <span>{dateFns.format(this.state.currentMonth, dateFormat)}</span>
         </div>
         <div className="col col-end" onClick={this.nextMonth}>
-          <div className="icon">chevron_right</div>
+          <div className="icon">
+            <Icon name='chevron right' />
+          </div>
         </div>
       </div>
     );

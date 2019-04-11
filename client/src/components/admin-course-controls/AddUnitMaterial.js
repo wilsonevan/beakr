@@ -2,6 +2,7 @@ import React from 'react'
 import AddContent from './AddContent';
 import styled from 'styled-components'
 import AddAssignment from './AddAssignment';
+import AddQuiz from './AddQuiz';
 
 
 class AddUnitStuffNav extends React.Component {
@@ -22,10 +23,13 @@ state = { active: 'Content'}
     const { active, } = this.state
     switch (active) {
       case "Content":
-        return <AddContent />
+        return <AddContent history={this.props.history} />
         break
       case "Assignment":
-        return <AddAssignment />
+        return <AddAssignment history={this.props.history}/>
+        break
+      case "Quiz":
+        return <AddQuiz history={this.props.history}/>
         break
     }
   }
@@ -35,7 +39,7 @@ state = { active: 'Content'}
     const { active } = this.state
     return (
       <>
-      <h1>Add {active}</h1>
+      <CourseHeading>Add {active}</CourseHeading>
       <NavContainer style={{marginBottom: 0}}>
         <AdminItem
           style={this.highlightIf("Content")}
@@ -118,6 +122,12 @@ const SectionHeading = styled.h2`
   color: #23a24d;
   letter-spacing: 2px;
   width: 80%;
+`;
+
+const CourseHeading = styled.h2`
+  color: #23a24d;
+  text-align: center;
+  font-family: "Poppins";
 `;
 
 
