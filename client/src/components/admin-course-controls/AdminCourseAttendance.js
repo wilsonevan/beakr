@@ -2,11 +2,11 @@ import React from 'react'
 import axios from "axios";
 import styled from "styled-components";
 import dateFns from "date-fns";
-import { Table, Header, Image, } from 'semantic-ui-react';
-import ACAAR from './AdminCourseAttendanceAddRecord';
+import { Table, Header, Image, Form, Button, } from 'semantic-ui-react';
+// import ACAAR from './AdminCourseAttendanceAddRecord';
 
 class AdminCourseAttendance extends React.Component {
-	state = { attendanceData: [], dates: [], }
+	state = { attendanceData: [], dates: [], recordDate: '', newRecords: [], courseId: '' }
 
 	identifyDates() {
 		const { attendanceData, } = this.state;
@@ -18,26 +18,34 @@ class AdminCourseAttendance extends React.Component {
 			})
 		}
 		return datesArray
-		
 	}
 
 
 	componentDidMount() {
+		const {courseId} = this.props
 		axios.get(`/api/get_attendances`, { params: {course_id: this.props.courseId} } )
 			.then( res => { 
-				this.setState( { attendanceData: res.data } )
+				this.setState( { attendanceData: res.data, courseId: courseId } )
 			})
 			.then( res => { // Saves the list of the dates used for the first row
 				this.setState({ dates: this.identifyDates(),  })	
 			})
 	}
 
-	handleCreateColumn() {
-		axios.get(`/api/get_attendances`, { params: {course_id: this.props.courseId} } )
-		.then( res => { 
-			this.setState( { attendanceData: res.data } )
-		})
-	}
+	handleCreateColumn(recordDate, courseId) {
+
+		let newData = []
+
+		axios.post(`/api/attendances`, {record_date: recordDate, course_id: courseId , } )
+      .then( res => {
+				newData = res.data
+        this.setState({ attendanceData: newData, })
+			})
+			.then( res => { // Saves the list of the dates used for the first row
+				this.setState({ dates: this.identifyDates(),  })	
+			})
+		}
+			
 
 	handleAttendanceChange(record, currentUser) {
 		const oldStatus = record.attendance_record;
@@ -207,12 +215,43 @@ class AdminCourseAttendance extends React.Component {
 			</Table.Body>
 		)
 	}
+
+	handleSubmit = (e) => {
+    e.preventDefault();
+    const { recordDate, courseId } = this.state
+		// const courseId = attendanceData[0].course_id
+		// debugger
+    this.handleCreateColumn(recordDate, courseId)
+  }
+
+  handleChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value, }); 
+  }
+
+
+	renderForm() {
+		const { recordDate, } = this.state
+    return (
+      <Form onSubmit={this.handleSubmit}>
+        <Form.Input
+        type='date'
+        label="Add Date"
+        name="recordDate"
+        value={recordDate}
+        onChange={this.handleChange}
+        />
+        <Button>Add Day</Button>
+      </Form>
+    );
+	}
 	
 
 	// The challenge with rendering the table is that you must render it by each row, and therefore by each user's attendance record
 	render() {
 		return (
 			<AttendanceContainer>
+				{this.renderForm()}
 				<Table celled selectable color='green'>
 					<Table.Header>
 						<Table.Row>
@@ -222,7 +261,8 @@ class AdminCourseAttendance extends React.Component {
 					</Table.Header>
 					{this.renderAttendance()}
 				</Table>
-				<ACAAR attendanceData={this.state.attendanceData} course_id={this.props.courseId} handleCreateColumn={this.handleCreateColumn}/>
+				
+				{/* <ACAAR attendanceData={this.state.attendanceData} course_id={this.props.courseId} handleCreateColumn={this.handleCreateColumn}/> */}
 			</AttendanceContainer>
 		)
 	}

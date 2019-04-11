@@ -1,5 +1,5 @@
 class Api::AttendancesController < ApplicationController
-  before_action :set_enrollment, only: [:create, ]
+  # before_action :set_enrollment, only: [:create, ]
   before_action :set_attendance, only: [:update, :destroy, ]
   before_action :set_course, only: [:get_attendances, :destroy_column, ]
   before_action :set_date, only: [:destroy_column, ]
@@ -34,12 +34,11 @@ class Api::AttendancesController < ApplicationController
 
   def create
     @course = Course.find(params[:course_id])
-
-    @course.enrollments.all.each do |enrollment|
+    @course.enrollments.each do |enrollment|
       enrollment.attendances.create(attendance_params)
     end
 
-    # get_attendances()
+    get_attendances()
   end
 
   def update
@@ -66,7 +65,7 @@ class Api::AttendancesController < ApplicationController
   private
 
   def attendance_params
-    params.require(:attendance).permit(:record_date, :attendance_record)
+    params.require(:attendance).permit(:record_date, :attendance_record, :enrollment_id)
   end
 
   def newatt_params

@@ -12,18 +12,14 @@ class ACAAR extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { record_date, attendance_record, } = this.state
-    axios.post(`/api/attendances`, {record_date: record_date}, { params: {course_id: this.props.course_id}, } )
-      .then( res => {
-        // this.setState({ newRecords: res.data })
-        // this.props.handleCreateColumn()
-        this.handleNewColumn()
-      })
+    const { record_date, } = this.state
+    const courseId = this.props.course_id;
+    this.props.handleCreateColumn(record_date, courseId)
   }
 
-  handleNewColumn() {
+  handleNewColumn(id) {
     // debugger
-    this.props.handleCreateColumn()
+    this.props.handleCreateColumn(id)
   }
 
   handleChange = (e) => {
