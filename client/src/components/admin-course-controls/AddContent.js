@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
-import { Header, Form, } from 'semantic-ui-react';
+import { Form, } from 'semantic-ui-react';
+import { ButtonGreen, } from '../../styles/Components';
 import axios from 'axios';
 
 class AddContent extends React.Component {
@@ -33,7 +34,10 @@ class AddContent extends React.Component {
 
     return(
       <>
-        <Form onSubmit={this.handleSubmit}>
+        <Form 
+          onSubmit={this.handleSubmit}
+          style={{height: '35rem'}}
+        >
           <Form.Input
             label='Content Title'
             required
@@ -46,13 +50,12 @@ class AddContent extends React.Component {
           <ReactQuill 
             name='body'
             value={body}
-            onChange={this.handleQuillChange}
-            style={{minHeight: "30rem"}} 
-            ref={this.divRef}
-          >
-            <div style={{minHeight: "30rem"}}/>
-          </ReactQuill>
-          <Form.Button content='Submit' />
+            onChange={this.handleQuillChange} 
+            style={{height: '25rem', paddingBottom: '4rem'}}
+          />
+          <ButtonGreen>
+            Submit
+          </ButtonGreen>
         </Form>
       </>
     )
