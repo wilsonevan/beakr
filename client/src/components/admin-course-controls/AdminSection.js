@@ -5,6 +5,7 @@ import styled from "styled-components";
 import AdminUnit from "./AdminUnit";
 import { ButtonBlue } from "../../styles/Components";
 import { Link } from "react-router-dom";
+import { Icon } from "semantic-ui-react";
 
 class AdminSection extends React.Component {
   state = {
@@ -41,7 +42,7 @@ class AdminSection extends React.Component {
       this.setState({ opened: !this.state.opened }, () => {
         anime({
           targets: this.unitContainerRef.current,
-          height: `${this.state.units.length * 2.25}rem`,
+          height: `${this.state.units.length * 2.75}rem`,
           duration: `${this.state.units.length * 50}`,
           easing: "linear"
         });
@@ -97,49 +98,49 @@ class AdminSection extends React.Component {
     if (this.state.opened) {
       return (
         <>
-          <Section
-            style={{ marginBottom: "0.5rem" }}
-            onClick={this.handleClick}
-            ref={this.sectionRef}
-          >
-            <SectionTitle>
-              {loaded && units.length === 0 && "(No Units)"} {title}
-            </SectionTitle>
-            <SectionIcon>
-              <Link
-                to={`/admin/courses/${this.props.section.course_id}/sections/${
-                  this.props.section.id
-                }`}
-              >
-                <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
-              </Link>
-            </SectionIcon>
-          </Section>
-          <UnitsContainer
-            ref={this.unitContainerRef}
-            className="units-container"
-          >
-            {this.renderUnits()}
-          </UnitsContainer>
+            <Section
+              onClick={this.handleClick}
+              ref={this.sectionRef}
+              style={{marginBottom: "0"}}
+            >
+              <SectionTitle>
+                {loaded && units.length === 0 && "(No Units)"} {title}
+              </SectionTitle>
+              <SectionIcon>
+                <Link
+                  to={`/admin/courses/${this.props.section.course_id}/sections/${
+                    this.props.section.id
+                  }`}
+                >
+                  <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
+                </Link>
+              </SectionIcon>
+            </Section>
+            <UnitsContainer
+              ref={this.unitContainerRef}
+              className="units-container"
+            >
+              {this.renderUnits()}
+            </UnitsContainer>
         </>
       );
     } else {
       return (
         <>
-          <Section ref={this.sectionRef} onClick={this.handleClick}>
-            <SectionTitle>
-              {loaded && units.length === 0 && "(No Units)"} {title}
-            </SectionTitle>
-            <SectionIcon>
-              <Link
-                to={`/admin/courses/${this.props.section.course_id}/sections/${
-                  this.props.section.id
-                }`}
-              >
-                <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
-              </Link>
-            </SectionIcon>
-          </Section>
+            <Section ref={this.sectionRef} onClick={this.handleClick}>
+              <SectionTitle>
+                {loaded && units.length === 0 && "(No Units)"} {title}
+              </SectionTitle>
+              <SectionIcon>
+                <Link
+                  to={`/admin/courses/${this.props.section.course_id}/sections/${
+                    this.props.section.id
+                  }`}
+                >
+                  <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
+                </Link>
+              </SectionIcon>
+            </Section>
         </>
       );
     }
@@ -180,11 +181,17 @@ const SectionIcon = styled.div`
 const UnitsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 2rem;
+  background-color: white;
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
+  margin: 0 auto 2rem auto;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   overflow: hidden;
   height: 0;
-  max-height: 500vh;
+  width: 90%;
   opacity: 0;
+  box-shadow: 0 1px 1px 1px rgba(100,100,100,0.1);
 `;
 
 const buttonStyles = {
