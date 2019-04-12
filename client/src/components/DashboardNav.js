@@ -43,28 +43,6 @@ class Dashboard extends React.Component {
     this.setState({ selected });
   };
 
-  renderContent = () => {
-    const selections = {
-      edit: (
-        <div className="section-container">
-            EDITING
-        </div>
-      ),
-      attendance: (
-        <div className="section-container">
-            ATTENDANCE
-        </div>
-      ),
-      students: (
-        <div className="section-container">
-          STUDENTS
-        </div>
-      )
-    };
-
-    return selections[this.state.selected];
-  };
-
   render() {
     const { selected } = this.state;
     return (
