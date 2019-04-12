@@ -14,6 +14,7 @@ class Api::EnrollmentsController < ApplicationController
     }
 
     if(duplicate.length == 0 && enrollment.save)
+      enrollment.create_attendances()
       render json: enrollment
     else
       render json: enrollment.errors, status: 422
