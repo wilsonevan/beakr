@@ -165,6 +165,7 @@ const UnitsContainer = styled.div`
   overflow: hidden;
   height: 0;
   opacity: 0;
+  box-shadow: 0 1px 1px 1px rgba(200,200,200,0.1);
 `;
 
 export default CourseSection;
