@@ -4,7 +4,7 @@ import { NavLink, } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../logo.svg';
 import './Navbar.css'
-import { Button, Icon, Sidebar, Menu } from 'semantic-ui-react'
+import { Button, Icon, Sidebar, Menu, } from 'semantic-ui-react'
 
 class Navbar extends React.Component {
 
@@ -30,6 +30,12 @@ class Navbar extends React.Component {
 					<>
 						<div className='expanded'>
 							<RightMenu>
+								{/* <Dropdown>
+									<Item>Courses</Item>
+									<DropdownItem>
+										<p>Test</p>
+									</DropdownItem>
+								</Dropdown> */}
 								<NavLink 
 									to='/dashboard' 
 									onClick={() => this.activateItem(1)}
@@ -65,12 +71,15 @@ class Navbar extends React.Component {
 								width='thin'
 								direction='right'
 							>
-								<NavLink to='/dashboard'>
+								<NavLink to='/dashboard' 
+									to='/dashboard' 
+									onClick={() => this.activateItem(1)}
+								>
 									<Menu.Item>
 										Dashboard
 									</Menu.Item>
 								</NavLink>
-								<NavLink to='/login'>
+								<NavLink to='/login' onClick={() => handleLogout( history )}>
 									<Menu.Item>
 										Logout
 									</Menu.Item>
@@ -145,6 +154,7 @@ const Item = styled.p`
 	text-align: center;
 	padding: 10px 16px 5px 16px;
 	text-decoration: none;
+	z-index: 1;
 `;
 
 const Logo = styled.img`
@@ -168,6 +178,30 @@ const RightMenu = styled.div`
 	justify-content: flex-end;
 	padding: 2rem 2rem 1rem 2rem;
 `;
+
+const Dropdown = styled.div`
+	position: relative;
+	display: inline-block;
+	// :hover{display: block;}
+	z-index: 1;
+`
+
+const DropdownItem = styled.div`
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 100px;
+	// box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	padding: 12px 16px;
+	z-index: 1;
+	border: 1px solid green;
+
+	${Dropdown}:hover & {
+		display: block;
+	}
+`
+
+
 
 const ConnectedNavbar = (props) => (
 	<AuthConsumer>

@@ -3,6 +3,7 @@ import axios from "axios";
 import anime from "animejs";
 import styled from "styled-components";
 import Unit from "./Unit";
+import { Icon } from "semantic-ui-react";
 
 class CourseSection extends React.Component {
   state = {
@@ -39,7 +40,7 @@ class CourseSection extends React.Component {
       this.setState({ opened: !this.state.opened }, () => {
         anime({
           targets: this.unitContainerRef.current,
-          height: `${this.state.units.length * 2.25}rem`,
+          height: `${this.state.units.length * 2.75}rem`,
           duration: `${this.state.units.length * 50}`,
           easing: "linear"
         });
@@ -96,10 +97,10 @@ class CourseSection extends React.Component {
           <Section
             ref={this.sectionRef}
             onClick={this.handleClick}
-            style={{ marginBottom: "0.5rem" }}
+            style={{marginBottom: "0"}}
           >
             <SectionTitle>{title}</SectionTitle>
-            <SectionIcon>-</SectionIcon>
+            <SectionIcon><Icon name="chevron up" size="small"  /></SectionIcon>
           </Section>
           <UnitsContainer
             ref={this.unitContainerRef}
@@ -114,7 +115,7 @@ class CourseSection extends React.Component {
         <>
           <Section ref={this.sectionRef} onClick={this.handleClick}>
             <SectionTitle>{title}</SectionTitle>
-            <SectionIcon>+</SectionIcon>
+            <SectionIcon><Icon name="chevron down" size="small"  /></SectionIcon>
           </Section>
         </>
       );
@@ -155,7 +156,12 @@ const SectionIcon = styled.div`
 const UnitsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  background-color: white ;
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
   margin-bottom: 2rem;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   overflow: hidden;
   height: 0;
   opacity: 0;

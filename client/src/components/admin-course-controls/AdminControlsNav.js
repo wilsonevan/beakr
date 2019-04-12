@@ -28,7 +28,7 @@ class AdminControlsNav extends React.Component {
           style={this.highlightIf("students")}
           onClick={() => this.handleClick("students")}
         >
-          Students
+          Student Grades
         </AdminItem>
         <AdminItem
           style={this.highlightIf("attendance")}

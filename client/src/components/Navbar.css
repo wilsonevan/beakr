@@ -11,6 +11,7 @@
 	background: #23a24d !important;
 }
 
+
 @media screen and (max-width: 37.5em) {
   div.expanded {
     display: none;
