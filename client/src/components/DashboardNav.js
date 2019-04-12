@@ -2,6 +2,39 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+
+/* /// EXAMPLE USE /////
+  ITEMS_PROP____________
+    The 'items' prop can take either an array with strings or an objects {name: "something" ,path: "/something"}
+    If a string is entered, that becomes the name of the nav item, and if an
+    object is entered, the name property is displayed in the nav item, and the path specifies where that
+    button should link to (using <Link> from react-router-dom)
+
+  RIGHT_ITEMS_PROP______
+    The right items are the same as normal items, but they display from the ride side of the bar
+
+  COMPONENT_PROPS_______
+    Once you have specified the name of a nav item in the items prop, a new prop can be declared
+    that is the same name as that item, and it takes a component which will be rendered in the
+    dashboard once that navbar item is clicked.
+    ex) items={['calendar']}
+        calendar={<Calendar />}
+
+  EXAMPLE_______________
+
+  <DashboardNav 
+    items={['courses', 'calendar', 'todo', 'grades',]}
+    rightItems={[{ name: 'profile', path: "/profile"},]}
+    courses={<CoursesIndex />}
+    calendar={<Calendar />}
+    todo={<p>We still have to add todos, they are todo</p>}
+    grades={<p>We still have to add grades</p>}
+  />
+
+*//////////////////////
+
+
+
 class Dashboard extends React.Component {
   state = { selected: this.props.items[0] };
 
