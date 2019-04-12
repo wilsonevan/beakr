@@ -5,7 +5,7 @@ import dateFns from "date-fns";
 import { Table, Header, Image, Form, Button, } from 'semantic-ui-react';
 
 class AdminCourseAttendance extends React.Component {
-	state = { attendanceData: [], dates: [], recordDate: '', newRecords: [], courseId: '' }
+	state = { attendanceData: [], dates: [], recordDate: '', courseId: '' }
 
 	componentDidMount() {
 		const {courseId} = this.props
@@ -18,9 +18,14 @@ class AdminCourseAttendance extends React.Component {
 			})
 	}
 
-	handleCreateColumn(recordDate, courseId) {
+	handleCreateColumn(recordDate, courseId,) {
 		let newData = []
+			const {dates} = this.state
+			if (dates.includes(recordDate) === true)
+			 alert("Already Exists")
+			else
 		axios.post(`/api/attendances`, {record_date: recordDate, course_id: courseId , } )
+		
       .then( res => {
 				newData = res.data
         this.setState({ attendanceData: newData, })
@@ -35,13 +40,12 @@ class AdminCourseAttendance extends React.Component {
 		const oldStatus = record.attendance_record;
 		let newStatus = oldStatus;
 		const options = ['present', 'absent', 'late', '', ];
-		
 		// Cycle through next options, based on current state
 		options.forEach( (option, index) => {
-			if (option == oldStatus && index < (options.length - 1) ){
+			if (option === oldStatus && index < (options.length - 1) ){
 				newStatus = options[index+1];
 			}
-			if (option == oldStatus && index == (options.length - 1) ){ 
+			if (option === oldStatus && index === (options.length - 1) ){ 
 				newStatus = options[0]; // handle array indexing error when the end of array is reached
 			}
 		})
@@ -52,9 +56,9 @@ class AdminCourseAttendance extends React.Component {
 		axios.put(`/api/attendances/${record.id}`, {...record, attendance_record: newStatus, })
 			.then( res => {
 				let newData = attendanceData.map( user => {
-					if (user.user_id == currentUser.user_id ) {
+					if (user.user_id === currentUser.user_id ) {
 						user.attendances = user.attendances.map( record => {
-							if (record.id == res.data.id) {
+							if (record.id === res.data.id) {
 								return record = res.data; // Find the correct record in the state, and update it with the response data
 							} else {
 								return record;
@@ -81,7 +85,7 @@ class AdminCourseAttendance extends React.Component {
 				let newData = attendanceData.map( user => {
 					user.attendances = user.attendances.filter( record => {
 						// This statement determines what will actually filter out deleted records
-						if (record.record_date == columnDate) {
+						if (record.record_date === columnDate) {
 							return false;
 						}
 						else {
@@ -94,7 +98,7 @@ class AdminCourseAttendance extends React.Component {
 				// Then, filter out the date from the dates array
 				// This updates the first row, and the options row at the bottom
 				let newDates = dates.filter( date => {
-					if (date == columnDate) {
+					if (date === columnDate) {
 						return false;
 					}
 					else {
@@ -112,6 +116,7 @@ class AdminCourseAttendance extends React.Component {
 
 		if (dates.length > 0){
 			return dates.map( columnDate => {
+
 				// Finally, return the header cell with each date
 				return(
 					<Table.Cell textAlign='center' onClick={() => this.handleColumnDelete(columnDate)} style={{cursor: 'pointer', }} >
@@ -123,7 +128,6 @@ class AdminCourseAttendance extends React.Component {
 			})
 		} 
 	}
-	
 
 	identifyDates() {
 		const { attendanceData, } = this.state;
@@ -224,10 +228,12 @@ class AdminCourseAttendance extends React.Component {
 	renderForm() {
 		const { recordDate, } = this.state
     return (
+
       <Form onSubmit={this.handleSubmit}>
         <Form.Input
         type='date'
-        label="Add Date"
+				label="Add Date"
+				required
         name="recordDate"
         value={recordDate}
         onChange={this.handleChange}

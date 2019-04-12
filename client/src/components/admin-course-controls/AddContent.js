@@ -16,8 +16,6 @@ class AddContent extends React.Component {
 
   handleQuillChange = (value) => {
     this.setState({ body: value })
-    console.log(this.divRef)
-    this.divRef.current.focus()
   }
 
   handleSubmit = (e) => {
@@ -25,7 +23,7 @@ class AddContent extends React.Component {
     const content = {...this.state}
     axios.post('/api/contents', content)
       .then( res => {
-        this.props.history.push(`/contents/${res.data.id}`)
+        this.setState({ title: '', body: '' })
       })
   }
 

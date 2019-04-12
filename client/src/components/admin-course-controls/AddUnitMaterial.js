@@ -23,13 +23,14 @@ state = { active: 'Content'}
     const { active, } = this.state
     switch (active) {
       case "Content":
-        return <AddContent history={this.props.history} />
+        return <AddContent />
         break
       case "Assignment":
-        return <AddAssignment history={this.props.history}/>
+        return <AddAssignment />
         break
       case "Quiz":
-        return <AddQuiz history={this.props.history}/>
+        return <AddQuiz />
+      default:
         break
     }
   }
@@ -116,13 +117,13 @@ const AdminControls = styled.div`
   padding: 2rem;
 `;
 
-const SectionHeading = styled.h2`
-  font-size: 1.8rem;
-  margin-bottom: 3rem;
-  color: #23a24d;
-  letter-spacing: 2px;
-  width: 80%;
-`;
+// const SectionHeading = styled.h2`
+//   font-size: 1.8rem;
+//   margin-bottom: 3rem;
+//   color: #23a24d;
+//   letter-spacing: 2px;
+//   width: 80%;
+// `;
 
 const CourseHeading = styled.h2`
   color: #23a24d;

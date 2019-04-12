@@ -263,6 +263,8 @@ class UnitControls extends React.Component {
             width="100%"
           />
         )
+      default:
+        break
     }
   }
 

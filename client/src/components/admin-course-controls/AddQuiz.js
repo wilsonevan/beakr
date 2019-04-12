@@ -20,7 +20,7 @@ class AddQuiz extends React.Component {
     const quiz = {...this.state}
     axios.post('/api/quizzes', quiz)
       .then( res => {
-        this.props.history.push(`/quizzes/${res.data.id}`)
+        this.setState({ title: '', due_date: ''})
       })
   }
 

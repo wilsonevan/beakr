@@ -5,7 +5,7 @@ import { ButtonGreen } from '../../styles/Components';
 import axios from 'axios';
 
 class AddAssignment extends React.Component {
-  state = {title: '', body: '', due_date: '', }
+  state = {title: '', body: '', due_date: '', kind: '' }
 
   handleChange = (e) => {
     const { name, value } = e.target
@@ -16,6 +16,11 @@ class AddAssignment extends React.Component {
     this.setState({ due_date: value })
   }
 
+  handleKindChange = (e) => {
+    const { value } = e.target
+    this.setState({ kind: value })
+  }
+
   handleQuillChange = (value) => {
     this.setState({ body: value })
   }
@@ -24,7 +29,7 @@ class AddAssignment extends React.Component {
     const assignment = {...this.state}
     axios.post('/api/assignments', assignment)
       .then( res => {
-        this.props.history.push(`/assignments/${res.data.id}`)
+        this.setState({ title: '', body: '', due_date: '', kind: ''})
       })
   }
 
@@ -57,6 +62,52 @@ class AddAssignment extends React.Component {
           disableClock
           onChange={this.handleDateChange}
         />
+        <br />
+        <br />
+        <div>
+          Submission Type
+        </div>
+        <input
+          type='radio'
+          value='github'
+          name='kind'
+          id='kind1'
+          onClick={this.handleKindChange}
+          style={{marginRight: '5px'}}
+        />
+          <label
+            for='kind1'
+          >
+            Github Submission
+          </label>
+        <br />
+        <input
+          type='radio'
+          value='code'
+          name='kind'
+          id='kind2'
+          onClick={this.handleKindChange}
+          style={{marginRight: '5px'}}
+        />
+          <label
+            for='kind2'
+          >
+            Code Submission
+          </label>
+        <br />
+        <input
+          type='radio'
+          value='none'
+          name='kind'
+          id='kind3'
+          onClick={this.handleKindChange}
+          style={{marginRight: '5px'}}
+        />
+          <label
+            for='kind3'
+          >
+            Text Only Submission
+          </label>
         <br />
         <br />
         <ReactQuill 
