@@ -35,7 +35,6 @@ class AdminCourseAttendance extends React.Component {
           record_date: recordDate,
           course_id: courseId
         })
-
         .then(res => {
           newData = res.data;
           this.setState({ attendanceData: newData });
@@ -278,8 +277,10 @@ class AdminCourseAttendance extends React.Component {
                         onClick={() =>
                           this.handleAttendanceChange(record, user)
                         }
-                        style={{ cursor: "pointer", userSelect: "none" }}
-                      />
+												style={{ cursor: "pointer", userSelect: "none" }}
+												textAlign="center"
+                      >-
+											</Table.Cell>
                     );
                 }
               })}
