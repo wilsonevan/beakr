@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_11_210752) do
+ActiveRecord::Schema.define(version: 2019_04_12_174918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assignment_submissions", force: :cascade do |t|
+    t.float "grade"
+    t.string "github_url"
+    t.text "body"
+    t.text "code"
+    t.bigint "assignment_id"
+    t.bigint "enrollment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignment_id"], name: "index_assignment_submissions_on_assignment_id"
+    t.index ["enrollment_id"], name: "index_assignment_submissions_on_enrollment_id"
+  end
 
   create_table "assignments", force: :cascade do |t|
     t.string "title"
@@ -27,7 +40,7 @@ ActiveRecord::Schema.define(version: 2019_04_11_210752) do
   create_table "attendances", force: :cascade do |t|
     t.bigint "enrollment_id"
     t.date "record_date"
-    t.string "attendance_record", default: ""
+    t.string "attendance_record"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["enrollment_id"], name: "index_attendances_on_enrollment_id"
@@ -149,6 +162,8 @@ ActiveRecord::Schema.define(version: 2019_04_11_210752) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "assignment_submissions", "assignments"
+  add_foreign_key "assignment_submissions", "enrollments"
   add_foreign_key "attendances", "enrollments"
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "users"

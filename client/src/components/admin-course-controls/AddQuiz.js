@@ -1,6 +1,6 @@
 import React from 'react';
 import DateTimePicker from 'react-datetime-picker';
-import { Header, Button } from 'semantic-ui-react';
+import { ButtonGreen } from '../../styles/Components';
 import axios from 'axios';
 
 class AddQuiz extends React.Component {
@@ -20,7 +20,7 @@ class AddQuiz extends React.Component {
     const quiz = {...this.state}
     axios.post('/api/quizzes', quiz)
       .then( res => {
-        this.props.history.push(`/quizzes/${res.data.id}`)
+        this.setState({ title: '', due_date: ''})
       })
   }
 
@@ -29,9 +29,10 @@ class AddQuiz extends React.Component {
 
     return (
       <>
-        <Header style={{color: '23A24D'}} content='Add Quiz' />
+        <div>
+          Quiz Title
+        </div>
         <input 
-          label='Quiz Title'
           required
           autoFocus
           name='title'
@@ -39,14 +40,22 @@ class AddQuiz extends React.Component {
           onChange={this.handleChange}
           placeholder='Title'
         />
+        <br />
+        <br />
+        <div>
+          Due Date
+        </div>
         <DateTimePicker 
-          label='Due Date'
           required
           value={due_date}
           disableClock
           onChange={this.handleDateChange}
         />
-        <Button content='Submit' onClick={this.handleSubmit} />
+        <br />
+        <br />
+        <ButtonGreen onClick={this.handleSubmit}>
+          Submit
+        </ButtonGreen>
       </>
     )
   }

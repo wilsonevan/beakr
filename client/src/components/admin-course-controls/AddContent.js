@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
-import { Header, Form, } from 'semantic-ui-react';
+import { Form, } from 'semantic-ui-react';
+import { ButtonGreen, } from '../../styles/Components';
 import axios from 'axios';
 
 class AddContent extends React.Component {
   state = { title: '', body: '', };
+
+  divRef = React.createRef()
 
   handleChange = (e) => {
     const { name, value } = e.target
@@ -20,7 +23,7 @@ class AddContent extends React.Component {
     const content = {...this.state}
     axios.post('/api/contents', content)
       .then( res => {
-        this.props.history.push(`/contents/${res.data.id}`)
+        this.setState({ title: '', body: '' })
       })
   }
 
@@ -29,7 +32,10 @@ class AddContent extends React.Component {
 
     return(
       <>
-        <Form onSubmit={this.handleSubmit}>
+        <Form 
+          onSubmit={this.handleSubmit}
+          style={{height: '35rem'}}
+        >
           <Form.Input
             label='Content Title'
             required
@@ -43,8 +49,11 @@ class AddContent extends React.Component {
             name='body'
             value={body}
             onChange={this.handleQuillChange} 
+            style={{height: '25rem', paddingBottom: '4rem'}}
           />
-          <Form.Button content='Submit' />
+          <ButtonGreen>
+            Submit
+          </ButtonGreen>
         </Form>
       </>
     )
