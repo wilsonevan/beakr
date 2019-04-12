@@ -71,22 +71,6 @@ class AdminDashboard extends React.Component {
             )}
           </>         
         )
-      case 'calendar':
-        return (<Calendar />)
-      case 'grade':
-        return (<p>you are an admin for grades</p>)
-      case 'attendance':
-          return this.state.allCourses.map( course => {
-              return (
-              <>
-                <Bar style={{marginBottom: '10px'}}>
-                  <h4>{course.title}</h4>
-                </Bar>
-                {/* <AdminAttendance course={course} /> */}
-              </>
-              )
-
-            })
       case 'users':
         return (
           <>
@@ -159,16 +143,6 @@ class AdminDashboard extends React.Component {
           <Menu.Item
             name="materials"
             active={activeItem === "materials"}
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item
-            name="calendar"
-            active={activeItem === "calendar"}
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item
-            name="grade"
-            active={activeItem === "grade"}
             onClick={this.handleItemClick}
           />
           <Menu.Menu position="right">
