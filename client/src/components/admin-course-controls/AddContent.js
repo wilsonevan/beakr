@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
-import { Header, Form, } from 'semantic-ui-react';
+import { Form, } from 'semantic-ui-react';
 import axios from 'axios';
 
 class AddContent extends React.Component {

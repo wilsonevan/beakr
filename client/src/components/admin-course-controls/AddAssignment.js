@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import DateTimePicker from 'react-datetime-picker';
-import { Header, Button } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import axios from 'axios';
 
 class AddAssignment extends React.Component {

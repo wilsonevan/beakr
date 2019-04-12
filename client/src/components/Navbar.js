@@ -71,7 +71,7 @@ class Navbar extends React.Component {
 								width='thin'
 								direction='right'
 							>
-								<NavLink to='/dashboard' 
+								<NavLink
 									to='/dashboard' 
 									onClick={() => this.activateItem(1)}
 								>
@@ -179,27 +179,27 @@ const RightMenu = styled.div`
 	padding: 2rem 2rem 1rem 2rem;
 `;
 
-const Dropdown = styled.div`
-	position: relative;
-	display: inline-block;
-	// :hover{display: block;}
-	z-index: 1;
-`
+// const Dropdown = styled.div`
+// 	position: relative;
+// 	display: inline-block;
+// 	// :hover{display: block;}
+// 	z-index: 1;
+// `
 
-const DropdownItem = styled.div`
-	display: none;
-	position: absolute;
-	background-color: #f9f9f9;
-	min-width: 100px;
-	// box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	padding: 12px 16px;
-	z-index: 1;
-	border: 1px solid green;
+// const DropdownItem = styled.div`
+// 	display: none;
+// 	position: absolute;
+// 	background-color: #f9f9f9;
+// 	min-width: 100px;
+// 	// box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+// 	padding: 12px 16px;
+// 	z-index: 1;
+// 	border: 1px solid green;
 
-	${Dropdown}:hover & {
-		display: block;
-	}
-`
+// 	${Dropdown}:hover & {
+// 		display: block;
+// 	}
+// `
 
 
 

@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { ButtonGreen } from "../../styles/Components";
-import { Form, Header } from "semantic-ui-react";
+import { Form } from "semantic-ui-react";
 
 class AddUnit extends React.Component {
   state = { title: "" };

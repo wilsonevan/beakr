@@ -89,7 +89,7 @@ class Calendar extends React.Component {
         let todaysRecord = '';
         if (attendanceRecords.length > 0) {
           attendanceRecords.map(record => {
-            if (record.record_date == formattedDateFull) {
+            if (record.record_date === formattedDateFull) {
               todaysRecord = record.attendance_record
             }
           })
