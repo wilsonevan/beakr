@@ -26,6 +26,7 @@ class Api::UsersController < ApplicationController
 
 
   def update
+    # updates the user information including the image file
     user = User.find(params[:id])
     user.first_name = params[:first_name] ? params[:first_name] : user.first_name
     user.last_name = params[:last_name] ? params[:last_name] : user.last_name
@@ -33,14 +34,20 @@ class Api::UsersController < ApplicationController
     user.biography = params[:biography] ? params[:biography] : user.biography
     user.birth_date = params[:birth_date] ? params[:birth_date] : user.birth_date
     file = params[:file]
+    # the following if statements checks to see if a file is being uploaded
+    # if it is, it will send the file url to tiny png to compress it.
+    # It temporarily saves the compressed file to the users local computer
     if file != ""
       Tinify.key = ENV["TINY_PNG"]
       image_name = params.keys.first
       source = Tinify.from_file(file.tempfile)
       source.to_file(image_name)
       begin
+        # this will upload the image to cloudinary so that it is stored remotely,
+        # the file is pulled from the specific cloudinary url instead of locally.
         cloud_image = Cloudinary::Uploader.upload(image_name, public_id: file.original_filename, secure: true)
         user.image = cloud_image['secure_url']
+        # the following line deletes the temporary tiny.png file that was created.
         File.delete(image_name) if File.exists?(image_name)
       rescue
         # render json: { errors: e }, status: 422
