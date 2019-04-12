@@ -12,7 +12,7 @@ class Api::AttendancesController < ApplicationController
 
     # This loop rejects all users from the attendance data, who are not students of the desired course
     attendanceinfo = @course.users.order(:first_name).reject(){|user| 
-      set_flag = falseg
+      set_flag = false
       enrollment = Enrollment.find_by_user_and_course(user.id, @course.id)
       if enrollment.role != 'student' && enrollment.course_id == @course.id 
         set_flag = true
