@@ -13,4 +13,13 @@ class Enrollment < ApplicationRecord
     ",user_id, course_id ]).first()
   end
 
+  # find the dates based on another enrollment
+  def create_attendances
+    enroll = Enrollment.all.detect {|e| e["course_id"] == self.course_id }
+
+    enroll.attendances.each do |record|
+      self.attendances.create(record_date: record.record_date)
+    end
+  end
+
 end
