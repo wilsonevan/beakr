@@ -9,8 +9,7 @@ import NewEnrollment from "../admin/NewEnrollment";
 import CoursesIndex from "../admin/CourseIndex";
 import UserIndex from "../admin/UserIndex";
 import styled from 'styled-components';
-import { ButtonGreen, Bar } from '../../styles/Components';
-import Calendar from '../attendance/Calendar';
+import { ButtonGreen } from '../../styles/Components';
 
 class AdminDashboard extends React.Component {
   state = {
