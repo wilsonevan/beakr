@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Segment, Header } from 'semantic-ui-react'
+import { Segment, Header } from 'semantic-ui-react'
 import axios from 'axios'
 import { Link, } from 'react-router-dom'
 import styled from 'styled-components'
