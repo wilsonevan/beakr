@@ -23,11 +23,13 @@ state = { active: 'Content'}
     const { active, } = this.state
     switch (active) {
       case "Content":
-        return <AddContent history={this.props.history} />
+        return <AddContent />
+        break
       case "Assignment":
-        return <AddAssignment history={this.props.history}/>
+        return <AddAssignment />
+        break
       case "Quiz":
-        return <AddQuiz history={this.props.history}/>
+        return <AddQuiz />
       default:
         break
     }
