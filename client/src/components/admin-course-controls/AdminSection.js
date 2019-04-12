@@ -147,13 +147,6 @@ class AdminSection extends React.Component {
   }
 }
 
-const SectionContainer = styled.div`
-  width: 90%;
-  margin: 0 auto;
-  border-radius: 10px;
-  box-shadow: 0 1px 1px 1px rgba(100,100,100,0.1);
-`
-
 const Section = styled.div`
   position: relative;
   width: 90%;
