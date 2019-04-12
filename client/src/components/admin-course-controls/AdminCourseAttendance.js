@@ -130,19 +130,10 @@ class AdminCourseAttendance extends React.Component {
 		let datesArray = []
 
 		if (attendanceData.length > 0){
-			attendanceData.map( user => {
-				user.attendances.map( record => {
-					// If not already in the array, push to it
-					if (!datesArray.includes(record.record_date)) {
-						datesArray.push(record.record_date)
-					}
-				})
+			attendanceData[0].attendances.map( record => {
+				datesArray.push(record.record_date)
 			})
 		}
-
-		// Sort the dates
-		datesArray.sort(function(a, b){return parseInt(b) - parseInt(a)});
-
 		return datesArray
 	}
 
@@ -162,38 +153,8 @@ class AdminCourseAttendance extends React.Component {
 	}
 
 
-	renderRecord(status, record, user) {
-		switch(status) {
-			case 'present':
-				return(
-					<Table.Cell textAlign='center' positive onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer', userSelect: 'none', }} >
-							{status}
-					</Table.Cell>
-				)
-			case 'absent':
-				return(
-					<Table.Cell textAlign='center' negative onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer', userSelect: 'none', }} >
-							{status}
-					</Table.Cell>
-				)
-			case 'late':
-				return(
-					<Table.Cell textAlign='center' warning onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer', userSelect: 'none', }} >
-							{status}
-					</Table.Cell>
-				)
-			default:
-				return(
-					<Table.Cell onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer', userSelect: 'none', }}>
-					</Table.Cell>
-				)
-		}
-	}
-
-
 	renderAttendance() {
-		const { attendanceData, dates, } = this.state;
-		let offset = 0;
+		const { attendanceData, } = this.state;
 		return(
 			<Table.Body>
 				{attendanceData.map( user => {
@@ -207,26 +168,32 @@ class AdminCourseAttendance extends React.Component {
 							</Table.Cell>
 
 							{/* Loop through all of the days with an attendance record, for each user */}
-							{user.attendances.map( (record, index) => {
-								const {attendance_record, record_date, } = record;
-								// debugger
-								// Handle possible error if index exceeds length of dates array
-								if ( (index + offset) < dates.length ){
-									// debugger
-									if ( record_date === dates[(index + offset)] ){
-										return this.renderRecord(attendance_record, record, user)
-									}	
-									else {
-										// debugger
-										let adjustedArray = []
-										debugger
-										// while ( dateFns.isbefore(record_date, dates[(index + offset)]) ) {
-										// 	adjustedArray.push(this.renderRecord('', record, user))
-										// 	offset = offset + 1
-										// }
-										adjustedArray.push(this.renderRecord(attendance_record, record, user))
-										return adjustedArray
-									}
+							{user.attendances.map( record => {
+								const status = record.attendance_record;
+								switch(status) {
+									case 'present':
+										return(
+											<Table.Cell textAlign='center' positive onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer', userSelect: 'none', }} >
+													{status}
+											</Table.Cell>
+										)
+									case 'absent':
+										return(
+											<Table.Cell textAlign='center' negative onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer', userSelect: 'none', }} >
+													{status}
+											</Table.Cell>
+										)
+									case 'late':
+										return(
+											<Table.Cell textAlign='center' warning onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer', userSelect: 'none', }} >
+													{status}
+											</Table.Cell>
+										)
+									default:
+										return(
+											<Table.Cell onClick={() => this.handleAttendanceChange(record, user)} style={{cursor: 'pointer', userSelect: 'none', }}>
+											</Table.Cell>
+										)
 								}
 							})}
 						</Table.Row>
