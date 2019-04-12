@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 
 /* /// EXAMPLE USE /////
   ITEMS_PROP____________
-    The 'items' prop can take either an array with strings or an objects {name: "something" ,path: "/something"}
+    The 'items' prop can take either an array where each item can be either 
+    a string or object {name: "something" ,path: "/something"} (both can be placed in the same array).
     If a string is entered, that becomes the name of the nav item, and if an
     object is entered, the name property is displayed in the nav item, and the path specifies where that
     button should link to (using <Link> from react-router-dom)
