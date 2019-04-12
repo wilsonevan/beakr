@@ -172,18 +172,23 @@ class AdminCourseAttendance extends React.Component {
   }
 
   renderTotals(user) {
-    let daysPresent = 0,
-      daysAbsent = 0,
-      daysLate = 0;
+    var daysPresent = 0
+   		, daysAbsent = 0
+  	  , daysLate = 0;
 
 		user.attendances.map(record => {
-			switch(record.attendance_record) {
-				case 'present':
+			const status = record.attendance_record
+			switch(status) {
+				case 'present': 
 					daysPresent++
+					break;
 				case 'absent':
 					daysAbsent++
-				case 'late':
+					break;
+				case 'late':{
 					daysLate++
+					break;
+				}
 			}
 		})
 
@@ -282,6 +287,9 @@ class AdminCourseAttendance extends React.Component {
           );
         })}
         <Table.Row>
+          <Table.Cell textAlign="center" />
+          <Table.Cell textAlign="center" />
+          <Table.Cell textAlign="center" />
           <Table.Cell textAlign="center" />
           {this.renderColumnOptions()}
         </Table.Row>
