@@ -43,19 +43,19 @@ state = { active: 'Content'}
         <AdminItem
           style={this.highlightIf("Content")}
           onClick={() => this.setState({active: 'Content'})}
-         >
+          >
           Content
         </AdminItem>
         <AdminItem
           style={this.highlightIf("Assignment")}
           onClick={() => this.setState({active: 'Assignment'})}
-        >
+          >
           Assignment
         </AdminItem>
         <AdminItem
           style={this.highlightIf("Quiz")}
           onClick={() => this.setState({active: 'Quiz'})}
-        >
+          >
           Quiz
         </AdminItem>
       </NavContainer>

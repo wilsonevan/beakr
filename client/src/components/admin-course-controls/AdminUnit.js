@@ -149,7 +149,7 @@ const SectionUnit = styled.div`
   color: grey;
   position: relative;
   width: 85%;
-  margin: 0 auto 1rem auto;
+  margin: 0 auto 1rem 1rem;
   font-weight: lighter;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
@@ -165,7 +165,7 @@ const OpenedSectionUnit = styled.div`
   color: black;
   position: relative;
   width: 85%;
-  margin: 0 auto 1rem auto;
+  margin: 0 auto 1rem 1rem;
   font-weight: lighter;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
@@ -180,6 +180,7 @@ const OpenedSectionUnit = styled.div`
 const UnitModelsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  alignt-items: flex-start;
   margin-top: 0.5rem;
   border-left: 1px solid grey;
   overflow: hidden;

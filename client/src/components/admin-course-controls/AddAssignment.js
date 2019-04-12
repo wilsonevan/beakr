@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import DateTimePicker from 'react-datetime-picker';
-import { Button } from 'semantic-ui-react';
+import { ButtonGreen } from '../../styles/Components';
 import axios from 'axios';
 
 class AddAssignment extends React.Component {
@@ -33,28 +33,41 @@ class AddAssignment extends React.Component {
 
     return (
       <>
+        <div>
+          Assignment Title
+        </div>
+        <br />
         <input
-          label='Assignment Title'
           required
           autoFocus
           name='title'
           value={title}
           placeholder='Title'
           onChange={this.handleChange}
+          style={{width: '100%'}}
         />
+        <br />
+        <br />
+        <div>
+          Due Date
+        </div>
         <DateTimePicker 
-          label='Due Date'
           required
           value={due_date}
           disableClock
           onChange={this.handleDateChange}
         />
+        <br />
+        <br />
         <ReactQuill 
           name='body'
           value={body}
-          onChange={this.handleQuillChange} 
+          onChange={this.handleQuillChange}
+          style={{height: '25rem', paddingBottom: '4rem'}}
         />
-        <Button content='Submit' onClick={this.handleSubmit} />
+        <ButtonGreen onClick={this.handleSubmit}>
+          Submit
+        </ ButtonGreen>
       </>
     )
   }

@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import { Form, } from 'semantic-ui-react';
+import { ButtonGreen, } from '../../styles/Components';
 import axios from 'axios';
 
 class AddContent extends React.Component {
   state = { title: '', body: '', };
+
+  divRef = React.createRef()
 
   handleChange = (e) => {
     const { name, value } = e.target
@@ -13,6 +16,8 @@ class AddContent extends React.Component {
 
   handleQuillChange = (value) => {
     this.setState({ body: value })
+    console.log(this.divRef)
+    this.divRef.current.focus()
   }
 
   handleSubmit = (e) => {
@@ -29,7 +34,10 @@ class AddContent extends React.Component {
 
     return(
       <>
-        <Form onSubmit={this.handleSubmit}>
+        <Form 
+          onSubmit={this.handleSubmit}
+          style={{height: '35rem'}}
+        >
           <Form.Input
             label='Content Title'
             required
@@ -43,8 +51,11 @@ class AddContent extends React.Component {
             name='body'
             value={body}
             onChange={this.handleQuillChange} 
+            style={{height: '25rem', paddingBottom: '4rem'}}
           />
-          <Form.Button content='Submit' />
+          <ButtonGreen>
+            Submit
+          </ButtonGreen>
         </Form>
       </>
     )
