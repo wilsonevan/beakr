@@ -1,6 +1,8 @@
 class Assignment < ApplicationRecord
   has_many :unit_assignments, dependent: :destroy
   has_many :units, through: :unit_assignments
+  has_many :assignment_submissions, dependent: :destroy
+  has_many :enrollments, through: :assignment_submissions
 
   def self.search_assignments(input)
     Assignment.find_by_sql(["
