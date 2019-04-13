@@ -6,6 +6,7 @@ import { Table, Header, Image, Form, Button } from "semantic-ui-react";
 import check from '../../images/check.svg' ;
 import close from '../../images/close.svg' ;
 import late from '../../images/late.svg' ;
+import Flatpickr from 'react-flatpickr';
 
 class AdminCourseAttendance extends React.Component {
   state = { attendanceData: [], dates: [], recordDate: "", courseId: "" };
@@ -301,28 +302,34 @@ class AdminCourseAttendance extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     const { recordDate, courseId } = this.state;
+    debugger
     this.handleCreateColumn(recordDate, courseId);
   };
 
-  handleChange = e => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
+  handleChange = (date) => {
+    // const { name, value } = e.target;
+    date = dateFns.format(dateFns.parse(date[0]), 'YYYY-MM-DD')
+    this.setState({ recordDate: date });
   };
 
   renderForm() {
     const { recordDate } = this.state;
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Input
-          type="date"
-          label="Add Date"
-          required
-          name="recordDate"
-          value={recordDate}
-          onChange={this.handleChange}
-        />
-        <Button>Add Day</Button>
-      </Form>
+			<>
+        <Separator>
+          Chose a Date:
+          <br />
+          <Flatpickr
+            // label="Add Date"
+            required
+            name="recordDate"
+            value={recordDate}
+            dateFormat='Y-m-d'
+            onChange={(recordDate) => this.handleChange(recordDate)} />
+          {/* <br */} 
+          </Separator>
+        <Button onClick={this.handleSubmit}>Add Day</Button>
+				</>
     );
   }
 
@@ -375,5 +382,11 @@ const RecordIcon = styled.img`
 	height: 1.5rem;
 	width: 1.5rem;
 `;
+
+const Separator = styled.div`
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+`
+
 
 export default AdminCourseAttendance;
