@@ -1,107 +1,45 @@
 import React from "react";
 import axios from "axios";
-import AdminSection from "./AdminSection";
 import styled from "styled-components";
-import AdminControlsNav from "./AdminControlsNav";
-import AddSection from "./AddSection";
 import AdminCourseAttendance from './AdminCourseAttendance';
+import DashboardNav from "../DashboardNav";
+import SectionIndex from "./SectionIndex";
 
 class AdminCourseControl extends React.Component {
-  state = { course: {}, sections: [], selected: "edit" };
+  state = {course: null}
 
-  componentDidMount() {
+    componentDidMount() {
     axios
       .get(`/api/courses/${this.props.match.params.id}`)
       .then(res => {
         this.setState({ course: res.data });
-        return axios.get(`/api/courses/${this.props.match.params.id}/sections`);
-      })
-      .then(res => {
-        this.setState({ sections: res.data });
       })
       .catch(err => console.log(err));
-   
   }
-
-  setSelected = selected => {
-    this.setState({ selected });
-  };
-
-  addSection = section => {
-    const sections = [...this.state.sections, section];
-    this.setState({ sections });
-  };
-
-  renderSections = () => {
-    return this.state.sections.map((section, index) => {
-      return (
-        <AdminSection key={index} title={section.title} section={section} />
-      );
-    });
-  };
-
-  renderContent = () => {
-    const selections = {
-      edit: (
-        <div className="section-container">
-          <AddSection
-            courseId={this.state.course.id}
-            addSection={this.addSection}
-          />
-          {this.state.sections.length > 0 && this.renderSections()}
-        </div>
-      ),
-      attendance: (
-        <div className="section-container">
-          <AdminCourseAttendance 
-            courseId={this.state.course.id}
-          />
-        </div>
-      ),
-      students: (
-        <div className="section-container">
-          Student grades and access to their info will go here
-        </div>
-      )
-    };
-
-    return selections[this.state.selected];
-  };
 
   render() {
-    const { course, selected } = this.state;
-    return (
-      <AdminControlsContainer>
-        <SectionHeading>
-          {course.title && `${course.title} > Admin Controls`}
-        </SectionHeading>
-
-        <AdminControls>
-          <AdminControlsNav
-            selected={selected}
-            setSelected={this.setSelected}
-            courseId={this.props.match.params.id}
+    const { course } = this.state;
+    if(this.state.course) {
+      return (
+        <>
+          <SectionHeading>
+            {course.title && `${course.title} > Admin Controls`}
+          </SectionHeading>
+          <DashboardNav 
+            items={["edit", {name: "view", path: `/courses/${this.props.match.params.id}`, newTab: true }, "grades", "attendance"]}
+            edit={<SectionIndex courseId={course.id} />}
+            grades={<div> GRADES GO HERE </div>}
+            attendance={<AdminCourseAttendance courseId={course.id} />}
           />
-          {this.renderContent()}
-        </AdminControls>
-      </AdminControlsContainer>
-    );
+        </>
+      ) 
+    } else {
+      return ( 
+        <h1>loading...</h1>
+      )
+    }
   }
 }
-
-const AdminControlsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-`;
-
-const AdminControls = styled.div`
-  background-color: white;
-  min-height: 50vh;
-  border-radius: 5px;
-  overflow: hidden;
-  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1);
-`;
 
 const SectionHeading = styled.h2`
   font-size: 1.8rem;
