@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link, } from 'react-router-dom'
 import styled from 'styled-components'
 import Calendar from '../attendance/Calendar';
+import StudentGradesView from '../gradebook/StudentGradesView';
 
 class StudentDashboard extends React.Component {
   state = { name: '', activeItem: 'courses', userCourses: [],}
@@ -27,7 +28,7 @@ class StudentDashboard extends React.Component {
       case 'calendar':
         return (<Calendar />)
       case 'grade':
-        return (<p>Dont fail</p>)
+        return (<StudentGradesView />)
       default:
         return (<p>This is a list of your courses</p>)
     }
