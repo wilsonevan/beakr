@@ -22,7 +22,23 @@ import { Link } from "react-router-dom";
     ex) items={['calendar']}
         calendar={<Calendar />}
 
-  EXAMPLE_______________
+  HANDLE_SELECTED_PROP__
+    the 'handleSelected' prop takes a function which is passed the 'selected' item from the dashboard nav.
+    This lets you hoist the selected state into the parent component so the name of the selected nav item 
+    can be used elsewhere (heading, for example)
+    ex) 
+        handleSelected = (selected => {
+          this.setState({ selected });   <---- function in parent sets state to selected item
+        })
+        ... in render method....
+        <DashboardNav 
+          items={['courses', 'calendar']}
+          courses={<CoursesIndex />}
+          calendar={<Calendar />}
+          handleSelected={this.handleSelected} <---- function gets passed here
+        />
+
+  BASIC_USAGE/EXAMPLE_______________
 
   <DashboardNav 
     items={['courses', 'calendar', 'todo', 'grades',]}
@@ -46,13 +62,15 @@ class Dashboard extends React.Component {
 
   render() {
     const { selected } = this.state;
+    const { items, rightItems, handleSelected } = this.props;
     return (
       <DashboardContainer>
           <DashboardNav
             selected={selected}
             setSelected={this.setSelected}
-            items={this.props.items}
-            rightItems={this.props.rightItems}
+            items={items}
+            rightItems={rightItems}
+            handleSelected={handleSelected ? handleSelected : null}
           />
           <SelectedContainer>
             { this.props[selected] }
@@ -87,6 +105,9 @@ class DashboardNav extends React.Component {
   
     handleClick = selected => {
       this.props.setSelected(selected);
+      if(this.props.handleSelected) {
+        this.props.handleSelected(selected)
+      }
     };
 
     renderNavItems = () => {
