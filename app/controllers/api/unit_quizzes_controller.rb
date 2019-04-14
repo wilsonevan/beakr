@@ -22,12 +22,7 @@ class Api::UnitQuizzesController < ApplicationController
   end
 
   def delete_by_unit_and_quiz
-    unit_id = Unit.find(params[:unit_id]).id
-    unit_quiz = Quiz.find(params[:quiz_id]).unit_quizzes.select() {|unit_quiz|
-        unit_quiz.unit_id == unit_id
-    }
-
-    unit_quiz.first.destroy()
+    UnitQuiz.find_by_unit_and_quiz(params[:unit_id], params[:quiz_id]).destroy()
     render(json: "Data Deleted" )
   end
 
