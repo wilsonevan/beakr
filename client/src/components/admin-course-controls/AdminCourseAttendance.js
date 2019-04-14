@@ -302,7 +302,6 @@ class AdminCourseAttendance extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     const { recordDate, courseId } = this.state;
-    debugger
     this.handleCreateColumn(recordDate, courseId);
   };
 
