@@ -2,7 +2,7 @@ import React from 'react';
 import { AuthConsumer, } from '../providers/AuthProvider';
 import { NavLink, } from 'react-router-dom';
 import styled from 'styled-components';
-import logo from '../logo.svg';
+import logo from '../images/logo.svg';
 import './Navbar.css'
 import { Button, Icon, Sidebar, Menu, } from 'semantic-ui-react'
 
