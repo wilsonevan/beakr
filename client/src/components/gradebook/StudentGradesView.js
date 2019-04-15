@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Card, Table, } from "semantic-ui-react";
+import { Card, Table, Dropdown, } from "semantic-ui-react";
 import { Line } from "react-chartjs-2";
 import CourseCard from './CourseCard';
 
 const StudentGradesView = () => {
-  // const [courses, setCourses] = useState(0);
+  const [courses, setCourses] = useState(testCourses);
+  const [activeCourse, setActiveCourse] = useState(testCourses[0]);
+  const [grades, setGrades] = useState(testCourses.grades)
+
+
+  // handleCourseChange = (course) => {
+  //   // Display the grades for the newly selected course
+  //   debugger
+  // }
 
   const renderSummary = () => {
     // Make sure to only display max 4 courses
@@ -39,47 +47,61 @@ const StudentGradesView = () => {
   };
 
   const renderDropDown = () =>{
+
     return(
       <>
         <div class="ui green compact menu">
           <div class="ui simple dropdown item">
-             Sort <i align="left" class="dropdown icon"></i>
+            Courses <i align="left" class="dropdown icon"></i>
           <div class="menu">
-          <div class="item">By Course</div>
+            {courses.map(course => {
+              return <div class="item" onClick={() => setActiveCourse(course)}>{course.header}</div>
+            })}
           </div>
-         </div>
+          </div>
         </div>
+        <HeaderSummary>{courses[0].header}</HeaderSummary>
       </>
     )
   }
 
 
   const renderGrades = () => {
-    return (
-      <Table celled selectable color="green">
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell textAlign="center">Assignments</Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">Due Date</Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">Score</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-          <Table.Row>
-            <Table.Cell></Table.Cell>
-          </Table.Row>
-        <Table.Body>
-          {grades.map(grade => {
-            return (
+
+    if (activeCourse.grades) {
+      return (
+        <GradesContainer>
+          <Table celled selectable color="green">
+            <Table.Header>
               <Table.Row>
-                <Table.Cell singleLine>
-                  <TableHeader as="h4">{grade.assignment}</TableHeader>
-                </Table.Cell>
+                <Table.HeaderCell textAlign="center">Assignments</Table.HeaderCell>
+                <Table.HeaderCell textAlign="center">Due Date</Table.HeaderCell>
+                <Table.HeaderCell textAlign="center">Score</Table.HeaderCell>
               </Table.Row>
-            );
-          })}
-        </Table.Body>
-      </Table>
-    );
+            </Table.Header>
+              <Table.Row>
+                <Table.Cell></Table.Cell>
+              </Table.Row>
+            <Table.Body>
+              {activeCourse.grades.map(grade => {
+                return (
+                  <Table.Row>
+                    <Table.Cell singleLine>
+                      <TableHeader as="h4">{grade.assignment}</TableHeader>
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table>
+        </GradesContainer>
+      )
+    } else
+      return (
+        <GradesContainer>
+          <HeaderSummary>No grades yet for this course.</HeaderSummary>
+        </GradesContainer>
+      )
   };
 
   const renderTrends = () => {
@@ -207,6 +229,11 @@ const TopContainer = styled.div`
   padding: 10px;
 `;
 
+const GradesContainer = styled.div`
+  padding-top: 10px;
+  padding-bottom: 10px;
+`
+
 const HeaderSummary = styled.h3`
   width: 30%;
   text-align: left !important;
@@ -244,7 +271,7 @@ const TableHeader = styled.h4``;
 
 // FAKE DATA FOR TESTING
 
-const grades = [
+const testGrades = [
   {
     assignment: "Quiz A",
     grade: "87%"
@@ -259,18 +286,21 @@ const grades = [
   }
 ];
 
-var courses = [
+var testCourses = [
   {
     header: "Course A",
     grade: 89,
+    grades: testGrades,
   },
   {
     header: "Course B",
     grade: 34,
+    grades: null,
   },
   {
     header: "Course C",
     grade: 27,
+    grades: null,
   }
 ];
 
