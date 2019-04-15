@@ -10,7 +10,7 @@ const CourseCard = ({course}) => {
 				data: [course.grade, (100-course.grade)],
 				backgroundColor: [
 					'#23a24d',
-					'#2979ff',
+					'#c4c4c4',
 				],
     }],
 
@@ -86,11 +86,11 @@ const Header = styled.h4`
 	margin: 0;
 `
 
-const Grade = styled.h5`
+const Grade = styled.h3`
 	position: absolute;
 	left: 0;
-	top: 40%;
-	width: 100%;
+	top: 38%;
+	width: 105%;
 	text-align: center;
 	padding: 0;
 	margin: 0;

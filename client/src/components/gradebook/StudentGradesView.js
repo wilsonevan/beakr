@@ -198,7 +198,7 @@ const grades = [
 var courses = [
   {
     header: "Course A",
-    grade: 30,
+    grade: 89,
   },
   {
     header: "Course B",
