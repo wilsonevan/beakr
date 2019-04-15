@@ -55,9 +55,11 @@ const App = () => (
             component={ContentView}
           />
           <ProtectedRoute exact path="/assignments/:id" component={AssignmentView} />
+          <ProtectedRoute exact path="/courses/:course_id/assignments/:id" component={AssignmentView} />
           <ProtectedRoute exact path="/quizzes/new" component={AddQuiz} />
           <ProtectedRoute exact path="/quizzes/:id" component={QuizView} />
           <ProtectedRoute exact path="/users/new" component={AddUser} />
+          {/* <ProtectedRoute exact path="/users/:user_id/a_submissions/:id" component={SubmissionView} /> */}
           <Route component={NoMatch} />
         </Switch>
       </Container>

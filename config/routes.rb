@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     resources :contents, only: [:show, :create, :update, :destroy]
     resources :assignments, only: [:show, :create, :update, :destroy] do
       resources :assignment_submissions
+      get 'assignment_submissions/:id/find_user', to: '/api/assignment_submissions#find_user'
     end
     resources :quizzes, only: [:show, :create, :update, :destroy] do
       resources :questions
@@ -61,5 +62,8 @@ Rails.application.routes.draw do
     post 'assignments/search/:unit_id', to: '/api/assignments#search_assignments_not_in_unit'
     post 'quizzes/search', to: '/api/quizzes#search_quizzes'
     post 'quizzes/search/:unit_id', to: '/api/quizzes#search_quizzes_not_in_unit'
+
   end
+  
+  get '*other', to: 'static#index'
 end
