@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
 
   has_many :enrollments, dependent: :destroy
   has_many :courses, through: :enrollments
+  has_many :quiz_submissions, through: :enrollments
   has_many :attendances, through: :enrollments
 
   def self.search_users(input)
