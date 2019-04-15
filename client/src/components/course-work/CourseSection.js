@@ -83,6 +83,7 @@ class CourseSection extends React.Component {
           key={index}
           unit={unit}
           unitContainerRef={this.unitContainerRef}
+          courseId={this.props.courseId}
         />
       );
     });

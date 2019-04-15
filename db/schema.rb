@@ -17,13 +17,13 @@ ActiveRecord::Schema.define(version: 2019_04_15_010727) do
 
   create_table "assignment_submissions", force: :cascade do |t|
     t.float "grade"
-    t.string "github_url"
     t.text "body"
     t.text "code"
     t.bigint "assignment_id"
     t.bigint "enrollment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "url"
     t.index ["assignment_id"], name: "index_assignment_submissions_on_assignment_id"
     t.index ["enrollment_id"], name: "index_assignment_submissions_on_enrollment_id"
   end

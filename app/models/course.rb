@@ -4,6 +4,7 @@ class Course < ApplicationRecord
   has_many :users, through: :enrollments
   has_many :quiz_submissions, through: :enrollments
   has_many :attendances, through: :enrollments
+  has_many :assignment_submissions, through: :enrollments
 
   def self.search_courses(input)
     Course.find_by_sql(["
