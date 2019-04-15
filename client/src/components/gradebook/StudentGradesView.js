@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-// import ProgressBar from "react-progressbar.js";
-import { Card, Table, Tab } from "semantic-ui-react";
+import { Card, Table, } from "semantic-ui-react";
 import { Line } from "react-chartjs-2";
 import CourseCard from './CourseCard';
 
@@ -21,18 +20,15 @@ const StudentGradesView = () => {
       <SummaryContainer>
         <TopContainer>
           <HeaderSummary>Grades Summary</HeaderSummary>
-          {/* <HeaderSummary>Summary</HeaderSummary> */}
           <DataSummary>
             {courses.map( course => {
               return <CourseCard course={course} />
             })}
-            {/* <Card.Group fluid items={courses} itemsPerRow={2} /> */}
           </DataSummary>
         </TopContainer>
         <Split />
         <TopContainer>
           <HeaderSummary>Upcoming Assignments</HeaderSummary>
-          {/* <HeaderSummary>Assignments</HeaderSummary> */}
           <DataSummary>
             <Card.Group fluid items={assignments} itemsPerRow={2} />
           </DataSummary>
@@ -108,12 +104,6 @@ const StudentGradesView = () => {
             labelString: 'Grade (%)'
           }
         }],
-        // xAxes: [{
-        //   scaleLabel: {
-        //     display: true,
-        //     labelString: 'Time'
-        //   }
-        // }]
       },
       animation: {
         easing: 'easeOutCubic', 
@@ -123,7 +113,7 @@ const StudentGradesView = () => {
     return (
       <SummaryContainer>
         <HeaderSummary>Trends</HeaderSummary>
-        
+
         <Split />
         <ChartContainer>
           <Line 

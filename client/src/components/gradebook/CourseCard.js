@@ -4,7 +4,6 @@ import { Doughnut, } from "react-chartjs-2";
 
 const CourseCard = ({course}) => {
 
-	console.log(course.grade)
 	const chartData = {
 			datasets: [{
 				data: [course.grade, (100-course.grade)],
@@ -46,8 +45,6 @@ const CourseCard = ({course}) => {
 					<Doughnut 
 						data={chartData}
 						options={options}
-						// height={10}
-						// width={10} 
 					/>
 				</DonutDiv>
 				<Grade>{course.grade}%</Grade>
@@ -99,6 +96,5 @@ const Grade = styled.h3`
 	padding: 0;
 	margin: 0;
 `
-
 
 export default CourseCard;
