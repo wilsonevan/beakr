@@ -3,6 +3,16 @@ class Api::UnitQuizzesController < ApplicationController
     render( json: UnitQuiz.all() )
   end
 
+  def get_quizzes_due
+    quizzes = current_user.courses.sections.units.unit_quizzes.map() {|unit_quiz|
+      {
+        due_date: unit_quiz.due_date,
+        title: unit_quiz.quiz.title,
+      }
+    }
+    render( json: quizzes )
+  end
+
   def create
     unit_quiz = UnitQuiz.new(unit_quiz_params)
     duplicate = Unit.find(params[:unit_id]).quizzes.select() {|old_quiz| 
