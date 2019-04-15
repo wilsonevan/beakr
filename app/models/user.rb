@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :enrollments, dependent: :destroy
   has_many :courses, through: :enrollments
   has_many :attendances, through: :enrollments
+  has_many :assignment_submissions, through: :enrollments
 
   def self.search_users(input)
     Course.find_by_sql(["
