@@ -3,16 +3,6 @@ class Api::UnitQuizzesController < ApplicationController
     render( json: UnitQuiz.all() )
   end
 
-  def get_quizzes_due
-    quizzes = current_user.courses.sections.units.unit_quizzes.map() {|unit_quiz|
-      {
-        due_date: unit_quiz.due_date,
-        title: unit_quiz.quiz.title,
-      }
-    }
-    render( json: quizzes )
-  end
-
   def create
     unit_quiz = UnitQuiz.new(unit_quiz_params)
     duplicate = Unit.find(params[:unit_id]).quizzes.select() {|old_quiz| 
@@ -32,7 +22,12 @@ class Api::UnitQuizzesController < ApplicationController
   end
 
   def delete_by_unit_and_quiz
-    UnitQuiz.find_by_unit_and_quiz(params[:unit_id], params[:quiz_id]).destroy()
+    unit_id = Unit.find(params[:unit_id]).id
+    unit_quiz = Quiz.find(params[:quiz_id]).unit_quizzes.select() {|unit_quiz|
+        unit_quiz.unit_id == unit_id
+    }
+
+    unit_quiz.first.destroy()
     render(json: "Data Deleted" )
   end
 

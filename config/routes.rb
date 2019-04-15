@@ -45,15 +45,7 @@ Rails.application.routes.draw do
     resources :assignments, only: [:show, :create, :update, :destroy] do
       resources :assignment_submissions
     end
-    resources :quizzes, only: [:show, :create, :update, :destroy] do
-      resources :questions
-    end
-
-    resources :quiz_submissions
-    get '/courses/:course_id/quiz_submissions', to: '/api/quiz_submissions#get_submissions_by_course'
-    get '/users/:user_id/quiz_submissions', to: '/api/quiz_submissions#get_submissions_by_user'
-    put '/quiz_submissions/:id/calculate_grade', to: '/api/quiz_submissions#calculate_final_grade'
-
+    resources :quizzes, only: [:show, :create, :update, :destroy]
 
     post 'contents/search', to: '/api/contents#search_contents'
     post 'contents/search/:unit_id', to: '/api/contents#search_contents_not_in_unit'

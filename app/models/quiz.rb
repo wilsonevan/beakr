@@ -1,11 +1,6 @@
 class Quiz < ApplicationRecord
   has_many :unit_quizzes, dependent: :destroy
   has_many :units, through: :unit_quizzes
-  has_many :questions, dependent: :destroy
-  # Quiz_submissions is not set to dependent destroy so we can destroy 
-  # a quiz and keep the submission for histrical purposes.
-  has_many :quiz_submissions
-  has_many :enrollments, through: :quiz_submissions
 
   def self.search_quizzes(input)
     Quiz.find_by_sql(["

@@ -4,8 +4,6 @@ class Enrollment < ApplicationRecord
   has_many :attendances, dependent: :destroy
   has_many :assignment_submissions, dependent: :destroy
   has_many :assignments, through: :assignment_submissions
-  has_many :quiz_submissions, dependent: :destroy
-  has_many :quizzes, through: :quiz_submissions
 
   def self.find_by_user_and_course(user_id, course_id)
     Enrollment.find_by_sql(["
