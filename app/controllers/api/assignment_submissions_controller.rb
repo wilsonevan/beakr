@@ -21,10 +21,10 @@ class Api::AssignmentSubmissionsController < ApplicationController
   end
 
   def update
-    if @assignment_submission(assignment_submission_params).update
-      render json: assignment_submission
+    if @assignment_submission.update(assignment_submission_params)
+      render json: @assignment_submission
     else
-      render json: assignment_submission.errors, status: 422
+      render json: @assignment_submission.errors, status: 422
     end
   end
 
