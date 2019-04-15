@@ -34,7 +34,7 @@ Assignment.destroy_all
           title: Faker::Science.element,
           body: Faker::Movies::Ghostbusters.quote,
           due_date: Faker::Date.forward(60),
-          kind: "github",
+          kind: "url",
         )
 
         UnitAssignment.create(

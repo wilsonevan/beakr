@@ -19,7 +19,6 @@ class AssignmentView extends React.Component {
     if (user.admin) {
     axios.get(`/api/assignments/${id}/assignment_submissions`)
       .then( res => {
-        // this.setState({ submissions: res.data })
         res.data.map( (submission) => {
           axios.get(`/api/assignments/${id}/assignment_submissions/${submission.id}/find_user`)
             .then( res => {

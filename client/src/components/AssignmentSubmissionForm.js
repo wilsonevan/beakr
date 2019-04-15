@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import axios from 'axios';
+import Code from './Code';
 import { ButtonGreen } from '../styles/Components';
 import { Header, Form } from 'semantic-ui-react';
 
@@ -11,6 +12,11 @@ class AssignmentSubmissionForm extends React.Component {
     const { name, value } = e.target
     this.setState({ [name]: value })
   }
+
+  handleCodeChange = (value) => {
+    this.setState({ code: value });
+  }
+
   handleQuillChange = (value) => {
     this.setState({ body: value })
   }
@@ -21,14 +27,14 @@ class AssignmentSubmissionForm extends React.Component {
     const assignment_submission = {...this.state, course_id: courseId};
     axios.post(`/api/assignments/${assignment_id}/assignment_submissions`, assignment_submission )
       .then(res => {
-        history.push(`/users/${user.id}/asubmission/${res.data.id}`)
+        history.push(`/dashboard/`)
       })
   }
 
   renderForm = () => {
     const { code, url } = this.state
     switch (this.props.kind) {
-      case 'github':
+      case 'url':
         return (
           <Form>
             <Form.Input
@@ -40,7 +46,14 @@ class AssignmentSubmissionForm extends React.Component {
           </Form>  
         )
       case 'code':
-        // CODEMIRROR COMPONENT
+        return (
+          <Code 
+            value={this.state.code} 
+            codeChange={this.handleCodeChange}
+            height="100rem"
+            width="50rem"
+          />
+        ) 
       default:
         break
     };
