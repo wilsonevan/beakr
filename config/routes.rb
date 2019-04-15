@@ -61,5 +61,8 @@ Rails.application.routes.draw do
     post 'assignments/search/:unit_id', to: '/api/assignments#search_assignments_not_in_unit'
     post 'quizzes/search', to: '/api/quizzes#search_quizzes'
     post 'quizzes/search/:unit_id', to: '/api/quizzes#search_quizzes_not_in_unit'
+
   end
+  
+  get '*other', to: 'static#index'
 end
