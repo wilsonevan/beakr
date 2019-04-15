@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-// import ProgressBar from "react-progressbar.js";
-import { Card, Table, Tab } from "semantic-ui-react";
+import { Card, Table, } from "semantic-ui-react";
 import { Line } from "react-chartjs-2";
 import CourseCard from './CourseCard';
 
@@ -22,18 +21,15 @@ const StudentGradesView = () => {
       <SummaryContainer>
         <TopContainer>
           <HeaderSummary>Grades Summary</HeaderSummary>
-          {/* <HeaderSummary>Summary</HeaderSummary> */}
           <DataSummary>
             {courses.map( course => {
               return <CourseCard course={course} />
             })}
-            {/* <Card.Group fluid items={courses} itemsPerRow={2} /> */}
           </DataSummary>
         </TopContainer>
         <Split />
         <TopContainer>
           <HeaderSummary>Upcoming Assignments</HeaderSummary>
-          {/* <HeaderSummary>Assignments</HeaderSummary> */}
           <DataSummary>
             <Card.Group fluid items={assignments} itemsPerRow={2} />
           </DataSummary>
@@ -87,6 +83,15 @@ const StudentGradesView = () => {
   };
 
   const renderTrends = () => {
+
+    const chartColors = [
+      "#23a24d",
+      "#2979ff",
+      "#f99b52",
+      "#f26060",
+      "#75efe3",
+      "#e876a1",
+    ]
     // Labels are x-axis values
     // Data is y-axis values
     const chartData = {
@@ -94,18 +99,50 @@ const StudentGradesView = () => {
       datasets: [
         {
           label: "Course A",
-          backgroundColor: "#23a24d",
-          borderColor: "#2979ff",
+          // backgroundColor: "#f7f7f7",
+          borderColor: chartColors[0],
           data: [0, 10, 5, 2, 20, 30, 45]
-        }
-      ]
+        },
+        {
+          label: "Course B",
+          // backgroundColor: "#f7f7f7",
+          borderColor: chartColors[1],
+          data: [0, 20, 50, 20, 50, 30, 60]
+        },
+      ],
     };
+
+    const options = {
+      legend: {
+        display: true,
+        position: 'bottom',
+      },
+      scales: {
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Grade (%)'
+          }
+        }],
+      },
+      animation: {
+        easing: 'easeOutCubic', 
+      }
+    }
 
     return (
       <SummaryContainer>
         <HeaderSummary>Trends</HeaderSummary>
+
         <Split />
-        <Line data={chartData} height={200} width={700} />
+        <ChartContainer>
+          <Line 
+            data={chartData}
+            options={options}
+            height={300}
+            width={700}
+          />
+        </ChartContainer>
       </SummaryContainer>
     );
   };
@@ -157,6 +194,11 @@ const SummaryContainer = styled.div`
   border: 1px solid #23a24d;
   border-radius: 5px;
 `;
+
+const ChartContainer = styled.div`
+  padding: 5px;
+  padding-top: 20px;
+`
 
 const TopContainer = styled.div`
   display: flex;
