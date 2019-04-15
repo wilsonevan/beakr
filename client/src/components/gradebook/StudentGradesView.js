@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ProgressBar from "react-progressbar.js";
-import { Card, Table, Tab } from "semantic-ui-react";
+// raiimport ProgressBar from "react-progressbar.js";
+import { Card, Table, Button} from "semantic-ui-react";
+
+
 
 const StudentGradesView = () => {
   const [courses, setCourses] = useState(0);
+
+  
 
   const grades = [
     {
@@ -75,6 +79,7 @@ const StudentGradesView = () => {
       assignments.length = 4;
     }
 
+
     return (
       <SummaryContainer>
         <TopContainer>
@@ -90,6 +95,22 @@ const StudentGradesView = () => {
     );
   };
 
+  const renderDropDown = () =>{
+    return(
+      <>
+        <div class="ui green compact menu">
+          <div class="ui simple dropdown item">
+             Sort <i align="left" class="dropdown icon"></i>
+          <div class="menu">
+          <div class="item">By Course</div>
+          </div>
+         </div>
+        </div>
+      </>
+    )
+  }
+
+
   const renderGrades = () => {
     return (
       <Table celled selectable color="green">
@@ -100,6 +121,9 @@ const StudentGradesView = () => {
             <Table.HeaderCell textAlign="center">Score</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
+          <Table.Row>
+            <Table.Cell></Table.Cell>
+          </Table.Row>
         <Table.Body>
           {grades.map(grade => {
             return (
@@ -126,6 +150,8 @@ const StudentGradesView = () => {
   return (
     <>
       {renderSummary()}
+      <br />
+      {renderDropDown()}
       <br />
       {renderGrades()}
       <br />
@@ -161,5 +187,6 @@ const Split = styled.hr`
 `;
 
 const TableHeader = styled.h4``;
+
 
 export default StudentGradesView;
