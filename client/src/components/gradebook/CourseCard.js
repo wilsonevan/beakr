@@ -32,6 +32,10 @@ const CourseCard = ({course}) => {
 		layout: {
 			padding: 0,
 		},
+		animation: {
+			easing: 'easeOutCubic', 
+			duration: 2000,
+		}
 	}
 
 	return (
