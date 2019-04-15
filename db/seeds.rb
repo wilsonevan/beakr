@@ -1,6 +1,8 @@
 Course.destroy_all
 User.destroy_all
 Content.destroy_all
+Quiz.destroy_all
+Assignment.destroy_all
 
 1.times do
   course = Course.create(
@@ -46,6 +48,44 @@ Content.destroy_all
           due_date: Faker::Date.forward(60),
         )
 
+        quiz.questions.create(
+          kind: "choice",
+          body: "The coice-based question is being asked here",
+          choices: [
+            {option: 1, text: "choice one text here", correct: true}, 
+            {option: 2, text: "choice two text here", correct: false},
+            {option: 3, text: "choice three text here", correct: false},
+            {option: 4, text: "choice four text here", correct: false}
+          ],
+          submitted_choice: nil,
+          submitted_text: nil,
+          submitted_code: nil,
+          points_possible: 20,
+          points_awarded: 0,
+        )
+
+        quiz.questions.create(
+          kind: "text",
+          body: "The text-based question is being asked here",
+          choices: nil,
+          submitted_choice: nil,
+          submitted_text: nil,
+          submitted_code: nil,
+          points_possible: 20,
+          points_awarded: 0,
+        )
+
+        quiz.questions.create(
+          kind: "code",
+          body: "The code-based question is being asked here",
+          choices: nil,
+          submitted_choice: nil,
+          submitted_text: nil,
+          submitted_code: nil,
+          points_possible: 20,
+          points_awarded: 0,
+        )
+
         UnitQuiz.create(
           unit_id: unit.id,
           quiz_id: quiz.id
@@ -71,25 +111,78 @@ end
       course_id: Course.first.id,
       role: 'student'
     )
+
+    Quiz.all().each() {|quiz|
+      QuizSubmission.create(
+        quiz_id: quiz.id,
+        enrollment_id: e.id,
+        points_possible: 60,
+        points_awarded: 20,
+        grade: 33.33,
+        graded: false,
+        comment: "teacher comment enetered on quiz submission here",
+        questions: [
+          {
+            id: 1,
+            kind: "choice",
+            body: "The coice-based question is being asked here",
+            choices: [
+              {option: 1, text: "choice one text here", correct: true}, 
+              {option: 2, text: "choice two text here", correct: false},
+              {option: 3, text: "choice three text here", correct: false},
+              {option: 4, text: "choice four text here", correct: false}
+            ],
+            submitted_choice: 1,
+            submitted_text: nil,
+            submitted_code: nil,
+            points_possible: 20,
+            points_awarded: 20,
+          },
+          {
+            id: 2,
+            kind: "text",
+            body: "The text-based question is being asked here",
+            choices: nil,
+            submitted_choice: nil,
+            submitted_text: "user answered text question here",
+            submitted_code: nil,
+            points_possible: 20,
+            points_awarded: 0,
+          },
+          {
+            id: 3,
+            kind: "code",
+            body: "The code-based question is being asked here",
+            choices: nil,
+            submitted_choice: nil,
+            submitted_text: nil,
+            submitted_code: "user answered code question here",
+            points_possible: 20,
+            points_awarded: 0,
+          }
+        ]
+      )
+    }
+
     1.times do 
       Attendance.create(
         enrollment_id: e.id,
         attendance_record: 'present',
-        record_date: '2019-04-08'
+        record_date: '2019-04-11'
       )
     end
     1.times do 
       Attendance.create(
         enrollment_id: e.id,
         attendance_record: 'absent',
-        record_date: '2019-04-09'
+        record_date: '2019-04-12'
       )
     end
     1.times do 
       Attendance.create(
         enrollment_id: e.id,
         attendance_record: 'late',
-        record_date: '2019-04-10'
+        record_date: '2019-04-13'
       )
     end
   end
