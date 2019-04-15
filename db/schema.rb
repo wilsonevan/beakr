@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2019_04_13_153307) do
-=======
 ActiveRecord::Schema.define(version: 2019_04_15_010727) do
->>>>>>> parent of 065e506... Revert "Merge branch 'master' of https://github.com/devpointlabs/beakr"
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
