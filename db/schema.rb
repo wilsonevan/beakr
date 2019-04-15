@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2019_04_13_153307) do
+=======
+ActiveRecord::Schema.define(version: 2019_04_15_010727) do
+>>>>>>> parent of 065e506... Revert "Merge branch 'master' of https://github.com/devpointlabs/beakr"
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +73,36 @@ ActiveRecord::Schema.define(version: 2019_04_13_153307) do
     t.index ["user_id"], name: "index_enrollments_on_user_id"
   end
 
+  create_table "questions", force: :cascade do |t|
+    t.string "choices"
+    t.text "body"
+    t.text "submitted_text"
+    t.integer "submitted_choice"
+    t.text "submitted_code"
+    t.float "points_possible"
+    t.float "points_awarded"
+    t.bigint "quiz_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "kind"
+    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
+  end
+
+  create_table "quiz_submissions", force: :cascade do |t|
+    t.bigint "quiz_id"
+    t.bigint "enrollment_id"
+    t.float "grade"
+    t.float "points_possible"
+    t.float "points_awarded"
+    t.boolean "graded"
+    t.text "comment"
+    t.string "questions"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["enrollment_id"], name: "index_quiz_submissions_on_enrollment_id"
+    t.index ["quiz_id"], name: "index_quiz_submissions_on_quiz_id"
+  end
+
   create_table "quizzes", force: :cascade do |t|
     t.string "title"
     t.datetime "due_date"
@@ -115,6 +149,7 @@ ActiveRecord::Schema.define(version: 2019_04_13_153307) do
     t.datetime "updated_at", null: false
     t.integer "sequence"
     t.boolean "visible"
+    t.date "due_date"
     t.index ["quiz_id"], name: "index_unit_quizzes_on_quiz_id"
     t.index ["unit_id"], name: "index_unit_quizzes_on_unit_id"
   end
@@ -167,6 +202,9 @@ ActiveRecord::Schema.define(version: 2019_04_13_153307) do
   add_foreign_key "attendances", "enrollments"
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "users"
+  add_foreign_key "questions", "quizzes"
+  add_foreign_key "quiz_submissions", "enrollments"
+  add_foreign_key "quiz_submissions", "quizzes"
   add_foreign_key "sections", "courses"
   add_foreign_key "unit_assignments", "assignments"
   add_foreign_key "unit_assignments", "units"
