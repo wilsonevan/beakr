@@ -4,7 +4,7 @@ import { createGlobalStyle } from "styled-components";
 
 COLORS______________________
 green: #23a24d
-blue: #0029ff
+blue: #2979ff
 background-color: #f7f7f7
 
 FONTS_______________________
