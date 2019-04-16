@@ -30,7 +30,9 @@ class AssignmentView extends React.Component {
     } else {
       axios.get(`/api/courses/${course_id}/assignments/${id}/assignment_submissions/show_user_submission`)
         .then( res=> {
-          this.setState({userSubmission: true})
+            if(res.data !== null) { 
+              this.setState({userSubmission: true})
+            }
         })
     }
   };
@@ -65,17 +67,23 @@ class AssignmentView extends React.Component {
             kind={kind}
             assignment_id={match.params.id} 
             course_id={match.params.course_id}
+            user={auth.user}
+            toggleSubmission={this.toggleUserSubmission}
           /> 
         : 
           <AssignmentSubmissionForm 
             kind={kind} 
             assignment_id={match.params.id} 
             user={auth.user} 
-            courseId={match.params.course_id}
+            course_id={match.params.course_id}
+            toggle={this.toggleUserSubmission}
           />  
     )
   }
 
+  toggleUserSubmission = () => {
+    this.setState({ userSubmission: !this.state.userSubmission });
+  }
 
   render() {
     const { title, body, due_date, } = this.state;
