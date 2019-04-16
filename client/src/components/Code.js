@@ -19,7 +19,7 @@ require('codemirror/mode/python/python');
     change event. Pass a funtion into this prop that updates your state.
     ex) 
         handleCodeChange = (value) => {
-            this.setState({ code: value }, () => console.log(this.state.value));
+            this.setState({ code: value });
         }
     HEIGHT_AND_WIDTH_PROPS________
     The 'height', and 'width' props let you specify the dimensions of your editor
@@ -29,7 +29,7 @@ require('codemirror/mode/python/python');
     state = {code: ""}
 
     handleCodeChange = (value) => {
-        this.setState({ code: value }, () => console.log(this.state.value));
+        this.setState({ code: value });
     }
 
     <Code 
@@ -75,7 +75,10 @@ class Code extends React.Component {
                             lineNumbers: true
                         }}
                         onBeforeChange={(editor, data, value) => {
-                            this.props.codeChange(value);
+                            if(this.props.codeChange) {
+                                this.props.codeChange(value);
+                            } else {
+                            }
                         }}
                         autoScroll
                     />
