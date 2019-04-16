@@ -2,11 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { ButtonGreen } from "../../styles/Components";
 
-const QuizStart = ({ toggleStartPrompt }) => {
+const QuizStart = ({ toggleStartPrompt, due_date, body }) => {
     return(
         <>
             <Instructions>
-                instructions go here
+                Instructions
+                { body }
                 <br/>
                 <ButtonGreen 
                     onClick={() => toggleStartPrompt()} 
