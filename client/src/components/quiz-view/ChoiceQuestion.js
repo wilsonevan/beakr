@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { ButtonGreen } from "../../styles/Components";
 
 const ChoiceQuestion = ({ question, currentQuestion, selectChoice }) => {
 

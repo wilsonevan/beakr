@@ -19,7 +19,7 @@ class QuestionView extends React.Component {
     }
 
     render() {
-        const { questions, handleCodeChange, handleTextChange, selectChoice, toggleSubmitPrompt } = this.props;
+        const { questions, handleCodeChange, handleTextChange, selectChoice, toggleSubmitPrompt, validateQuestions } = this.props;
         const { currentQuestion } = this.state;
         const lastQuestion = questions.length - 1;
         return (
@@ -41,7 +41,11 @@ class QuestionView extends React.Component {
                         }
                         { 
                             currentQuestion === lastQuestion 
-                            && <ButtonBlue onClick={() => toggleSubmitPrompt()} >Submit</ButtonBlue> 
+                            && <ButtonBlue onClick={() => {
+                                const validated = validateQuestions();
+                                if(validated) toggleSubmitPrompt();
+                            }} 
+                            >Submit</ButtonBlue> 
                         }
                     </div>
                 </ButtonContainer>

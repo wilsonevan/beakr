@@ -108,6 +108,34 @@ const ButtonRight = styled.button`
     }
 `
 
-const ButtonCenter = styled.button``
+const ButtonCenter = styled.button`
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 60%;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem;
+    background-color: white;
+    color: #23a24d;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.75rem;
+    outline: none;
+    transition-duration: 0.2s;
+
+    :hover {
+    color: white;
+    background-color: #2979ff;
+    }
+
+    :active {
+    box-shadow: 0 0 0 3px #41c36c;
+    background-color: white;
+    color: #41c36c;
+    }
+`
 
 export default QuizPrompt;

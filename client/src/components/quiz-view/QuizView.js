@@ -14,7 +14,8 @@ class QuizView extends React.Component {
     quizStarted: false, 
     startPrompt: false, 
     submitPrompt: false, 
-    validationPrompt: false 
+    validationPrompt: false,
+    validationText: "",
   }
 
   handleCodeChange = (value, currentQuestion) => {
@@ -47,6 +48,25 @@ class QuizView extends React.Component {
     .catch((err) => console.log(err));
   }
 
+  validateQuestions = () => {
+    let notAnswered = this.state.questions.map((question, index) => {
+      if(
+        (question.kind === "choice" && !question.submitted_choice)
+        || (question.kind === "text" && !question.submitted_text)
+        || (question.kind === "code" && !question.submitted_code)
+      ) return index;
+    }).filter((num) => num + 1); // adding 1 so zero doesn't return falsy
+
+    if(notAnswered.length > 0) {
+      this.toggleValidationPrompt();
+      console.log(notAnswered)
+      const validationText = `Questions ${ notAnswered.map((num, index) => `${ num + 1},` ).join(" ") } have not been answered.`;
+      this.setState({ validationText });
+      return false;
+    }
+    return true
+  }
+
   toggleStartPrompt = () => {
     this.setState({ startPrompt: !this.state.startPrompt });
   }
@@ -74,8 +94,7 @@ class QuizView extends React.Component {
   }
 
   render() {
-    const { title, questions, quizStarted, startPrompt, submitPrompt, validationPrompt } = this.state;
-    console.log(submitPrompt);
+    const { title, questions, quizStarted, startPrompt, submitPrompt, validationPrompt, validationText } = this.state;
     if(!quizStarted)
       return (
         <>
@@ -106,6 +125,7 @@ class QuizView extends React.Component {
           selectChoice={this.selectChoice}
           handleSubmit={this.handleSubmit}
           toggleSubmitPrompt={this.toggleSubmitPrompt}
+          validateQuestions={this.validateQuestions}
         />
         { submitPrompt &&  
             <QuizPrompt 
@@ -115,7 +135,14 @@ class QuizView extends React.Component {
               rightText="Not Yet"
               rightClick={this.toggleSubmitPrompt}
             />
-          }
+        }
+        { validationPrompt &&  
+            <QuizPrompt 
+              prompt={validationText}
+              centerText="Ok"
+              centerClick={this.toggleValidationPrompt}
+            />
+        }
       </>
     )
   }
