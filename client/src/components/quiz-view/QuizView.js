@@ -59,12 +59,11 @@ class QuizView extends React.Component {
 
     if(notAnswered.length > 0) {
       this.toggleValidationPrompt();
-      console.log(notAnswered)
       const validationText = `Questions ${ notAnswered.map((num, index) => `${ num + 1},` ).join(" ") } have not been answered.`;
       this.setState({ validationText });
       return false;
     }
-    return true
+    return true;
   }
 
   toggleStartPrompt = () => {
