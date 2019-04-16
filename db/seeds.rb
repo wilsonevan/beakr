@@ -45,7 +45,7 @@ Assignment.destroy_all
       1.times do
         quiz = Quiz.create(
           title: Faker::Currency.name,
-          due_date: Faker::Date.forward(60),
+          body: Faker::Lorem.paragraph,
         )
 
         quiz.questions.create(
@@ -88,7 +88,11 @@ Assignment.destroy_all
 
         UnitQuiz.create(
           unit_id: unit.id,
-          quiz_id: quiz.id
+          quiz_id: quiz.id,
+          visible: false,
+          sequence: nil,
+          due_date: Faker::Date.forward(60),
+
         )
       end
     end

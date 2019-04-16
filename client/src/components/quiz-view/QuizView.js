@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-// import Moment from 'react-moment';
+import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 import { Header, Icon, } from 'semantic-ui-react';
 import QuizStart from "./QuizStart";
@@ -9,13 +9,26 @@ import QuizPrompt from "./QuizPrompt";
 
 class QuizView extends React.Component {
   state = { 
-    title: '', 
+    title: "", 
+    body: "",
+    due_date: null,
     questions: [], 
     quizStarted: false, 
     startPrompt: false, 
     submitPrompt: false, 
     validationPrompt: false,
     validationText: "",
+  }
+
+  componentDidMount() {
+    axios.get(`/api/quizzes/${this.props.match.params.id}`)
+      .then( res => {
+        const { title, due_date, body } = res.data;
+        this.setState({ title, due_date, body });
+        return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
+      })
+      .then((res) => this.setState({ questions: res.data }))
+      .catch((err) => console.log(err));
   }
 
   handleCodeChange = (value, currentQuestion) => {
@@ -78,22 +91,12 @@ class QuizView extends React.Component {
     this.setState({ validationPrompt: !this.state.validationPrompt });
   }
 
-  componentDidMount() {
-    axios.get(`/api/quizzes/${this.props.match.params.id}`)
-      .then( res => {
-        this.setState({ title: res.data.title });
-        return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
-      })
-      .then((res) => this.setState({ questions: res.data }))
-      .catch((err) => console.log(err));
-  }
-
   startQuiz = () => {
     this.setState({ quizStarted: true });
   }
 
   render() {
-    const { title, questions, quizStarted, startPrompt, submitPrompt, validationPrompt, validationText } = this.state;
+    const { title, questions, quizStarted, startPrompt, submitPrompt, validationPrompt, validationText, due_date, body } = this.state;
     if(!quizStarted)
       return (
         <>
@@ -102,7 +105,11 @@ class QuizView extends React.Component {
             <Icon name='block layout' color='green' />
               {title}
           </Header>
-          <QuizStart toggleStartPrompt={this.toggleStartPrompt} />
+          <QuizStart 
+            toggleStartPrompt={this.toggleStartPrompt} 
+            due_date={due_date}
+            body={body}
+          />
           { startPrompt &&
             <QuizPrompt 
               prompt="Are you sure you want to begin?"
@@ -112,7 +119,7 @@ class QuizView extends React.Component {
               rightClick={this.toggleStartPrompt}
             />
           }
-          {/* <Moment format='ddd, MMM D, LT' date={due_date} /> */} 
+          <Moment format='ddd, MMM D, LT' date={due_date} /> 
         </>
       )
     else return (
