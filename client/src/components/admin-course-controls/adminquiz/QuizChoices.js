@@ -15,6 +15,7 @@ class QuizChoices extends React.Component {
     this.setState({choiceValues: {text, checked: !this.state.choiceValues.checked}, } )
   }
 
+
   handleAdd = () => {
     const choice = [...this.props.choices, this.state.choiceValues]
     this.props.setChoicesState(choice)
@@ -32,7 +33,7 @@ class QuizChoices extends React.Component {
         placeholder='Question'
         onChange={this.handleChange}
       />
-        <ButtonGreen onClick={() => this.handleAdd()}>Add To Choices</ButtonGreen>
+        <h5 onClick={() => this.handleAdd()}>Add a Choice</h5>
       </>
     )
   }

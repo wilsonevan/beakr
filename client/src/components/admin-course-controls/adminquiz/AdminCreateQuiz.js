@@ -54,6 +54,11 @@ class AdminCreateQuiz extends React.Component {
           <h3>Question {amount}</h3>
           <h4 style={{margin: 0}}>Type: {question.kind}</h4>
           <h4 style={{margin: 0}}>Question: {question.body}</h4>
+          {question.choices.map( choice => 
+            <h6>
+              {choice.text}
+            </h6>
+            )}
           </QuestionDiv>)
       }
       )
