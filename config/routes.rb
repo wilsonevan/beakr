@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     resources :contents, only: [:show, :create, :update, :destroy]
     resources :assignments, only: [:show, :create, :update, :destroy] do
       resources :assignment_submissions
+      get 'assignment_submissions/:id/find_user', to: '/api/assignment_submissions#find_user'
     end
     resources :quizzes, only: [:show, :create, :update, :destroy] do
       resources :questions
