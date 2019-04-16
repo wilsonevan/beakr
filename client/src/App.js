@@ -8,7 +8,7 @@ import Register from "./components/Register";
 import Dashboard from "./components/dashboard/Dashboard";
 import ContentView from "./components/ContentView";
 import AssignmentView from "./components/AssignmentView";
-import QuizView from "./components/QuizView";
+import QuizView from "./components/quiz-view/QuizView";
 import Profile from "./components/profile/Profile";
 import FetchUser from "./components/FetchUser";
 import AddQuiz from "./components/admin-course-controls/AddQuiz";
@@ -57,6 +57,7 @@ const App = () => (
           <ProtectedRoute exact path="/assignments/:id" component={AssignmentView} />
           <ProtectedRoute exact path="/courses/:course_id/assignments/:id" component={AssignmentView} />
           <ProtectedRoute exact path="/quizzes/new" component={AddQuiz} />
+          <ProtectedRoute exact path="/courses/:course_id/quizzes/:id" component={QuizView} />
           <ProtectedRoute exact path="/quizzes/:id" component={QuizView} />
           <ProtectedRoute exact path="/users/new" component={AddUser} />
           {/* <ProtectedRoute exact path="/users/:user_id/a_submissions/:id" component={SubmissionView} /> */}
