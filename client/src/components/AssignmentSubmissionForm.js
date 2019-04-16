@@ -23,11 +23,11 @@ class AssignmentSubmissionForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { history, assignment_id, user, courseId } = this.props;
+    const { setSubmission, assignment_id, courseId } = this.props;
     const assignment_submission = {...this.state, course_id: courseId};
     axios.post(`/api/assignments/${assignment_id}/assignment_submissions`, assignment_submission )
       .then(res => {
-        history.push(`/dashboard/`)
+        setSubmission( res.data )
       })
   }
 
@@ -48,7 +48,7 @@ class AssignmentSubmissionForm extends React.Component {
       case 'code':
         return (
           <Code 
-            value={this.state.code} 
+            value={code} 
             codeChange={this.handleCodeChange}
             height="100rem"
             width="50rem"
