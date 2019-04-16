@@ -48,6 +48,7 @@ class Code extends React.Component {
     componentDidMount() {
         const codeMirror = document.querySelector(".CodeMirror");
         codeMirror.style.height = `calc(${this.props.height} - 3.5rem)`;
+        codeMirror.style.borderRadius = "10px";
     }
 
     handleChange = (event) => {
