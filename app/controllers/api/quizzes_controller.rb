@@ -46,7 +46,7 @@ class Api::QuizzesController < ApplicationController
   end
 
   def set_quiz
-    @quiz = Quiz.find(params[:id])
+    @quiz = Quiz.get_quiz_with_attrs(params[:id])
   end
 
   def quiz_params
