@@ -1,11 +1,12 @@
 import React from 'react';
 import DateTimePicker from 'react-datetime-picker';
-import { ButtonGreen } from '../../styles/Components';
+import { ButtonGreen } from '../../../styles/Components';
 import axios from 'axios';
 import CreateQuestions from './CreateQuestions'
+import styled from 'styled-components'
 
 class AdminCreateQuiz extends React.Component {
-  state = { quizValues: { title: '', due_date: '',}, addQuestion: false, questions: []}
+  state = { quizValues: { title: '', due_date: '',}, addQuestion: false, questions: [],}
 
   handleChange = (e) => {
     const { name, value } = e.target
@@ -45,15 +46,14 @@ class AdminCreateQuiz extends React.Component {
   )
 
   renderQuestions = () => {
+      let amount = 0
       return this.state.questions.map( question => {
-       return ( <div>
-          <h1>
-            {question.kind}
-          </h1>
-          <h1>
-            {question.body}
-          </h1>
-        </div>)
+        amount = amount + 1
+        return ( <QuestionDiv>
+          <h3>Question {amount}</h3>
+          <h4 style={{margin: 0}}>Type: {question.kind}</h4>
+          <h4 style={{margin: 0}}>Question: {question.body}</h4>
+          </QuestionDiv>)
       }
       )
   }
@@ -63,9 +63,12 @@ class AdminCreateQuiz extends React.Component {
 
     return (
       <>
-        <div>
+      <ContainAll>
+        <QuizContainer>
+
+        <h2>
           Quiz Title
-        </div>
+        </h2>
         <input 
           required
           autoFocus
@@ -73,34 +76,53 @@ class AdminCreateQuiz extends React.Component {
           value={title}
           onChange={this.handleChange}
           placeholder='Title'
-        />
-        <br />
-        <br />
-        <div>
+          />
+        <h2>
           Due Date
-        </div>
+        </h2>
         <DateTimePicker 
           required
           value={due_date}
           disableClock
           onChange={this.handleDateChange}
-        />
-        <br />
+          />
+        </QuizContainer>
+        <QuizContainer>
+
         {this.renderQuestions()}
-        <br />
         {addQuestion ? this.renderQuestionForm() : null}
         <ButtonGreen onClick={() => this.handleAddQuestion()}>
           {addQuestion ? 'Cancel' : 'Create Question'}
         </ButtonGreen>
-
-        <br />
-        <br />
-        <ButtonGreen onClick={this.handleSubmit}>
+        </QuizContainer>
+      </ContainAll>
+        <ButtonGreen style={{marginTop: '10px'}} onClick={this.handleSubmit}>
           Create Quiz
         </ButtonGreen>
-      </>
+        </>
     )
   }
 }
+
+const ContainAll = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between
+  background: #23a24d
+  padding: 1%;
+  border-radius: 10px;
+`
+const QuizContainer = styled.div`
+  background: white;
+  width: 50%;
+  padding: 10px;
+`
+
+const QuestionDiv = styled.div`
+  box-shadow: 1px 1px 1px 1px #ededed;
+  border-radius: 6px;
+  margin-bottom: 15px;
+
+`
 
 export default AdminCreateQuiz

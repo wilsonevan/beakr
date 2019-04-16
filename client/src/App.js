@@ -15,7 +15,7 @@ import FetchUser from "./components/FetchUser";
 import AddQuiz from "./components/admin-course-controls/AddQuiz";
 import AddUser from "./components/admin/AddUser";
 import AddCourse from "./components/admin/AddCourse";
-import AdminCreateQuiz from './components/admin-course-controls/AdminCreateQuiz'
+import AdminCreateQuiz from './components/admin-course-controls/adminquiz/AdminCreateQuiz'
 import { Switch, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import Navbar from "./components/Navbar";

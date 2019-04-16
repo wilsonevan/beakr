@@ -1,5 +1,7 @@
 import React from 'react'
-import { ButtonGreen } from '../../styles/Components';
+import { ButtonGreen } from '../../../styles/Components';
+import QuizChoices from './QuizChoices'
+// import Choices from './Choices'
 
 class CreateQuestions extends React.Component {
   state = {kind: 'text', body: '', choices: [], points_possible: 0.0, }
@@ -11,12 +13,40 @@ handleChange = (e) => {
   this.setState({ [name]: value })
 }
 
+setChoicesState = (choices) => {
+  this.setState({choices})    
+}
+
 handleAdd = () => {
   const questions = [...this.props.questions, this.state]
-  // const question = {...this.state}
-  // this.props.questions.push(question)
   this.props.setQuestionState(questions)
   this.props.handleAddQuestion()
+}
+renderKind = () => {
+  const { kind, body, points_possible} = this.state
+   if (kind === 'multipleChoice'){
+     return (
+     <>
+      <QuizChoices 
+        choices={this.state.choices}
+        setChoicesState={this.setChoicesState}
+      />
+     </>
+     )
+    } else {
+    return (
+     <>
+  <div>
+    Question Body
+  </div>
+  <input 
+    required
+    name='body'
+    value={body}
+    onChange={this.handleChange}
+    />
+  </>)
+  }
 }
 
 
@@ -24,7 +54,7 @@ handleAdd = () => {
     const { kind, body, points_possible, } = this.state
     return(
       <>
-        <div style={{marginTop: '20px'}}>
+        <div>
         Kind of Question:
       </div>
       <select
@@ -40,15 +70,7 @@ handleAdd = () => {
         </select>
       <br />
       <br />
-      <div>
-        Question Body
-      </div>
-      <input 
-        required
-        name='body'
-        value={body}
-        onChange={this.handleChange}
-      />
+        {this.renderKind()}
       <br />
       <br />
       <ButtonGreen onClick={() => this.handleAdd()} style={{marginRight: '10px'}}>Add Question</ButtonGreen>

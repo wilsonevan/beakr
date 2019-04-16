@@ -12,7 +12,7 @@ class Api::QuestionsController < ApplicationController
 
   def create
     question = @quiz.questions.new(question_params)
-
+    
     if question.save
       render( json: question )
     else
