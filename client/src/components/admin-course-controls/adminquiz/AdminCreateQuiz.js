@@ -26,7 +26,8 @@ class AdminCreateQuiz extends React.Component {
       .then( res => {
         // res.data.id === quiz.id
         this.state.questions.map( question => {
-          axios.post(`/api/quizzes/${res.data.id}/questions`, question).then( res => {debugger})
+          console.log(question);
+          axios.post(`/api/quizzes/${res.data.id}/questions`, question)
         })
         this.setState({ quizValues: {title: '', due_date: '',}, questions: []})
       })

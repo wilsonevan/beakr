@@ -50,7 +50,7 @@ class Api::QuestionsController < ApplicationController
           :body, 
           :points_possible, 
           :points_awarded, 
-          :choices, 
+          { :choices => [:correct, :text, :option] }, 
           :submitted_choice, 
           :submitted_text, 
           :submitted_code
