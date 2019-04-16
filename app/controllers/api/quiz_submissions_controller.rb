@@ -23,7 +23,7 @@ class Api::QuizSubmissionsController < ApplicationController
 
     quiz_submission = QuizSubmission.new(
       quiz_id: params[:quiz_id],
-      enrollment_id: Enrollment.find_by_user_and_course(params[:user_id], params[:course_id]).id,
+      enrollment_id: Enrollment.find_by_user_and_course(current_user.id, params[:course_id]).id,
       points_possible: grades[:points_possible],
       points_awarded: grades[:points_awarded],
       grade: grades[:grade],
@@ -84,11 +84,12 @@ class Api::QuizSubmissionsController < ApplicationController
 
     # This function loops through choice questions and determines if they are correct
     def grade_choices(question_array)
-      questions_array.each() {|question|
-        if(question.kind == "choice")
-          question.choices.each() {|choice|
-            if( question.submitted_choice == choice.option && choice.correct)
-              question.points_awarded = question.points_possible
+      question_array.each() {|question|
+        puts question
+        if(question[:kind] == "choice")
+          question[:choices].each() {|choice|
+            if( question[:submitted_choice] == choice[:option] && choice[:correct])
+              question[:points_awarded] = question[:points_possible]
             end
           }
         end
@@ -103,14 +104,14 @@ class Api::QuizSubmissionsController < ApplicationController
       points_awarded = 0
       
       questions_array.each() {|question|
-        points_possible += question.points_possible
-        points_awarded += question.points_awarded
+        points_possible += question[:points_possible]
+        points_awarded += question[:points_awarded]
       }
 
       return {
-        points_possible: points_possible,
-        points_awarded: points_awarded,
-        grade: points_awarded/points_possible,
+        points_possible: points_possible.to_f,
+        points_awarded: points_awarded.to_f,
+        grade: (points_awarded.to_f/points_possible.to_f) * 100,
       }
     end
 end
