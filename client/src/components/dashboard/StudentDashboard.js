@@ -3,7 +3,8 @@ import { Segment, Header } from 'semantic-ui-react'
 import axios from 'axios'
 import { Link, } from 'react-router-dom'
 import styled from 'styled-components'
-import Calendar from '../attendance/Calendar'
+import Calendar from '../attendance/Calendar';
+import StudentGradesView from '../gradebook/StudentGradesView';
 import DashboardNav from "../DashboardNav"
 
 
@@ -41,7 +42,7 @@ class StudentDashboard extends React.Component {
             }
             calendar={<Calendar />}
             todo={<p>We still have to add todos, they are todo</p>}
-            grades={<p>We still have to add grades</p>}
+            grades={<StudentGradesView />}
           />
       </Segment>
     )
