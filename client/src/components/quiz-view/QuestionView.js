@@ -19,7 +19,7 @@ class QuestionView extends React.Component {
     }
 
     render() {
-        const { questions, handleCodeChange, handleTextChange, selectChoice, handleSubmit } = this.props;
+        const { questions, handleCodeChange, handleTextChange, selectChoice, toggleSubmitPrompt } = this.props;
         const { currentQuestion } = this.state;
         const lastQuestion = questions.length - 1;
         return (
@@ -41,7 +41,7 @@ class QuestionView extends React.Component {
                         }
                         { 
                             currentQuestion === lastQuestion 
-                            && <ButtonBlue onClick={() => handleSubmit()} >Submit</ButtonBlue> 
+                            && <ButtonBlue onClick={() => toggleSubmitPrompt()} >Submit</ButtonBlue> 
                         }
                     </div>
                 </ButtonContainer>
@@ -50,11 +50,7 @@ class QuestionView extends React.Component {
                     && <ChoiceQuestion 
                             question={questions[currentQuestion]} 
                             currentQuestion={currentQuestion}
-                            lastQuestion={questions.length - 1}
-                            incCurrentQuestion={this.incCurrentQuestion} 
-                            decCurrentQuestion={this.decCurrentQuestion} 
                             selectChoice={selectChoice}
-                            handleSubmit={handleSubmit}
                        /> 
                     }
 
@@ -62,11 +58,7 @@ class QuestionView extends React.Component {
                     && <CodeQuestion 
                             question={questions[currentQuestion]} 
                             currentQuestion={currentQuestion}
-                            lastQuestion={questions.length - 1}
-                            incCurrentQuestion={this.incCurrentQuestion} 
-                            decCurrentQuestion={this.decCurrentQuestion}
                             handleCodeChange={handleCodeChange}
-                            handleSubmit={handleSubmit}
                         /> 
                     }
 
@@ -74,11 +66,7 @@ class QuestionView extends React.Component {
                     && <TextQuestion 
                             question={questions[currentQuestion]} 
                             currentQuestion={currentQuestion}
-                            lastQuestion={questions.length - 1}
-                            incCurrentQuestion={this.incCurrentQuestion} 
-                            decCurrentQuestion={this.decCurrentQuestion}
                             handleTextChange={handleTextChange}
-                            handleSubmit={handleSubmit}
                        /> 
                     }
                 </QuestionCard>

@@ -5,9 +5,17 @@ import { Link } from 'react-router-dom';
 import { Header, Icon, } from 'semantic-ui-react';
 import QuizStart from "./QuizStart";
 import QuestionView from "./QuestionView";
+import QuizPrompt from "./QuizPrompt";
 
 class QuizView extends React.Component {
-  state = { title: '', questions: [], quizStarted: false }
+  state = { 
+    title: '', 
+    questions: [], 
+    quizStarted: false, 
+    startPrompt: false, 
+    submitPrompt: false, 
+    validationPrompt: false 
+  }
 
   handleCodeChange = (value, currentQuestion) => {
     let questions = this.state.questions;
@@ -39,6 +47,18 @@ class QuizView extends React.Component {
     .catch((err) => console.log(err));
   }
 
+  toggleStartPrompt = () => {
+    this.setState({ startPrompt: !this.state.startPrompt });
+  }
+
+  toggleSubmitPrompt = () => {
+    this.setState({ submitPrompt: !this.state.submitPrompt });
+  }
+
+  toggleValidationPrompt = () => {
+    this.setState({ validationPrompt: !this.state.validationPrompt });
+  }
+
   componentDidMount() {
     axios.get(`/api/quizzes/${this.props.match.params.id}`)
       .then( res => {
@@ -54,7 +74,8 @@ class QuizView extends React.Component {
   }
 
   render() {
-    const { title, questions, quizStarted } = this.state;
+    const { title, questions, quizStarted, startPrompt, submitPrompt, validationPrompt } = this.state;
+    console.log(submitPrompt);
     if(!quizStarted)
       return (
         <>
@@ -63,18 +84,39 @@ class QuizView extends React.Component {
             <Icon name='block layout' color='green' />
               {title}
           </Header>
-          <QuizStart startQuiz={this.startQuiz} />
+          <QuizStart toggleStartPrompt={this.toggleStartPrompt} />
+          { startPrompt &&
+            <QuizPrompt 
+              prompt="Are you sure you want to begin?"
+              leftText="Start"
+              leftClick={this.startQuiz}
+              rightText="Not Yet"
+              rightClick={this.toggleStartPrompt}
+            />
+          }
           {/* <Moment format='ddd, MMM D, LT' date={due_date} /> */} 
         </>
       )
     else return (
-      <QuestionView 
-        questions={questions} 
-        handleCodeChange={this.handleCodeChange}
-        handleTextChange={this.handleTextChange}
-        selectChoice={this.selectChoice}
-        handleSubmit={this.handleSubmit}
-      />
+      <>
+        <QuestionView 
+          questions={questions} 
+          handleCodeChange={this.handleCodeChange}
+          handleTextChange={this.handleTextChange}
+          selectChoice={this.selectChoice}
+          handleSubmit={this.handleSubmit}
+          toggleSubmitPrompt={this.toggleSubmitPrompt}
+        />
+        { submitPrompt &&  
+            <QuizPrompt 
+              prompt="Are you sure you want to submit your quiz?"
+              leftText="Submit"
+              leftClick={this.handleSubmit}
+              rightText="Not Yet"
+              rightClick={this.toggleSubmitPrompt}
+            />
+          }
+      </>
     )
   }
 }

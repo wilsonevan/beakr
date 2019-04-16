@@ -2,14 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { ButtonGreen } from "../../styles/Components";
 
-const QuizStart = ({ startQuiz }) => {
+const QuizStart = ({ toggleStartPrompt }) => {
     return(
         <>
             <Instructions>
                 instructions go here
                 <br/>
                 <ButtonGreen 
-                    onClick={() => startQuiz()} 
+                    onClick={() => toggleStartPrompt()} 
                     style={{marginTop: "2rem"}}
                 > Start Quiz </ButtonGreen>
             </Instructions>
