@@ -3,17 +3,17 @@ import { ButtonGreen, ButtonBlue } from '../../../styles/Components';
 import styled from 'styled-components';
 
 class QuizChoices extends React.Component {
-  state = {choices: [], correctCount: 0, choiceValues: {option: 1, text: '', correct: false}}
+  state = {choices: [], correctCount: 0, choiceValues: {option: (this.props.choices.length + 1), text: '', correct: false}}
 
   handleChange = (e) => {
-    const { correct,} = this.state.choiceValues
+    const { correct, option} = this.state.choiceValues
     const { name, value } = e.target
-    this.setState({choiceValues: { [name]: value, correct } })
+    this.setState({choiceValues: { [name]: value, correct, option } })
   }
 
   toggleCorrect = (e) => {
-    const{ text, } = this.state.choiceValues
-    this.setState({choiceValues: {text, checked: !this.state.choiceValues.checked}, } )
+    const{ text, option } = this.state.choiceValues
+    this.setState({choiceValues: { option, text, correct: !this.state.choiceValues.correct},} )
   }
 
 
@@ -43,6 +43,7 @@ class QuizChoices extends React.Component {
       />
       <input
         type='checkbox'
+        name='correct'
         checked={correct}
         onChange={this.toggleCorrect}
         />

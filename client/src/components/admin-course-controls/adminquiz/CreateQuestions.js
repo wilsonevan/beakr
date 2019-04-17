@@ -5,7 +5,7 @@ import styled from 'styled-components'
 // import Choices from './Choices'
 
 class CreateQuestions extends React.Component {
-  state = { questionValues: {kind: 'text', body: '', choices: [], points_possible: 0.0,}, addChoice: false }
+  state = { questionValues: {kind: 'text', body: '', choices: [], points_possible: 0.0,}, addChoice: false, option: 0}
 
 
 handleChange = (e) => {
@@ -29,9 +29,10 @@ handleAdd = () => {
 toggleChoiceForm = () => this.setState({ addChoice: !this.state.addChoice })
 
 renderChoices = () => {
-  return this.state.questionValues.choices.map( (choice, index) => {
-    return (<h5 style={{margin: 0}} key={index}>Q{index + 1}: {choice.text}</h5>)
+  const output_arr = this.state.questionValues.choices.map( (choice, index) => {
+    return (<h5 style={{margin: 0}} key={index} >Q{index + 1}: {choice.text}</h5>)
   })
+  return output_arr
 }
 
 renderKind = () => {
@@ -54,6 +55,7 @@ renderKind = () => {
           choices={this.state.questionValues.choices}
           setChoicesState={this.setChoicesState}
           toggleChoiceForm={this.toggleChoiceForm}
+          option={this.state.option}
         /> : null}
         <ButtonAdd onClick={() => this.toggleChoiceForm()}>{this.state.addChoice ? 'Cancel' : 'Add Choice'}</ButtonAdd>
      </>
