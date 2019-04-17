@@ -11,13 +11,16 @@ class CreateQuestions extends React.Component {
 handleChange = (e) => {
   const { name, value } = e.target
   const questionValues = {...this.state.questionValues}
-  questionValues[name] = value;
+  if (name === 'points_possible') {
+    questionValues[name] = parseFloat(value)  
+  } else {
+    questionValues[name] = value; }
   this.setState({ questionValues })
 }
 
 setChoicesState = (choices) => {
-  const {questionValues: {kind, body, points_possible}} = this.state
-  this.setState({questionValues: {kind, body, choices, points_possible} } )    
+  const {questionValues: {kind, body, points_possible, points_awarded}} = this.state
+  this.setState({questionValues: {kind, body, choices, points_possible, points_awarded, } } )    
 }
 
 handleAdd = () => {
@@ -78,9 +81,11 @@ renderKind = () => {
 
 
   render(){
-    const { kind, } = this.state
+    const { kind, points_possible } = this.state
     return(
       <>
+      <FiftyDiv>
+
         <InputHeader>
         Kind of Question
         </InputHeader>
@@ -95,6 +100,13 @@ renderKind = () => {
             <option value='choice'>Multiple Choice</option>
             <option value='text'>Text</option>
           </BodyInput>
+          </FiftyDiv>
+          <FiftyDiv>
+            <InputHeader>
+              Points Possible
+            </InputHeader>
+            <BodyNumberInput type='number' name='points_possible' onChange={this.handleChange} value={points_possible} />
+          </FiftyDiv>
           {this.renderKind()}
         <ButtonGreen onClick={() => this.handleAdd()} style={{marginRight: '10px'}}>Add Question</ButtonGreen>
       </>
@@ -132,6 +144,12 @@ const BodyInput = styled.select`
     box-shadow: 0 0 0 2px #23a24d;
   }
   `
+  const FiftyDiv = styled.div`
+    width: 50%;
+    padding: 5px;
+    display: inline-block;
+
+  `
   const ButtonAdd = styled.div`
   display: flex
   align-items: center;
@@ -157,6 +175,25 @@ const InputHeader = styled.h3`
   margin-bottom: 3px;
   margin-left: 0;
   margin-right: 0;
+  width: 100%;
+`
+
+
+const BodyNumberInput = styled.input`
+  width: 100%;
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1.5rem;
+  padding: 2px;
+  border: 2px solid #ededed;
+  color: grey;
+  min-height: 30px;
+
+  :focus {
+    box-shadow: 0 0 0 2px #23a24d;
+  }
 `
 
 export default CreateQuestions
