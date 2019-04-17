@@ -15,6 +15,7 @@ import FetchUser from "./components/FetchUser";
 import AddQuiz from "./components/admin-course-controls/AddQuiz";
 import AddUser from "./components/admin/AddUser";
 import AddCourse from "./components/admin/AddCourse";
+import AdminCreateQuiz from './components/admin-course-controls/adminquiz/AdminCreateQuiz'
 import { Switch, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import Navbar from "./components/Navbar";
@@ -48,6 +49,11 @@ const App = () => (
             exact
             path="/admin/courses/:course_id/sections/:id"
             component={AdminEditSection}
+          />
+          <AdminRoute
+            exact
+            path="/admin/createquiz"
+            component={AdminCreateQuiz}
           />
           <ProtectedRoute exact path="/addunitmaterial" component={AddUnitMaterial} />
           <ProtectedRoute
