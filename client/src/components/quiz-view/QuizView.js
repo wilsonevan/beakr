@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 import { Header, Icon, } from 'semantic-ui-react';
 import QuizStart from "./QuizStart";
@@ -13,18 +12,26 @@ class QuizView extends React.Component {
     body: "",
     due_date: null,
     questions: [], 
-    quizStarted: false, 
+    page: "",
     startPrompt: false, 
     submitPrompt: false, 
     validationPrompt: false,
     validationText: "",
+    submission: null,
   }
 
   componentDidMount() {
+    const { course_id, id } = this.props.match.params;
+
     axios.get(`/api/quizzes/${this.props.match.params.id}`)
       .then( res => {
         const { title, due_date, body } = res.data;
         this.setState({ title, due_date, body });
+        return axios.get(`/api/courses/${course_id}/quizzes/${id}/quiz_submissions`)
+      })
+      .then((res) => {
+        if(res.data) this.setState({ submission: res.data, page: "submission" });
+        else this.setState({ page: "start" })
         return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
       })
       .then((res) => this.setState({ questions: res.data }))
@@ -56,7 +63,7 @@ class QuizView extends React.Component {
       quiz_id: this.props.match.params.id,
     })
     .then((res) => {
-      this.props.history.push("/dashboard");
+      this.setState({ page: "submission" });
     })
     .catch((err) => console.log(err));
   }
@@ -92,13 +99,12 @@ class QuizView extends React.Component {
   }
 
   startQuiz = () => {
-    this.setState({ quizStarted: true });
+    this.setState({ page: "view" });
   }
 
   render() {
-    const { title, questions, quizStarted, startPrompt, submitPrompt, validationPrompt, validationText, due_date, body } = this.state;
-    if(!quizStarted)
-      return (
+    const { title, questions, page, startPrompt, submitPrompt, validationPrompt, validationText, due_date, body } = this.state;
+    if(page === "start") return (
         <>
         <Header as={Link} to='' onClick={() => this.props.history.goBack()} content='< Course Work' color='green' size='huge' textAlign='left'/>
           <Header style={{ color: '#23A24D' }}>
@@ -119,38 +125,42 @@ class QuizView extends React.Component {
               rightClick={this.toggleStartPrompt}
             />
           }
-          <Moment format='ddd, MMM D, LT' date={due_date} /> 
         </>
+      ) 
+      else if( page === "view" ) return (
+        <>
+          <QuestionView 
+            questions={questions} 
+            handleCodeChange={this.handleCodeChange}
+            handleTextChange={this.handleTextChange}
+            selectChoice={this.selectChoice}
+            handleSubmit={this.handleSubmit}
+            toggleSubmitPrompt={this.toggleSubmitPrompt}
+            validateQuestions={this.validateQuestions}
+          />
+          { submitPrompt &&  
+              <QuizPrompt 
+                prompt="Are you sure you want to submit your quiz?"
+                leftText="Submit"
+                leftClick={this.handleSubmit}
+                rightText="Not Yet"
+                rightClick={this.toggleSubmitPrompt}
+              />
+          }
+          { validationPrompt &&  
+              <QuizPrompt 
+                prompt={validationText}
+                centerText="Ok"
+                centerClick={this.toggleValidationPrompt}
+              />
+          }
+        </>
+      ) 
+      else if(page === "submission") return (
+        <h1>Submission view page goes here</h1>
       )
-    else return (
-      <>
-        <QuestionView 
-          questions={questions} 
-          handleCodeChange={this.handleCodeChange}
-          handleTextChange={this.handleTextChange}
-          selectChoice={this.selectChoice}
-          handleSubmit={this.handleSubmit}
-          toggleSubmitPrompt={this.toggleSubmitPrompt}
-          validateQuestions={this.validateQuestions}
-        />
-        { submitPrompt &&  
-            <QuizPrompt 
-              prompt="Are you sure you want to submit your quiz?"
-              leftText="Submit"
-              leftClick={this.handleSubmit}
-              rightText="Not Yet"
-              rightClick={this.toggleSubmitPrompt}
-            />
-        }
-        { validationPrompt &&  
-            <QuizPrompt 
-              prompt={validationText}
-              centerText="Ok"
-              centerClick={this.toggleValidationPrompt}
-            />
-        }
-      </>
-    )
+      else return null
+
   }
 }
 

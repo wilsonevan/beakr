@@ -45,7 +45,7 @@ Assignment.destroy_all
       1.times do
         quiz = Quiz.create(
           title: Faker::Currency.name,
-          body: Faker::Lorem.paragraph,
+          body: Faker::Lorem.paragraph(30),
         )
 
         quiz.questions.create(
