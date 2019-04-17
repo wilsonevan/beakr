@@ -1,5 +1,5 @@
 import React from 'react';
-import DateTimePicker from 'react-datetime-picker';
+import ReactQuill from 'react-quill';
 import { ButtonGreen } from '../../../styles/Components';
 import axios from 'axios';
 import CreateQuestions from './CreateQuestions'
@@ -14,6 +14,10 @@ class AdminCreateQuiz extends React.Component {
     quizValues[name] = value;
 
     this.setState({ quizValues })
+  }
+  handleQuillChange = (value) => {
+    const { title }  = this.state.quizValues
+    this.setState({quizValues: { title, body: value }})
   }
 
 
@@ -89,14 +93,12 @@ class AdminCreateQuiz extends React.Component {
         <h2>
           Quiz Instructions
         </h2>
-        <BodyTextArea
-          required
-          autoFocus
+        <ReactQuill 
           name='body'
           value={body}
-          onChange={this.handleChange}
-          placeholder='Instructions'
-          />
+          onChange={this.handleQuillChange} 
+          style={{height: '25rem', paddingBottom: '4rem'}}
+        />
         </QuizContainer>
         <QuizContainer>
 
@@ -119,9 +121,9 @@ const ContainAll = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between
-  background: #23a24d
+  background: #23a24d;
   padding: 1%;
-  border-radius: 10px;
+  border-radius: 5px;
 `
 const QuizContainer = styled.div`
   background: white;
@@ -132,7 +134,7 @@ const QuizContainer = styled.div`
 
 const QuestionDiv = styled.div`
   box-shadow: 1px 1px 1px 1px #ededed;
-  border-radius: 6px;
+  border-radius: 5px;
   margin-bottom: 15px;
   border: 2px solid #ededed;
   padding: 5px;
@@ -143,7 +145,7 @@ const BodyTextArea = styled.textarea`
   width: 90%;
   background-color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   outline: none;
   font-size: 1.5rem;
   border: 2px solid #ededed;
@@ -154,10 +156,10 @@ const BodyTextArea = styled.textarea`
   }
 `
 const BodyInput = styled.input`
-  width: 90%;
+  width: 100%;
   background-color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   outline: none;
   font-size: 1.5rem;
   padding: 2px;
