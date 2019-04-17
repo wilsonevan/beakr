@@ -25,6 +25,7 @@ class QuizChoices extends React.Component {
   }
 
 
+
   
 
   render(){
@@ -40,6 +41,11 @@ class QuizChoices extends React.Component {
         placeholder='Choice'
         onChange={this.handleChange}
       />
+      <input
+        type='checkbox'
+        checked={correct}
+        onChange={this.toggleCorrect}
+        />
         <ButtonAdd onClick={() => this.handleAdd()}>Confirm</ButtonAdd>
       </>
     )
@@ -68,7 +74,7 @@ const ButtonAdd = styled.div`
 `
 
 const UnitNameInput = styled.textarea`
-  width: 100%;
+  width: 90%;
   background-color: white;
   border: none;
   border-radius: 8px;
