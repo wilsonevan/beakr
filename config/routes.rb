@@ -41,6 +41,8 @@ Rails.application.routes.draw do
     get 'get_attendances', to: '/api/attendances#get_attendances'
     delete 'destroy_column', to: '/api/attendances#destroy_column'
 
+    get 'courses/:course_id/assignments/:assignment_id/assignment_submissions/show_user_submission', to: '/api/assignment_submissions#show_user_submission'
+
     resources :contents, only: [:show, :create, :update, :destroy]
     resources :assignments, only: [:show, :create, :update, :destroy] do
       resources :assignment_submissions
