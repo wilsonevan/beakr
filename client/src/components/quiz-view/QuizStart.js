@@ -6,6 +6,11 @@ import moment from "moment";
 
 const QuizStart = ({ toggleStartPrompt, due_date, body, adminView }) => {
     const beforeDue = moment(Date.now()).isBefore(due_date);
+
+    const createMarkup = (html) => {
+        return { __html: html };
+      };
+
     return(
         <>
             <StartContainer>
@@ -21,8 +26,11 @@ const QuizStart = ({ toggleStartPrompt, due_date, body, adminView }) => {
                     </div>
                 </StartHeading>
                 <StyledHr/>
-                <Instructions>
-                    { body }
+                <Instructions
+                    dangerouslySetInnerHTML=
+                    {createMarkup(body)}
+                    style={{padding: '15px'}}
+                > 
                 </Instructions>
             </StartContainer>
         </>
