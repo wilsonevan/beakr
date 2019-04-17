@@ -4,7 +4,7 @@ Content.destroy_all
 Quiz.destroy_all
 Assignment.destroy_all
 
-1.times do
+5.times do
   course = Course.create(
     title: Faker::Educator.course_name
   )
@@ -99,20 +99,40 @@ Assignment.destroy_all
   end
 end
 
-18.times do
-  user = User.create(
+Course.all.each do |course|
+  1.times do
+    user = User.create(
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
-    email: Faker::Internet.email,
     biography: Faker::TvShows::MichaelScott.quote,
     birth_date: Faker::Date.birthday(18, 65),
+    email: Faker::Internet.email,
     password: 'password',
-    admin: false
+    admin: true
   )
+    1.times do
+      Enrollment.create(
+        user_id: user.id,
+        course_id: course.id,
+        role: 'staff'
+      )
+    end
+  end
+
+  20.times do
+    user = User.create(
+      first_name: Faker::Name.first_name,
+      last_name: Faker::Name.last_name,
+      email: Faker::Internet.email,
+      biography: Faker::TvShows::MichaelScott.quote,
+      birth_date: Faker::Date.birthday(18, 65),
+      password: 'password',
+      admin: false
+    )
   1.times do
     e = Enrollment.create(
       user_id: user.id,
-      course_id: Course.first.id,
+      course_id: course.id,
       role: 'student'
     )
 
@@ -168,26 +188,27 @@ end
       )
     }
 
-    1.times do 
-      Attendance.create(
-        enrollment_id: e.id,
-        attendance_record: 'present',
-        record_date: '2019-04-11'
-      )
-    end
-    1.times do 
-      Attendance.create(
-        enrollment_id: e.id,
-        attendance_record: 'absent',
-        record_date: '2019-04-12'
-      )
-    end
-    1.times do 
-      Attendance.create(
-        enrollment_id: e.id,
-        attendance_record: 'late',
-        record_date: '2019-04-13'
-      )
+      1.times do 
+        Attendance.create(
+          enrollment_id: e.id,
+          attendance_record: 'present',
+          record_date: '2019-04-11'
+        )
+      end
+      1.times do 
+        Attendance.create(
+          enrollment_id: e.id,
+          attendance_record: 'absent',
+          record_date: '2019-04-12'
+        )
+      end
+      1.times do 
+        Attendance.create(
+          enrollment_id: e.id,
+          attendance_record: 'late',
+          record_date: '2019-04-13'
+        )
+      end
     end
   end
 end
@@ -242,16 +263,18 @@ end
     password: 'password',
     admin: true
   )
-  1.times do
-    Enrollment.create(
-      user_id: user.id,
-      course_id: Course.first.id,
-      role: 'staff'
-    )
+  Course.all.each do |course|
+    1.times do
+      Enrollment.create(
+        user_id: user.id,
+        course_id: course.id,
+        role: 'staff'
+      )
+    end
   end
 end
 
-19.times do
+30.times do
   user = User.create(
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,

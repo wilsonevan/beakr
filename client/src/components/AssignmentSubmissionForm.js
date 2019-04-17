@@ -8,6 +8,12 @@ import { Header, Form } from 'semantic-ui-react';
 class AssignmentSubmissionForm extends React.Component {
   state = { body: '', code: '', url: '' }
 
+  componentDidMount() {
+    const { id, body, code, url } = this.props
+    if (id)
+      this.setState({ body, code, url })
+  }
+
   handleChange = (e) => {
     const { name, value } = e.target
     this.setState({ [name]: value })
@@ -23,12 +29,20 @@ class AssignmentSubmissionForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { history, assignment_id, user, courseId } = this.props;
-    const assignment_submission = {...this.state, course_id: courseId};
-    axios.post(`/api/assignments/${assignment_id}/assignment_submissions`, assignment_submission )
-      .then(res => {
-        history.push(`/dashboard/`)
-      })
+    const { toggle, assignment_id, course_id, id } = this.props;
+    const { body, code, url} = this.state
+    const assignment_submission = {...this.state, course_id};
+    if (id) {
+      axios.put(`/api/assignments/${assignment_id}/assignment_submissions/${id}`, assignment_submission)
+        .then(res => {
+          toggle(body, url, code)
+        })
+    } else {
+      axios.post(`/api/assignments/${assignment_id}/assignment_submissions`, assignment_submission )
+        .then(res => {
+          toggle()
+        })
+    }
   }
 
   renderForm = () => {
@@ -48,7 +62,7 @@ class AssignmentSubmissionForm extends React.Component {
       case 'code':
         return (
           <Code 
-            value={this.state.code} 
+            value={code} 
             codeChange={this.handleCodeChange}
             height="100rem"
             width="50rem"
