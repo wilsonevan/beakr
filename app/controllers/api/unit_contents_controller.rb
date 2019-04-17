@@ -33,6 +33,6 @@ class Api::UnitContentsController < ApplicationController
 
     private
         def unit_content_params
-            return params.require(:unit_content).permit(:unit_id, :content_id)
+            return params.require(:unit_content).permit(:unit_id, :content_id, :visible, :sequence)
         end
 end

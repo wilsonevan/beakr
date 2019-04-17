@@ -1,55 +1,34 @@
-import React from 'react';
+import React from "react";
 import ReactQuill from 'react-quill';
-import DateTimePicker from 'react-datetime-picker';
-import { ButtonGreen } from '../../styles/Components';
-import axios from 'axios';
+import styled from "styled-components";
 
-class AddAssignment extends React.Component {
-  state = {title: '', body: '', kind: '' }
+class EditContentTitle extends React.Component {
+  state = { body: this.props.body, kind: this.props.kind, points_possible: this.props.points_possible };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    this.props.updateAssignmentBody(this.state);
+  };
 
   handleChange = (e) => {
     const { name, value } = e.target
     this.setState({ [name]: value })
   }
 
+  handleQuillChange = (value) => {
+    this.setState({ body: value })
+  };
+
   handleKindChange = (e) => {
     const { value } = e.target
     this.setState({ kind: value })
-  }
-
-  handleQuillChange = (value) => {
-    this.setState({ body: value })
-  }
-  
-  handleSubmit = (e) => {
-    const assignment = {...this.state}
-    e.preventDefault()
-    axios.post('/api/assignments', assignment)
-      .then( res => {
-        this.setState({ title: '', body: '', kind: ''})
-      })
-  }
+  };
 
   render() {
-    const { title, body, } = this.state
+    const { body, points_possible } = this.state
 
     return (
       <>
-        <div>
-          Assignment Title
-        </div>
-        <br />
-        <input
-          required
-          autoFocus
-          name='title'
-          value={title}
-          placeholder='Title'
-          onChange={this.handleChange}
-          style={{width: '100%'}}
-        />
-        <br />
-        <br />
         <div>
           Submission Type
         </div>
@@ -96,18 +75,50 @@ class AddAssignment extends React.Component {
           </label>
         <br />
         <br />
+        <div>
+          Possible Points
+        </div>
+        <input
+          name='points_possible'
+          value={points_possible}
+          onChange={this.handleChange}
+          required
+        />
+        <br />
+        <br />
         <ReactQuill 
           name='body'
           value={body}
-          onChange={this.handleQuillChange}
+          onChange={this.handleQuillChange} 
           style={{height: '25rem', paddingBottom: '4rem'}}
         />
-        <ButtonGreen onClick={this.handleSubmit}>
-          Submit
-        </ ButtonGreen>
+        <BlueLink onClick={this.handleSubmit}>
+          Update
+        </BlueLink>
       </>
-    )
+    );
   }
 }
 
-export default AddAssignment
+const BlueLink = styled.button`
+  margin-left: 1rem;
+  display: inline-block;
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+  color: #2979ff;
+  font-family: "Poppins";
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+
+  :hover {
+    color: grey;
+  }
+
+  :active {
+    color: darkgrey;
+  }
+`;
+
+export default EditContentTitle;

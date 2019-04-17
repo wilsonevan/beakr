@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-class EditContentTitle extends React.Component {
+class EditAssignmentTitle extends React.Component {
   state = { title: this.props.title };
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.updateContentTitle(this.state);
+    this.props.updateAssignmentTitle(this.state);
   };
 
   handleChange = event => {
@@ -18,7 +18,7 @@ class EditContentTitle extends React.Component {
       <TitleForm onSubmit={this.handleSubmit}>
         <TitleInput
           type="text"
-          placeholder="Content Name"
+          placeholder="Assignment Name"
           name="title"
           value={this.state.title}
           onChange={this.handleChange}
@@ -69,4 +69,4 @@ const BlueLink = styled.button`
   }
 `;
 
-export default EditContentTitle;
+export default EditAssignmentTitle;

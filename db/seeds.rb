@@ -34,6 +34,7 @@ Assignment.destroy_all
           title: Faker::Science.element,
           body: Faker::Movies::Ghostbusters.quote,
           kind: "url",
+          points_possible: 20
         )
           
         UnitAssignment.create(

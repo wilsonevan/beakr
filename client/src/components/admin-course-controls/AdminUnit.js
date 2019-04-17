@@ -111,7 +111,7 @@ class AdminUnit extends React.Component {
     return this.state.assignments.map((assignment, index) => {
       return (
         <Link
-          to={`/assignments/${assignment.id}`}
+          to={`/courses/${this.props.course_id}/assignments/${assignment.id}`}
           key={index}
         >
           <UnitModelsItem>
@@ -133,8 +133,8 @@ class AdminUnit extends React.Component {
             {unit.title}
             <UnitModelsContainer ref={this.unitModelsRef}>
               {this.renderContents()}
-              {this.renderQuizzes()}
               {this.renderAssignments()}
+              {this.renderQuizzes()}
             </UnitModelsContainer>
           </OpenedSectionUnit>
         </>
