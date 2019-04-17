@@ -101,7 +101,7 @@ renderKind = () => {
 }
 
 const BodyTextArea = styled.textarea`
-  width: 90%;
+  width: 100%;
   background-color: white;
   border: none;
   border-radius: 8px;
@@ -115,7 +115,7 @@ const BodyTextArea = styled.textarea`
   }
 `
 const BodyInput = styled.select`
-  width: 90%;
+  width: 100%;
   background-color: white;
   border: none;
   border-radius: 8px;
