@@ -30,7 +30,7 @@ const AssignmentText = styled.button`
   }
 `;
 
-const PlusContainer = styled.button`
+const PlusContainer = styled.div`
   background-color: transparent;
   font-size: 1.5rem;
   font-weight: 600;

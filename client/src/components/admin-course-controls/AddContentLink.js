@@ -30,11 +30,11 @@ const ContentText = styled.button`
   }
 `;
 
-const PlusContainer = styled.button`
+const PlusContainer = styled.div`
   background-color: transparent;
   font-size: 1.5rem;
   font-weight: 600;
-  border: none;
+  // border: none;
   color: #23a24d;
   cursor: pointer;
 `
