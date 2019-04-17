@@ -1,7 +1,7 @@
 
 class Api::UsersController < ApplicationController
   before_action :authorize_admin, only: [:index]
-
+  before_action :set_user, only: [:get_user_grades, :calc_total_grades]
 
   def index
     users = User.all
@@ -24,6 +24,18 @@ class Api::UsersController < ApplicationController
     render( json: User.search_students_enrolled(params[:input], params[:id]) )
   end
 
+  def get_user_grades
+    render json: User.get_user_grades(@user.id)
+  end
+
+  def calc_total_grades
+    render json: User.calc_total_grades(@user.id)
+  end
+
+  def user_courses
+    courses = current_user.courses
+    render json: courses
+  end
 
   def update
     user = User.find(params[:id])
@@ -53,6 +65,10 @@ class Api::UsersController < ApplicationController
     end
   end
   
+  private
 
+  def set_user
+    @user = User.find(params[:id])
+  end
   
 end

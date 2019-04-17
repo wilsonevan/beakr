@@ -1,5 +1,6 @@
 class Api::AssignmentSubmissionsController < ApplicationController
-  before_action :set_assignment
+
+  before_action :set_assignment, only: [:index, ]
   before_action :set_enrollment, only: [:show_user_submission, :create]
   before_action :set_assignment_submission, only: [:show, :update, :destroy, :find_user]
 
@@ -60,6 +61,6 @@ class Api::AssignmentSubmissionsController < ApplicationController
   end
 
   def assignment_submission_params
-    params.require(:assignment_submission).permit(:grade, :url, :body, :code)
+    params.require(:assignment_submission).permit(:grade, :url, :body, :code, :user_id)
   end
 end
