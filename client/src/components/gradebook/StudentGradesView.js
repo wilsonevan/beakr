@@ -7,12 +7,6 @@ import axios from "axios";
 import { AuthConsumer } from "../../providers/AuthProvider";
 import dateFns from "date-fns";
 
-<<<<<<< HEAD
-
-
-const StudentGradesView = () => {
-  // const [courses, setCourses] = useState(0);
-=======
 const StudentGradesView = ({ auth }) => {
   const [courses, setCourses] = useState(0);
   const [activeCourse, setActiveCourse] = useState(0);
@@ -58,7 +52,6 @@ const StudentGradesView = ({ auth }) => {
     }
     return assignments;
   };
->>>>>>> ebfea36907ef837ebf0ac671d37e81476b02b58d
 
   const renderSummary = () => {
     // Make sure to only display max 4 courses
@@ -103,11 +96,6 @@ const StudentGradesView = ({ auth }) => {
       <>
         <div class="ui green compact menu">
           <div class="ui simple dropdown item">
-<<<<<<< HEAD
-             Choose A Course <i align="left" class="dropdown icon"></i>
-          <div class="menu">
-          <div class="item">{"course"}</div>
-=======
             Courses <i align="left" class="dropdown icon" />
             <div class="menu">
               {courses.map(course => {
@@ -118,7 +106,6 @@ const StudentGradesView = ({ auth }) => {
                 );
               })}
             </div>
->>>>>>> ebfea36907ef837ebf0ac671d37e81476b02b58d
           </div>
         </div>
         <HeaderSummary>{activeCourse.title}</HeaderSummary>
