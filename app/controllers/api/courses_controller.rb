@@ -5,11 +5,6 @@ class Api::CoursesController < ApplicationController
     render json: Course.all
   end
 
-  def user_courses
-    courses = current_user.courses
-    render json: courses
-  end
-
   def search_courses
     render( json: Course.search_courses(params[:input]) )
   end

@@ -23,7 +23,7 @@ class CourseWork extends React.Component {
   renderSections = () => {
     return this.state.sections.map((section, index) => {
       return (
-        <CourseSection key={index} title={section.title} section={section} />
+        <CourseSection key={index} title={section.title} section={section} courseId={this.props.match.params.id}/>
       );
     });
   };

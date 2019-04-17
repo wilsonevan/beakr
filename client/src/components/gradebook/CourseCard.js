@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Doughnut, } from "react-chartjs-2";
 
-const CourseCard = ({course}) => {
+const CourseCard = ({course,}) => {
 
+	let totalGrade = 0
+	
+	if (course.grade_percent)
+		totalGrade = course.grade_percent
+	
 	const chartData = {
 			datasets: [{
-				data: [course.grade, (100-course.grade)],
+				data: [totalGrade, (100-totalGrade)],
 				backgroundColor: [
 					'#23a24d',
 					'#c4c4c4',
@@ -34,12 +39,13 @@ const CourseCard = ({course}) => {
 		animation: {
 			easing: 'easeOutCubic', 
 			duration: 2000,
-		}
+		},
+		showTooltips: false,	
 	}
 
 	return (
 		<CardContainer>
-			<Header>{course.header}</Header>
+			<Header>{course.title}</Header>
 			<DonutContainer>
 				<DonutDiv>
 					<Doughnut 
@@ -47,7 +53,7 @@ const CourseCard = ({course}) => {
 						options={options}
 					/>
 				</DonutDiv>
-				<Grade>{course.grade}%</Grade>
+				<Grade>{totalGrade}%</Grade>
 			</DonutContainer>
 		</CardContainer>
 	)
@@ -75,7 +81,6 @@ const DonutContainer = styled.div`
 
 const DonutDiv = styled.div`
 	// position: absolute;
-	
 	width: 100px;
 	height: 100px;
 `
