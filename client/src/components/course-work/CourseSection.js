@@ -157,7 +157,7 @@ const SectionIcon = styled.div`
 const UnitsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: white ;
+  background-color: white;
   padding-top: 1rem;
   padding-bottom: 0.5rem;
   margin-bottom: 2rem;
