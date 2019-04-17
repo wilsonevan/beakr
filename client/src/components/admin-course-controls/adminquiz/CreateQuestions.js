@@ -5,7 +5,7 @@ import styled from 'styled-components'
 // import Choices from './Choices'
 
 class CreateQuestions extends React.Component {
-  state = { questionValues: {kind: 'text', body: '', choices: [], points_possible: 0.0,}, addChoice: false, option: 0}
+  state = { questionValues: {kind: 'text', body: '', choices: [], points_possible: 5.0, points_awarded: 0,}, addChoice: false, option: 0}
 
 
 handleChange = (e) => {

@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 2019_04_16_200020) do
     t.bigint "enrollment_id"
     t.float "grade"
     t.float "points_possible"
-    t.float "points_awarded"
+    t.float "points_awarded", default: 0.0
     t.boolean "graded"
     t.text "comment"
     t.string "questions"

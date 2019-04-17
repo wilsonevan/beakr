@@ -108,6 +108,7 @@ class Api::QuizSubmissionsController < ApplicationController
       points_awarded = 0
       
       questions_array.each() {|question|
+        question[:points_awarded] = 0 if(question[:points_awarded] == nil)
         points_possible += question[:points_possible]
         points_awarded += question[:points_awarded]
       }
