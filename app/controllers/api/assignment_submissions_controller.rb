@@ -1,10 +1,11 @@
 class Api::AssignmentSubmissionsController < ApplicationController
-  before_action :set_assignment
-  before_action :set_assignment_submission, only: [:show, :update, :destroy]
+  before_action :set_assignment, only: [:index, ]
+  before_action :set_assignment_submission, only: [:show, :update, :destroy, ]
 
   def index
     render json: @assignment.assignment_submissions
   end
+
 
   def show
     render json: @assignment_submission 
@@ -42,6 +43,6 @@ class Api::AssignmentSubmissionsController < ApplicationController
   end
 
   def assignment_submission_params
-    params.require(:assignment_submission).permit(:grade, :github_url, :body, :code)
+    params.require(:assignment_submission).permit(:grade, :github_url, :body, :code, :user_id)
   end
 end
