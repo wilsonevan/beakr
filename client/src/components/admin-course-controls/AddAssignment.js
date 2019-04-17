@@ -5,7 +5,7 @@ import { ButtonGreen } from '../../styles/Components';
 import axios from 'axios';
 
 class AddAssignment extends React.Component {
-  state = {title: '', body: '', kind: '' }
+  state = {title: '', body: '', kind: '', points_possible: 0 }
 
   handleChange = (e) => {
     const { name, value } = e.target
@@ -26,12 +26,12 @@ class AddAssignment extends React.Component {
     e.preventDefault()
     axios.post('/api/assignments', assignment)
       .then( res => {
-        this.setState({ title: '', body: '', kind: ''})
+        this.setState({ title: '', body: '', kind: '', points_possible: 0})
       })
   }
 
   render() {
-    const { title, body, } = this.state
+    const { title, body, points_possible } = this.state
 
     return (
       <>
@@ -94,6 +94,17 @@ class AddAssignment extends React.Component {
           >
             Text Only Submission
           </label>
+        <br />
+        <br />
+        <div>
+          Points Possible
+        </div>
+        <input
+          name='points_possible'
+          value={points_possible}
+          onChange={this.handleChange}
+          required
+        />
         <br />
         <br />
         <ReactQuill 
