@@ -1,6 +1,7 @@
 import React from 'react'
 import { ButtonGreen } from '../../../styles/Components';
 import QuizChoices from './QuizChoices'
+import styled from 'styled-components'
 // import Choices from './Choices'
 
 class CreateQuestions extends React.Component {
@@ -12,12 +13,6 @@ handleChange = (e) => {
   const questionValues = {...this.state.questionValues}
   questionValues[name] = value;
   this.setState({ questionValues })
-}
-
-handleKindChange = (e) => {
-  const { quizValues: { kind, body, choices, points_possible},} = this.state
-  const { value, } = e.target
-  this.setState({questionValues: { kind: value, body, points_possible}, })
 }
 
 setChoicesState = (choices) => {
@@ -33,44 +28,49 @@ handleAdd = () => {
 
 toggleChoiceForm = () => this.setState({ addChoice: !this.state.addChoice })
 
+renderChoices = () => {
+  return this.state.questionValues.choices.map( (choice, index) => {
+    return (<h5 style={{margin: 0}} key={index}>Q{index + 1}: {choice.text}</h5>)
+  })
+}
 
 renderKind = () => {
   const { kind, body, points_possible} = this.state.questionValues
    if (kind === 'choice'){
      return (
-     <div>
-       <div>
+     <>
+       <InputHeader>
         Question Body
-      </div>
-      <input 
+      </InputHeader>
+      <BodyTextArea
         required
         name='body'
         value={body}
         onChange={this.handleChange}
-    />
-    { this.state.addChoice ?
-      <QuizChoices 
-      choices={this.state.questionValues.choices}
-      setChoicesState={this.setChoicesState}
-      /> :
-      null
-    }
-      <ButtonGreen onClick={() => this.toggleChoiceForm()}>Add Choice</ButtonGreen>
-     </div>
+      />
+        {this.renderChoices()}
+        { this.state.addChoice ?
+        <QuizChoices 
+          choices={this.state.questionValues.choices}
+          setChoicesState={this.setChoicesState}
+          toggleChoiceForm={this.toggleChoiceForm}
+        /> : null}
+        <ButtonAdd onClick={() => this.toggleChoiceForm()}>{this.state.addChoice ? 'Cancel' : 'Add Choice'}</ButtonAdd>
+     </>
      )
     } else {
     return (
      <>
-  <div>
-    Question Body
-  </div>
-  <input 
-    required
-    name='body'
-    value={body}
-    onChange={this.handleChange}
-    />
-  </>)
+      <InputHeader>
+        Question Body
+      </InputHeader>
+      <BodyTextArea
+        required
+        name='body'
+        value={body}
+        onChange={this.handleChange}
+      />
+    </>)
   }
 }
 
@@ -79,28 +79,82 @@ renderKind = () => {
     const { kind, } = this.state
     return(
       <>
-        <div>
-        Kind of Question:
-      </div>
-      <select
-        required
-        autoFocus
-        name='kind'
-        value={kind}
-        onChange={this.handleChange}
-        placeholder='kind' >
-          <option value='code'>Code</option>
-          <option value='choice'>Multiple Choice</option>
-          <option value='text'>Text</option>
-        </select>
-      <br />
-      <br />
-        {this.renderKind()}
-      <br />
-      <br />
-      <ButtonGreen onClick={() => this.handleAdd()} style={{marginRight: '10px'}}>Add Question</ButtonGreen>
-    </>
+        <InputHeader>
+        Kind of Question
+        </InputHeader>
+        <BodyInput
+          required
+          autoFocus
+          name='kind'
+          value={kind}
+          onChange={this.handleChange}
+          placeholder='kind' >
+            <option value='code'>Code</option>
+            <option value='choice'>Multiple Choice</option>
+            <option value='text'>Text</option>
+          </BodyInput>
+          {this.renderKind()}
+        <ButtonGreen onClick={() => this.handleAdd()} style={{marginRight: '10px'}}>Add Question</ButtonGreen>
+      </>
     )
   }
 }
+
+const BodyTextArea = styled.textarea`
+  width: 90%;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1.5rem;
+  border: 2px solid #ededed;
+  color: grey;
+
+  :focus {
+    box-shadow: 0 0 0 2px #23a24d;
+  }
+`
+const BodyInput = styled.select`
+  width: 90%;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1.5rem;
+  padding: 2px;
+  border: 2px solid #ededed;
+  color: grey;
+  min-height: 30px;
+
+  :focus {
+    box-shadow: 0 0 0 2px #23a24d;
+  }
+  `
+  const ButtonAdd = styled.div`
+  display: flex
+  align-items: center;
+  justify-content: center;
+  background: #23a24d;
+  color: white;
+  border: 1px solid white;
+  padding: 3px;
+  box-shadow: 1px 1px 2px #ededed;
+  border-radius: 5px;
+  margin-top: 10px;
+  max-width: 150px;
+
+  :hover {
+    background: white;
+    color: #23a24d;
+    border: 1px solid #23a24d;
+    cursor: pointer;
+  }
+`
+const InputHeader = styled.h3`
+  margin-top: 4px;
+  margin-bottom: 3px;
+  margin-left: 0;
+  margin-right: 0;
+`
+
 export default CreateQuestions

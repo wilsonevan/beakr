@@ -6,18 +6,16 @@ import CreateQuestions from './CreateQuestions'
 import styled from 'styled-components'
 
 class AdminCreateQuiz extends React.Component {
-  state = { quizValues: { title: '', due_date: '',}, addQuestion: false, questions: [],}
+  state = { quizValues: { title: '', body: ''}, addQuestion: false, questions: [],}
 
   handleChange = (e) => {
     const { name, value } = e.target
-    const { due_date, } = this.state.quizValues
-    this.setState({ quizValues: {[name]: value, due_date, }})
+    const quizValues = {...this.state.quizValues}
+    quizValues[name] = value;
+
+    this.setState({ quizValues })
   }
 
-  handleDateChange = (value) => {
-    const {title, } = this.state.quizValues
-    this.setState({ quizValues: { title, due_date: value} })
-  }
 
   handleSubmit = (e) => {
     e.preventDefault()
@@ -29,7 +27,7 @@ class AdminCreateQuiz extends React.Component {
           console.log(question);
           axios.post(`/api/quizzes/${res.data.id}/questions`, question)
         })
-        this.setState({ quizValues: {title: '', due_date: '',}, questions: []})
+        this.setState({ quizValues: {title: '', body: '',}, questions: []})
       })
   }
   setQuestionState = (questions) => {
@@ -46,26 +44,31 @@ class AdminCreateQuiz extends React.Component {
     />
   )
 
+  filterQuestion = (index) => {
+    const questions = this.state.questions.filter( (question, i) => (i !== index ))
+    this.setState({questions})
+
+  }
+
   renderQuestions = () => {
-      let amount = 0
-      return this.state.questions.map( question => {
-        amount = amount + 1
-        return ( <QuestionDiv>
-          <h3>Question {amount}</h3>
+      return this.state.questions.map( ( question, index ) => {
+        return ( <QuestionDiv key={index}>
+          <h3>Question {index + 1}</h3>
           <h4 style={{margin: 0}}>Type: {question.kind}</h4>
           <h4 style={{margin: 0}}>Question: {question.body}</h4>
-          {question.choices.map( choice => 
-            <h6>
-              {choice.text}
+          {question.choices.map( (choice, index) => 
+            <h6 key={index}>
+              Q{index+1}: {choice.text}
             </h6>
             )}
+            <SmallDelete onClick={() => this.filterQuestion(index)}>Delete</SmallDelete>
           </QuestionDiv>)
       }
       )
   }
 
   render() {
-    const { quizValues: {title, due_date}, addQuestion, } = this.state
+    const { quizValues: {title, body}, addQuestion, } = this.state
 
     return (
       <>
@@ -75,7 +78,7 @@ class AdminCreateQuiz extends React.Component {
         <h2>
           Quiz Title
         </h2>
-        <input 
+        <BodyInput
           required
           autoFocus
           name='title'
@@ -84,13 +87,15 @@ class AdminCreateQuiz extends React.Component {
           placeholder='Title'
           />
         <h2>
-          Due Date
+          Quiz Instructions
         </h2>
-        <DateTimePicker 
+        <BodyTextArea
           required
-          value={due_date}
-          disableClock
-          onChange={this.handleDateChange}
+          autoFocus
+          name='body'
+          value={body}
+          onChange={this.handleChange}
+          placeholder='Instructions'
           />
         </QuizContainer>
         <QuizContainer>
@@ -122,13 +127,67 @@ const QuizContainer = styled.div`
   background: white;
   width: 50%;
   padding: 10px;
+
 `
 
 const QuestionDiv = styled.div`
   box-shadow: 1px 1px 1px 1px #ededed;
   border-radius: 6px;
   margin-bottom: 15px;
+  border: 2px solid #ededed;
+  padding: 5px;
+  position: relative;
 
+`
+const BodyTextArea = styled.textarea`
+  width: 90%;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1.5rem;
+  border: 2px solid #ededed;
+  color: grey;
+
+  :focus {
+    box-shadow: 0 0 0 2px #23a24d;
+  }
+`
+const BodyInput = styled.input`
+  width: 90%;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1.5rem;
+  padding: 2px;
+  border: 2px solid #ededed;
+  color: grey;
+  min-height: 30px;
+
+  :focus {
+    box-shadow: 0 0 0 2px #23a24d;
+  }
+`
+const SmallDelete = styled.div`
+  width: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #23a24d;
+  color: white;
+  border: 1px solid white
+  border-radius: 5px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  
+  :hover {
+    border: 1px solid #23a24d;
+    background: white;
+    color: #23a24d;
+    cursor: pointer;
+  }
 `
 
 export default AdminCreateQuiz
