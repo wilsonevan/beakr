@@ -18,24 +18,36 @@ class QuizView extends React.Component {
     validationPrompt: false,
     validationText: "",
     submission: null,
+    adminView: false,
   }
 
   componentDidMount() {
     const { course_id, id } = this.props.match.params;
 
-    axios.get(`/api/quizzes/${this.props.match.params.id}`)
-      .then( res => {
-        const { title, due_date, body } = res.data;
-        this.setState({ title, due_date, body });
-        return axios.get(`/api/courses/${course_id}/quizzes/${id}/quiz_submissions`)
-      })
-      .then((res) => {
-        if(res.data) this.setState({ submission: res.data, page: "submission" });
-        else this.setState({ page: "start" })
-        return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
-      })
-      .then((res) => this.setState({ questions: res.data }))
-      .catch((err) => console.log(err));
+    if(course_id) {
+      axios.get(`/api/quizzes/${this.props.match.params.id}`)
+        .then( res => {
+          const { title, due_date, body } = res.data;
+          this.setState({ title, due_date, body });
+          return axios.get(`/api/courses/${course_id}/quizzes/${id}/quiz_submissions`)
+        })
+        .then((res) => {
+          if(res.data) this.setState({ submission: res.data, page: "submission" });
+          else this.setState({ page: "start" })
+          return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
+        })
+        .then((res) => this.setState({ questions: res.data }))
+        .catch((err) => console.log(err));
+    } else {
+      axios.get(`/api/quizzes/${this.props.match.params.id}`)
+        .then( res => {
+          const { title, due_date, body } = res.data;
+          this.setState({ title, due_date, body, page: "start", adminView: true });
+          return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
+        })
+        .then((res) => this.setState({ questions: res.data }))
+        .catch((err) => console.log(err));
+    }
   }
 
   handleCodeChange = (value, currentQuestion) => {
@@ -103,7 +115,7 @@ class QuizView extends React.Component {
   }
 
   render() {
-    const { title, questions, page, startPrompt, submitPrompt, validationPrompt, validationText, due_date, body } = this.state;
+    const { title, questions, page, startPrompt, submitPrompt, validationPrompt, validationText, due_date, body, adminView } = this.state;
     if(page === "start") return (
         <>
         <Header as={Link} to='' onClick={() => this.props.history.goBack()} content='< Course Work' color='green' size='huge' textAlign='left'/>
@@ -115,6 +127,7 @@ class QuizView extends React.Component {
             toggleStartPrompt={this.toggleStartPrompt} 
             due_date={due_date}
             body={body}
+            adminView={adminView}
           />
           { startPrompt &&
             <QuizPrompt 

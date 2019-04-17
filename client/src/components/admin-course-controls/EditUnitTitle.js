@@ -29,7 +29,6 @@ class EditUnitTitle extends React.Component {
   render() {
     return (
       <>
-        <TitleLabel htmlFor="unit-title">Unit Title:</TitleLabel>
         <UnitNameInput
           id={"unit-title"}
           type="text"
@@ -43,27 +42,19 @@ class EditUnitTitle extends React.Component {
 }
 
 const UnitNameInput = styled.input`
-  width: 90%;
+  width: 50%;
   background-color: white;
   border: none;
-  border-radius: 100px;
+  border-radius: 5px;
   outline: none;
-  padding: 0.25rem 0 0.25rem 10rem;
   font-size: 1.5rem;
+  height: 2.5rem;
+  padding: 0.25rem 0.5rem;
   color: grey;
 
   :focus {
     box-shadow: 0 0 0 2px #23a24d;
   }
-`;
-
-const TitleLabel = styled.label`
-  position: absolute;
-  transform: translateY(-50%);
-  left: 3rem;
-  top: 57.5%;
-  color: grey;
-  font-size: 1.5rem;
 `;
 
 export default EditUnitTitle;

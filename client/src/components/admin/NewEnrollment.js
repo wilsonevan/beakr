@@ -146,8 +146,8 @@ class NewEnrollment extends React.Component {
               <SearchHeading>
                 <SearchHeadingText>Enrolled Users</SearchHeadingText>
                 <div>
-                  <TeacherButton onClick={() => this.setTeacherTrue()} style={teacher? {backgroundColor: "#1577ff"} : null} > Teachers </TeacherButton>
-                  <TeacherButton onClick={() => this.setTeacherFalse()} style={!teacher? {backgroundColor: "#1577ff"} : null} > Students </TeacherButton>
+                  <TeacherButton onClick={() => this.setTeacherTrue()} style={teacher? {backgroundColor: "white", color: "#2979ff"} : null} > Teachers </TeacherButton>
+                  <TeacherButton onClick={() => this.setTeacherFalse()} style={!teacher? {backgroundColor: "white", color: "#2979ff"} : null} > Students </TeacherButton>
                 </div>
               </SearchHeading>
               { this.renderSearch() }
@@ -215,7 +215,7 @@ const LeftContainer = styled.div`
 
 
 const TeacherButton = styled.button`
-  background-color: blue;
+  background-color: #2979ff;
   border: none;
   border-radius: 5px;
   color: white;

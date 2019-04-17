@@ -4,7 +4,7 @@ import { ButtonGreen } from "../../styles/Components";
 import Moment from 'react-moment';
 import moment from "moment";
 
-const QuizStart = ({ toggleStartPrompt, due_date, body }) => {
+const QuizStart = ({ toggleStartPrompt, due_date, body, adminView }) => {
     const beforeDue = moment(Date.now()).isBefore(due_date);
     return(
         <>
@@ -13,7 +13,7 @@ const QuizStart = ({ toggleStartPrompt, due_date, body }) => {
                     <h2 style={{margin: "0", color: "#23a24d", fontSize: "1.75rem"}} >Instructions</h2>
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Moment format='ddd, MMM D, LT' date={due_date} style={styles.dueDate} /> 
-                        { beforeDue && 
+                        { beforeDue && !adminView &&
                             <ButtonGreen 
                                 onClick={() => toggleStartPrompt()} 
                             > Start Quiz </ButtonGreen>

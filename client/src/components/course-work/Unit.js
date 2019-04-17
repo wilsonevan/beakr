@@ -157,7 +157,7 @@ const SectionUnit = styled.div`
   font-size: 1.2rem;
 
   :hover {
-    color: #0029ff;
+    color: #23a24d;
   }
 `;
 
@@ -174,7 +174,7 @@ const OpenedSectionUnit = styled.div`
   font-size: 1.2rem;
 
   :hover {
-    color: #0029ff;
+    color: #23a24d;
   }
 `;
 

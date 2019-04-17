@@ -23,7 +23,7 @@ const UserContainer = styled.div`
 
     :hover {
         background-color: rgba(100,100,100, 0.1);
-        color: #0029ff;
+        color: #2979ff;
     }
 `
 
@@ -32,7 +32,7 @@ const MinusContainer = styled.button`
     font-size: 1.25rem;
     font-weight: 600;
     border: none;
-    color: #0029ff;
+    color: #2979ff;
     cursor: pointer;
 `
 
