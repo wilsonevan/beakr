@@ -17,6 +17,10 @@ class Api::QuizSubmissionsController < ApplicationController
     render( json: @quiz_submission )
   end
 
+  def get_by_current_user_course_and_quiz
+    render( json: QuizSubmission.find_by_user_course_and_quiz(current_user.id, params[:course_id], params[:id]) )
+  end
+
   def create
     graded_questions = grade_choices(params[:questions])
     grades = calculate_grades(graded_questions)

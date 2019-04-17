@@ -60,6 +60,7 @@ Rails.application.routes.draw do
     resources :quiz_submissions
     get '/courses/:course_id/quiz_submissions', to: '/api/quiz_submissions#get_submissions_by_course'
     get '/users/:user_id/quiz_submissions', to: '/api/quiz_submissions#get_submissions_by_user'
+    get '/courses/:course_id/quizzes/:id/quiz_submissions', to: '/api/quiz_submissions#get_by_current_user_course_and_quiz'
     put '/quiz_submissions/:id/calculate_grade', to: '/api/quiz_submissions#calculate_final_grade'
 
 
