@@ -85,7 +85,6 @@ class User < ActiveRecord::Base
   end
 
   def self.get_user_grades(user_id)
-    # binding.pry
     User.find_by_sql(["
       SELECT 
         enrollments.id AS enrollment_id, 
