@@ -1,5 +1,5 @@
 class Api::CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :update, :destroy]
+  before_action :set_course, only: [:show, :update, :destroy, :calc_grades_all_students]
 
   def index
     render json: Course.all
@@ -33,6 +33,14 @@ class Api::CoursesController < ApplicationController
   def destroy
     @course.destroy()
     render( json: "Data Deleted")
+  end
+
+  def calc_grades_all_students
+    student_totals = []
+    @course.enrollments.each do |enrollment|
+      student_totals.push(User.calc_total_grades(enrollment.user_id))
+    end
+    render json: student_totals
   end
 
   private
