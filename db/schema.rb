@@ -185,7 +185,7 @@ ActiveRecord::Schema.define(version: 2019_04_16_200020) do
     t.json "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "biography"
+    t.text "biography", default: ""
     t.date "birth_date"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
