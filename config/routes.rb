@@ -5,16 +5,21 @@ Rails.application.routes.draw do
 
     resources :enrollments, only: [:create, :update]
     delete '/users/:user_id/courses/:course_id/enrollments', to: '/api/enrollments#destroy'
-
+  
     resources :attendances
-    
+
     resources :users, only: [:index, :update]
-    get 'user_courses', to: 'courses#user_courses'
+    
     post '/search_users', to: '/api/users#search_users'
     post '/search_users_with_role/:course_id', to: '/api/users#search_users_with_role'
     post '/search_staff_enrolled/:id', to: '/api/users#search_staff_enrolled'
     post '/search_students_enrolled/:id', to: '/api/users#search_students_enrolled'
-    
+    get 'get_user_grades', to: 'users#get_user_grades'
+    get 'calc_total_grades', to: 'users#calc_total_grades'
+    get 'user_courses', to: 'users#user_courses'
+    # get 'upcoming_assignments' to: 'users#upcoming_assignments'
+    # get 'recently_graded_assignments' to: 'users#recently_graded_assignments'
+
     resources :unit_contents, only: [:index, :create, :destroy]
     delete '/unit/:unit_id/contents/:content_id/unit_content', to: '/api/unit_contents#delete_by_unit_and_content'
     resources :unit_assignments, only: [:index, :create, :destroy]
@@ -40,6 +45,8 @@ Rails.application.routes.draw do
     
     get 'get_attendances', to: '/api/attendances#get_attendances'
     delete 'destroy_column', to: '/api/attendances#destroy_column'
+
+    get 'courses/:course_id/assignments/:assignment_id/assignment_submissions/show_user_submission', to: '/api/assignment_submissions#show_user_submission'
 
     resources :contents, only: [:show, :create, :update, :destroy]
     resources :assignments, only: [:show, :create, :update, :destroy] do
