@@ -5,43 +5,38 @@ const AddContentLink = ({ result, unit, createUnitContent }) => {
   return (
     <ContentText onClick={() => createUnitContent(result.id)}>
       {result.title}
-      <ViewLink
-        href={`/contents/${result.id}`}
-        target="_blank"
-      >
-        view
-      </ViewLink>
+      <PlusContainer>+</PlusContainer>
     </ContentText>
   );
 };
 
 const ContentText = styled.button`
-  display: block;
-  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 92.5%;
+  margin: 0 auto;
+  padding: 0.5rem 0;
   text-align: left;
   color: grey;
   background-color: transparent;
   border: none;
   cursor: pointer;
+  font-size: 1.15rem;
+  border-bottom: 1px solid rgba(150,150,150, 0.5);
+
+  :hover {
+    color: #23a24d;
+  }
+`;
+
+const PlusContainer = styled.div`
+  background-color: transparent;
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  padding-left: 1rem;
-
-  :hover {
-    color: #0029ff;
-  }
-`;
-
-const ViewLink = styled.a`
-  display: inline-block;
-  color: #0029ff;
-  font-family: "Lato";
-  margin-left: 0.5rem;
-  font-size: 1rem;
-
-  :hover {
-    color: grey;
-  }
-`;
+  font-weight: 600;
+  // border: none;
+  color: #23a24d;
+  cursor: pointer;
+`
 
 export default AddContentLink;

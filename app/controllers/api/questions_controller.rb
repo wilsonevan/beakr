@@ -1,4 +1,4 @@
-class QuestionsController < ApplicationController
+class Api::QuestionsController < ApplicationController
   before_action :set_quiz, only: [:index, :create]
   before_action :set_question, only: [:show, :update, :destroy]
 
@@ -11,9 +11,9 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    question = @quiz.question.new(question_params)
-
-    if(question.create())
+    question = @quiz.questions.new(question_params)
+    
+    if question.save
       render( json: question )
     else
       render( json: { error: question.errors, response_text: "Data Not Created" }, status: 422 )
@@ -50,7 +50,7 @@ class QuestionsController < ApplicationController
           :body, 
           :points_possible, 
           :points_awarded, 
-          :choices, 
+          { :choices => [:correct, :text, :option] }, 
           :submitted_choice, 
           :submitted_text, 
           :submitted_code

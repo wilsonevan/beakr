@@ -23,7 +23,7 @@ const Item = styled.div`
     cursor: pointer;
 
     :hover {
-        color: #0029ff;
+        color: #2979ff;
         background-color: #f7f7f7;
     }
 `
