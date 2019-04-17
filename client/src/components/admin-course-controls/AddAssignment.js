@@ -25,8 +25,9 @@ class AddAssignment extends React.Component {
     this.setState({ body: value })
   }
   
-  handleSubmit = () => {
+  handleSubmit = (e) => {
     const assignment = {...this.state}
+    e.preventDefault()
     axios.post('/api/assignments', assignment)
       .then( res => {
         this.setState({ title: '', body: '', due_date: '', kind: ''})

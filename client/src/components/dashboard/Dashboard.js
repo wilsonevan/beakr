@@ -21,13 +21,12 @@ class Dashboard extends React.Component {
 
 class connectDashboard extends React.Component {
 render(){
-return(
-
-  <AuthConsumer>
-    {auth => <Dashboard {...this.props} auth={auth}/>}
-  </AuthConsumer>
-  )
-}
+  return(
+    <AuthConsumer>
+      {auth => <Dashboard {...this.props} auth={auth}/>}
+    </AuthConsumer>
+    )
+  }
 }
 
 export default connectDashboard
