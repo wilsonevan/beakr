@@ -5,6 +5,7 @@ import styled from "styled-components";
 import AdminControlsNav from "./AdminControlsNav";
 import AddSection from "./AddSection";
 import AdminCourseAttendance from './AdminCourseAttendance';
+import {Link} from "react-router-dom"
 
 class AdminCourseControl extends React.Component {
   state = { course: {}, sections: [], selected: "edit" };
@@ -76,7 +77,8 @@ class AdminCourseControl extends React.Component {
     const { course, selected } = this.state;
     return (
       <AdminControlsContainer>
-        <SectionHeading>
+        <SectionHeading> 
+           <Link to="/dashboard" style={{color: '#23a24d',}}> Course > </Link>
           {course.title && `${course.title} > Admin Controls`}
         </SectionHeading>
 
@@ -98,6 +100,7 @@ const AdminControlsContainer = styled.div`
   flex-direction: column;
   margin: 0 auto;
 `;
+
 
 const AdminControls = styled.div`
   background-color: white;

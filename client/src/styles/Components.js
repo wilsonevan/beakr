@@ -97,4 +97,4 @@ const ButtonGrey = styled.button`
   }
 `;
 
-export { Bar, ButtonBlue, ButtonGreen, ButtonGrey };
+export { Bar, ButtonBlue, ButtonGreen, ButtonGrey, };

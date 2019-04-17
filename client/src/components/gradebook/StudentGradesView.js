@@ -4,6 +4,8 @@ import { Card, Table, } from "semantic-ui-react";
 import { Line } from "react-chartjs-2";
 import CourseCard from './CourseCard';
 
+
+
 const StudentGradesView = () => {
   // const [courses, setCourses] = useState(0);
 
@@ -43,9 +45,9 @@ const StudentGradesView = () => {
       <>
         <div class="ui green compact menu">
           <div class="ui simple dropdown item">
-             Sort <i align="left" class="dropdown icon"></i>
+             Choose A Course <i align="left" class="dropdown icon"></i>
           <div class="menu">
-          <div class="item">By Course</div>
+          <div class="item">{"course"}</div>
           </div>
          </div>
         </div>
