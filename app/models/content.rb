@@ -20,23 +20,11 @@ class Content < ApplicationRecord
   end
 
   def self.get_content_with_attrs(content_id, unit_id)
-
-    content = Content.find(content_id)
-    uc = UnitContent.find_by_sql(["
-      SELECT uc.sequence, uc.visible, uc.id FROM unit_contents AS uc
-      WHERE uc.content_id = ?
-      AND uc.unit_id = ?
-    ", content_id, unit_id]).first()
-
-    return {
-      id: content_id,
-      unit_content_id: uc[:id],
-      title: content[:title],
-      body: content[:body],
-      created_at: content[:created_at],
-      updated_at: content[:updated_at],
-      sequence: uc[:sequence],
-      visible: uc[:visible],
-    }
+    User.find_by_sql(["
+      SELECT c.*, uc.due_date, uc.sequence, uc.visible, uc.id AS unit_content_id FROM contents AS c
+      INNER JOIN unit_contents AS uc
+        ON uc.content_id = ?
+      WHERE uc.unit_id = ?
+      ", content_id, unit_id]).first()
   end
 end

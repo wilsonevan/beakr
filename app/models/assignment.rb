@@ -21,24 +21,11 @@ class Assignment < ApplicationRecord
   end
 
   def self.get_assignment_with_attrs(assignment_id, unit_id)
-
-    assignment = Assignment.find(assignment_id)
-    ua = UnitAssignment.find_by_sql(["
-      SELECT ua.sequence, ua.visible, ua.due_date, ua.id FROM unit_assignments AS ua
-      WHERE ua.assignment_id = ?
-      AND ua.unit_id = ?
-    ", assignment_id, unit_id]).first()
-
-    return {
-      id: assignment_id,
-      unit_assignment_id: ua[:id],
-      title: assignment[:title],
-      body: assignment[:body],
-      created_at: assignment[:created_at],
-      updated_at: assignment[:updated_at],
-      sequence: ua[:sequence],
-      visible: ua[:visible],
-      due_date: ua[:due_date],
-    }
+    User.find_by_sql(["
+      SELECT a.*, ua.due_date, ua.sequence, ua.visible, ua.id AS unit_assignment_id FROM assignments AS a
+      INNER JOIN unit_assignments AS ua
+        ON ua.assignment_id = ?
+      WHERE ua.unit_id = ?
+      ", assignment_id, unit_id]).first()
   end
 end

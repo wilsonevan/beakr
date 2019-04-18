@@ -17,8 +17,6 @@ class UnitControls extends React.Component {
 
   state = { editing: false, unit: this.props.unit, contents: [], assignments: [], quizzes: [], search: "contents" };
 
-  formRef = React.createRef();
-
   componentDidMount() {
     axios
       .get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`)
@@ -37,6 +35,7 @@ class UnitControls extends React.Component {
     axios
       .get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`)
       .then(res => {
+        console.log(res.data)
         this.setState({ quizzes: res.data })
       })
       .catch(err => console.log(err));
@@ -46,7 +45,7 @@ class UnitControls extends React.Component {
     axios
       .post(`/api/unit_contents`, { content_id, unit_id: this.props.unit.id })
       .then(res => {
-        return axios.get(`/api/units/${this.props.unit.id}/contents`);
+        return axios.get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`);
       })
       .then(res => {
         this.setState({ contents: res.data });
@@ -58,7 +57,7 @@ class UnitControls extends React.Component {
     axios
       .post(`/api/unit_assignments`, { assignment_id, unit_id: this.props.unit.id })
       .then(res => {
-        return axios.get(`/api/units/${this.props.unit.id}/assignments`);
+        return axios.get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`);
       })
       .then(res => {
         this.setState({ assignments: res.data });
@@ -70,7 +69,7 @@ class UnitControls extends React.Component {
     axios
       .post(`/api/unit_quizzes`, { quiz_id, unit_id: this.props.unit.id})
       .then(res => {
-        return axios.get(`/api/units/${this.props.unit.id}/quizzes`);
+        return axios.get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`);
       })
       .then(res => {
         this.setState({ quizzes: res.data });
