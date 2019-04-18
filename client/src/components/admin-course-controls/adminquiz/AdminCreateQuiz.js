@@ -137,29 +137,6 @@ const QuizContainer = styled.div`
 
 `
 
-const QuestionDiv = styled.div`
-  box-shadow: 1px 1px 1px 1px #ededed;
-  border-radius: 5px;
-  margin-bottom: 15px;
-  border: 2px solid #ededed;
-  padding: 5px;
-  position: relative;
-
-`
-const BodyTextArea = styled.textarea`
-  width: 90%;
-  background-color: white;
-  border: none;
-  border-radius: 5px;
-  outline: none;
-  font-size: 1.5rem;
-  border: 2px solid #ededed;
-  color: grey;
-
-  :focus {
-    box-shadow: 0 0 0 2px #23a24d;
-  }
-`
 const BodyInput = styled.input`
   width: 100%;
   background-color: white;
@@ -176,42 +153,6 @@ const BodyInput = styled.input`
     box-shadow: 0 0 0 2px #23a24d;
   }
 `
-const SmallDelete = styled.div`
-  width: 25px;
-  height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: grey;
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  
-  :hover {
-    color: #23a24d;
-    cursor: pointer;
-  }
-`
-const SmallEdit = styled.div`
-  width: 25px;
-  height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: grey;
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
-  
-  :hover {
-    color: #23a24d;
-    cursor: pointer;
-  }
-`
-const SimpleDiv = styled.div`
-  width: 85%;
-  height: 100%;
-  overflow-wrap: break-word:
-`
+
 
 export default AdminCreateQuiz
