@@ -32,7 +32,7 @@ class EditAssignmentTitle extends React.Component {
 const TitleForm = styled.form`
   display: inline-block;
   margin: 0 0.25rem 3rem 0;
-  font-size: 2.25rem;
+  font-size: 1rem;
   font-weight: 600;
 `;
 

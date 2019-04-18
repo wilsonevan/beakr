@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
-import DateTimePicker from 'react-datetime-picker';
 import { ButtonGreen } from '../../styles/Components';
 import axios from 'axios';
 

@@ -90,6 +90,7 @@ class AssignmentSubmissionForm extends React.Component {
         <ButtonGreen onClick={this.handleSubmit}>
           Submit
         </ButtonGreen>
+        <br/>
       </>
     )
   }
