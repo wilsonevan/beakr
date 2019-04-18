@@ -5,9 +5,10 @@ import axios from 'axios';
 import CreateQuestions from './CreateQuestions'
 import styled from 'styled-components'
 import { Icon, } from 'semantic-ui-react'
+import ShowQuestion from './ShowQuestion';
 
 class AdminCreateQuiz extends React.Component {
-  state = { quizValues: { title: '', body: ''}, addQuestion: false, questions: [],}
+  state = { quizValues: { title: '', body: ''}, addQuestion: false, questions: [], }
 
   handleChange = (e) => {
     const { name, value } = e.target
@@ -65,26 +66,13 @@ class AdminCreateQuiz extends React.Component {
 
   }
 
+
   renderQuestions = () => {
       return this.state.questions.map( ( question, index ) => {
-        return ( <QuestionDiv key={index}>
-          <SimpleDiv>
-
-            <h3>Question {index + 1}</h3>
-            <h4 style={{margin: 0}}>Type: {question.kind}</h4>
-            <h4 style={{margin: 0}}>Points: {question.points_possible}</h4>
-            <h4 style={{margin: 0}}>Question: {question.body}</h4>
-            {question.choices.map( (choice, index) => 
-              <h6 key={index}>
-                Q{index+1}: {choice.text}
-              </h6>
-              )}
-          </SimpleDiv>
-            <SmallDelete onClick={() => this.filterQuestion(index)}><Icon name='trash alternate outline' size='large' /></SmallDelete>
-            <SmallEdit><Icon name='setting' size='large' /></SmallEdit>
-          </QuestionDiv>)
-      }
+        return ( 
+          <ShowQuestion key={index} question={question} filterQuestion={this.filterQuestion} index={index} />
       )
+      })
   }
 
   render() {

@@ -54,7 +54,7 @@ renderChoices = () => {
 }
 
 renderKind = () => {
-  const { kind, body, points_possible} = this.state.questionValues
+  const { kind, body,} = this.state.questionValues
    if (kind === 'choice'){
      return (
      <>
