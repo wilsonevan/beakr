@@ -25,7 +25,9 @@ const StudentGradesView = ({ auth }) => {
       setTotalGrades(res.data);
     });
     axios.get("/api/get_user_grades", { params: { id: id } }).then(res => {
+      console.log(res.data);
       setGrades(res.data);
+
     });
   }, []);
 
@@ -78,7 +80,7 @@ const StudentGradesView = ({ auth }) => {
         </TopContainer>
         <Split />
         <TopContainer>
-          <HeaderSummary>Upcoming Assignments</HeaderSummary>
+          <HeaderSummary>Upcoming Assignments/Quizzes</HeaderSummary>
           <DataSummary>
             <Card.Group
               fluid
@@ -121,7 +123,7 @@ const StudentGradesView = ({ auth }) => {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell textAlign="center">
-                  Assignments
+                  Assignments/Quizzes
                 </Table.HeaderCell>
                 <Table.HeaderCell textAlign="center">Due Date</Table.HeaderCell>
                 <Table.HeaderCell textAlign="center">Score</Table.HeaderCell>
@@ -133,13 +135,21 @@ const StudentGradesView = ({ auth }) => {
                   return (
                     <Table.Row>
                       <Table.Cell singleLine>
-                        <TableHeader as="h4">{grade.quiz_title}</TableHeader>
+                        <TableHeader as="h4">{grade.title}</TableHeader>
                       </Table.Cell>
                       <Table.Cell textAlign="center">
+                      { grade.due_date ?
+                        <>
                         {dateFns.format(
-                          dateFns.parse(grade.quiz_due_date),
+                          dateFns.parse(grade.due_date),
                           "MM/DD/YY"
                         )}
+                        </>
+                        :
+                        <>
+                          No Date Yet
+                        </>
+                      }
                       </Table.Cell>
                       {grade.points_possible > 0 ? (
                         <Table.Cell textAlign="center">
@@ -164,7 +174,7 @@ const StudentGradesView = ({ auth }) => {
                     {totalGrades.map(course => {
                       if (course.course_id == activeCourse.id)
                         return (
-                          <Table.HeaderCell colSpan="2" textAlign="center">
+                          <Table.HeaderCell colSpan="3" textAlign="center">
                             {course.grade_percent}%
                           </Table.HeaderCell>
                         );
