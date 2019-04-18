@@ -1,11 +1,15 @@
 
 class Api::UsersController < ApplicationController
   before_action :authorize_admin, only: [:index]
-  before_action :set_user, only: [:get_user_grades, :calc_total_grades]
+  before_action :set_user, only: [:show, :get_user_grades, :calc_total_grades]
 
   def index
     users = User.all
     render json: users
+  end
+
+  def show
+    render json: @user
   end
 
   def search_users

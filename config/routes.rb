@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   
     resources :attendances
 
-    resources :users, only: [:index, :update]
+    resources :users, only: [:index,:show, :update]
     
     post '/search_users', to: '/api/users#search_users'
     post '/search_users_with_role/:course_id', to: '/api/users#search_users_with_role'
