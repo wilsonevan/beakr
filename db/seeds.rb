@@ -16,7 +16,8 @@ Assignment.destroy_all
     5.times do
       unit = Unit.create(
         title: Faker::Hacker.noun,
-        section_id: section.id
+        section_id: section.id,
+        visible: false,
       )
       5.times do
         content = Content.create(

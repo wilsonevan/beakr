@@ -11,7 +11,7 @@ import AddQuizLink from "./AddQuizLink";
 import QuizBlock from "./QuizBlock";
 import EditUnitTitle from "./EditUnitTitle";
 import anime from "animejs";
-import { Icon } from "semantic-ui-react";
+import { Icon, Visibility } from "semantic-ui-react";
 
 class UnitControls extends React.Component {
 
@@ -41,10 +41,6 @@ class UnitControls extends React.Component {
       })
       .catch(err => console.log(err));
   }
-
-  // componentWillUnmount() {
-  //   anime.remove(this.formRef.current);
-  // }
 
   createUnitContent = content_id => {
     axios
@@ -122,6 +118,18 @@ class UnitControls extends React.Component {
       this.setState({ quizzes });
     })
     .catch(err => console.log(err));
+  }
+
+  toggleUnitVisibility = () => {
+    axios.put(
+      `/api/sections/${this.props.section.id}/units/${this.state.unit.id}`, 
+      {unit: {visible: !this.state.unit.visible}}
+    )
+    .then((res) => {
+      console.log(res);
+      this.setState({ unit: res.data });
+    })
+    .catch((err) => console.log(err));
   }
 
   toggleContentVisibility = (visible, id, unit_content_id) => {
@@ -318,7 +326,17 @@ class UnitControls extends React.Component {
     const { unit, updateUnit, deleteUnit } = this.props;
     if (!this.state.editing)
       return (
-        <UnitText onClick={() => this.toggleEditing()}>{unit.title}</UnitText>
+        <>
+          <UnitText>
+            <VisibilityButton onClick={() => this.toggleUnitVisibility()}>
+              { this.state.unit.visible
+                ? <Icon name='eye' />
+                : <Icon name='eye slash' />
+              }
+            </VisibilityButton>
+            <UnitToggle onClick={() => this.toggleEditing()} > {unit.title} </UnitToggle>
+          </UnitText>
+        </>
       );
     else
       return (
@@ -412,12 +430,29 @@ const UnitText = styled.p`
   width: 90%;
   margin: 0 auto;
   padding-top: 2rem;
+`;
+
+const UnitToggle = styled.span`
   cursor: pointer;
 
   :hover {
     color: #2979ff;
   }
-`;
+`
+
+const VisibilityButton = styled.button`
+  display: inline;
+  text-decoration: none;
+  background-color: transparent;
+  color: grey;
+  margin-right: 1rem;
+  border: none;
+  cursor: pointer;
+
+  hover {
+    color: color: #2979ff;;
+  }
+`
 
 const ContentHeading = styled.div`
   position: absolute;
