@@ -4,9 +4,11 @@ import { ButtonGreen } from '../../../styles/Components';
 import axios from 'axios';
 import CreateQuestions from './CreateQuestions'
 import styled from 'styled-components'
+import { Icon, } from 'semantic-ui-react'
+import ShowQuestion from './ShowQuestion';
 
 class AdminCreateQuiz extends React.Component {
-  state = { quizValues: { title: '', body: ''}, addQuestion: false, questions: [],}
+  state = { quizValues: { title: '', body: ''}, addQuestion: false, questions: [], }
 
   handleChange = (e) => {
     const { name, value } = e.target
@@ -23,8 +25,16 @@ class AdminCreateQuiz extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const quiz = {...this.state.quizValues}
-    axios.post('/api/quizzes', quiz)
+    if (this.state.quizValues.title === ''){
+      alert('You must give the quiz a title')
+    } else if ( this.state.quizValues.body === '' ) {
+      alert('You must fill out quiz instructions')
+    } else {
+      if (this.state.questions.length < 1){
+        alert('You must add questions')
+      } else {
+      const quiz = {...this.state.quizValues}
+      axios.post('/api/quizzes', quiz)
       .then( res => {
         // res.data.id === quiz.id
         this.state.questions.map( question => {
@@ -33,6 +43,8 @@ class AdminCreateQuiz extends React.Component {
         })
         this.setState({ quizValues: {title: '', body: '',}, questions: []})
       })
+      }
+    }
   }
   setQuestionState = (questions) => {
     this.setState({questions})    
@@ -54,21 +66,13 @@ class AdminCreateQuiz extends React.Component {
 
   }
 
+
   renderQuestions = () => {
       return this.state.questions.map( ( question, index ) => {
-        return ( <QuestionDiv key={index}>
-          <h3>Question {index + 1}</h3>
-          <h4 style={{margin: 0}}>Type: {question.kind}</h4>
-          <h4 style={{margin: 0}}>Question: {question.body}</h4>
-          {question.choices.map( (choice, index) => 
-            <h6 key={index}>
-              Q{index+1}: {choice.text}
-            </h6>
-            )}
-            <SmallDelete onClick={() => this.filterQuestion(index)}>Delete</SmallDelete>
-          </QuestionDiv>)
-      }
+        return ( 
+          <ShowQuestion key={index} question={question} filterQuestion={this.filterQuestion} index={index} />
       )
+      })
   }
 
   render() {
@@ -131,32 +135,10 @@ const QuizContainer = styled.div`
   background: white;
   width: 50%;
   padding: 10px;
+  overflow-wrap: break-word:
 
 `
 
-const QuestionDiv = styled.div`
-  box-shadow: 1px 1px 1px 1px #ededed;
-  border-radius: 5px;
-  margin-bottom: 15px;
-  border: 2px solid #ededed;
-  padding: 5px;
-  position: relative;
-
-`
-const BodyTextArea = styled.textarea`
-  width: 90%;
-  background-color: white;
-  border: none;
-  border-radius: 5px;
-  outline: none;
-  font-size: 1.5rem;
-  border: 2px solid #ededed;
-  color: grey;
-
-  :focus {
-    box-shadow: 0 0 0 2px #23a24d;
-  }
-`
 const BodyInput = styled.input`
   width: 100%;
   background-color: white;
@@ -173,26 +155,7 @@ const BodyInput = styled.input`
     box-shadow: 0 0 0 2px #23a24d;
   }
 `
-const SmallDelete = styled.div`
-  width: 125px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #23a24d;
-  color: white;
-  border: 1px solid white
-  border-radius: 5px;
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  
-  :hover {
-    border: 1px solid #23a24d;
-    background: white;
-    color: #23a24d;
-    cursor: pointer;
-  }
-`
+
 
 const modules = {
   toolbar: [
