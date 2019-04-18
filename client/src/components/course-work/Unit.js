@@ -3,31 +3,33 @@ import axios from "axios";
 import anime from "animejs";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Icon } from "semantic-ui-react";
 
 class Unit extends React.Component {
-  state = { contents: [], assignments: [], quizzes: [], opened: false, loaded: false };
+  state = { contents: [], assignments: [], quizzes: [], opened: false, loaded: true };
 
   unitModelsRef = React.createRef();
 
   componentDidMount() {
     axios
-      .get(`/api/units/${this.props.unit.id}/contents`)
+      .get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`)
       .then(res => {
         this.setState({ contents: res.data, });
       })
       .catch(err => console.log(err));
     axios
-      .get(`/api/units/${this.props.unit.id}/assignments`)
+      .get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`)
       .then(res => {
         this.setState({ assignments: res.data, })
       })
       .catch(err => console.log(err));
     axios
-      .get(`/api/units/${this.props.unit.id}/quizzes`)
+      .get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`)
       .then(res => {
         this.setState({ quizzes: res.data, })
       })
-    this.setState({ loaded: true })
+      .catch(err => console.log(err));
+    // this.setState({ loaded: true })
   }
 
   componentWillUnmount() {
@@ -84,7 +86,7 @@ class Unit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-            <UnitModelsIcon className="models-icon" />
+            <Icon name="file alternate outline" />
             {content.title}
           </UnitModelsItem>
         </Link>
@@ -99,7 +101,7 @@ class Unit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-            <UnitModelsIcon className="models-icon" />
+            <Icon name="check" />
             {quiz.title}
           </UnitModelsItem>
         </Link>
@@ -114,7 +116,7 @@ class Unit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-            <UnitModelsIcon className="models-icon" />
+            <Icon name="edit outline" />
             {assignment.title}
           </UnitModelsItem>
         </Link>
