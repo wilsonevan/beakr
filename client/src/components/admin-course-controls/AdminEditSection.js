@@ -97,7 +97,7 @@ class AdminEditSection extends React.Component {
                 <BlueLink onClick={() => this.toggleEditing()}>
                   Edit Name
                 </BlueLink>
-                <span style={{ color: "#0029ff", fontSize: "0.7rem" }}>
+                <span style={{ color: "#2979ff", fontSize: "0.7rem" }}>
                   &nbsp;or&nbsp;
                 </span>
                 <BlueLink onClick={() => this.deleteSection(section.id)}>
@@ -135,7 +135,7 @@ const BlueLink = styled.button`
   text-decoration: none;
   background-color: transparent;
   border: none;
-  color: #0029ff;
+  color: #2979ff;
   font-family: "Poppins";
   font-size: 0.7rem;
   letter-spacing: 1px;

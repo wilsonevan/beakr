@@ -2,8 +2,8 @@ import React from 'react'
 import AddContent from './AddContent';
 import styled from 'styled-components'
 import AddAssignment from './AddAssignment';
-import AddQuiz from './AddQuiz';
 import DashboardNav from "../DashboardNav";
+import AdminCreateQuiz from './adminquiz/AdminCreateQuiz';
 
 
 class AddUnitStuffNav extends React.Component {
@@ -23,7 +23,7 @@ class AddUnitStuffNav extends React.Component {
           items={["content", "assignment", "quiz"]}
           content={<AddContent />}
           assignment={<AddAssignment />}
-          quiz={<AddQuiz />}
+          quiz={<AdminCreateQuiz />}
           handleSelected={this.handleSelected}
         />
       </>

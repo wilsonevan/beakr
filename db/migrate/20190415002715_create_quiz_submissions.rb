@@ -5,7 +5,7 @@ class CreateQuizSubmissions < ActiveRecord::Migration[5.2]
       t.belongs_to :enrollment, foreign_key: true
       t.float :grade
       t.float :points_possible
-      t.float :points_awarded
+      t.float :points_awarded, default: 0
       t.boolean :graded
       t.text :comment
       t.string :questions

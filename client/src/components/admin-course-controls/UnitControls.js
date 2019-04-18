@@ -11,6 +11,7 @@ import AddQuizLink from "./AddQuizLink";
 import QuizBlock from "./QuizBlock";
 import EditUnitTitle from "./EditUnitTitle";
 import anime from "animejs";
+import { Icon } from "semantic-ui-react";
 
 class UnitControls extends React.Component {
 
@@ -133,38 +134,39 @@ class UnitControls extends React.Component {
   }
 
   toggleEditing = () => {
-    if (!this.state.editing) {
-      this.setState({ editing: true }, () => {
-        anime
-          .timeline({
-            targets: this.formRef.current
-          })
-          .add({
-            height: "36rem",
-            easing: "linear",
-            duration: 100
-          })
-          .add({
-            opacity: 1,
-            duration: 100
-          });
-      });
-    } else {
-      anime
-        .timeline({
-          targets: this.formRef.current
-        })
-        .add({
-          height: "1.75rem",
-          easing: "linear",
-          duration: 200
-        })
-        .add({
-          opacity: 0,
-          duration: 375
-        })
-        .finished.then(() => this.setState({ editing: false }));
-    }
+    // if (!this.state.editing) {
+    //   this.setState({ editing: true }, () => {
+    //     anime
+    //       .timeline({
+    //         targets: this.formRef.current
+    //       })
+    //       .add({
+    //         height: "37rem",
+    //         easing: "linear",
+    //         duration: 200
+    //       })
+    //       .add({
+    //         opacity: 1,
+    //         duration: 100
+    //       });
+    //   });
+    // } else {
+    //   anime
+    //     .timeline({
+    //       targets: this.formRef.current
+    //     })
+    //     .add({
+    //       height: "1.75rem",
+    //       easing: "linear",
+    //       duration: 200
+    //     })
+    //     .add({
+    //       opacity: 0,
+    //       duration: 375
+    //     })
+    //     .finished.then(() => this.setState({ editing: false }));
+    // }
+    this.setState({ editing: !this.state.editing })
   };
 
   renderUnitContents = () => {
@@ -224,13 +226,14 @@ class UnitControls extends React.Component {
             route={`/api/contents/search/${unit.id}`}
             render={props => (
               <AddContentLink
-                  {...props}
-                  createUnitContent={this.createUnitContent}
-                  unit={unit}
+                {...props}
+                createUnitContent={this.createUnitContent}
+                unit={unit}
               />
             )}
             placeholder="Search Contents To Add ..."
             width="100%"
+            height="29rem"
           />
         )
       case "assignments":
@@ -246,6 +249,7 @@ class UnitControls extends React.Component {
             )}
             placeholder="Search Assignments To Add ..."
             width="100%"
+            height="29rem"
           />
         )
       case "quizzes":
@@ -261,6 +265,7 @@ class UnitControls extends React.Component {
             )}
             placeholder="Search Quizzes To Add ..."
             width="100%"
+            height="29rem"
           />
         )
       default:
@@ -279,46 +284,8 @@ class UnitControls extends React.Component {
       return (
         <UnitForm onSubmit={this.handleSubmit} ref={this.formRef}>
           <FormTop>
-            <div>
-              <ButtonGreen
-                as="a"
-                href="/addunitmaterial"
-                target="_blank"
-                style={{ padding: "0.325rem 0.75rem" }}
-              >
-                Create New
-              </ButtonGreen>
-              <ButtonBlue
-                style={{
-                  padding: "0.5rem 0.75rem",
-                  marginLeft: "0.5rem"
-                }}
-                value='contents'
-                onClick={this.toggleSearchBar}
-              >
-                Contents
-              </ButtonBlue>
-              <ButtonBlue
-                style={{
-                  padding: "0.5rem 0.75rem",
-                  marginLeft: "0.5rem"
-                }}
-                value='assignments'
-                onClick={this.toggleSearchBar}
-              >
-                Assignments
-              </ButtonBlue>
-              <ButtonBlue
-                style={{
-                  padding: "0.5rem 0.75rem",
-                  marginLeft: "0.5rem"
-                }}
-                value='quizzes'
-                onClick={this.toggleSearchBar}
-              >
-                Quizzes
-              </ButtonBlue>
-            </div>
+            <h3>Unit Management</h3>
+
 
             <div>
               <ButtonGreen
@@ -330,19 +297,49 @@ class UnitControls extends React.Component {
               >
                 Finished
               </ButtonGreen>
-              <ButtonBlue
-                style={{
-                  padding: "0.5rem 0.75rem",
-                  marginLeft: "0.5rem"
-                }}
-                onClick={() => deleteUnit(unit.id)}
-              >
-                Delete
-              </ButtonBlue>
+              <DeleteIcon>
+                <Icon 
+                  name="trash alternate outline" 
+                  size="large" 
+                  onClick={() => deleteUnit(unit.id)}
+                />
+              </DeleteIcon>
             </div>
           </FormTop>
           <FormBottom>
             <FormBottomLeft>
+            <div>
+              <SearchToggle
+                style={this.state.search === "contents" ? {
+                  backgroundColor: "white",
+                  color: "#23a24d"
+                } : null}
+                value='contents'
+                onClick={this.toggleSearchBar}
+              >
+                Contents
+              </SearchToggle>
+              <SearchToggle
+                style={this.state.search === "assignments" ? {
+                  backgroundColor: "white",
+                  color: "#23a24d"
+                } : null}
+                value='assignments'
+                onClick={this.toggleSearchBar}
+              >
+                Assignments
+              </SearchToggle>
+              <SearchToggle
+                style={this.state.search === "quizzes" ? {
+                  backgroundColor: "white",
+                  color: "#23a24d"
+                } : null}
+                value='quizzes'
+                onClick={this.toggleSearchBar}
+              >
+                Quizzes
+              </SearchToggle>
+            </div>
 
               {this.renderSearchBar()}
 
@@ -355,9 +352,11 @@ class UnitControls extends React.Component {
                   updateUnit={updateUnit}
                 />
               </ContentHeading>
-              {this.renderUnitContents()}
-              {this.renderUnitAssignments()}
-              {this.renderUnitQuizzes()}
+                <MaterialsContainer>
+                  {this.renderUnitContents()}
+                  {this.renderUnitAssignments()}
+                  {this.renderUnitQuizzes()}
+                </MaterialsContainer>
             </FormBottomRight>
           </FormBottom>
         </UnitForm>
@@ -374,10 +373,9 @@ const UnitText = styled.p`
   margin: 0 auto;
   padding-top: 2rem;
   cursor: pointer;
-  // transition-duration: 0.1s;
 
   :hover {
-    color: #0029ff;
+    color: #2979ff;
   }
 `;
 
@@ -387,15 +385,11 @@ const ContentHeading = styled.div`
   left: 0;
   width: 100%;
   height: 3rem;
-  color: white;
-  background-color: #bdbdbd;
-  padding-top: 0.5rem;
-  text-align: center;
 `;
 
 const UnitForm = styled.div`
-  height: 2rem;
-  opacity: 0;
+  height: 37rem;
+  opacity: 1;
   width: 90%;
   margin: 2rem auto 0 auto;
   border: 1px solid #bdbdbd;
@@ -403,37 +397,62 @@ const UnitForm = styled.div`
   border-radius: 5px;
   overflow: hidden;
   transition-duration: 0.5s;
+  background-color: #23a24d;
+  padding: 1rem;
 `;
 
 const FormTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 0.5rem;
   width: 100%;
   min-height: 3rem;
-  background-color: #bdbdbd;
   color: white;
 `;
 
 const FormBottom = styled.div`
   display: flex;
-  justify-contents: center;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const FormBottomLeft = styled.div`
-  height: 30rem;
-  width: 50%;
-  border-right: 1px solid #bdbdbd;
-  background-color: #bdbdbd;
+  height: 32rem;
+  width: calc(50% - 0.5rem);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  overflow: hidden;
 `;
 const FormBottomRight = styled.div`
   position: relative;
-  height: 30rem;
-  overflow-y: scroll;
-  width: 50%;
-  padding: 3rem 0.5rem 0 0.5rem;
+  height: 32rem;
+  width: calc(50% - 0.5rem);
+  padding-top: 3rem;
 `;
+
+const MaterialsContainer = styled.div`
+  height: 29rem;
+  overflow: auto;
+  background-color: white;
+  border-radius: 5px;
+`
+
+const SearchToggle = styled.button`
+  display; inline-block;
+  background-color: transparent;
+  color: white;
+  height: 3rem;
+  border: none;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  outline: none;
+`
+
+const DeleteIcon = styled.span`
+  cursor: pointer;
+  :hover {
+    color: #2979ff;
+  }
+`
 
 export default UnitControls;

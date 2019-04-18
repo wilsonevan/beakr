@@ -17,13 +17,17 @@ class Api::QuizSubmissionsController < ApplicationController
     render( json: @quiz_submission )
   end
 
+  def get_by_current_user_course_and_quiz
+    render( json: QuizSubmission.find_by_user_course_and_quiz(current_user.id, params[:course_id], params[:id]) )
+  end
+
   def create
     graded_questions = grade_choices(params[:questions])
     grades = calculate_grades(graded_questions)
 
     quiz_submission = QuizSubmission.new(
       quiz_id: params[:quiz_id],
-      enrollment_id: Enrollment.find_by_user_and_course(params[:user_id], params[:course_id]).id,
+      enrollment_id: Enrollment.find_by_user_and_course(current_user.id, params[:course_id]).id,
       points_possible: grades[:points_possible],
       points_awarded: grades[:points_awarded],
       grade: grades[:grade],
@@ -84,11 +88,12 @@ class Api::QuizSubmissionsController < ApplicationController
 
     # This function loops through choice questions and determines if they are correct
     def grade_choices(question_array)
-      questions_array.each() {|question|
-        if(question.kind == "choice")
-          question.choices.each() {|choice|
-            if( question.submitted_choice == choice.option && choice.correct)
-              question.points_awarded = question.points_possible
+      question_array.each() {|question|
+        puts question
+        if(question[:kind] == "choice")
+          question[:choices].each() {|choice|
+            if( question[:submitted_choice] == choice[:option] && choice[:correct])
+              question[:points_awarded] = question[:points_possible]
             end
           }
         end
@@ -103,14 +108,15 @@ class Api::QuizSubmissionsController < ApplicationController
       points_awarded = 0
       
       questions_array.each() {|question|
-        points_possible += question.points_possible
-        points_awarded += question.points_awarded
+        question[:points_awarded] = 0 if(question[:points_awarded] == nil)
+        points_possible += question[:points_possible]
+        points_awarded += question[:points_awarded]
       }
 
       return {
-        points_possible: points_possible,
-        points_awarded: points_awarded,
-        grade: points_awarded/points_possible,
+        points_possible: points_possible.to_f,
+        points_awarded: points_awarded.to_f,
+        grade: (points_awarded.to_f/points_possible.to_f) * 100,
       }
     end
 end

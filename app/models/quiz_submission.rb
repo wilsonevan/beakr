@@ -20,6 +20,6 @@ class QuizSubmission < ApplicationRecord
       SELECT * FROM quiz_submissions
       WHERE quiz_id = ?
       AND enrollment_id = ?
-    ", quiz_id, enrollment_id])
+    ", quiz_id, enrollment_id]).first()
   end
 end

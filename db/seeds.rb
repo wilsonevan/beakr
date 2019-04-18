@@ -4,7 +4,7 @@ Content.destroy_all
 Quiz.destroy_all
 Assignment.destroy_all
 
-5.times do
+1.times do
   course = Course.create(
     title: Faker::Educator.course_name
   )
@@ -46,7 +46,7 @@ Assignment.destroy_all
       1.times do
         quiz = Quiz.create(
           title: Faker::Currency.name,
-          due_date: Faker::Date.forward(60),
+          body: Faker::Lorem.paragraph(30),
         )
 
         quiz.questions.create(
@@ -89,7 +89,11 @@ Assignment.destroy_all
 
         UnitQuiz.create(
           unit_id: unit.id,
-          quiz_id: quiz.id
+          quiz_id: quiz.id,
+          visible: false,
+          sequence: nil,
+          due_date: Faker::Date.forward(60),
+
         )
       end
     end
