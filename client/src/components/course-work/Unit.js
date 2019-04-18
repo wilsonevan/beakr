@@ -3,31 +3,41 @@ import axios from "axios";
 import anime from "animejs";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Icon } from "semantic-ui-react";
 
 class Unit extends React.Component {
-  state = { contents: [], assignments: [], quizzes: [], opened: false, loaded: false };
+  state = { contents: [], assignments: [], quizzes: [], opened: false, contentsLoaded: false, assignmentsLoaded: false, quizzesLoaded: false };
 
   unitModelsRef = React.createRef();
 
   componentDidMount() {
     axios
-      .get(`/api/units/${this.props.unit.id}/contents`)
+      .get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`)
       .then(res => {
-        this.setState({ contents: res.data, });
+        const contents = res.data.filter((content) => {
+          if(content.visible) return true
+        })
+        this.setState({ contents });
       })
       .catch(err => console.log(err));
     axios
-      .get(`/api/units/${this.props.unit.id}/assignments`)
+      .get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`)
       .then(res => {
-        this.setState({ assignments: res.data, })
+        const assignments = res.data.filter((assignment) => {
+          if(assignment.visible) return assignment
+        })
+        this.setState({ assignments });
       })
       .catch(err => console.log(err));
     axios
-      .get(`/api/units/${this.props.unit.id}/quizzes`)
+      .get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`)
       .then(res => {
-        this.setState({ quizzes: res.data, })
+        const quizzes = res.data.filter((quiz) => {
+          if(quiz.visible) return quiz
+        })
+        this.setState({ quizzes });
       })
-    this.setState({ loaded: true })
+      .catch(err => console.log(err));
   }
 
   componentWillUnmount() {
@@ -37,7 +47,7 @@ class Unit extends React.Component {
   handleClick = event => {
     const { contents, assignments, quizzes } = this.state
 
-    if (!this.state.opened && this.state.loaded) {
+    if (!this.state.opened) {
       this.setState({ opened: !this.state.opened }, () => {
         anime({
           targets: this.unitModelsRef.current,
@@ -84,7 +94,7 @@ class Unit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-            <UnitModelsIcon className="models-icon" />
+            <Icon name="file alternate outline" />
             {content.title}
           </UnitModelsItem>
         </Link>
@@ -95,11 +105,11 @@ class Unit extends React.Component {
     return this.state.quizzes.map((quiz, index) => {
       return (
         <Link
-          to={`/courses/${this.props.courseId}/quizzes/${quiz.id}`}
+          to={`/courses/${this.props.courseId}/units/${this.props.unit.id}/quizzes/${quiz.id}`}
           key={index}
         >
           <UnitModelsItem>
-            <UnitModelsIcon className="models-icon" />
+            <Icon name="check" />
             {quiz.title}
           </UnitModelsItem>
         </Link>
@@ -114,7 +124,7 @@ class Unit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-            <UnitModelsIcon className="models-icon" />
+            <Icon name="edit outline" />
             {assignment.title}
           </UnitModelsItem>
         </Link>

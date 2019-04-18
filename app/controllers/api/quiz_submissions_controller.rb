@@ -116,7 +116,7 @@ class Api::QuizSubmissionsController < ApplicationController
       return {
         points_possible: points_possible.to_f,
         points_awarded: points_awarded.to_f,
-        grade: (points_awarded.to_f/points_possible.to_f) * 100,
+        grade: (points_awarded == 0)? 0 : (points_awarded.to_f/points_possible.to_f) * 100,
       }
     end
 end

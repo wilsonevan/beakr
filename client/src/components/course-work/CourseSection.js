@@ -21,10 +21,8 @@ class CourseSection extends React.Component {
       .then(res => {
         ///// Here we add quizzes and assignments just to have filler data
         ///// Delete this when those models actually exist
-        const units = res.data.map(unit => {
-          unit.quizzes = [""];
-          unit.assignments = [""];
-          return unit;
+        const units = res.data.filter(unit => {
+          if(unit.visible) return unit;
         });
         this.setState({ units, loaded: true });
       })

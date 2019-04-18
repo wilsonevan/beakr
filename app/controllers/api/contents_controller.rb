@@ -1,5 +1,5 @@
 class Api::ContentsController < ApplicationController
-  before_action :set_unit, only: [:index]
+  before_action :set_unit, only: [:index, :get_contents_with_attrs]
   before_action :set_content, only: [:show, :update, :destroy]
 
   def index
@@ -13,9 +13,29 @@ class Api::ContentsController < ApplicationController
   def search_contents_not_in_unit
     render( json: Content.search_contents_not_in_unit(params[:input], params[:unit_id]) )
   end
+  
+  def get_contents_with_attrs
+    contents = @unit.unit_contents.map() {|uc|
+      content = uc.content
+      {
+        id: content[:id],
+        unit_content_id: uc[:id],
+        title: content[:title],
+        body: content[:body],
+        sequence: uc[:sequence],
+        visible: uc[:visible]
+      }
+    }
+
+    render( json:  contents  )
+  end
 
   def show
     render json: @content
+  end
+
+  def get_content_with_attrs
+    render( json:  Content.get_content_with_attrs(params[:content_id], params[:unit_id])  )
   end
 
   def create

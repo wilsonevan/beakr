@@ -18,4 +18,13 @@ class Content < ApplicationRecord
       ORDER BY c.title
     ", "#{input}%"])
   end
+
+  def self.get_content_with_attrs(content_id, unit_id)
+    User.find_by_sql(["
+      SELECT c.*, uc.due_date, uc.sequence, uc.visible, uc.id AS unit_content_id FROM contents AS c
+      INNER JOIN unit_contents AS uc
+        ON uc.content_id = ?
+      WHERE uc.unit_id = ?
+      ", content_id, unit_id]).first()
+  end
 end
