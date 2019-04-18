@@ -23,7 +23,7 @@ class Quiz < ApplicationRecord
     ", "#{input}%"])
   end
 
-  def self.get_quiz_with_attrs(quiz_id)
+  def self.get_quiz_with_attrs(quiz_id, unit_id)
 
     # quiz = find_by_sql(["
     #   SELECT q.*, uq.due_date AS due_date FROM quizzes AS q
@@ -40,14 +40,15 @@ class Quiz < ApplicationRecord
     uq = UnitQuiz.find_by_sql(["
       SELECT uq.sequence, uq.visible, uq.due_date FROM unit_quizzes AS uq
       WHERE uq.quiz_id = ?
-    ", quiz_id]).first()
+      AND uq.unit_id = ?
+    ", quiz_id, unit_id]).first()
 
     return {
       id: quiz_id,
       title: quiz[:title],
       body: quiz[:body],
-      created_at: assignment[:created_at],
-      updated_at: assignment[:updated_at],
+      created_at: quiz[:created_at],
+      updated_at: quiz[:updated_at],
       sequence: uq[:sequence],
       visible: uq[:visible],
       due_date: uq[:due_date],

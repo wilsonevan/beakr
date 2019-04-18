@@ -13,7 +13,7 @@ class AssignmentBlock extends React.Component {
           href={`/assignments/${assignment.id}`}
           target="_blank"
         >
-          <Tag><Icon name="edit outline" size="normal" /></Tag> {assignment.title}
+          <Tag><Icon name="edit outline" /></Tag> {assignment.title}
         </AssignmentBlockText>
           <Buttons>
             <ButtonLeft>

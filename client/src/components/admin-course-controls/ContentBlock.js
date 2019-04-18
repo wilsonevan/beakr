@@ -14,7 +14,7 @@ class ContentBlock extends React.Component {
           href={`/contents/${content.id}`}
           target="_blank"
         >
-          <Tag><Icon name="file alternate outline" size="normal" /></Tag> {content.title}
+          <Tag><Icon name="file alternate outline" /></Tag> {content.title}
         </ContentBlockText>
           <Buttons>
             <ButtonLeft>

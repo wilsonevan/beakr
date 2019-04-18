@@ -86,7 +86,7 @@ class AdminUnit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-            <Icon name="file alternate outline" size="normal" />
+            <Icon name="file alternate outline" />
             {content.title}
           </UnitModelsItem>
         </Link>
@@ -116,7 +116,7 @@ class AdminUnit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-            <Icon name="edit outline" size="normal" />
+            <Icon name="edit outline" />
             {assignment.title}
           </UnitModelsItem>
         </Link>

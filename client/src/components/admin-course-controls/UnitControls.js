@@ -21,20 +21,22 @@ class UnitControls extends React.Component {
 
   componentDidMount() {
     axios
-      .get(`/api/units/${this.props.unit.id}/contents`)
+      .get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`)
       .then(res => {
         this.setState({ contents: res.data });
       })
       .catch(err => console.log(err));
     axios
-      .get(`/api/units/${this.props.unit.id}/assignments`)
+      .get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`)
       .then(res => {
+        console.log(res)
         this.setState({ assignments: res.data })
       })
       .catch(err => console.log(err));
     axios
-      .get(`/api/units/${this.props.unit.id}/quizzes`)
+      .get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`)
       .then(res => {
+        console.log(res)
         this.setState({ quizzes: res.data })
       })
   }
