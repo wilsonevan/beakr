@@ -27,7 +27,7 @@ class StudentDashboard extends React.Component {
             Welcome {user.first_name}
           </Header>
           <DashboardNav 
-            items={['courses', 'calendar', 'todo', 'grades',]}
+            items={['courses', 'calendar', 'grades',]}
             rightItems={[{ name: 'profile', path: "/profile"},]}
             courses={
               this.state.userCourses.map( course => {
