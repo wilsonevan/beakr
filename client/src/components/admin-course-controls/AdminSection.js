@@ -86,6 +86,7 @@ class AdminSection extends React.Component {
           key={index}
           unit={unit}
           unitContainerRef={this.unitContainerRef}
+          course_id={this.props.section.course_id}
         />
       );
     });

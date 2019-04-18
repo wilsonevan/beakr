@@ -25,6 +25,8 @@ class Api::AssignmentSubmissionsController < ApplicationController
       url: params[:url],
       body: params[:body],
       code: params[:code],
+      points_possible: params[:points_possible],
+      points_awarded: params[:points_awarded],
       enrollment_id: @enrollment.id
     )
 
@@ -61,6 +63,6 @@ class Api::AssignmentSubmissionsController < ApplicationController
   end
 
   def assignment_submission_params
-    params.require(:assignment_submission).permit(:grade, :url, :body, :code, :user_id)
+    params.require(:assignment_submission).permit(:grade, :url, :body, :code, :user_id, :points_possible, :points_awarded, :graded, :feedback)
   end
 end
