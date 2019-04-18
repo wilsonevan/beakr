@@ -4,7 +4,7 @@ Content.destroy_all
 Quiz.destroy_all
 Assignment.destroy_all
 
-1.times do
+5.times do
   course = Course.create(
     title: Faker::Educator.course_name
   )

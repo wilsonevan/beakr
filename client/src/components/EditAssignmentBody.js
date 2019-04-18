@@ -89,6 +89,8 @@ class EditContentTitle extends React.Component {
         <ReactQuill 
           name='body'
           value={body}
+          modules={modules}
+          formats={formats}
           onChange={this.handleQuillChange} 
           style={{height: '25rem', paddingBottom: '4rem'}}
         />
@@ -120,5 +122,25 @@ const BlueLink = styled.button`
     color: darkgrey;
   }
 `;
+
+const modules = {
+  toolbar: [
+    [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+    [{size: []}],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [{'list': 'ordered'}, {'list': 'bullet'}, 
+     {'indent': '-1'}, {'indent': '+1'}],
+    ['color', 'background'],
+    ['link', 'code-block', 'image', 'video'],
+    ['clean']
+  ]
+}
+const formats = [
+  'header', 'font', 'size',
+  'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'color', 'background',
+  'list', 'bullet', 'indent',
+  'link', 'code-block', 'image', 'video'
+]
 
 export default EditContentTitle;
