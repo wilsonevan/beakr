@@ -16,6 +16,9 @@ class NewEnrollment extends React.Component {
         this.setState({ courses: res.data });
       })
       .catch(res => console.log(res));
+    
+    document.querySelector(".Select").style.zIndex = "100";
+
   }
 
   setTeacherTrue = () => {

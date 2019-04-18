@@ -15,7 +15,10 @@ class CourseWork extends React.Component {
         return axios.get(`/api/courses/${this.props.match.params.id}/sections`);
       })
       .then(res => {
-        this.setState({ sections: res.data });
+        const sections = res.data.filter((section) => {
+          if(section.visible) return true;
+        })
+        this.setState({ sections });
       })
       .catch(err => console.log(err));
   }
