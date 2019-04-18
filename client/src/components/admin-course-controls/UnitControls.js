@@ -35,7 +35,6 @@ class UnitControls extends React.Component {
     axios
       .get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`)
       .then(res => {
-        console.log(res.data)
         this.setState({ quizzes: res.data })
       })
       .catch(err => console.log(err));
@@ -82,7 +81,6 @@ class UnitControls extends React.Component {
     axios
       .delete(`/api/unit/${unit_id}/contents/${content_id}/unit_content`)
       .then(res => {
-        console.log(res.data);
         const contents = this.state.contents.filter(content => {
           if (content.id !== content_id) return this.renderUnitContents;
         });
@@ -96,7 +94,6 @@ class UnitControls extends React.Component {
     axios
       .delete(`/api/unit/${unit_id}/assignments/${assignment_id}/unit_assignment`)
       .then(res => {
-        console.log(res.data);
         const assignments = this.state.assignments.filter(assignment => {
           if (assignment.id !== assignment_id) return this.renderUnitAssignments;
         });
@@ -110,7 +107,6 @@ class UnitControls extends React.Component {
     axios
     .delete(`/api/unit/${unit_id}/quizzes/${quiz_id}/unit_quiz`)
     .then(res => {
-      console.log(res.data);
       const quizzes = this.state.quizzes.filter(quiz => {
         if (quiz.id !== quiz_id) return this.renderUnitQuizzes;
       });
@@ -125,7 +121,6 @@ class UnitControls extends React.Component {
       {unit: {visible: !this.state.unit.visible}}
     )
     .then((res) => {
-      console.log(res);
       this.setState({ unit: res.data });
     })
     .catch((err) => console.log(err));
@@ -135,7 +130,6 @@ class UnitControls extends React.Component {
     if(visible) {
       axios.put(`/api/unit_contents/${unit_content_id}`, {unit_content: { visible: false } })
       .then((res) => {
-        console.log(res.data)
         const contents = this.state.contents.map((content) => {
           if(content.id === id) content.visible = false;
           return content;
@@ -146,7 +140,6 @@ class UnitControls extends React.Component {
     } else {
       axios.put(`/api/unit_contents/${unit_content_id}`, {unit_content: { visible: true } })
       .then((res) => {
-        console.log(res.data)
         const contents = this.state.contents.map((content) => {
           if(content.id === id) content.visible = true;
           return content;
@@ -161,7 +154,6 @@ class UnitControls extends React.Component {
     if(visible) {
       axios.put(`/api/unit_assignments/${unit_assignment_id}`, {unit_assignment: { visible: false } })
       .then((res) => {
-        console.log(res.data)
         const assignments = this.state.assignments.map((assignment) => {
           if(assignment.id === id) assignment.visible = false;
           return assignment;
@@ -172,7 +164,6 @@ class UnitControls extends React.Component {
     } else {
       axios.put(`/api/unit_assignments/${unit_assignment_id}`, {unit_assignment: { visible: true } })
       .then((res) => {
-        console.log(res.data)
         const assignments = this.state.assignments.map((assignment) => {
           if(assignment.id === id) assignment.visible = true;
           return assignment;
@@ -187,7 +178,6 @@ class UnitControls extends React.Component {
     if(visible) {
       axios.put(`/api/unit_quizzes/${unit_quiz_id}`, {unit_quiz: { visible: false } })
       .then((res) => {
-        console.log(res.data)
         const quizzes = this.state.quizzes.map((quiz) => {
           if(quiz.id === id) quiz.visible = false;
           return quiz;
@@ -198,7 +188,6 @@ class UnitControls extends React.Component {
     } else {
       axios.put(`/api/unit_quizzes/${unit_quiz_id}`, {unit_quiz: { visible: true } })
       .then((res) => {
-        console.log(res.data)
         const quizzes = this.state.quizzes.map((quiz) => {
           if(quiz.id === id) quiz.visible = true;
           return quiz;
