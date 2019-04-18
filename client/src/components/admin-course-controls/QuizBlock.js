@@ -18,8 +18,8 @@ class QuizBlock extends React.Component {
           <Buttons>
           <ButtonLeft onClick={() => toggleQuizVisibility(quiz.visible, quiz.id, quiz.unit_quiz_id)} >
               { quiz.visible
-                ? <Icon name='eye' size='small' />
-                : <Icon name='eye slash' size='small' />
+                ? <Icon name='eye' size='large' />
+                : <Icon name='eye slash' size='large' />
               }
             </ButtonLeft>
             <ButtonRight

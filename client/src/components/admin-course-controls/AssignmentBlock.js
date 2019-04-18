@@ -18,8 +18,8 @@ class AssignmentBlock extends React.Component {
           <Buttons>
           <ButtonLeft onClick={() => toggleAssignmentVisibility(assignment.visible, assignment.id, assignment.unit_assignment_id)} >
               { assignment.visible
-                ? <Icon name='eye' size='small' />
-                : <Icon name='eye slash' size='small' />
+                ? <Icon name='eye' size='large' />
+                : <Icon name='eye slash' size='large' />
               }
             </ButtonLeft>
             <ButtonRight

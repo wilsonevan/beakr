@@ -20,8 +20,8 @@ class ContentBlock extends React.Component {
           <Buttons>
             <ButtonLeft onClick={() => toggleContentVisibility(content.visible, content.id, content.unit_content_id)} >
               { content.visible
-                ? <Icon name='eye' size='small' />
-                : <Icon name='eye slash' size='small' />
+                ? <Icon name='eye' size='large' />
+                : <Icon name='eye slash' size='large' />
               }
             </ButtonLeft>
             <ButtonRight
