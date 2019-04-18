@@ -115,7 +115,14 @@ class User < ActiveRecord::Base
     total_grades = []
     courses.each do |course|
       course_grades = find_by_sql(["
-        SELECT enrollments.id AS enrollment_id, enrollments.course_id, users.id AS user_id, quiz_submissions.points_possible, quiz_submissions.points_awarded
+        SELECT 
+          enrollments.id AS enrollment_id,
+          enrollments.course_id, 
+          users.id AS user_id, 
+          users.first_name AS user_first_name,
+          users.last_name AS user_last_name,
+          quiz_submissions.points_possible, 
+          quiz_submissions.points_awarded
         FROM enrollments
         INNER JOIN users ON users.id = enrollments.user_id
         LEFT JOIN assignment_submissions ON assignment_submissions.enrollment_id = enrollments.id
@@ -140,7 +147,15 @@ class User < ActiveRecord::Base
         grade_percent = (total_awarded/total_possible * 100).round(0)
       end
 
-      total_grades.push({course_id: course.id, title: course.title, total_awarded: total_awarded, total_possible: total_possible, grade_percent: grade_percent, })
+      total_grades.push({
+        course_id: course.id, 
+        title: course.title, 
+        user_id: user_id,
+        user_first_name: User.find(user_id).first_name,
+        user_last_name: User.find(user_id).last_name,
+        total_awarded: total_awarded, 
+        total_possible: total_possible, 
+        grade_percent: grade_percent, })
     end
 
     return total_grades
