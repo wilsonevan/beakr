@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Card, Table, Dropdown } from "semantic-ui-react";
-import { Line } from "react-chartjs-2";
 import CourseCard from "./CourseCard";
 import axios from "axios";
 import { AuthConsumer } from "../../providers/AuthProvider";
 import dateFns from "date-fns";
+import TrendsTable from "./TrendsTable";
+import { SummaryContainer, TopContainer, GradesContainer, HeaderSummary, DataSummary, Split, TableHeader, } from './GradeBookStyles'
 
 const StudentGradesView = ({ auth }) => {
   const [courses, setCourses] = useState(0);
@@ -36,14 +37,14 @@ const StudentGradesView = ({ auth }) => {
     let assignments = [];
     if (grades) {
       grades.map(grade => {
-        if (dateFns.isFuture(grade.quiz_due_date) && count < 4) {
+        if (dateFns.isFuture(grade.due_date) && count < 4) {
           // Since Assignments are already in order by date, take the first 4 assignments with due dates in the future
           count++;
           assignments.push({
-            id: grade.quiz_id,
-            header: grade.quiz_title,
+            id: grade.submission_id,
+            header: grade.title,
             meta: `due: ${dateFns.format(
-              dateFns.parse(grade.quiz_due_date),
+              dateFns.parse(grade.due_date),
               "MM/DD/YY"
             )}`
             // description: "",
@@ -198,67 +199,6 @@ const StudentGradesView = ({ auth }) => {
       );
   };
 
-  const renderTrends = () => {
-    const chartColors = [
-      "#23a24d",
-      "#2979ff",
-      "#f99b52",
-      "#f26060",
-      "#75efe3",
-      "#e876a1"
-    ];
-    // Labels are x-axis values
-    // Data is y-axis values
-    const chartData = {
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
-      datasets: [
-        {
-          label: "Course A",
-          // backgroundColor: "#f7f7f7",
-          borderColor: chartColors[0],
-          data: [0, 10, 5, 2, 20, 30, 45]
-        },
-        {
-          label: "Course B",
-          // backgroundColor: "#f7f7f7",
-          borderColor: chartColors[1],
-          data: [0, 20, 50, 20, 50, 30, 60]
-        }
-      ]
-    };
-
-    const options = {
-      legend: {
-        display: true,
-        position: "bottom"
-      },
-      scales: {
-        yAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              labelString: "Grade (%)"
-            }
-          }
-        ]
-      },
-      animation: {
-        easing: "easeOutCubic"
-      }
-    };
-
-    return (
-      <SummaryContainer>
-        <HeaderSummary>Trends</HeaderSummary>
-
-        <Split />
-        <ChartContainer>
-          <Line data={chartData} options={options} height={300} width={700} />
-        </ChartContainer>
-      </SummaryContainer>
-    );
-  };
-
   const renderRecentAssignments = () => {
     const feedbackItems = assignments.filter(assignment => {
       // Only add to array if there is feedback, otherwise skip it
@@ -291,7 +231,7 @@ const StudentGradesView = ({ auth }) => {
         <br />
         {renderGrades()}
         <br />
-        {renderTrends()}
+        <TrendsTable grades={grades} courses={courses} />
         <br />
         {renderRecentAssignments()}
       </>
@@ -304,68 +244,6 @@ const StudentGradesView = ({ auth }) => {
     );
 };
 
-const SummaryContainer = styled.div`
-  // background-color: #23a24d;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 10px;
-  border: 1px solid #23a24d;
-  border-radius: 5px;
-`;
-
-const ChartContainer = styled.div`
-  padding: 5px;
-  padding-top: 20px;
-`;
-
-const TopContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  // align-items: stretch;
-  padding: 10px;
-`;
-
-const GradesContainer = styled.div`
-  padding-top: 10px;
-  padding-bottom: 10px;
-`;
-
-const HeaderSummary = styled.h3`
-  width: 30%;
-  text-align: left !important;
-  // display: flex;
-  display: inline;
-  // flex-grow: none;
-  // justify-content: flex-end;
-  padding: 10px;
-  margin: 5px;
-  // color: white !important;
-`;
-
-const Split = styled.hr`
-  border-color: #23a24d;
-  border-top: none;
-`;
-
-const DataSummary = styled.div`
-  // text-align: left !important;
-  display: flex;
-  flex-wrap: wrap;
-  flex-grow: 16;
-  align-content: stretch;
-  justify-content: flex-start;
-  // padding: 10px;
-`;
-
-const BottomContainer = styled.div`
-  display: flex;
-  // justify-content: flex-start;
-  align-items: stretch;
-  padding: 10px;
-`;
-
-const TableHeader = styled.h4``;
 
 // FAKE DATA FOR TESTING
 
