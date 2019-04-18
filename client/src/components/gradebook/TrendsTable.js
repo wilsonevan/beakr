@@ -12,9 +12,20 @@ import dateFns from "date-fns";
 const TrendsTable = ({ grades, courses }) => {
   // RETURN - Array of Weeks used (for the x-axis of the chart)
   const calcWeeks = () => {
-    // find min/max dates of all assignments in all courses
-    const firstWeek = dateFns.startOfWeek(grades[0].due_date);
-    const lastWeek = dateFns.startOfWeek(grades[grades.length - 1].due_date);
+    let firstWeek;
+    let lastWeek;
+
+    // Confirm at least one item has a due_date
+    // If the first item does not have any dates, then none will, since they should be ordered
+    if (grades[0].due_date) {
+      // find min/max dates of all assignments in all courses
+      firstWeek = dateFns.startOfWeek(grades[0].due_date);
+
+      // Find the last assignment in the array, which actually has a due_date
+      var i;
+      for (i = grades.length - 1; !grades[i].due_date && i >= 0; i = i - 1) {}
+      lastWeek = dateFns.startOfWeek(grades[i].due_date);
+    }
 
     let weeks = [];
     var currentWeek;
@@ -51,8 +62,7 @@ const TrendsTable = ({ grades, courses }) => {
 
       // Calc the percent of all grades before this Week
       let gradePercent;
-      if (weeklyPP > 0)
-        gradePercent = Math.round((weeklyPA / weeklyPP) * 100);
+      if (weeklyPP > 0) gradePercent = Math.round((weeklyPA / weeklyPP) * 100);
       else gradePercent = 0;
 
       return gradePercent;
@@ -79,7 +89,6 @@ const TrendsTable = ({ grades, courses }) => {
     const displayWeeks = weeks.map(week => {
       return dateFns.format(week, "MMM Do");
     });
-
     return {
       labels: displayWeeks,
       datasets: totalGrades
@@ -110,7 +119,7 @@ const TrendsTable = ({ grades, courses }) => {
     }
   };
 
-  if (grades)
+  if (grades) {
     return (
       <SummaryContainer>
         <HeaderSummary>Trends</HeaderSummary>
@@ -125,7 +134,7 @@ const TrendsTable = ({ grades, courses }) => {
         </ChartContainer>
       </SummaryContainer>
     );
-  else
+  } else
     return (
       <SummaryContainer>
         <HeaderSummary>Trends</HeaderSummary>
