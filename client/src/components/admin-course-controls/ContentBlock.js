@@ -3,33 +3,26 @@ import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
 
 class ContentBlock extends React.Component {
-  state = { mouseOver: false }
-
-  mouseOverTrue = () => {
-    this.setState({ mouseOver: true })
-  }
-
-  mouseOverFalse = () => {
-    this.setState({ mouseOver: false })
-  }
+  // state = { visible: this.props.content.visible })
 
   render() {
-    const { content, deleteUnitContent } = this.props;
+    const { content, deleteUnitContent, toggleContentVisibility } = this.props;
+    console.log(content.visible);
     return (
       <BlockContainer 
-        onMouseEnter={this.mouseOverTrue} 
-        onMouseLeave={this.mouseOverFalse} 
       >
-        <ContentBlockText>
-          <Tag>Content</Tag> {content.title}
+        <ContentBlockText
+          href={`/contents/${content.id}`}
+          target="_blank"
+        >
+          <Tag><Icon name="file alternate outline" /></Tag> {content.title}
         </ContentBlockText>
-        { this.state.mouseOver &&
           <Buttons>
-            <ButtonLeft         
-              href={`/contents/${content.id}`}
-              target="_blank"
-            >
-              <Icon name='eye' size='small' />
+            <ButtonLeft onClick={() => toggleContentVisibility(content.visible, content.id, content.unit_content_id)} >
+              { content.visible
+                ? <Icon name='eye' size='large' />
+                : <Icon name='eye slash' size='large' />
+              }
             </ButtonLeft>
             <ButtonRight
               onClick={() => deleteUnitContent(content.id)}
@@ -37,7 +30,6 @@ class ContentBlock extends React.Component {
               <Close src={require("../../images/grey-close.svg")} alt=""/>
             </ButtonRight>
           </Buttons>
-        }
       </BlockContainer>
     )
   }
@@ -56,7 +48,7 @@ const BlockContainer = styled.div`
   cursor: grab;
 `;
 
-const ContentBlockText = styled.button`
+const ContentBlockText = styled.a`
   display: inline-block;
   min-width: 30%;
   text-align: left;
@@ -65,6 +57,11 @@ const ContentBlockText = styled.button`
   border: none;
   font-size: 1.15rem;
   text-align: left;
+  cursor: pointer;
+
+  :hover {
+    color: #2979ff;
+  }
 `;
 
 const Tag = styled.span`

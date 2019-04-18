@@ -21,11 +21,11 @@ Rails.application.routes.draw do
     # get 'upcoming_assignments' to: 'users#upcoming_assignments'
     # get 'recently_graded_assignments' to: 'users#recently_graded_assignments'
 
-    resources :unit_contents, only: [:index, :create, :destroy]
+    resources :unit_contents, only: [:index, :create, :update, :destroy]
     delete '/unit/:unit_id/contents/:content_id/unit_content', to: '/api/unit_contents#delete_by_unit_and_content'
-    resources :unit_assignments, only: [:index, :create, :destroy]
+    resources :unit_assignments, only: [:index, :create, :update, :destroy]
     delete '/unit/:unit_id/assignments/:assignment_id/unit_assignment', to: '/api/unit_assignments#delete_by_unit_and_assignment'
-    resources :unit_quizzes, only: [:index, :create, :destroy]
+    resources :unit_quizzes, only: [:index, :create, :update, :destroy]
     delete '/unit/:unit_id/quizzes/:quiz_id/unit_quiz', to: '/api/unit_quizzes#delete_by_unit_and_quiz'
     
     resources :courses do
@@ -52,13 +52,23 @@ Rails.application.routes.draw do
     get 'courses/:course_id/assignments/:assignment_id/assignment_submissions/show_user_submission', to: '/api/assignment_submissions#show_user_submission'
 
     resources :contents, only: [:show, :create, :update, :destroy]
+    get '/units/:unit_id/contents/get_contents_with_attrs', to: '/api/contents#get_contents_with_attrs'
+    get '/units/:unit_id/contents/:content_id/get_content_with_attrs', to: '/api/contents#get_content_with_attrs'
+    
+    
     resources :assignments, only: [:show, :create, :update, :destroy] do
       resources :assignment_submissions
       get 'assignment_submissions/:id/find_user', to: '/api/assignment_submissions#find_user'
     end
+    get '/units/:unit_id/assignments/get_assignments_with_attrs', to: '/api/assignments#get_assignments_with_attrs'
+    get '/units/:unit_id/assignments/:assignment_id/get_assignment_with_attrs', to: '/api/assignments#get_assignment_with_attrs'
+    
     resources :quizzes, only: [:show, :create, :update, :destroy] do
       resources :questions
     end
+    get '/units/:unit_id/quizzes/get_quizzes_with_attrs', to: '/api/quizzes#get_quizzes_with_attrs'
+    get '/units/:unit_id/quizzes/:quiz_id/get_quiz_with_attrs', to: '/api/quizzes#get_quiz_with_attrs'
+    
 
     resources :quiz_submissions
     get '/courses/:course_id/quiz_submissions', to: '/api/quiz_submissions#get_submissions_by_course'

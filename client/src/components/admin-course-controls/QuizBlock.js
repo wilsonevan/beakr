@@ -3,35 +3,24 @@ import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
 
 class QuizBlock extends React.Component {
-  state = { mouseOver: false }
-
-  mouseOverTrue = () => {
-    this.setState({ mouseOver: true })
-  }
-
-  mouseOverFalse = () => {
-    this.setState({ mouseOver: false })
-  }
-
-
+  // state = { visible: this.props.content.visible }
 
   render() {
-    const { quiz, deleteUnitQuiz } = this.props;
+    const { quiz, deleteUnitQuiz, toggleQuizVisibility } = this.props;
     return (
-      <BlockContainer 
-        onMouseEnter={this.mouseOverTrue} 
-        onMouseLeave={this.mouseOverFalse} 
-      >
-        <QuizBlockText>
-          <Tag>Quiz</Tag> {quiz.title}
+      <BlockContainer>
+        <QuizBlockText
+          href={`/quizzes/${quiz.id}`}
+          target="_blank"
+        >
+          <Tag><Icon name="check" /></Tag> {quiz.title}
         </QuizBlockText>
-        { this.state.mouseOver &&
           <Buttons>
-            <ButtonLeft         
-              href={`/quizzes/${quiz.id}`}
-              target="_blank"
-            >
-              <Icon name='eye' size='small' />
+          <ButtonLeft onClick={() => toggleQuizVisibility(quiz.visible, quiz.id, quiz.unit_quiz_id)} >
+              { quiz.visible
+                ? <Icon name='eye' size='large' />
+                : <Icon name='eye slash' size='large' />
+              }
             </ButtonLeft>
             <ButtonRight
               onClick={() => deleteUnitQuiz(quiz.id)}
@@ -39,7 +28,6 @@ class QuizBlock extends React.Component {
               <Close src={require("../../images/grey-close.svg")} alt=""/>
             </ButtonRight>
           </Buttons>
-        }
       </BlockContainer>
     )
   }
@@ -58,7 +46,7 @@ const BlockContainer = styled.div`
   cursor: grab;
 `;
 
-const QuizBlockText = styled.button`
+const QuizBlockText = styled.a`
   display: inline-block;
   min-width: 30%;
   text-align: left;
@@ -67,6 +55,11 @@ const QuizBlockText = styled.button`
   border: none;
   font-size: 1.15rem;
   text-align: left;
+  cursor: pointer;
+
+  :hover {
+    color: #2979ff;
+  }
 `;
 
 const Tag = styled.span`

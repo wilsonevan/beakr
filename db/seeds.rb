@@ -4,19 +4,21 @@ Content.destroy_all
 Quiz.destroy_all
 Assignment.destroy_all
 
-1.times do
+5.times do
   course = Course.create(
     title: Faker::Educator.course_name
   )
   15.times do
     section = Section.create(
       title: Faker::ProgrammingLanguage.name,
-      course_id: course.id
+      course_id: course.id,
+      visible: true
     )
     5.times do
       unit = Unit.create(
         title: Faker::Hacker.noun,
-        section_id: section.id
+        section_id: section.id,
+        visible: true,
       )
       5.times do
         content = Content.create(
@@ -27,6 +29,8 @@ Assignment.destroy_all
         UnitContent.create(
           unit_id: unit.id,
           content_id: content.id,
+          visible: true,
+          sequence: nil
         )
       end
       1.times do
@@ -39,8 +43,10 @@ Assignment.destroy_all
           
         UnitAssignment.create(
           unit_id: unit.id,
-          due_date: Faker::Date.forward(60),
-          assignment_id: assignment.id
+          assignment_id: assignment.id,
+          visible: true,
+          sequence: nil,
+          due_date: Faker::Date.forward(60)
         )
       end
       1.times do
@@ -90,7 +96,7 @@ Assignment.destroy_all
         UnitQuiz.create(
           unit_id: unit.id,
           quiz_id: quiz.id,
-          visible: false,
+          visible: true,
           sequence: nil,
           due_date: Faker::Date.forward(60),
 

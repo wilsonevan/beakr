@@ -22,10 +22,10 @@ class QuizView extends React.Component {
   }
 
   componentDidMount() {
-    const { course_id, id } = this.props.match.params;
+    const { course_id, unit_id ,id } = this.props.match.params;
 
     if(course_id) {
-      axios.get(`/api/quizzes/${this.props.match.params.id}`)
+      axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
         .then( res => {
           const { title, due_date, body } = res.data;
           this.setState({ title, due_date, body });

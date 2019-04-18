@@ -11,43 +11,40 @@ import AddQuizLink from "./AddQuizLink";
 import QuizBlock from "./QuizBlock";
 import EditUnitTitle from "./EditUnitTitle";
 import anime from "animejs";
-import { Icon } from "semantic-ui-react";
+import { Icon, Visibility } from "semantic-ui-react";
 
 class UnitControls extends React.Component {
 
   state = { editing: false, unit: this.props.unit, contents: [], assignments: [], quizzes: [], search: "contents" };
 
-  formRef = React.createRef();
-
   componentDidMount() {
     axios
-      .get(`/api/units/${this.props.unit.id}/contents`)
+      .get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`)
       .then(res => {
         this.setState({ contents: res.data });
       })
       .catch(err => console.log(err));
+
     axios
-      .get(`/api/units/${this.props.unit.id}/assignments`)
+      .get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`)
       .then(res => {
         this.setState({ assignments: res.data })
       })
       .catch(err => console.log(err));
+
     axios
-      .get(`/api/units/${this.props.unit.id}/quizzes`)
+      .get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`)
       .then(res => {
         this.setState({ quizzes: res.data })
       })
-  }
-
-  componentWillUnmount() {
-    anime.remove(this.formRef.current);
+      .catch(err => console.log(err));
   }
 
   createUnitContent = content_id => {
     axios
       .post(`/api/unit_contents`, { content_id, unit_id: this.props.unit.id })
       .then(res => {
-        return axios.get(`/api/units/${this.props.unit.id}/contents`);
+        return axios.get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`);
       })
       .then(res => {
         this.setState({ contents: res.data });
@@ -59,7 +56,7 @@ class UnitControls extends React.Component {
     axios
       .post(`/api/unit_assignments`, { assignment_id, unit_id: this.props.unit.id })
       .then(res => {
-        return axios.get(`/api/units/${this.props.unit.id}/assignments`);
+        return axios.get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`);
       })
       .then(res => {
         this.setState({ assignments: res.data });
@@ -71,7 +68,7 @@ class UnitControls extends React.Component {
     axios
       .post(`/api/unit_quizzes`, { quiz_id, unit_id: this.props.unit.id})
       .then(res => {
-        return axios.get(`/api/units/${this.props.unit.id}/quizzes`);
+        return axios.get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`);
       })
       .then(res => {
         this.setState({ quizzes: res.data });
@@ -84,7 +81,6 @@ class UnitControls extends React.Component {
     axios
       .delete(`/api/unit/${unit_id}/contents/${content_id}/unit_content`)
       .then(res => {
-        console.log(res.data);
         const contents = this.state.contents.filter(content => {
           if (content.id !== content_id) return this.renderUnitContents;
         });
@@ -98,7 +94,6 @@ class UnitControls extends React.Component {
     axios
       .delete(`/api/unit/${unit_id}/assignments/${assignment_id}/unit_assignment`)
       .then(res => {
-        console.log(res.data);
         const assignments = this.state.assignments.filter(assignment => {
           if (assignment.id !== assignment_id) return this.renderUnitAssignments;
         });
@@ -112,7 +107,6 @@ class UnitControls extends React.Component {
     axios
     .delete(`/api/unit/${unit_id}/quizzes/${quiz_id}/unit_quiz`)
     .then(res => {
-      console.log(res.data);
       const quizzes = this.state.quizzes.filter(quiz => {
         if (quiz.id !== quiz_id) return this.renderUnitQuizzes;
       });
@@ -121,51 +115,90 @@ class UnitControls extends React.Component {
     .catch(err => console.log(err));
   }
 
-  AddContentLinkWithProps = () => {
-    return <AddContentLink createUnitContent={this.createUnitContent} />;
-  };
-
-  AddAssignmentLinkWithProps = () => {
-    return <AddAssignmentLink createUnitAssignment={this.createUnitAssignment} />;
+  toggleUnitVisibility = () => {
+    axios.put(
+      `/api/sections/${this.props.section.id}/units/${this.state.unit.id}`, 
+      {unit: {visible: !this.state.unit.visible}}
+    )
+    .then((res) => {
+      this.setState({ unit: res.data });
+    })
+    .catch((err) => console.log(err));
   }
 
-  AddQuizLinkWithProps = () => {
-    return <AddQuizLink createUnitQuiz={this.createUnitQuiz} />;
+  toggleContentVisibility = (visible, id, unit_content_id) => {
+    if(visible) {
+      axios.put(`/api/unit_contents/${unit_content_id}`, {unit_content: { visible: false } })
+      .then((res) => {
+        const contents = this.state.contents.map((content) => {
+          if(content.id === id) content.visible = false;
+          return content;
+        })
+        this.setState({ contents });
+      })
+      .catch((err) => console.log(err));
+    } else {
+      axios.put(`/api/unit_contents/${unit_content_id}`, {unit_content: { visible: true } })
+      .then((res) => {
+        const contents = this.state.contents.map((content) => {
+          if(content.id === id) content.visible = true;
+          return content;
+        })
+        this.setState({ contents });
+      })
+      .catch((err) => console.log(err));
+    }
+  }
+
+  toggleAssignmentVisibility = (visible, id, unit_assignment_id) => {
+    if(visible) {
+      axios.put(`/api/unit_assignments/${unit_assignment_id}`, {unit_assignment: { visible: false } })
+      .then((res) => {
+        const assignments = this.state.assignments.map((assignment) => {
+          if(assignment.id === id) assignment.visible = false;
+          return assignment;
+        })
+        this.setState({ assignments });
+      })
+      .catch((err) => console.log(err));
+    } else {
+      axios.put(`/api/unit_assignments/${unit_assignment_id}`, {unit_assignment: { visible: true } })
+      .then((res) => {
+        const assignments = this.state.assignments.map((assignment) => {
+          if(assignment.id === id) assignment.visible = true;
+          return assignment;
+        })
+        this.setState({ assignments });
+      })
+      .catch((err) => console.log(err));
+    }
+  }
+
+  toggleQuizVisibility = (visible, id, unit_quiz_id) => {
+    if(visible) {
+      axios.put(`/api/unit_quizzes/${unit_quiz_id}`, {unit_quiz: { visible: false } })
+      .then((res) => {
+        const quizzes = this.state.quizzes.map((quiz) => {
+          if(quiz.id === id) quiz.visible = false;
+          return quiz;
+        })
+        this.setState({ quizzes });
+      })
+      .catch((err) => console.log(err));
+    } else {
+      axios.put(`/api/unit_quizzes/${unit_quiz_id}`, {unit_quiz: { visible: true } })
+      .then((res) => {
+        const quizzes = this.state.quizzes.map((quiz) => {
+          if(quiz.id === id) quiz.visible = true;
+          return quiz;
+        })
+        this.setState({ quizzes });
+      })
+      .catch((err) => console.log(err));
+    }
   }
 
   toggleEditing = () => {
-    // if (!this.state.editing) {
-    //   this.setState({ editing: true }, () => {
-    //     anime
-    //       .timeline({
-    //         targets: this.formRef.current
-    //       })
-    //       .add({
-    //         height: "37rem",
-    //         easing: "linear",
-    //         duration: 200
-    //       })
-    //       .add({
-    //         opacity: 1,
-    //         duration: 100
-    //       });
-    //   });
-    // } else {
-    //   anime
-    //     .timeline({
-    //       targets: this.formRef.current
-    //     })
-    //     .add({
-    //       height: "1.75rem",
-    //       easing: "linear",
-    //       duration: 200
-    //     })
-    //     .add({
-    //       opacity: 0,
-    //       duration: 375
-    //     })
-    //     .finished.then(() => this.setState({ editing: false }));
-    // }
     this.setState({ editing: !this.state.editing })
   };
 
@@ -178,6 +211,7 @@ class UnitControls extends React.Component {
           unit={this.props.unit}
           index={index}
           deleteUnitContent={this.deleteUnitContent}
+          toggleContentVisibility={this.toggleContentVisibility}
         />
       );
     });
@@ -192,6 +226,7 @@ class UnitControls extends React.Component {
           unit={this.props.unit}
           index={index}
           deleteUnitAssignment={this.deleteUnitAssignment}
+          toggleAssignmentVisibility={this.toggleAssignmentVisibility}
         />
       );
     });
@@ -206,6 +241,7 @@ class UnitControls extends React.Component {
           unit={this.props.unit}
           index={index}
           deleteUnitQuiz={this.deleteUnitQuiz}
+          toggleQuizVisibility={this.toggleQuizVisibility}
         />
       );
     });
@@ -278,7 +314,17 @@ class UnitControls extends React.Component {
     const { unit, updateUnit, deleteUnit } = this.props;
     if (!this.state.editing)
       return (
-        <UnitText onClick={() => this.toggleEditing()}>{unit.title}</UnitText>
+        <>
+          <UnitText>
+            <VisibilityButton onClick={() => this.toggleUnitVisibility()}>
+              { this.state.unit.visible
+                ? <Icon name='eye' />
+                : <Icon name='eye slash' />
+              }
+            </VisibilityButton>
+            <UnitToggle onClick={() => this.toggleEditing()} > {unit.title} </UnitToggle>
+          </UnitText>
+        </>
       );
     else
       return (
@@ -372,12 +418,29 @@ const UnitText = styled.p`
   width: 90%;
   margin: 0 auto;
   padding-top: 2rem;
+`;
+
+const UnitToggle = styled.span`
   cursor: pointer;
 
   :hover {
     color: #2979ff;
   }
-`;
+`
+
+const VisibilityButton = styled.button`
+  display: inline;
+  text-decoration: none;
+  background-color: transparent;
+  color: grey;
+  margin-right: 1rem;
+  border: none;
+  cursor: pointer;
+
+  hover {
+    color: color: #2979ff;;
+  }
+`
 
 const ContentHeading = styled.div`
   position: absolute;

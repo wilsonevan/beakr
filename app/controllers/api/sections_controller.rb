@@ -42,6 +42,6 @@ class Api::SectionsController < ApplicationController
   end
 
   def section_params
-    params.require(:section).permit(:title)
+    params.require(:section).permit(:title, :visible, :sequence)
   end
 end

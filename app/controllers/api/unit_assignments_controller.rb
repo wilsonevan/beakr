@@ -16,6 +16,15 @@ class Api::UnitAssignmentsController < ApplicationController
     end
   end
 
+  def update
+    unit_assignment = UnitAssignment.find(params[:id])
+    if(unit_assignment.update(unit_assignment_params))
+        render( json: unit_assignment )
+    else
+        render( json: {errors: unit_assignment.errors}, status: 422)
+    end
+end
+
   def destroy
     UnitAssignment.destroy(params[:id])
     render( json: "Data Deleted" )
@@ -33,6 +42,6 @@ class Api::UnitAssignmentsController < ApplicationController
 
   private
     def unit_assignment_params
-        return params.require(:unit_assignment).permit(:unit_id, :assignment_id, :due_date, :visible, :sequence)
+        return params.require(:unit_assignment).permit(:unit_id, :assignment_id, :sequence, :visible, :due_date)
     end
 end

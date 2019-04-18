@@ -1,5 +1,5 @@
 class Api::QuizzesController < ApplicationController
-  before_action :set_unit, only: [:index]
+  before_action :set_unit, only: [:index, :get_quizzes_with_attrs]
   before_action :set_quiz, only: [:show, :update, :destroy]
 
   def index
@@ -14,8 +14,29 @@ class Api::QuizzesController < ApplicationController
     render( json: Quiz.search_quizzes_not_in_unit(params[:input], params[:unit_id]) )
   end
 
+  def get_quizzes_with_attrs
+    quizzes = @unit.unit_quizzes.map() {|uq|
+      quiz = uq.quiz
+      {
+        id: quiz[:id],
+        unit_quiz_id: uq[:id],
+        title: quiz[:title],
+        body: quiz[:body],
+        sequence: uq[:sequence],
+        due_date: uq[:due_date],
+        visible: uq[:visible]
+      }
+    }
+
+    render( json:  quizzes  )
+  end
+
   def show
     render json: @quiz
+  end
+
+  def get_quiz_with_attrs
+    render( json:  Quiz.get_quiz_with_attrs(params[:quiz_id], params[:unit_id])  )
   end
 
   def create
@@ -46,7 +67,7 @@ class Api::QuizzesController < ApplicationController
   end
 
   def set_quiz
-    @quiz = Quiz.get_quiz_with_attrs(params[:id])
+    @quiz = Quiz.find(params[:id])
   end
 
   def quiz_params

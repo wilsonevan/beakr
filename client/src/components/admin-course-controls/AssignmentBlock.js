@@ -3,33 +3,24 @@ import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
 
 class AssignmentBlock extends React.Component {
-  state = { mouseOver: false }
-
-  mouseOverTrue = () => {
-    this.setState({ mouseOver: true })
-  }
-
-  mouseOverFalse = () => {
-    this.setState({ mouseOver: false })
-  }
+  // state = { visible: this.props.content.visible }
 
   render() {
-    const { assignment, deleteUnitAssignment } = this.props;
+    const { assignment, deleteUnitAssignment, toggleAssignmentVisibility } = this.props;
     return (
-      <BlockContainer 
-        onMouseEnter={this.mouseOverTrue} 
-        onMouseLeave={this.mouseOverFalse} 
-      >
-        <AssignmentBlockText>
-          <Tag>Assignment</Tag> {assignment.title}
+      <BlockContainer>
+        <AssignmentBlockText
+          href={`/assignments/${assignment.id}`}
+          target="_blank"
+        >
+          <Tag><Icon name="edit outline" /></Tag> {assignment.title}
         </AssignmentBlockText>
-        { this.state.mouseOver &&
           <Buttons>
-            <ButtonLeft         
-              href={`/assignments/${assignment.id}`}
-              target="_blank"
-            >
-              <Icon name='eye' size='small' />
+          <ButtonLeft onClick={() => toggleAssignmentVisibility(assignment.visible, assignment.id, assignment.unit_assignment_id)} >
+              { assignment.visible
+                ? <Icon name='eye' size='large' />
+                : <Icon name='eye slash' size='large' />
+              }
             </ButtonLeft>
             <ButtonRight
               onClick={() => deleteUnitAssignment(assignment.id)}
@@ -37,7 +28,6 @@ class AssignmentBlock extends React.Component {
               <Close src={require("../../images/grey-close.svg")} alt=""/>
             </ButtonRight>
           </Buttons>
-        }
       </BlockContainer>
     )
   }
@@ -56,7 +46,7 @@ const BlockContainer = styled.div`
   cursor: grab;
 `;
 
-const AssignmentBlockText = styled.button`
+const AssignmentBlockText = styled.a`
   display: inline-block;
   min-width: 30%;
   text-align: left;
@@ -65,6 +55,11 @@ const AssignmentBlockText = styled.button`
   border: none;
   font-size: 1.15rem;
   text-align: left;
+  cursor: pointer;
+
+  :hover {
+    color: #2979ff;
+  }
 `;
 
 const Tag = styled.span`
