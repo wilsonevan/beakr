@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
+import styled from 'styled-components';
 import { ButtonGreen } from '../../styles/Components';
 import axios from 'axios';
 
@@ -9,11 +10,6 @@ class AddAssignment extends React.Component {
   handleChange = (e) => {
     const { name, value } = e.target
     this.setState({ [name]: value })
-  }
-
-  handleKindChange = (e) => {
-    const { value } = e.target
-    this.setState({ kind: value })
   }
 
   handleQuillChange = (value) => {
@@ -30,97 +26,145 @@ class AddAssignment extends React.Component {
   }
 
   render() {
-    const { title, body, points_possible } = this.state
+    const { title, body, points_possible, kind } = this.state
 
     return (
       <>
-        <div>
-          Assignment Title
-        </div>
-        <br />
-        <input
-          required
-          autoFocus
-          name='title'
-          value={title}
-          placeholder='Title'
-          onChange={this.handleChange}
-          style={{width: '100%'}}
-        />
-        <br />
-        <br />
-        <div>
-          Submission Type
-        </div>
-        <input
-          type='radio'
-          value='url'
-          name='kind'
-          id='kind1'
-          onClick={this.handleKindChange}
-          style={{marginRight: '5px'}}
-        />
-          <label
-            for='kind1'
-          >
-            URL Submission
-          </label>
-        <br />
-        <input
-          type='radio'
-          value='code'
-          name='kind'
-          id='kind2'
-          onClick={this.handleKindChange}
-          style={{marginRight: '5px'}}
-        />
-          <label
-            for='kind2'
-          >
-            Code Submission
-          </label>
-        <br />
-        <input
-          type='radio'
-          value='none'
-          name='kind'
-          id='kind3'
-          onClick={this.handleKindChange}
-          style={{marginRight: '5px'}}
-        />
-          <label
-            for='kind3'
-          >
-            Text Only Submission
-          </label>
-        <br />
-        <br />
-        <div>
-          Points Possible
-        </div>
-        <input
-          name='points_possible'
-          value={points_possible}
-          onChange={this.handleChange}
-          required
-        />
-        <br />
-        <br />
-        <ReactQuill 
-          name='body'
-          value={body}
-          modules={modules}
-          formats={formats}
-          onChange={this.handleQuillChange}
-          style={{height: '25rem', paddingBottom: '4rem'}}
-        />
-        <ButtonGreen onClick={this.handleSubmit}>
-          Submit
+        <ContainAll>
+          <AssignmentContainer>
+            <h2>
+              Assignment Title
+            </h2> 
+            <BodyInput
+              required
+              autoFocus
+              name='title'
+              value={title}
+              placeholder='Title'
+              onChange={this.handleChange}
+              style={{width: '100%'}}
+            />
+            <FiftyDiv>
+              <h2>
+                Submission Type
+              </h2>
+              <TypeInput
+                required
+                autoFocus
+                name='kind'
+                value={kind}
+                onChange={this.handleChange}
+                placeholder='kind' >
+                  <option value='url'>URL</option>
+                  <option value='code'>Code</option>
+                  <option value='none'>Text</option>
+              </TypeInput>
+            </FiftyDiv>
+            <FiftyDiv>
+              <h2>
+                Points Possible
+              </h2>
+              <BodyNumberInput
+                name='points_possible'
+                value={points_possible}
+                onChange={this.handleChange}
+                required
+              />
+            </FiftyDiv>
+            <h2>
+              Assignment Instructions
+            </h2>
+            <ReactQuill 
+              name='body'
+              value={body}
+              modules={modules}
+              formats={formats}
+              onChange={this.handleQuillChange}
+              style={{height: '25rem', paddingBottom: '4rem'}}
+            />
+          </AssignmentContainer>
+        </ContainAll>
+        <ButtonGreen style={{marginTop: '10px'}} onClick={this.handleSubmit}>
+          Create Assignment
         </ ButtonGreen>
       </>
     )
   }
 }
+
+const ContainAll = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between
+  background: #23a24d;
+  padding: 1%; 
+  border-radius: 5px;
+`
+
+const AssignmentContainer = styled.div`
+  background: white;
+  width: 100%;
+  padding: 10px;
+
+`
+
+const BodyInput = styled.input`
+  width: 100%;
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1.5rem;
+  padding: 2px;
+  border: 2px solid #ededed;
+  color: grey;
+  min-height: 30px;
+
+  :focus {
+    box-shadow: 0 0 0 2px #23a24d;
+  }
+`
+
+const BodyNumberInput = styled.input`
+  width: 100%;
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1.5rem;
+  padding: 2px;
+  border: 2px solid #ededed;
+  color: grey;
+  min-height: 30px;
+
+  :focus {
+    box-shadow: 0 0 0 2px #23a24d;
+  }
+`
+
+const FiftyDiv = styled.div`
+    width: 50%;
+    padding: 5px;
+    display: inline-block;
+
+  `
+
+const TypeInput = styled.select`
+  width: 100%;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1.5rem;
+  padding: 2px;
+  border: 2px solid #ededed;
+  color: grey;
+  min-height: 30px;
+
+  :focus {
+    box-shadow: 0 0 0 2px #23a24d;
+  }
+  `
 
 const modules = {
   toolbar: [
