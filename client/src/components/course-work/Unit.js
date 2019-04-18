@@ -17,7 +17,6 @@ class Unit extends React.Component {
         const contents = res.data.filter((content) => {
           if(content.visible) return true
         })
-        // console.log(contents);
         this.setState({ contents });
       })
       .catch(err => console.log(err));
@@ -27,7 +26,6 @@ class Unit extends React.Component {
         const assignments = res.data.filter((assignment) => {
           if(assignment.visible) return assignment
         })
-        // console.log(assignments);
         this.setState({ assignments });
       })
       .catch(err => console.log(err));
@@ -37,7 +35,6 @@ class Unit extends React.Component {
         const quizzes = res.data.filter((quiz) => {
           if(quiz.visible) return quiz
         })
-        // console.log(quizzes);
         this.setState({ quizzes });
       })
       .catch(err => console.log(err));

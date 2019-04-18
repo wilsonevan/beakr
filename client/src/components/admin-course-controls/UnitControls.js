@@ -203,38 +203,6 @@ class UnitControls extends React.Component {
   }
 
   toggleEditing = () => {
-    // if (!this.state.editing) {
-    //   this.setState({ editing: true }, () => {
-    //     anime
-    //       .timeline({
-    //         targets: this.formRef.current
-    //       })
-    //       .add({
-    //         height: "37rem",
-    //         easing: "linear",
-    //         duration: 200
-    //       })
-    //       .add({
-    //         opacity: 1,
-    //         duration: 100
-    //       });
-    //   });
-    // } else {
-    //   anime
-    //     .timeline({
-    //       targets: this.formRef.current
-    //     })
-    //     .add({
-    //       height: "1.75rem",
-    //       easing: "linear",
-    //       duration: 200
-    //     })
-    //     .add({
-    //       opacity: 0,
-    //       duration: 375
-    //     })
-    //     .finished.then(() => this.setState({ editing: false }));
-    // }
     this.setState({ editing: !this.state.editing })
   };
 
