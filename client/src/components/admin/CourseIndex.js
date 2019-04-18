@@ -34,7 +34,7 @@ class CourseIndex extends React.Component {
                                 route={`/api/search_courses`}
                                 width="100%"
                                 height="static"
-                                placeholder="Course Name ..."
+                                placeholder="Search Courses..."
                                 render={(props) => <CourseItem { ...props } />}
                             />
                         </CoursesContainer>
