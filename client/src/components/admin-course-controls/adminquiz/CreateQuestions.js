@@ -33,7 +33,7 @@ toggleChoiceForm = () => this.setState({ addChoice: !this.state.addChoice })
 
 renderChoices = () => {
   const output_arr = this.state.questionValues.choices.map( (choice, index) => {
-    return (<h5 style={{margin: 0}} key={index} >Q{index + 1}: {choice.text}</h5>)
+    return (<h5 style={{margin: 0}} key={index} >Q{index + 1}: {choice.text} {choice.correct ? '(Correct)': ''}</h5>)
   })
   return output_arr
 }
@@ -60,7 +60,9 @@ renderKind = () => {
           toggleChoiceForm={this.toggleChoiceForm}
           option={this.state.option}
         /> : null}
-        <ButtonAdd onClick={() => this.toggleChoiceForm()}>{this.state.addChoice ? 'Cancel' : 'Add Choice'}</ButtonAdd>
+        <ButtonAdd style={{display: 'inline-block'}} onClick={() => this.toggleChoiceForm()}>{this.state.addChoice ? 'Cancel' : 'Add Choice'}</ButtonAdd>
+        <br />
+        <br />
      </>
      )
     } else {
@@ -157,10 +159,10 @@ const BodyInput = styled.select`
   background: #23a24d;
   color: white;
   border: 1px solid white;
-  padding: 3px;
+  padding: 5px;
   box-shadow: 1px 1px 2px #ededed;
   border-radius: 5px;
-  margin-top: 10px;
+  margin-top: 3px;
   max-width: 150px;
 
   :hover {
