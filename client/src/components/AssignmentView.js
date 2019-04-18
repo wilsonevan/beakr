@@ -137,12 +137,12 @@ class AssignmentView extends React.Component {
         <Header as={Link} to='' onClick={() => this.props.history.goBack()} content='< Course Work' color='green' size='huge' textAlign='left'/>
         <Header style={{ color: '#23A24D' }}>
           <Icon name='block layout' color='green' />
-          {!editingTitle && title}
+          {" "}{!editingTitle && title}
         </Header>
         { user.admin ?
           <> 
             {!editingTitle ? (
-              <>
+              <SectionEditButtons>
                 <BlueLink onClick={() => this.toggleEditingTitle()}>
                   Edit Name
                 </BlueLink>
@@ -152,7 +152,7 @@ class AssignmentView extends React.Component {
                 <BlueLink onClick={() => this.deleteAssignment(id)}>
                   Delete
                 </BlueLink>
-              </>
+              </SectionEditButtons>
             ) : (
               <EditAssignmentTitle
               title={title}
@@ -164,8 +164,14 @@ class AssignmentView extends React.Component {
           <></> 
         }
         <br />
-        <Moment format='ddd, MMM D, LT' date={due_date} />
-        <Segment>
+        <AssignmentContainer>
+          <AssignmentHeading>
+            <h2 style={{margin: "0", color: "#23a24d", fontSize: "1.75rem"}} >Instructions</h2>
+            <div style={{display: "flex", alignItems: "center"}}>
+              <Moment format='ddd, MMM D, LT' date={due_date} style={styles.dueDate} /> 
+            </div>
+          </AssignmentHeading>
+          <StyledHr/>
         {editingBody ? (
             <EditAssignmentBody
               body={body}
@@ -178,9 +184,9 @@ class AssignmentView extends React.Component {
               { userSubmission ?
                 <></>
               :    
-                <div>Points Possible: {points_possible}</div>    
+                <Instructions>Points Possible: {points_possible}</Instructions>    
               }
-              <div 
+              <Instructions
                 dangerouslySetInnerHTML=
                 {this.createMarkup(body)}
                 style={{padding: '15px'}}
@@ -205,7 +211,7 @@ class AssignmentView extends React.Component {
               {this.renderStudentView()}
             </>
           }
-        </Segment>
+        </AssignmentContainer>
       </>
     )
   }
@@ -220,6 +226,52 @@ class connectAssignmentView extends React.Component {
       )
     }
   }
+
+  const AssignmentContainer = styled.div`
+  min-height: 50%;
+  width: 100%;
+  margin-top: 2rem;
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 1px 2px 1px rgba(150,150,150,0.1);
+`
+
+const AssignmentHeading = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const Instructions = styled.div`
+  width: 100%;
+  text-align: left;
+`
+
+const StyledHr = styled.hr`
+  border: none;
+  height: 2px;
+  width: 100%;
+  background-color: #23a24d;
+  margin: 1rem 0;
+`
+
+const SectionEditButtons = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-left: 2rem;
+`
+
+const styles = {
+  dueDate: {
+      fontSize: "1.75rem",
+      color: "#23a24d",
+      marginRight: "2rem",
+  }
+}
 
 const BlueLink = styled.button`
   display: inline-block;
