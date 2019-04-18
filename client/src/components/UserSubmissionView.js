@@ -85,7 +85,7 @@ class UserSubmissionView extends React.Component {
   }
 
   render() {
-    const { editing, warning, body, url, code, kind, id, points_awarded, points_possible, } = this.state
+    const { editing, warning, body, url, code, kind, id, points_awarded, points_possible, grade } = this.state
     const { assignment_id, course_id, user } = this.props 
 
     return (
@@ -94,6 +94,10 @@ class UserSubmissionView extends React.Component {
         <div>
           {points_awarded}/{points_possible}
         </div>
+        <div>
+          Grade: {grade}%
+        </div>
+        <br/>
         { editing ?
           <AssignmentSubmissionForm
             id={id}
@@ -112,14 +116,20 @@ class UserSubmissionView extends React.Component {
           </>
         }
         <br/>
-        <ButtonGreen onClick={this.toggleEdit}>
-          Edit Submission
-        </ButtonGreen>
+        { editing ?
+          <ButtonGreen onClick={this.toggleEdit}>
+            Cancel Edit
+          </ButtonGreen>
+        :
+          <ButtonGreen onClick={this.toggleEdit}>
+            Edit Submission
+          </ButtonGreen>
+        }
         { warning ?
           <ButtonGrey onClick={this.deleteSubmission}>
-            Are You Sure?
+          Are You Sure?
           </ButtonGrey>
-        :
+          :
           <ButtonGrey onClick={this.toggleDelete}>
             Delete Submission
           </ButtonGrey>  
