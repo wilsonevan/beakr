@@ -13,7 +13,9 @@ class GradeSubmission extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { submitGrade } = this.props
-    const assignment_submission = {...this.state}
+    const { points_possible, points_awarded } = this.state
+    let grade = ((points_awarded/points_possible) * 100)
+    const assignment_submission = {...this.state, grade}
     submitGrade(assignment_submission)
   }
 
@@ -28,6 +30,7 @@ class GradeSubmission extends React.Component {
           onChange={this.handleChange}
         />
         / {points_possible}
+        <br />
         <ButtonGreen>Submit Grade</ButtonGreen>
         <ButtonGrey onClick={this.props.toggle}>Cancel Grade</ButtonGrey>
       </TitleForm>
@@ -38,7 +41,7 @@ class GradeSubmission extends React.Component {
 const TitleForm = styled.form`
   display: inline-block;
   margin: 0 0.25rem 3rem 0;
-  font-size: 2.25rem;
+  font-size: 1rem;
   font-weight: 600;
 `;
 

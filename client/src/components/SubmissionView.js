@@ -40,7 +40,7 @@ class SubmissionView extends React.Component {
     const { assignment_id, id } = this.props.match.params
     axios.put(`/api/assignments/${assignment_id}/assignment_submissions/${id}`, assignment_submission)
       .then(res => {
-        this.setState({points_awarded: res.data.points_awarded, graded: res.data.graded, grading: false})
+        this.setState({points_awarded: res.data.points_awarded, grade: res.data.grade, graded: res.data.graded, grading: false})
       }) 
   }
 
@@ -82,7 +82,7 @@ class SubmissionView extends React.Component {
   }
 
   render() {
-    const { assignment, user, points_awarded, points_possible, grading } = this.state
+    const { assignment, user, points_awarded, points_possible, grading, grade } = this.state
 
     return (
       <>
@@ -104,6 +104,9 @@ class SubmissionView extends React.Component {
               <>
                 <div>
                   {points_awarded}/{points_possible}
+                </div>
+                <div>
+                  Grade:{grade}%
                 </div>
                 <ButtonGreen onClick={this.toggleGrading}>
                   Grade Submission
