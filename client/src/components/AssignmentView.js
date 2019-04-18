@@ -55,7 +55,7 @@ class AssignmentView extends React.Component {
       .then(res => {
         this.setState({ body: res.data.body, kind: res.data.kind, editingBody: false });
       })
-      .catch(err => console.log(err));
+      .catch(err => alert(err));
   };
 
   updateAssignmentTitle = assignmentTitle => {
@@ -65,7 +65,7 @@ class AssignmentView extends React.Component {
       .then(res => {
         this.setState({ title: res.data.title, editingTitle: false });
       })
-      .catch(err => console.log(err));
+      .catch(err => alert(err));
   };
 
   deleteAssignment = id => {

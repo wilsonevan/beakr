@@ -1,11 +1,19 @@
 import React from 'react';
 import axios from 'axios';
 import Code from './Code';
+import GradeSubmission from './GradeSubmission';
 import { Link } from 'react-router-dom';
+import { ButtonGreen, } from '../styles/Components';
 import { Segment, Header, Icon, Divider } from 'semantic-ui-react';
 
 class SubmissionView extends React.Component {
-  state = { body: '', url: '', code: '', assignment: {}, user: {} }
+  state = { 
+    body: '', url: '', code: '', 
+    points_awarded: 0, points_possible: 0, 
+    grade: '', graded: false, 
+    assignment: {}, user: {}, 
+    grading: false 
+  }
 
   componentDidMount() {
     const { assignment_id, id } = this.props.match.params
@@ -15,7 +23,8 @@ class SubmissionView extends React.Component {
       })
     axios.get(`/api/assignments/${assignment_id}/assignment_submissions/${id}`)
       .then( res => {
-        this.setState({ body: res.data.body, url: res.data.url, code: res.data.code })
+        const { body, url, code, points_awarded, points_possible, graded, grade } = res.data 
+        this.setState({ body, url, code, points_awarded, points_possible, graded, grade })
       })
     axios.get(`/api/assignments/${assignment_id}/assignment_submissions/${id}/find_user`)
       .then( res => {
@@ -26,6 +35,14 @@ class SubmissionView extends React.Component {
   createMarkup = (html) => {
     return { __html: html };
   };
+
+  gradeSubmission = (assignment_submission) => {
+    const { assignment_id, id } = this.props.match.params
+    axios.put(`/api/assignments/${assignment_id}/assignment_submissions/${id}`, assignment_submission)
+      .then(res => {
+        this.setState({points_awarded: res.data.points_awarded, graded: res.data.graded, grading: false})
+      }) 
+  }
 
   renderSubmission = () => {
     const { assignment, body, url, code } = this.state
@@ -60,8 +77,12 @@ class SubmissionView extends React.Component {
     };
   }
 
+  toggleGrading = () => {
+    this.setState({ grading: !this.state.grading })
+  }
+
   render() {
-    const { assignment, user } = this.state
+    const { assignment, user, points_awarded, points_possible, grading } = this.state
 
     return (
       <>
@@ -78,6 +99,26 @@ class SubmissionView extends React.Component {
           />
           <Divider />
             {this.renderSubmission()}
+          <Divider />
+            { !grading ?
+              <>
+                <div>
+                  {points_awarded}/{points_possible}
+                </div>
+                <ButtonGreen onClick={this.toggleGrading}>
+                  Grade Submission
+                </ButtonGreen>
+              </>
+            :
+              <>
+                <GradeSubmission 
+                  submitGrade={this.gradeSubmission} 
+                  toggle={this.toggleGrading} 
+                  points_awarded={points_awarded} 
+                  points_possible={points_possible}
+                />
+              </>
+            }
         </Segment>
       </>
     )
