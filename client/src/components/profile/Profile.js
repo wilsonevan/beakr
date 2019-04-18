@@ -3,8 +3,9 @@ import { Link, } from 'react-router-dom';
 import { AuthConsumer, } from "../../providers/AuthProvider";
 import { Form, Grid, Container, Divider, Header, Segment, Card, Image } from 'semantic-ui-react';
 import Dropzone from 'react-dropzone';
-import { ButtonGreen, ButtonGrey, } from '../../styles/Components'
-import Moment from 'react-moment'
+import { ButtonGreen, ButtonGrey, } from '../../styles/Components';
+import Moment from 'react-moment';
+import axios from 'axios';
 
 const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/15724-200.png';
 
@@ -12,8 +13,15 @@ class Profile extends React.Component {
   state = { editing: false, formValues: { first_name: '', last_name: '', email: '', biography: '', birth_date: '', file: '', }, };
   
   componentDidMount() {
-    const { auth: { user: { first_name, last_name, email, biography, birth_date,}, }, } = this.props;
-    this.setState({ formValues: { first_name, last_name, email, biography, birth_date, file: '', }, });
+    // If this component is being accessed by a student
+    if (this.props.location.state){
+      const { user: { first_name, last_name, email, biography, birth_date,}, } = this.props.location.state
+      this.setState({ formValues: { first_name, last_name, email, biography, birth_date, file: '', }, });
+    }
+    else{
+      const { auth: { user: { first_name, last_name, email, biography, birth_date,}, }, } = this.props;
+      this.setState({ formValues: { first_name, last_name, email, biography, birth_date, file: '', }, });
+    }
   }
 
   handleSubmit = (e) => {
@@ -175,7 +183,7 @@ class Profile extends React.Component {
     return (
       <Container>
         <Link to='/dashboard'>
-        <h1> {`<`} Dashboard </h1> 
+          <h1> {`<`} Dashboard </h1> 
         </Link>
         <Divider hidden />
         <Grid>

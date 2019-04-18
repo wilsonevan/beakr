@@ -36,10 +36,10 @@ Assignment.destroy_all
         assignment = Assignment.create(
           title: Faker::Science.element,
           body: Faker::Movies::Ghostbusters.quote,
-          due_date: Faker::Date.forward(60),
           kind: "url",
+          points_possible: 20
         )
-
+          
         UnitAssignment.create(
           unit_id: unit.id,
           assignment_id: assignment.id,
