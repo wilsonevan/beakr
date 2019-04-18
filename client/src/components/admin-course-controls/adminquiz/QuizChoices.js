@@ -1,6 +1,6 @@
 import React from 'react';
-import { ButtonGreen, ButtonBlue } from '../../../styles/Components';
 import styled from 'styled-components';
+
 
 class QuizChoices extends React.Component {
   state = {choices: [], correctCount: 0, choiceValues: {option: (this.props.choices.length + 1), text: '', correct: false}}

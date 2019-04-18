@@ -1,5 +1,5 @@
 import React from 'react'
-import { ButtonGreen } from '../../../styles/Components';
+import { ButtonGreen } from '../../../styles/Components'
 import QuizChoices from './QuizChoices'
 import styled from 'styled-components'
 // import Choices from './Choices'
@@ -98,9 +98,9 @@ renderKind = () => {
           value={kind}
           onChange={this.handleChange}
           placeholder='kind' >
+            <option value='text'>Text</option>
             <option value='code'>Code</option>
             <option value='choice'>Multiple Choice</option>
-            <option value='text'>Text</option>
           </BodyInput>
           </FiftyDiv>
           <FiftyDiv>

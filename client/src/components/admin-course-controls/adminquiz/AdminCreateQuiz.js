@@ -4,6 +4,7 @@ import { ButtonGreen } from '../../../styles/Components';
 import axios from 'axios';
 import CreateQuestions from './CreateQuestions'
 import styled from 'styled-components'
+import { Icon, } from 'semantic-ui-react'
 
 class AdminCreateQuiz extends React.Component {
   state = { quizValues: { title: '', body: ''}, addQuestion: false, questions: [],}
@@ -65,7 +66,7 @@ class AdminCreateQuiz extends React.Component {
               Q{index+1}: {choice.text}
             </h6>
             )}
-            <SmallDelete onClick={() => this.filterQuestion(index)}>Delete</SmallDelete>
+            <SmallDelete onClick={() => this.filterQuestion(index)}><Icon name='trash alternate outline' size='large' /></SmallDelete>
           </QuestionDiv>)
       }
       )
@@ -172,21 +173,17 @@ const BodyInput = styled.input`
   }
 `
 const SmallDelete = styled.div`
-  width: 125px;
+  width: 25px;
+  height: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #23a24d;
-  color: white;
-  border: 1px solid white
-  border-radius: 5px;
+  color: grey;
   position: absolute;
   right: 5px;
   top: 5px;
   
   :hover {
-    border: 1px solid #23a24d;
-    background: white;
     color: #23a24d;
     cursor: pointer;
   }
