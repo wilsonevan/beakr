@@ -24,8 +24,16 @@ class AdminCreateQuiz extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const quiz = {...this.state.quizValues}
-    axios.post('/api/quizzes', quiz)
+    if (this.state.quizValues.title === ''){
+      alert('You must give the quiz a title')
+    } else if ( this.state.quizValues.body === '' ) {
+      alert('You must fill out quiz instructions')
+    } else {
+      if (this.state.questions.length < 1){
+        alert('You must add questions')
+      } else {
+      const quiz = {...this.state.quizValues}
+      axios.post('/api/quizzes', quiz)
       .then( res => {
         // res.data.id === quiz.id
         this.state.questions.map( question => {
@@ -34,6 +42,8 @@ class AdminCreateQuiz extends React.Component {
         })
         this.setState({ quizValues: {title: '', body: '',}, questions: []})
       })
+      }
+    }
   }
   setQuestionState = (questions) => {
     this.setState({questions})    
@@ -58,15 +68,20 @@ class AdminCreateQuiz extends React.Component {
   renderQuestions = () => {
       return this.state.questions.map( ( question, index ) => {
         return ( <QuestionDiv key={index}>
-          <h3>Question {index + 1}</h3>
-          <h4 style={{margin: 0}}>Type: {question.kind}</h4>
-          <h4 style={{margin: 0}}>Question: {question.body}</h4>
-          {question.choices.map( (choice, index) => 
-            <h6 key={index}>
-              Q{index+1}: {choice.text}
-            </h6>
-            )}
+          <SimpleDiv>
+
+            <h3>Question {index + 1}</h3>
+            <h4 style={{margin: 0}}>Type: {question.kind}</h4>
+            <h4 style={{margin: 0}}>Points: {question.points_possible}</h4>
+            <h4 style={{margin: 0}}>Question: {question.body}</h4>
+            {question.choices.map( (choice, index) => 
+              <h6 key={index}>
+                Q{index+1}: {choice.text}
+              </h6>
+              )}
+          </SimpleDiv>
             <SmallDelete onClick={() => this.filterQuestion(index)}><Icon name='trash alternate outline' size='large' /></SmallDelete>
+            <SmallEdit><Icon name='setting' size='large' /></SmallEdit>
           </QuestionDiv>)
       }
       )
@@ -130,6 +145,7 @@ const QuizContainer = styled.div`
   background: white;
   width: 50%;
   padding: 10px;
+  overflow-wrap: break-word:
 
 `
 
@@ -187,6 +203,27 @@ const SmallDelete = styled.div`
     color: #23a24d;
     cursor: pointer;
   }
+`
+const SmallEdit = styled.div`
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: grey;
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  
+  :hover {
+    color: #23a24d;
+    cursor: pointer;
+  }
+`
+const SimpleDiv = styled.div`
+  width: 85%;
+  height: 100%;
+  overflow-wrap: break-word:
 `
 
 export default AdminCreateQuiz

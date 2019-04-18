@@ -24,6 +24,15 @@ class QuizChoices extends React.Component {
     this.props.toggleChoiceForm()
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault(e)
+    if (this.state.choiceValues.text === ''){
+      alert('You must add a choice')
+    } else {
+      this.handleAdd()
+
+    }
+  }
 
 
   
@@ -31,13 +40,14 @@ class QuizChoices extends React.Component {
   render(){
     const { choiceValues: {text, correct}, } = this.state
     return(
-      <>
+      <> 
       <Contain>
       <SeventyDiv>
       <InputHeader>
         Choice
       </InputHeader>
       <UnitNameInput
+        form='choice'
         style={{borderRadius: '4px'}} 
         autoFocus
         required
@@ -58,7 +68,7 @@ class QuizChoices extends React.Component {
         </SepDiv>
       </ThirtyDiv>
       </Contain>
-        <ButtonAdd style={{display: 'inline-block', marginRight: '5px'}}onClick={() => this.handleAdd()}>Confirm</ButtonAdd>
+        <ButtonAdd style={{display: 'inline-block', marginRight: '5px'}} onClick={this.handleSubmit}>Confirm</ButtonAdd>
         </>
     )
   }
