@@ -7,7 +7,6 @@ class ContentBlock extends React.Component {
 
   render() {
     const { content, deleteUnitContent, toggleContentVisibility } = this.props;
-    console.log(content.visible);
     return (
       <BlockContainer 
       >
