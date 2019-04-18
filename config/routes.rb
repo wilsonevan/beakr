@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   
     resources :attendances
 
-    resources :users, only: [:index, :update]
+    resources :users, only: [:index,:show, :update]
     
     post '/search_users', to: '/api/users#search_users'
     post '/search_users_with_role/:course_id', to: '/api/users#search_users_with_role'
@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     get 'get_user_grades', to: 'users#get_user_grades'
     get 'calc_total_grades', to: 'users#calc_total_grades'
     get 'user_courses', to: 'users#user_courses'
+    get 'calc_grades_all_students', to: 'courses#calc_grades_all_students'
     # get 'upcoming_assignments' to: 'users#upcoming_assignments'
     # get 'recently_graded_assignments' to: 'users#recently_graded_assignments'
 
@@ -29,7 +30,9 @@ Rails.application.routes.draw do
     
     resources :courses do
       resources :sections
-    end
+      
+    end 
+    
     
     post '/search_courses', to: '/api/courses#search_courses'
     
@@ -60,6 +63,7 @@ Rails.application.routes.draw do
     resources :quiz_submissions
     get '/courses/:course_id/quiz_submissions', to: '/api/quiz_submissions#get_submissions_by_course'
     get '/users/:user_id/quiz_submissions', to: '/api/quiz_submissions#get_submissions_by_user'
+    get '/courses/:course_id/quizzes/:id/quiz_submissions', to: '/api/quiz_submissions#get_by_current_user_course_and_quiz'
     put '/quiz_submissions/:id/calculate_grade', to: '/api/quiz_submissions#calculate_final_grade'
 
 

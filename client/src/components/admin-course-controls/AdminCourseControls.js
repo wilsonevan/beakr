@@ -4,6 +4,7 @@ import styled from "styled-components";
 import AdminCourseAttendance from './AdminCourseAttendance';
 import DashboardNav from "../DashboardNav";
 import SectionIndex from "./SectionIndex";
+import AdminGradesView from '../gradebook/AdminGradesView';
 
 class AdminCourseControl extends React.Component {
   state = {course: null}
@@ -28,7 +29,7 @@ class AdminCourseControl extends React.Component {
           <DashboardNav 
             items={["edit", {name: "view", path: `/courses/${this.props.match.params.id}`, newTab: true }, "grades", "attendance"]}
             edit={<SectionIndex courseId={course.id} />}
-            grades={<div> GRADES GO HERE </div>}
+            grades={<AdminGradesView courseId={course.id} />}
             attendance={<AdminCourseAttendance courseId={course.id} />}
           />
         </>

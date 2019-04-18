@@ -66,6 +66,7 @@ const CardContainer = styled.div`
 	border: 1px solid grey;
 	min-width: 10rem;
 	min-height: 5rem;
+	max-width: 15rem;
 	margin: 10px;
 	padding: 10px;
 	border: 1px solid #b5b5b5;
@@ -88,6 +89,8 @@ const DonutDiv = styled.div`
 const Header = styled.h4`
 	font-size: 1.5rem;
 	padding: 0;
+	display: inline-block;
+	text-align: center;
 	// padding-left: 10px;
 	margin: 0;
 `

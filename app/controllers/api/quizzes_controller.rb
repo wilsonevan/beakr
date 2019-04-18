@@ -46,10 +46,10 @@ class Api::QuizzesController < ApplicationController
   end
 
   def set_quiz
-    @quiz = Quiz.find(params[:id])
+    @quiz = Quiz.get_quiz_with_attrs(params[:id])
   end
 
   def quiz_params
-    params.require(:quiz).permit(:title, :due_date)
+    params.require(:quiz).permit(:title, :body)
   end
 end

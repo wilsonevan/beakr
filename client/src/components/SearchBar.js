@@ -144,7 +144,7 @@ const SearchResults = ({ results, render, component, height, width, updateSearch
     return (
       <ResultsContainer
         style={{
-          height: height ? height : "30rem",
+          height: height ? `calc(${height} - 3rem)` : "30rem",
         }}
       >
         {results.map(result => (
@@ -156,7 +156,7 @@ const SearchResults = ({ results, render, component, height, width, updateSearch
     return (
       <ResultsContainer
         style={{
-          height: height ? height : "30rem",
+          height: height ? `calc(${height} - 3rem)` : "30rem",
         }}
       >
         {results.map(result => (
@@ -183,8 +183,6 @@ const SearchInput = styled.input`
   background-color: #f7f7f7;
   color: grey;
   border: none;
-  // border-radius: 5px;
-  // border: 1px solid #bdbdbd;
   font-size: 1.25rem;
 `;
 
@@ -196,7 +194,6 @@ const ResultsContainer = styled.div`
   position: relative;
   margin-top: 3rem;
   width: 100%;
-  // padding-left: 1rem;
   overflow-y: auto;
   background-color: white;
 `;

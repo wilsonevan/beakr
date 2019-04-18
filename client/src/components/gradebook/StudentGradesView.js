@@ -341,6 +341,7 @@ const Split = styled.hr`
 const DataSummary = styled.div`
   // text-align: left !important;
   display: flex;
+  flex-wrap: wrap;
   flex-grow: 16;
   align-content: stretch;
   justify-content: flex-start;

@@ -41,7 +41,6 @@ class StudentDashboard extends React.Component {
               })
             }
             calendar={<Calendar />}
-            todo={<p>We still have to add todos, they are todo</p>}
             grades={<StudentGradesView />}
           />
       </Segment>

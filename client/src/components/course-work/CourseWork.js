@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import CourseSection from "./CourseSection";
 import styled from "styled-components";
+import {Link} from "react-router-dom";
 
 class CourseWork extends React.Component {
   state = { course: {}, sections: [] };
@@ -34,7 +35,8 @@ class CourseWork extends React.Component {
         <div as={CourseWorkContainer}>
           <div className="section-container">
             <SectionHeading>
-              {course.title && `${course.title} > Course Work`}
+            <Link to='/dashboard' style={{color: '#23a24d'}}>Courses > </Link>
+                  {course.title && `${course.title} > Course Work`}
             </SectionHeading>
             {sections.length > 0 && this.renderSections()}
           </div>

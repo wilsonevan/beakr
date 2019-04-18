@@ -8,13 +8,14 @@ import Register from "./components/Register";
 import Dashboard from "./components/dashboard/Dashboard";
 import ContentView from "./components/ContentView";
 import AssignmentView from "./components/AssignmentView";
+import QuizView from "./components/quiz-view/QuizView";
 import SubmissionView from "./components/SubmissionView";
-import QuizView from "./components/QuizView";
 import Profile from "./components/profile/Profile";
 import FetchUser from "./components/FetchUser";
 import AddQuiz from "./components/admin-course-controls/AddQuiz";
 import AddUser from "./components/admin/AddUser";
 import AddCourse from "./components/admin/AddCourse";
+import AdminCreateQuiz from './components/admin-course-controls/adminquiz/AdminCreateQuiz'
 import { Switch, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import Navbar from "./components/Navbar";
@@ -49,6 +50,11 @@ const App = () => (
             path="/admin/courses/:course_id/sections/:id"
             component={AdminEditSection}
           />
+          <AdminRoute
+            exact
+            path="/admin/createquiz"
+            component={AdminCreateQuiz}
+          />
           <ProtectedRoute exact path="/addunitmaterial" component={AddUnitMaterial} />
           <ProtectedRoute
             exact
@@ -59,6 +65,7 @@ const App = () => (
           <ProtectedRoute exact path="/courses/:course_id/assignments/:id" component={AssignmentView} />
           <AdminRoute exact path="/assignments/:assignment_id/submissions/:id" component={SubmissionView} />
           <ProtectedRoute exact path="/quizzes/new" component={AddQuiz} />
+          <ProtectedRoute exact path="/courses/:course_id/quizzes/:id" component={QuizView} />
           <ProtectedRoute exact path="/quizzes/:id" component={QuizView} />
           <ProtectedRoute exact path="/users/new" component={AddUser} />
           <Route component={NoMatch} />
