@@ -26,7 +26,6 @@ const StudentGradesView = ({ auth }) => {
       setTotalGrades(res.data);
     });
     axios.get("/api/get_user_grades", { params: { id: id } }).then(res => {
-      console.log(res.data);
       setGrades(res.data);
 
     });
