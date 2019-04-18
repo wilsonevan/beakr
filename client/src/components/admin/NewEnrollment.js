@@ -16,6 +16,9 @@ class NewEnrollment extends React.Component {
         this.setState({ courses: res.data });
       })
       .catch(res => console.log(res));
+    
+    document.querySelector(".Select").style.zIndex = "100";
+
   }
 
   setTeacherTrue = () => {
@@ -112,10 +115,12 @@ class NewEnrollment extends React.Component {
         <CourseContainer>
           <CourseHeading>Select Course</CourseHeading>
           <Select
+            className="Select"
             name="selectedCourseId"
             onChange={this.handleChange}
             options={this.mapOptions()}
             placeholder="Search Courses..."
+            style={{zIndex: "100000", position: "fixed !important"}}
           />
         </CourseContainer>
 

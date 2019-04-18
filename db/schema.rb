@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_16_200020) do
+ActiveRecord::Schema.define(version: 2019_04_18_043831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 2019_04_16_200020) do
     t.bigint "enrollment_id"
     t.float "grade"
     t.float "points_possible"
-    t.float "points_awarded", default: 0.0
+    t.float "points_awarded"
     t.boolean "graded"
     t.text "comment"
     t.string "questions"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(version: 2019_04_16_200020) do
     t.datetime "updated_at", null: false
     t.integer "sequence"
     t.boolean "visible"
+    t.date "due_date"
     t.index ["assignment_id"], name: "index_unit_assignments_on_assignment_id"
     t.index ["unit_id"], name: "index_unit_assignments_on_unit_id"
   end
@@ -185,7 +186,7 @@ ActiveRecord::Schema.define(version: 2019_04_16_200020) do
     t.json "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "biography", default: ""
+    t.text "biography"
     t.date "birth_date"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

@@ -46,7 +46,7 @@ class Api::AssignmentsController < ApplicationController
   end
 
   def set_assignment
-    @assignment = Assignment.find(params[:id])
+    @assignment = Assignment.get_assignment_with_attrs(params[:id])
   end
 
   def assignment_params

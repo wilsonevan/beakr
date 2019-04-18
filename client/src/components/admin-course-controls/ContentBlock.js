@@ -3,32 +3,21 @@ import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
 
 class ContentBlock extends React.Component {
-  state = { mouseOver: false }
-
-  mouseOverTrue = () => {
-    this.setState({ mouseOver: true })
-  }
-
-  mouseOverFalse = () => {
-    this.setState({ mouseOver: false })
-  }
+  // state = { visible: this.props.content.visible }
 
   render() {
     const { content, deleteUnitContent } = this.props;
     return (
       <BlockContainer 
-        onMouseEnter={this.mouseOverTrue} 
-        onMouseLeave={this.mouseOverFalse} 
       >
-        <ContentBlockText>
-          <Tag>Content</Tag> {content.title}
+        <ContentBlockText
+          href={`/contents/${content.id}`}
+          target="_blank"
+        >
+          <Tag><Icon name="file alternate outline" size="normal" /></Tag> {content.title}
         </ContentBlockText>
-        { this.state.mouseOver &&
           <Buttons>
-            <ButtonLeft         
-              href={`/contents/${content.id}`}
-              target="_blank"
-            >
+            <ButtonLeft>
               <Icon name='eye' size='small' />
             </ButtonLeft>
             <ButtonRight
@@ -37,7 +26,6 @@ class ContentBlock extends React.Component {
               <Close src={require("../../images/grey-close.svg")} alt=""/>
             </ButtonRight>
           </Buttons>
-        }
       </BlockContainer>
     )
   }
@@ -56,7 +44,7 @@ const BlockContainer = styled.div`
   cursor: grab;
 `;
 
-const ContentBlockText = styled.button`
+const ContentBlockText = styled.a`
   display: inline-block;
   min-width: 30%;
   text-align: left;
@@ -65,6 +53,11 @@ const ContentBlockText = styled.button`
   border: none;
   font-size: 1.15rem;
   text-align: left;
+  cursor: pointer;
+
+  :hover {
+    color: #2979ff;
+  }
 `;
 
 const Tag = styled.span`

@@ -27,6 +27,8 @@ Assignment.destroy_all
         UnitContent.create(
           unit_id: unit.id,
           content_id: content.id,
+          visible: false,
+          sequence: nil
         )
       end
       1.times do
@@ -39,7 +41,10 @@ Assignment.destroy_all
 
         UnitAssignment.create(
           unit_id: unit.id,
-          assignment_id: assignment.id
+          assignment_id: assignment.id,
+          visible: false,
+          sequence: nil,
+          due_date: Faker::Date.forward(60)
         )
       end
       1.times do

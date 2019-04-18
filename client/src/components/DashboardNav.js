@@ -175,7 +175,7 @@ class DashboardNav extends React.Component {
     justify-content: space-between;
     width: 100%;
     background-color: #23a24d;
-    overflow: hidden;
+    // overflow: hidden;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
   `;

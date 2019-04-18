@@ -19,4 +19,24 @@ class Assignment < ApplicationRecord
       ORDER BY a.title
     ", "#{input}%"])
   end
+
+  def self.get_assignment_with_attrs(assignment_id)
+
+    assignment = Assignment.find(assignment_id)
+    ua = UnitAssignment.find_by_sql(["
+      SELECT ua.sequence, ua.visible, ua.due_date FROM unit_assignments AS ua
+      WHERE ua.assignment_id = ?
+    ", assignment_id]).first()
+
+    return {
+      id: assignment_id,
+      title: assignment[:title],
+      body: assignment[:body],
+      created_at: assignment[:created_at],
+      updated_at: assignment[:updated_at],
+      sequence: ua[:sequence],
+      visible: ua[:visible],
+      due_date: ua[:due_date],
+    }
+  end
 end

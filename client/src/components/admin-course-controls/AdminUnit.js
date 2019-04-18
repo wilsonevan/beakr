@@ -3,6 +3,7 @@ import axios from "axios";
 import anime from "animejs";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Icon } from "semantic-ui-react";
 
 class AdminUnit extends React.Component {
   state = { contents: [], assignments: [], quizzes: [], opened: false, loaded: false };
@@ -85,7 +86,7 @@ class AdminUnit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-            <UnitModelsIcon className="models-icon" />
+            <Icon name="file alternate outline" size="normal" />
             {content.title}
           </UnitModelsItem>
         </Link>
@@ -100,7 +101,7 @@ class AdminUnit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-            <UnitModelsIcon className="models-icon" />
+            <Icon name="check" />
             {quiz.title}
           </UnitModelsItem>
         </Link>
@@ -115,7 +116,7 @@ class AdminUnit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-            <UnitModelsIcon className="models-icon" />
+            <Icon name="edit outline" size="normal" />
             {assignment.title}
           </UnitModelsItem>
         </Link>

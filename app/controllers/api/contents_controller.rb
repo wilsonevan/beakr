@@ -46,7 +46,7 @@ class Api::ContentsController < ApplicationController
   end
 
   def set_content
-    @content = Content.find(params[:id])
+    @content = Content.get_content_with_attrs(params[:id])
   end
 
   def content_params

@@ -33,6 +33,6 @@ class Api::UnitAssignmentsController < ApplicationController
 
   private
     def unit_assignment_params
-        return params.require(:unit_assignment).permit(:unit_id, :assignment_id)
+        return params.require(:unit_assignment).permit(:unit_id, :assignment_id, :sequence, :visible, :due_date)
     end
 end

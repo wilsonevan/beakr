@@ -46,6 +46,8 @@ class Quiz < ApplicationRecord
       id: quiz_id,
       title: quiz[:title],
       body: quiz[:body],
+      created_at: assignment[:created_at],
+      updated_at: assignment[:updated_at],
       sequence: uq[:sequence],
       visible: uq[:visible],
       due_date: uq[:due_date],
