@@ -6,7 +6,7 @@ class QuizBlock extends React.Component {
   // state = { visible: this.props.content.visible }
 
   render() {
-    const { quiz, deleteUnitQuiz } = this.props;
+    const { quiz, deleteUnitQuiz, toggleQuizVisibility } = this.props;
     return (
       <BlockContainer>
         <QuizBlockText
@@ -16,8 +16,11 @@ class QuizBlock extends React.Component {
           <Tag><Icon name="check" /></Tag> {quiz.title}
         </QuizBlockText>
           <Buttons>
-            <ButtonLeft>
-              <Icon name='eye' size='small' />
+          <ButtonLeft onClick={() => toggleQuizVisibility(quiz.visible, quiz.id, quiz.unit_quiz_id)} >
+              { quiz.visible
+                ? <Icon name='eye' size='small' />
+                : <Icon name='eye slash' size='small' />
+              }
             </ButtonLeft>
             <ButtonRight
               onClick={() => deleteUnitQuiz(quiz.id)}

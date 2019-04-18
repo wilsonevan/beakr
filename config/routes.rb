@@ -21,11 +21,11 @@ Rails.application.routes.draw do
     # get 'upcoming_assignments' to: 'users#upcoming_assignments'
     # get 'recently_graded_assignments' to: 'users#recently_graded_assignments'
 
-    resources :unit_contents, only: [:index, :create, :destroy]
+    resources :unit_contents, only: [:index, :create, :update, :destroy]
     delete '/unit/:unit_id/contents/:content_id/unit_content', to: '/api/unit_contents#delete_by_unit_and_content'
-    resources :unit_assignments, only: [:index, :create, :destroy]
+    resources :unit_assignments, only: [:index, :create, :update, :destroy]
     delete '/unit/:unit_id/assignments/:assignment_id/unit_assignment', to: '/api/unit_assignments#delete_by_unit_and_assignment'
-    resources :unit_quizzes, only: [:index, :create, :destroy]
+    resources :unit_quizzes, only: [:index, :create, :update, :destroy]
     delete '/unit/:unit_id/quizzes/:quiz_id/unit_quiz', to: '/api/unit_quizzes#delete_by_unit_and_quiz'
     
     resources :courses do

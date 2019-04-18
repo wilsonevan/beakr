@@ -23,13 +23,14 @@ class Content < ApplicationRecord
 
     content = Content.find(content_id)
     uc = UnitContent.find_by_sql(["
-      SELECT uc.sequence, uc.visible FROM unit_contents AS uc
+      SELECT uc.sequence, uc.visible, uc.id FROM unit_contents AS uc
       WHERE uc.content_id = ?
       AND uc.unit_id = ?
     ", content_id, unit_id]).first()
 
     return {
       id: content_id,
+      unit_content_id: uc[:id],
       title: content[:title],
       body: content[:body],
       created_at: content[:created_at],

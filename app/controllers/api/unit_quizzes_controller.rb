@@ -26,6 +26,15 @@ class Api::UnitQuizzesController < ApplicationController
     end
   end
 
+  def update
+    unit_quiz = UnitQuiz.find(params[:id])
+    if(unit_quiz.update(unit_quiz_params))
+        render( json: unit_quiz )
+    else
+        render( json: {errors: unit_quiz.errors}, status: 422)
+    end
+  end
+
   def destroy
     UnitQuiz.destroy(params[:id])
     render( json: "Data Deleted" )

@@ -19,6 +19,7 @@ class Api::AssignmentsController < ApplicationController
       assignment = ua.assignment
       {
         id: assignment[:id],
+        unit_assignment_id: ua[:id],
         title: assignment[:title],
         body: assignment[:body],
         sequence: ua[:sequence],

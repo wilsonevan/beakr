@@ -16,6 +16,15 @@ class Api::UnitContentsController < ApplicationController
         end
     end
 
+    def update
+        unit_content = UnitContent.find(params[:id])
+        if(unit_content.update(unit_content_params))
+            render( json: unit_content )
+        else
+            render( json: {errors: unit_content.errors}, status: 422)
+        end
+    end
+
     def destroy
         UnitContent.destroy(params[:id])
         render( json: "Data Deleted" )

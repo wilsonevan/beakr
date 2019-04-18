@@ -3,10 +3,11 @@ import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
 
 class ContentBlock extends React.Component {
-  // state = { visible: this.props.content.visible }
+  // state = { visible: this.props.content.visible })
 
   render() {
-    const { content, deleteUnitContent } = this.props;
+    const { content, deleteUnitContent, toggleContentVisibility } = this.props;
+    console.log(content.visible);
     return (
       <BlockContainer 
       >
@@ -17,8 +18,11 @@ class ContentBlock extends React.Component {
           <Tag><Icon name="file alternate outline" /></Tag> {content.title}
         </ContentBlockText>
           <Buttons>
-            <ButtonLeft>
-              <Icon name='eye' size='small' />
+            <ButtonLeft onClick={() => toggleContentVisibility(content.visible, content.id, content.unit_content_id)} >
+              { content.visible
+                ? <Icon name='eye' size='small' />
+                : <Icon name='eye slash' size='small' />
+              }
             </ButtonLeft>
             <ButtonRight
               onClick={() => deleteUnitContent(content.id)}

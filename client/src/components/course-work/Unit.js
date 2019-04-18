@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
 
 class Unit extends React.Component {
-  state = { contents: [], assignments: [], quizzes: [], opened: false, loaded: true };
+  state = { contents: [], assignments: [], quizzes: [], opened: false, contentsLoaded: false, assignmentsLoaded: false, quizzesLoaded: false };
 
   unitModelsRef = React.createRef();
 
@@ -14,22 +14,33 @@ class Unit extends React.Component {
     axios
       .get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`)
       .then(res => {
-        this.setState({ contents: res.data, });
+        const contents = res.data.filter((content) => {
+          if(content.visible) return true
+        })
+        // console.log(contents);
+        this.setState({ contents });
       })
       .catch(err => console.log(err));
     axios
       .get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`)
       .then(res => {
-        this.setState({ assignments: res.data, })
+        const assignments = res.data.filter((assignment) => {
+          if(assignment.visible) return assignment
+        })
+        // console.log(assignments);
+        this.setState({ assignments });
       })
       .catch(err => console.log(err));
     axios
       .get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`)
       .then(res => {
-        this.setState({ quizzes: res.data, })
+        const quizzes = res.data.filter((quiz) => {
+          if(quiz.visible) return quiz
+        })
+        // console.log(quizzes);
+        this.setState({ quizzes });
       })
       .catch(err => console.log(err));
-    // this.setState({ loaded: true })
   }
 
   componentWillUnmount() {
@@ -39,7 +50,7 @@ class Unit extends React.Component {
   handleClick = event => {
     const { contents, assignments, quizzes } = this.state
 
-    if (!this.state.opened && this.state.loaded) {
+    if (!this.state.opened) {
       this.setState({ opened: !this.state.opened }, () => {
         anime({
           targets: this.unitModelsRef.current,

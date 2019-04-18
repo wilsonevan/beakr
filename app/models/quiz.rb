@@ -38,13 +38,14 @@ class Quiz < ApplicationRecord
 
     quiz = Quiz.find(quiz_id)
     uq = UnitQuiz.find_by_sql(["
-      SELECT uq.sequence, uq.visible, uq.due_date FROM unit_quizzes AS uq
+      SELECT uq.sequence, uq.visible, uq.due_date, uq.id FROM unit_quizzes AS uq
       WHERE uq.quiz_id = ?
       AND uq.unit_id = ?
     ", quiz_id, unit_id]).first()
 
     return {
       id: quiz_id,
+      unit_quiz_id: uq[:id],
       title: quiz[:title],
       body: quiz[:body],
       created_at: quiz[:created_at],

@@ -6,7 +6,7 @@ class AssignmentBlock extends React.Component {
   // state = { visible: this.props.content.visible }
 
   render() {
-    const { assignment, deleteUnitAssignment } = this.props;
+    const { assignment, deleteUnitAssignment, toggleAssignmentVisibility } = this.props;
     return (
       <BlockContainer>
         <AssignmentBlockText
@@ -16,8 +16,11 @@ class AssignmentBlock extends React.Component {
           <Tag><Icon name="edit outline" /></Tag> {assignment.title}
         </AssignmentBlockText>
           <Buttons>
-            <ButtonLeft>
-              <Icon name='eye' size='small' />
+          <ButtonLeft onClick={() => toggleAssignmentVisibility(assignment.visible, assignment.id, assignment.unit_assignment_id)} >
+              { assignment.visible
+                ? <Icon name='eye' size='small' />
+                : <Icon name='eye slash' size='small' />
+              }
             </ButtonLeft>
             <ButtonRight
               onClick={() => deleteUnitAssignment(assignment.id)}

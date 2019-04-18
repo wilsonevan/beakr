@@ -19,6 +19,7 @@ class Api::ContentsController < ApplicationController
       content = uc.content
       {
         id: content[:id],
+        unit_content_id: uc[:id],
         title: content[:title],
         body: content[:body],
         sequence: uc[:sequence],

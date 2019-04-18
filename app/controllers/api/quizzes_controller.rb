@@ -19,6 +19,7 @@ class Api::QuizzesController < ApplicationController
       quiz = uq.quiz
       {
         id: quiz[:id],
+        unit_quiz_id: uq[:id],
         title: quiz[:title],
         body: quiz[:body],
         sequence: uq[:sequence],
