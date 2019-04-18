@@ -10,49 +10,49 @@ import {
 import dateFns from "date-fns";
 
 const TrendsTable = ({ grades, courses }) => {
-  // RETURN - Array of months used (for the x-axis of the chart)
-  const calcMonths = () => {
+  // RETURN - Array of Weeks used (for the x-axis of the chart)
+  const calcWeeks = () => {
     // find min/max dates of all assignments in all courses
-    const firstMonth = dateFns.startOfMonth(grades[0].due_date);
-    const lastMonth = dateFns.startOfMonth(grades[grades.length - 1].due_date);
+    const firstWeek = dateFns.startOfWeek(grades[0].due_date);
+    const lastWeek = dateFns.startOfWeek(grades[grades.length - 1].due_date);
 
-    let months = [];
-    var currentMonth;
+    let weeks = [];
+    var currentWeek;
 
-    if (dateFns.isBefore(firstMonth, lastMonth)) {
-      // Then, populate each month between, with the date being the first day of each month
+    if (dateFns.isBefore(firstWeek, lastWeek)) {
+      // Then, populate each Week between, with the date being the first day of each Week
       for (
-        currentMonth = firstMonth;
-        dateFns.isBefore(currentMonth, dateFns.addMonths(lastMonth, 1));
-        currentMonth = dateFns.addMonths(currentMonth, 1)
+        currentWeek = firstWeek;
+        dateFns.isBefore(currentWeek, dateFns.addWeeks(lastWeek, 1));
+        currentWeek = dateFns.addWeeks(currentWeek, 1)
       ) {
-        months.push(currentMonth);
+        weeks.push(currentWeek);
       }
     }
-    return months;
+    return weeks;
   };
 
-  // Calculate the total grades of all assignments/quizes, before the first day of the month after it
-  // RETURN - Array of total grades as of each month (for the y-axis)
-  const calcTotalGradesByMonth = (months, courseId) => {
-    return months.map(month => {
-      let monthlyPP = 0;
-      let monthlyPA = 0;
+  // Calculate the total grades of all assignments/quizes, before the first day of the Week after it
+  // RETURN - Array of total grades as of each Week (for the y-axis)
+  const calcTotalGradesByWeek = (weeks, courseId) => {
+    return weeks.map(week => {
+      let weeklyPP = 0;
+      let weeklyPA = 0;
 
       grades.map(grade => {
         if (
           grade.course_id === courseId &&
-          dateFns.isBefore(grade.due_date, dateFns.addMonths(month, 1))
+          dateFns.isBefore(grade.due_date, dateFns.addWeeks(week, 1))
         ) {
-          monthlyPP = monthlyPP + grade.points_possible;
-          monthlyPA = monthlyPA + grade.points_awarded;
+          weeklyPP = weeklyPP + grade.points_possible;
+          weeklyPA = weeklyPA + grade.points_awarded;
         }
       });
 
-      // Calc the percent of all grades before this month
+      // Calc the percent of all grades before this Week
       let gradePercent;
-      if (monthlyPP > 0)
-        gradePercent = Math.round((monthlyPA / monthlyPP) * 100);
+      if (weeklyPP > 0)
+        gradePercent = Math.round((weeklyPA / weeklyPP) * 100);
       else gradePercent = 0;
 
       return gradePercent;
@@ -63,25 +63,25 @@ const TrendsTable = ({ grades, courses }) => {
   // Data is y-axis values
 
   const generateChartData = () => {
-    const months = calcMonths();
+    const weeks = calcWeeks();
 
     const totalGrades = courses.map(course => {
-      const monthlyGrades = calcTotalGradesByMonth(months, course.id);
+      const weeklyGrades = calcTotalGradesByWeek(weeks, course.id);
       return {
         label: course.title,
         // backgroundColor: "#f7f7f7",
         borderColor: chartColors[0],
-        data: monthlyGrades
+        data: weeklyGrades
       };
     });
 
-    // Format the Months
-    const displayMonths = months.map(month => {
-      return dateFns.format(month, "MMM");
+    // Format the Weeks
+    const displayWeeks = weeks.map(week => {
+      return dateFns.format(week, "MMM Do");
     });
 
     return {
-      labels: displayMonths,
+      labels: displayWeeks,
       datasets: totalGrades
     };
   };
