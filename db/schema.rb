@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_16_200020) do
+ActiveRecord::Schema.define(version: 2019_04_17_214910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,17 +24,21 @@ ActiveRecord::Schema.define(version: 2019_04_16_200020) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "url"
+    t.text "feedback"
+    t.float "points_possible"
+    t.float "points_awarded"
+    t.boolean "graded"
     t.index ["assignment_id"], name: "index_assignment_submissions_on_assignment_id"
     t.index ["enrollment_id"], name: "index_assignment_submissions_on_enrollment_id"
   end
 
   create_table "assignments", force: :cascade do |t|
     t.string "title"
-    t.datetime "due_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "body"
     t.string "kind"
+    t.float "points_possible"
   end
 
   create_table "attendances", force: :cascade do |t|
@@ -123,6 +127,7 @@ ActiveRecord::Schema.define(version: 2019_04_16_200020) do
     t.datetime "updated_at", null: false
     t.integer "sequence"
     t.boolean "visible"
+    t.datetime "due_date"
     t.index ["assignment_id"], name: "index_unit_assignments_on_assignment_id"
     t.index ["unit_id"], name: "index_unit_assignments_on_unit_id"
   end

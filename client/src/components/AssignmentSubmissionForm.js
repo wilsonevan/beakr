@@ -6,7 +6,7 @@ import { ButtonGreen } from '../styles/Components';
 import { Header, Form } from 'semantic-ui-react';
 
 class AssignmentSubmissionForm extends React.Component {
-  state = { body: '', code: '', url: '' }
+  state = { body: '', code: '', url: '', points_possible: this.props.points_possible, points_awarded: 0 }
 
   componentDidMount() {
     const { id, body, code, url } = this.props

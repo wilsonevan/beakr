@@ -111,12 +111,14 @@ class NewEnrollment extends React.Component {
       <>
         <CourseContainer>
           <CourseHeading>Select Course</CourseHeading>
-          <Select
-            name="selectedCourseId"
-            onChange={this.handleChange}
-            options={this.mapOptions()}
-            placeholder="Search Courses..."
-          />
+          <SelectContainer>
+            <Select
+              name="selectedCourseId"
+              onChange={this.handleChange}
+              options={this.mapOptions()}
+              placeholder="Search Courses..."
+            />
+          </SelectContainer>
         </CourseContainer>
 
         {selectedCourseId && (
@@ -163,6 +165,17 @@ const CourseContainer = styled.div`
   margin: 3rem auto;
   width: 50%;
 `;
+
+const SelectContainer = styled.div`
+  position: absolute;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  z-index: 1;
+  // margin: auto;
+  // padding: 0px;
+`
 
 const CourseHeading = styled.h2`
   color: #23a24d;
