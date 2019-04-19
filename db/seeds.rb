@@ -154,11 +154,14 @@ Course.all.each do |course|
 >>>>>>> parent of 75eb5c5... Update seeds.rb
 =======
     Quiz.all().each() {|quiz|
+<<<<<<< HEAD
 
       possible = Faker::Number.between(1, 100)
       awarded = Faker::Number.between(0, total)
 
 >>>>>>> parent of d725b76... Merge remote-tracking branch 'origin/seeds' into styles-update
+=======
+>>>>>>> parent of 75eb5c5... Update seeds.rb
       QuizSubmission.create(
         quiz_id: quiz.id,
         enrollment_id: e.id,
