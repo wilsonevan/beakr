@@ -59,7 +59,7 @@ class Navbar extends React.Component {
 									onClick={() => this.activateItem(1)}
 								>
 									<MenuItem as={this.isActive(1)} >
-										<Item>Dashboard</Item>
+										<Item>{user.admin ? 'Admin Dashboard' : 'Dashboard'}</Item>
 									</MenuItem>
 								</NavLink>
 								<NavLink to='/login' onClick={() => handleLogout( history )}>
