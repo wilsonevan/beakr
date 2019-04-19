@@ -5,7 +5,7 @@ import { ButtonGreen } from '../../styles/Components';
 import axios from 'axios';
 
 class AddAssignment extends React.Component {
-  state = {title: '', body: '', due_date: '', kind: '' }
+  state = {title: '', body: '', kind: 'url', points_possible: 0 }
 
   handleChange = (e) => {
     const { name, value } = e.target
