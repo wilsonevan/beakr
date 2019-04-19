@@ -53,7 +53,7 @@ const TrendsTable = ({ grades, courses }) => {
       grades.map(grade => {
         if (
           grade.course_id === courseId &&
-          dateFns.isBefore(grade.due_date, dateFns.addWeeks(week, 1))
+          dateFns.isBefore(grade.due_date, week)
         ) {
           weeklyPP = weeklyPP + grade.points_possible;
           weeklyPA = weeklyPA + grade.points_awarded;
