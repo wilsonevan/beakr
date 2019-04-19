@@ -5,6 +5,8 @@ import { Header, Icon, } from 'semantic-ui-react';
 import QuizStart from "./QuizStart";
 import QuestionView from "./QuestionView";
 import QuizPrompt from "./QuizPrompt";
+import QuizSubmissionView from "./QuizSubmissionView";
+import { withAuth } from "../../providers/AuthProvider";
 
 class QuizView extends React.Component {
   state = { 
@@ -18,35 +20,61 @@ class QuizView extends React.Component {
     validationPrompt: false,
     validationText: "",
     submission: null,
-    adminView: false,
+    teacherView: true,
+    submissionList: null,
   }
 
   componentDidMount() {
     const { course_id, unit_id ,id } = this.props.match.params;
+    const { user } = this.props;
+    const { teacherView } = this.state;
+    console.log(this.props)
 
-    if(course_id) {
-      axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
-        .then( res => {
-          const { title, due_date, body } = res.data;
-          this.setState({ title, due_date, body });
-          return axios.get(`/api/courses/${course_id}/quizzes/${id}/quiz_submissions`)
-        })
-        .then((res) => {
-          if(res.data) this.setState({ submission: res.data, page: "submission" });
-          else this.setState({ page: "start" })
-          return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
-        })
-        .then((res) => this.setState({ questions: res.data }))
-        .catch((err) => console.log(err));
+    // If the user is an admin, teacherView is true
+    // If not an admin, check if role === teacher
+    if(user.admin) {
+      this.setState({ teacherView: true });
     } else {
+      axios.get(`/api/users/${user.id}/courses/${course_id}/enrollments`)
+      .then((res) =>{
+        console.log(res)
+        if(res.data.role === "student") this.setState({ teacherView: false }); 
+      })
+    }
+
+    if(teacherView) {
+      axios.get(`/api//quizzes/${id}/quiz_submissions`)
+      .then((res) => {
+        this.setState({ submissionList: res.data });
+      })
+      .catch((err) => console.log(err))
+    }
+
+    if(!teacherView) {
       axios.get(`/api/quizzes/${this.props.match.params.id}`)
         .then( res => {
           const { title, due_date, body } = res.data;
-          this.setState({ title, due_date, body, page: "start", adminView: true });
+          this.setState({ title, due_date, body, page: "start" });
           return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
         })
         .then((res) => this.setState({ questions: res.data }))
         .catch((err) => console.log(err));
+
+    } else {
+      axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
+      .then( res => {
+        const { title, due_date, body } = res.data;
+        this.setState({ title, due_date, body });
+        return axios.get(`/api/courses/${course_id}/quizzes/${id}/quiz_submissions`)
+      })
+      .then((res) => {
+        if(res.data) this.setState({ submission: res.data, page: "submission" });
+        else this.setState({ page: "start" })
+        return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
+      })
+      .then((res) => this.setState({ questions: res.data }))
+      .catch((err) => console.log(err));
+
     }
   }
 
@@ -114,8 +142,21 @@ class QuizView extends React.Component {
     this.setState({ page: "view" });
   }
 
+  setSubmission = (submission_id) => {
+    console.log(submission_id)
+    axios.get(`/api/quiz_submissions/${submission_id}`)
+    .then((res) => {
+      this.setState({ submission: res.data, page: "submission" })
+    })
+    .catch((err) => console.log(err));
+  }
+
+  unsetSubmission = () => {
+    this.setState({ submission: null, page: "start" });
+  }
+
   render() {
-    const { title, questions, page, startPrompt, submitPrompt, validationPrompt, validationText, due_date, body, adminView } = this.state;
+    const { title, questions, page, startPrompt, submitPrompt, validationPrompt, validationText, due_date, body, teacherView, submission, submissionList } = this.state;
     if(page === "start") return (
         <>
         <Header as={Link} to='' onClick={() => this.props.history.goBack()} content='< Course Work' color='green' size='huge' textAlign='left'/>
@@ -127,7 +168,9 @@ class QuizView extends React.Component {
             toggleStartPrompt={this.toggleStartPrompt} 
             due_date={due_date}
             body={body}
-            adminView={adminView}
+            teacherView={teacherView}
+            submissionList={submissionList}
+            setSubmission={this.setSubmission}
           />
           { startPrompt &&
             <QuizPrompt 
@@ -170,11 +213,12 @@ class QuizView extends React.Component {
         </>
       ) 
       else if(page === "submission") return (
-        <h1>Submission view page goes here</h1>
+        <QuizSubmissionView 
+          submission={submission}
+        />
       )
       else return null
-
   }
 }
 
-export default QuizView
+export default withAuth(QuizView)
