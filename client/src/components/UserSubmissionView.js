@@ -7,7 +7,8 @@ import AssignmentSubmissionForm from './AssignmentSubmissionForm';
 
 class UserSubmissionView extends React.Component {
   state = { 
-    id: '', body: '', url: '', code: '', kind: '', points_awarded: '', points_possible: '',
+    id: '', body: '', url: '', code: '', kind: '', 
+    points_awarded: '', points_possible: '', grade: '',
     editing: false, warning: false 
   }
 

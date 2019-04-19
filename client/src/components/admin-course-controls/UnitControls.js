@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { ButtonGreen, ButtonBlue } from "../../styles/Components";
+import { ButtonGreen } from "../../styles/Components";
 import SearchBar from "../SearchBar";
 import AddContentLink from "./AddContentLink";
 import ContentBlock from "./ContentBlock";
@@ -10,8 +10,9 @@ import AssignmentBlock from "./AssignmentBlock";
 import AddQuizLink from "./AddQuizLink";
 import QuizBlock from "./QuizBlock";
 import EditUnitTitle from "./EditUnitTitle";
-import anime from "animejs";
-import { Icon, Visibility } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
+
+
 
 class UnitControls extends React.Component {
 
@@ -28,7 +29,7 @@ class UnitControls extends React.Component {
     axios
       .get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`)
       .then(res => {
-        this.setState({ assignments: res.data })
+        this.setState({ assignments: res.data });
       })
       .catch(err => console.log(err));
 
@@ -198,6 +199,30 @@ class UnitControls extends React.Component {
     }
   }
 
+  setAssignmentDueDate = (due_date, unit_assignment_id) => {
+    axios.put(`/api/unit_assignments/${unit_assignment_id}`, {unit_assignment: { due_date } })
+    .then((res) => {
+      const assignments = this.state.assignments.map((assignment) => {
+        if(assignment.unit_assignment_id === unit_assignment_id) assignment.due_date = due_date;
+        return assignment;
+      })
+      this.setState({ assignments });
+    })
+    .catch((err) => console.log(err));
+  }
+
+  setQuizDueDate = (due_date, unit_quiz_id) => {
+    axios.put(`/api/unit_quizzes/${unit_quiz_id}`, {unit_quiz: { due_date } })
+    .then((res) => {
+      const quizzes = this.state.quizzes.map((quiz) => {
+        if(quiz.unit_quiz_id === unit_quiz_id) quiz.due_date = due_date;
+        return quiz;
+      })
+      this.setState({ quizzes });
+    })
+    .catch((err) => console.log(err));
+  }
+
   toggleEditing = () => {
     this.setState({ editing: !this.state.editing })
   };
@@ -227,6 +252,7 @@ class UnitControls extends React.Component {
           index={index}
           deleteUnitAssignment={this.deleteUnitAssignment}
           toggleAssignmentVisibility={this.toggleAssignmentVisibility}
+          setAssignmentDueDate={this.setAssignmentDueDate}
         />
       );
     });
@@ -242,6 +268,7 @@ class UnitControls extends React.Component {
           index={index}
           deleteUnitQuiz={this.deleteUnitQuiz}
           toggleQuizVisibility={this.toggleQuizVisibility}
+          setQuizDueDate={this.setQuizDueDate}
         />
       );
     });
