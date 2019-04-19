@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { Card, Table, Dropdown, Modal } from "semantic-ui-react";
-import { Line } from "react-chartjs-2";
-import CourseCard from "./CourseCard";
+import { Table, Modal } from "semantic-ui-react";
 import axios from "axios";
-import { AuthConsumer } from "../../providers/AuthProvider";
-import dateFns from "date-fns";
 import StudentGradesView from "./StudentGradesView";
+import {
+  GradesContainer,
+  TableHeader,
+  ModalContainer,
+  DataSummary,
+  HeaderSummary
+} from "./GradeBookStyles";
 
 const AdminGradesView = ({ courseId }) => {
   // const [studentGrades, setStudentGrades] = useState(0);
@@ -84,73 +86,5 @@ const AdminGradesView = ({ courseId }) => {
       </DataSummary>
     );
 };
-
-const SummaryContainer = styled.div`
-  // background-color: #23a24d;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 10px;
-  border: 1px solid #23a24d;
-  border-radius: 5px;
-`;
-
-const ChartContainer = styled.div`
-  padding: 5px;
-  padding-top: 20px;
-`;
-
-const TopContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  // align-items: stretch;
-  padding: 10px;
-`;
-
-const GradesContainer = styled.div`
-  padding-top: 10px;
-  padding-bottom: 10px;
-`;
-
-const HeaderSummary = styled.h3`
-  width: 30%;
-  text-align: left !important;
-  // display: flex;
-  display: inline;
-  // flex-grow: none;
-  // justify-content: flex-end;
-  padding: 10px;
-  margin: 5px;
-  // color: white !important;
-`;
-
-const Split = styled.hr`
-  border-color: #23a24d;
-  border-top: none;
-`;
-
-const DataSummary = styled.div`
-  // text-align: left !important;
-  display: flex;
-  flex-wrap: wrap;
-  flex-grow: 16;
-  align-content: stretch;
-  justify-content: flex-start;
-  // padding: 10px;
-`;
-
-const BottomContainer = styled.div`
-  display: flex;
-  // justify-content: flex-start;
-  align-items: stretch;
-  padding: 10px;
-`;
-
-const ModalContainer = styled.div`
-  padding: 20px;
-  // margin: 10px;
-`;
-
-const TableHeader = styled.h4``;
 
 export default AdminGradesView;
