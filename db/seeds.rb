@@ -144,12 +144,16 @@ Course.all.each do |course|
     )
 
     Quiz.all().each() {|quiz|
+
+      possible = Faker::Number.between(1, 100)
+      awarded = Faker::Number.between(0, total)
+
       QuizSubmission.create(
         quiz_id: quiz.id,
         enrollment_id: e.id,
-        points_possible: 60,
-        points_awarded: 20,
-        grade: 33.33,
+        points_possible: possible,
+        points_awarded: awarded,
+        grade: (awarded/possible),
         graded: false,
         comment: "teacher comment enetered on quiz submission here",
         questions: [
