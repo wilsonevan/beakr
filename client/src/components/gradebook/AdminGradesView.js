@@ -7,16 +7,18 @@ import axios from "axios";
 import { AuthConsumer } from "../../providers/AuthProvider";
 import dateFns from "date-fns";
 
-const AdminGradesView = ({courseId, }) => {
-  const [studentGrades, setStudentGrades] = useState(0);
+const AdminGradesView = ({ courseId }) => {
+  // const [studentGrades, setStudentGrades] = useState(0);
   const [totalGrades, setTotalGrades] = useState(0);
-  const [upcomingAssignments, setUpcomingAssignments] = useState(0);
+  // const [upcomingAssignments, setUpcomingAssignments] = useState(0);
 
   useEffect(() => {
-    axios.get(`/api/calc_grades_all_students`, {params: {id: courseId}} )
-    .then(res => {
-      setTotalGrades(res.data);
-    });
+    if (courseId)
+      axios
+        .get(`/api/calc_grades_all_students`, { params: { id: courseId } })
+        .then(res => {
+          setTotalGrades(res.data);
+        });
   }, []);
 
   const renderGrades = () => {
@@ -26,10 +28,10 @@ const AdminGradesView = ({courseId, }) => {
           <Table celled selectable color="green">
             <Table.Header>
               <Table.Row>
+                <Table.HeaderCell textAlign="center">Students</Table.HeaderCell>
                 <Table.HeaderCell textAlign="center">
-                  Students
+                  Current Grade
                 </Table.HeaderCell>
-                <Table.HeaderCell textAlign="center">Current Grade</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -38,15 +40,20 @@ const AdminGradesView = ({courseId, }) => {
                 return (
                   <Table.Row>
                     <Table.Cell singleLine>
-                      <TableHeader as="h4">{studentGrade.user_first_name} {studentGrade.user_last_name}</TableHeader>
+                      <TableHeader as="h4">
+                        {studentGrade.user_first_name}{" "}
+                        {studentGrade.user_last_name}
+                      </TableHeader>
                     </Table.Cell>
-                    {studentGrade.points_possible > 0 ? (
+                    {studentGrade.grade_percent ? 
                       <Table.Cell textAlign="center">
-                        {studentGrade.points_percent}%
+                        {studentGrade.grade_percent}%
                       </Table.Cell>
-                    ) : (
-                      <Table.Cell textAlign="center">0%</Table.Cell>
-                    )}
+                    : 
+                    <Table.Cell textAlign="center">
+                      0%
+                    </Table.Cell>
+                    }
                   </Table.Row>
                 );
               })}
@@ -62,18 +69,13 @@ const AdminGradesView = ({courseId, }) => {
       );
   };
 
-  if (totalGrades.length > 0)
-  return (
-    <>
-      {renderGrades()}
-    </>
-  );
-else
-  return (
-    <DataSummary>
-      <HeaderSummary>No grades yet for this course.</HeaderSummary>
-    </DataSummary>
-  );
+  if (totalGrades.length > 0) return <>{renderGrades()}</>;
+  else
+    return (
+      <DataSummary>
+        <HeaderSummary>No grades yet for this course.</HeaderSummary>
+      </DataSummary>
+    );
 };
 
 const SummaryContainer = styled.div`
@@ -138,6 +140,5 @@ const BottomContainer = styled.div`
 `;
 
 const TableHeader = styled.h4``;
-
 
 export default AdminGradesView;
