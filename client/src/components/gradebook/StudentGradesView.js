@@ -15,7 +15,6 @@ const StudentGradesView = ({ auth }) => {
   const [quizGrades, setQuizGrades] = useState(0);
   const [totalGrades, setTotalGrades] = useState(0);
   const [allGrades, setAllGrades] = useState(0);
-  // const [upcomingAssignments, setUpcomingAssignments] = useState(0);
 
   useEffect(() => {
     const id = auth.user.id;

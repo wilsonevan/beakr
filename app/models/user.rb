@@ -212,6 +212,7 @@ class User < ActiveRecord::Base
         WHERE users.id = ? AND course_id = ?
       ", user_id, course.id ])
 
+      
       total_possible = 0
       total_awarded = 0
       
@@ -246,7 +247,6 @@ class User < ActiveRecord::Base
         total_possible: total_possible, 
         grade_percent: grade_percent, })
     end
-
     return total_grades
   end
 
