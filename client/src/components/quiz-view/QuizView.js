@@ -20,62 +20,73 @@ class QuizView extends React.Component {
     validationPrompt: false,
     validationText: "",
     submission: null,
-    teacherView: true,
+    teacherView: null,
     submissionList: null,
   }
 
   componentDidMount() {
-    const { course_id, unit_id ,id } = this.props.match.params;
+    const { course_id, unit_id, id } = this.props.match.params;
     const { user } = this.props;
     const { teacherView } = this.state;
-    console.log(this.props)
+    // console.log(this.props)
 
     // If the user is an admin, teacherView is true
     // If not an admin, check if role === teacher
     if(user.admin) {
       this.setState({ teacherView: true });
+      this.handleTeacherView()
     } else {
       axios.get(`/api/users/${user.id}/courses/${course_id}/enrollments`)
       .then((res) =>{
-        console.log(res)
-        if(res.data.role === "student") this.setState({ teacherView: false }); 
+        if(res.data.role === "student") {
+          this.setState({ teacherView: false });
+          return this.handleStudentView()
+        } else {
+          this.setState({ teacherView: true });
+          return this.handleTeacherView()
+        }
       })
     }
+  }
 
-    if(teacherView) {
-      axios.get(`/api//quizzes/${id}/quiz_submissions`)
+  handleTeacherView = () => {
+    const { course_id, unit_id, id } = this.props.match.params;
+    return new Promise((resolve, reject) => {
+      axios.get(`/api/quizzes/${id}/quiz_submissions`)
       .then((res) => {
         this.setState({ submissionList: res.data });
+        return axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
       })
-      .catch((err) => console.log(err))
-    }
-
-    if(!teacherView) {
-      axios.get(`/api/quizzes/${this.props.match.params.id}`)
-        .then( res => {
-          const { title, due_date, body } = res.data;
-          this.setState({ title, due_date, body, page: "start" });
-          return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
-        })
-        .then((res) => this.setState({ questions: res.data }))
-        .catch((err) => console.log(err));
-
-    } else {
-      axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
       .then( res => {
+        console.log(res.data)
         const { title, due_date, body } = res.data;
-        this.setState({ title, due_date, body });
-        return axios.get(`/api/courses/${course_id}/quizzes/${id}/quiz_submissions`)
+        this.setState({ title, due_date, body, page: "start" });
       })
+      .catch((err) => reject(err));
+    })
+  }
+
+  handleStudentView = () => {
+    const { course_id, unit_id, id } = this.props.match.params;
+    return new Promise((resolve, reject) => {
+      axios.get(`/api/courses/${course_id}/quizzes/${id}/quiz_submissions`)
       .then((res) => {
         if(res.data) this.setState({ submission: res.data, page: "submission" });
-        else this.setState({ page: "start" })
-        return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
+        else return axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
       })
-      .then((res) => this.setState({ questions: res.data }))
-      .catch((err) => console.log(err));
-
-    }
+      .then( res => {
+        if(res) {
+          console.log(res.data)
+          const { title, due_date, body } = res.data;
+          this.setState({ title, due_date, body, page: "start" });
+          return axios.get(`/api/quizzes/${id}/questions`)
+        }
+      })
+      .then((res) => {
+        if(res) this.setState({ questions: res.data });
+      })
+      .catch((err) => reject(err));
+    })
   }
 
   handleCodeChange = (value, currentQuestion) => {
