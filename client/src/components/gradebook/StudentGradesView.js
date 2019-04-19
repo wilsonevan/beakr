@@ -198,41 +198,41 @@ const StudentGradesView = ({ auth }) => {
       );
   };
 
-  const renderRecentAssignments = () => {
-    const feedbackItems = assignments.filter(assignment => {
-      // Only add to array if there is feedback, otherwise skip it
-      if (assignment.feedback)
-        return {
-          header: assignment.header,
-          description: assignment.feedback
-        };
-    });
+  // const renderRecentAssignments = () => {
+  //   const feedbackItems = assignments.filter(assignment => {
+  //     // Only add to array if there is feedback, otherwise skip it
+  //     if (assignment.feedback)
+  //       return {
+  //         header: assignment.header,
+  //         description: assignment.feedback
+  //       };
+  //   });
 
-    return (
-      <SummaryContainer>
-        <HeaderSummary>Recent Feedback</HeaderSummary>
-        <Split />
-        <TopContainer>
-          <DataSummary>
-            <Card.Group items={feedbackItems} itemsPerRow={1} />
-          </DataSummary>
-        </TopContainer>
-      </SummaryContainer>
-    );
-  };
+  //   return (
+  //     <SummaryContainer>
+  //       <HeaderSummary>Recent Feedback</HeaderSummary>
+  //       <Split />
+  //       <TopContainer>
+  //         <DataSummary>
+  //           <Card.Group items={feedbackItems} itemsPerRow={1} />
+  //         </DataSummary>
+  //       </TopContainer>
+  //     </SummaryContainer>
+  //   );
+  // };
 
   if (courses.length > 0)
     return (
       <>
         {renderSummary()}
         <br />
+        <TrendsTable grades={grades} courses={courses} />
+        <br />
         {renderDropDown()}
         <br />
         {renderGrades()}
-        <br />
-        <TrendsTable grades={grades} courses={courses} />
-        <br />
-        {renderRecentAssignments()}
+        {/* <br /> */}
+        {/* {renderRecentAssignments()} */}
       </>
     );
   else
@@ -242,72 +242,6 @@ const StudentGradesView = ({ auth }) => {
       </DataSummary>
     );
 };
-
-
-// FAKE DATA FOR TESTING
-
-// const testGrades = [
-//   {
-//     assignment: "Quiz A",
-//     grade: "87%"
-//   },
-//   {
-//     assignment: "Quiz B",
-//     grade: "60%"
-//   },
-//   {
-//     assignment: "Assignment C",
-//     grade: "12%"
-//   }
-// ];
-
-// var testCourses = [
-//   {
-//     header: "Course A",
-//     grade: 89,
-//     grades: testGrades,
-//   },
-//   {
-//     header: "Course B",
-//     grade: 34,
-//     grades: null,
-//   },
-//   {
-//     header: "Course C",
-//     grade: 27,
-//     grades: null,
-//   }
-// ];
-
-var assignments = [
-  {
-    header: "Assignment A",
-    meta: "due: tomorrow",
-    description: "Lorum Ipsum",
-    feedback: "Test"
-  },
-  {
-    header: "Assignment B",
-    meta: "due: tomorrow",
-    description: "Lorum Ipsum",
-    feedback: "Test"
-  },
-  {
-    header: "Assignment C",
-    meta: "due: tomorrow",
-    description: "Lorum Ipsum"
-  },
-  {
-    header: "Assignment D",
-    meta: "due: tomorrow",
-    description: "Lorum Ipsum"
-  },
-  {
-    header: "Assignment E",
-    meta: "due: tomorrow",
-    description: "Lorum Ipsum"
-  }
-];
 
 class ConnectedStudentGradesView extends React.Component {
   render() {

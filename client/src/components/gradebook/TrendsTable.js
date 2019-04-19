@@ -75,12 +75,15 @@ const TrendsTable = ({ grades, courses }) => {
   const generateChartData = () => {
     const weeks = calcWeeks();
 
-    const totalGrades = courses.map(course => {
+    const totalGrades = courses.map((course,index) => {
       const weeklyGrades = calcTotalGradesByWeek(weeks, course.id);
+      
+      if (index > chartColors.length - 1)
+        index = chartColors.length - 1;
+
       return {
         label: course.title,
-        // backgroundColor: "#f7f7f7",
-        borderColor: chartColors[0],
+        borderColor: chartColors[index],
         data: weeklyGrades
       };
     });
