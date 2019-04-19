@@ -25,7 +25,6 @@ class AdminCreateQuiz extends React.Component {
   handleSetQuestionState = (index, question) => {
     const { quizValues, addQuestion, questions} = this.state
     this.state.questions[index] = question
-    console.log(this.state.questions[index])
     this.setState({ quizValues, addQuestion, questions, })
   }
 
