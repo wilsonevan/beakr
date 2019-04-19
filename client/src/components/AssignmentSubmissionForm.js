@@ -6,12 +6,12 @@ import { ButtonGreen } from '../styles/Components';
 import { Header, Form } from 'semantic-ui-react';
 
 class AssignmentSubmissionForm extends React.Component {
-  state = { body: '', code: '', url: '', points_possible: this.props.points_possible, points_awarded: 0 }
+  state = { body: '', code: '', url: '', points_awarded: 0 }
 
   componentDidMount() {
-    const { id, body, code, url } = this.props
+    const { id, body, code, url, } = this.props
     if (id)
-      this.setState({ body, code, url })
+      this.setState({ body, code, url, })
   }
 
   handleChange = (e) => {
@@ -29,9 +29,9 @@ class AssignmentSubmissionForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { toggle, assignment_id, course_id, id } = this.props;
+    const { toggle, assignment_id, course_id, id, points_possible } = this.props;
     const { body, code, url} = this.state
-    const assignment_submission = {...this.state, course_id};
+    const assignment_submission = {...this.state, course_id, points_possible};
     if (id) {
       axios.put(`/api/assignments/${assignment_id}/assignment_submissions/${id}`, assignment_submission)
         .then(res => {

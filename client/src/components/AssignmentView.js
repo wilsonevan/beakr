@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 import { AuthConsumer } from '../providers/AuthProvider';
-import { Segment, Header, Icon, } from 'semantic-ui-react';
+import { Header, Icon, } from 'semantic-ui-react';
+import { ButtonGreen } from '../styles/Components';
 import AssignmentSubmissionForm from './AssignmentSubmissionForm';
 import EditAssignmentTitle from './EditAssignmentTitle';
 import EditAssignmentBody from './EditAssignmentBody';
@@ -197,13 +198,13 @@ class AssignmentView extends React.Component {
             <>
               {this.renderAdminView()}
               {editingBody? 
-                <BlueLink onClick={() => this.toggleEditingBody()}>
+                <ButtonGreen onClick={() => this.toggleEditingBody()}>
                   Cancel Edit 
-                </BlueLink>
+                </ButtonGreen>
               : 
-                <BlueLink onClick={() => this.toggleEditingBody()}>
+                <ButtonGreen onClick={() => this.toggleEditingBody()}>
                   Edit Content
-                </BlueLink>
+                </ButtonGreen>
               }
             </>
           :
