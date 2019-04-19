@@ -88,7 +88,6 @@ const StartHeading = styled.div`
     align-items: center;
 `
 
-
 const StyledHr = styled.hr`
     border: none;
     height: 2px;

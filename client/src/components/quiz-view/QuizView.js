@@ -103,7 +103,7 @@ class QuizView extends React.Component {
       quiz_id: this.props.match.params.id,
     })
     .then((res) => {
-      this.setState({ page: "submission" });
+      this.setSubmission(res.data.id);
     })
     .catch((err) => console.log(err));
   }
