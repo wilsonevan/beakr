@@ -1,9 +1,15 @@
+
+puts "\n1) DESTROYING OLD DATA"
+
 Course.destroy_all
 User.destroy_all
 Content.destroy_all
 Quiz.destroy_all
 Assignment.destroy_all
 
+
+
+puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
 5.times do
   course = Course.create(
     title: Faker::Educator.course_name
@@ -99,13 +105,15 @@ Assignment.destroy_all
           visible: true,
           sequence: nil,
           due_date: Faker::Date.forward(60),
-
         )
       end
     end
   end
 end
 
+
+
+puts "\n3) CREATING ENROLLED USERS / QUIZ_SUBMISSIONS / ATTENDANCES"
 Course.all.each do |course|
   1.times do
     user = User.create(
@@ -143,25 +151,9 @@ Course.all.each do |course|
       role: 'student'
     )
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     course.sections.each() {|section| 
       unit = section.units.first 
       quiz = unit.quizzes.first()
-      assignment = unit.assignments.first()
-=======
-    Quiz.all().each() {|quiz|
->>>>>>> parent of 75eb5c5... Update seeds.rb
-=======
-    Quiz.all().each() {|quiz|
-<<<<<<< HEAD
-
-      possible = Faker::Number.between(1, 100)
-      awarded = Faker::Number.between(0, total)
-
->>>>>>> parent of d725b76... Merge remote-tracking branch 'origin/seeds' into styles-update
-=======
->>>>>>> parent of 75eb5c5... Update seeds.rb
       QuizSubmission.create(
         quiz_id: quiz.id,
         enrollment_id: e.id,
@@ -238,6 +230,9 @@ Course.all.each do |course|
   end
 end
 
+
+
+puts "\n4) CREATING STUDENT@TEST.COM"
 1.times do
   user = User.create(
     first_name: Faker::Name.first_name,
@@ -278,6 +273,9 @@ end
   end
 end
 
+
+
+puts "\n5) CREATING TEST@TEST.COM"
 1.times do
   user = User.create(
     first_name: Faker::Name.first_name,
@@ -299,6 +297,8 @@ end
   end
 end
 
+
+puts "\n6) CREATING UNENROLLED STUDENTS"
 30.times do
   user = User.create(
     first_name: Faker::Name.first_name,
@@ -312,4 +312,6 @@ end
 end
 
 
-puts 'Planted the seeds'
+puts "\n- -------------------- ----- ---- --- --- -- -- -- -- - - - -"
+puts "- - - --------------  PLANTED THE SEEDS  -------------- - - -"
+puts "- - - -- -- -- -- --- --- ---- ----- ---------------------- -"
