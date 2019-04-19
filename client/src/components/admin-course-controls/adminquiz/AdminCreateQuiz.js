@@ -110,7 +110,7 @@ class AdminCreateQuiz extends React.Component {
           modules={modules}
           formats={formats}
           onChange={this.handleQuillChange} 
-          style={{height: '25rem', paddingBottom: '4rem'}}
+          style={{height: '25rem', paddingBottom: '4rem', marginBottom: '1rem'}}
         />
         </QuizContainer>
         <QuizContainer>
