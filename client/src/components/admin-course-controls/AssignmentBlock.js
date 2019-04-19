@@ -6,12 +6,11 @@ import Flatpickr from 'react-flatpickr';
 class AssignmentBlock extends React.Component {
 
   render() {
-    const { assignment, deleteUnitAssignment, toggleAssignmentVisibility, setAssignmentDueDate } = this.props;
-    console.log(assignment.due_date)
+    const { assignment, deleteUnitAssignment, toggleAssignmentVisibility, setAssignmentDueDate, course_id, unit } = this.props;
     return (
       <BlockContainer>
         <AssignmentBlockText
-          href={`/assignments/${assignment.id}`}
+          href={`/courses/${course_id}/units/${unit.id}/assignments/${assignment.id}`}
           target="_blank"
         >
           <Tag><Icon name="edit outline" /></Tag> {assignment.title}

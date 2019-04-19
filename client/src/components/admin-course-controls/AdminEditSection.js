@@ -83,6 +83,7 @@ class AdminEditSection extends React.Component {
           key={unit.id}
           unit={unit}
           section={this.state.section}
+          courseId={this.props.match.params.course_id}
           deleteUnit={this.deleteUnit}
           updateUnit={this.updateUnit}
         />

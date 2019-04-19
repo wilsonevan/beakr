@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table, } from "semantic-ui-react";
+import { Card, Table } from "semantic-ui-react";
 import CourseCard from "./CourseCard";
 import axios from "axios";
 import { AuthConsumer } from "../../providers/AuthProvider";
 import dateFns from "date-fns";
 import TrendsTable from "./TrendsTable";
-import { SummaryContainer, TopContainer, GradesContainer, HeaderSummary, DataSummary, Split, TableHeader, } from './GradeBookStyles'
+import {
+  SummaryContainer,
+  TopContainer,
+  GradesContainer,
+  HeaderSummary,
+  DataSummary,
+  Split,
+  TableHeader,
+  CardHeader
+} from "./GradeBookStyles";
 import { Link } from "react-router-dom";
 
-const StudentGradesView = ({ auth }) => {
+const StudentGradesView = ({ auth, student }) => {
   const [courses, setCourses] = useState(0);
   const [activeCourse, setActiveCourse] = useState(0);
   const [assignmentGrades, setAssignmentGrades] = useState(0);
@@ -17,52 +26,79 @@ const StudentGradesView = ({ auth }) => {
   const [allGrades, setAllGrades] = useState(0);
 
   useEffect(() => {
-    const id = auth.user.id;
+    let id = 0;
+    if (student) {
+      id = student.user_id;
+    } else {
+      id = auth.user.id;
+    }
 
-    axios.get("/api/user_courses").then(res => {
+    axios.get("/api/student_courses", { params: { id: id } }).then(res => {
       setCourses(res.data);
       setActiveCourse(res.data[0]);
     });
-    axios.get("api/calc_total_grades", { params: { id: id } }).then(res => {
+    axios.get("/api/calc_total_grades", { params: { id: id } }).then(res => {
       setTotalGrades(res.data);
     });
-    axios.get("/api/get_user_grades_assignments", { params: { id: id } }).then(res => {
-      setAssignmentGrades(res.data);
-    });
-    axios.get("/api/get_user_grades_quizzes", { params: { id: id } }).then(res => {
-      setQuizGrades(res.data);
-    });
+    axios
+      .get("/api/get_user_grades_assignments", { params: { id: id } })
+      .then(res => {
+        setAssignmentGrades(res.data);
+      });
+    axios
+      .get("/api/get_user_grades_quizzes", { params: { id: id } })
+      .then(res => {
+        setQuizGrades(res.data);
+      });
     axios.get("/api/get_all_user_grades", { params: { id: id } }).then(res => {
       setAllGrades(res.data);
     });
-    
   }, []);
 
-
-  const getUpcomingAssignments = (grades) => {
+  const renderUpcomingAssignments = grades => {
     let count = 0;
-    let assignments = [];
     if (grades) {
-      grades.map(grade => {
+      return grades.map(grade => {
         if (dateFns.isFuture(grade.due_date) && count < 4) {
           // Since Assignments are already in order by date, take the first 4 assignments with due dates in the future
           count++;
-          assignments.push({
-            id: grade.submission_id,
-            header: grade.title,
-            meta: `due: ${dateFns.format(
-              dateFns.parse(grade.due_date),
-              "MM/DD/YY"
-            )}`
-          });
+          return (
+            <Card>
+              <Card.Content>
+                {grades[0].assignment_id ? (
+                  <Link
+                    to={`/courses/${grade.course_id}/units/${
+                      grades.unit_id
+                    }/assignments/${grade.assignment_id}`}
+                  >
+                    <CardHeader>{grade.title}</CardHeader>
+                  </Link>
+                ) : (
+                  <Link
+                    to={`/courses/${grade.course_id}/units/${
+                      grade.unit_id
+                    }/quizzes/${grade.quiz_id}`}
+                  >
+                    <CardHeader>{grade.title}</CardHeader>
+                  </Link>
+                )}
+                <Card.Meta>
+                  {`due: ${dateFns.format(
+                    dateFns.parse(grade.due_date),
+                    "MM/DD/YY"
+                  )}`}
+                </Card.Meta>
+              </Card.Content>
+            </Card>
+          );
         }
       });
+    } else {
+      return <></>;
     }
-    return assignments;
   };
 
-
-  const renderSummary = (grades) => {
+  const renderSummary = grades => {
     // Make sure to only display max 4 courses
     if (courses.length > 4) {
       courses.length = 4;
@@ -70,11 +106,11 @@ const StudentGradesView = ({ auth }) => {
     return (
       <SummaryContainer>
         <TopContainer>
-          <HeaderSummary>Grades Summary</HeaderSummary>
+          <HeaderSummary>Current Total Grades</HeaderSummary>
           <DataSummary>
             {totalGrades ? (
               <>
-                {totalGrades.map((course, index) => {
+                {totalGrades.map(course => {
                   return <CourseCard course={course} />;
                 })}
               </>
@@ -89,17 +125,14 @@ const StudentGradesView = ({ auth }) => {
         <TopContainer>
           <HeaderSummary>Upcoming Assignments/Quizzes</HeaderSummary>
           <DataSummary>
-            <Card.Group
-              fluid
-              items={getUpcomingAssignments(grades)}
-              itemsPerRow={2}
-            />
+            <Card.Group fluid itemsPerRow={2}>
+              {renderUpcomingAssignments(grades)}
+            </Card.Group>
           </DataSummary>
         </TopContainer>
       </SummaryContainer>
     );
   };
-
 
   const renderDropDown = () => {
     return (
@@ -123,23 +156,22 @@ const StudentGradesView = ({ auth }) => {
     );
   };
 
-
-  const renderGrades = (grades) => {
+  const renderGrades = grades => {
     if (grades) {
       return (
         <GradesContainer>
           <Table celled selectable color="green">
             <Table.Header>
               <Table.Row>
-                { grades[0].assignment_id ?
+                {grades[0].assignment_id ? (
                   <Table.HeaderCell textAlign="center">
                     Assignments
                   </Table.HeaderCell>
-                :
+                ) : (
                   <Table.HeaderCell textAlign="center">
                     Quizzes
                   </Table.HeaderCell>
-                }
+                )}
                 <Table.HeaderCell textAlign="center">Due Date</Table.HeaderCell>
                 <Table.HeaderCell textAlign="center">Score</Table.HeaderCell>
               </Table.Row>
@@ -151,7 +183,7 @@ const StudentGradesView = ({ auth }) => {
                     <Table.Row>
                       { grades[0].assignment_id ? 
                           <Table.Cell>
-                            <Link to={`/courses/${grade.course_id}/assignments/${grade.assignment_id}`}>
+                            <Link to={`/courses/${grade.course_id}/units/${grades.unit_id}/assignments/${grade.assignment_id}`}>
                               <TableHeader as="h4">{grade.title}</TableHeader>
                             </Link>
                           </Table.Cell>
@@ -163,18 +195,16 @@ const StudentGradesView = ({ auth }) => {
                           </Table.Cell>
                         }
                       <Table.Cell textAlign="center">
-                      { grade.due_date ?
-                        <>
-                        {dateFns.format(
-                          dateFns.parse(grade.due_date),
-                          "MM/DD/YY"
+                        {grade.due_date ? (
+                          <>
+                            {dateFns.format(
+                              dateFns.parse(grade.due_date),
+                              "MM/DD/YY"
+                            )}
+                          </>
+                        ) : (
+                          <>No Date Yet</>
                         )}
-                        </>
-                        :
-                        <>
-                          No Date Yet
-                        </>
-                      }
                       </Table.Cell>
                       {grade.points_possible > 0 ? (
                         <Table.Cell textAlign="center">
@@ -222,7 +252,7 @@ const StudentGradesView = ({ auth }) => {
         </GradesContainer>
       );
   };
-  
+
   // const renderRecentAssignments = () => {
   //   const feedbackItems = assignments.filter(assignment => {
   //     // Only add to array if there is feedback, otherwise skip it
@@ -245,7 +275,6 @@ const StudentGradesView = ({ auth }) => {
   //     </SummaryContainer>
   //   );
   // };
-
 
   if (courses.length > 0)
     return (
@@ -270,7 +299,6 @@ const StudentGradesView = ({ auth }) => {
       </DataSummary>
     );
 };
-
 
 class ConnectedStudentGradesView extends React.Component {
   render() {

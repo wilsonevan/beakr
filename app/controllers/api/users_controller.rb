@@ -1,7 +1,7 @@
 
 class Api::UsersController < ApplicationController
   before_action :authorize_admin, only: [:index]
-  before_action :set_user, only: [:show, :get_user_grades_assignments, :get_user_grades_quizzes, :get_all_user_grades, :calc_total_grades, ]
+  before_action :set_user, only: [:show, :get_user_grades_assignments, :get_user_grades_quizzes, :get_all_user_grades, :calc_total_grades, :student_courses, ]
 
   def index
     users = User.all
@@ -46,6 +46,11 @@ class Api::UsersController < ApplicationController
 
   def user_courses
     courses = current_user.courses
+    render json: courses
+  end
+
+  def student_courses
+    courses = @user.courses
     render json: courses
   end
 

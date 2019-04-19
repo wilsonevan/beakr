@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     get 'get_all_user_grades', to: 'users#get_all_user_grades'
     get 'calc_total_grades', to: 'users#calc_total_grades'
     get 'user_courses', to: 'users#user_courses'
+    get 'student_courses', to: 'users#student_courses'
     get 'calc_grades_all_students', to: 'courses#calc_grades_all_students'
     # get 'upcoming_assignments' to: 'users#upcoming_assignments'
     # get 'recently_graded_assignments' to: 'users#recently_graded_assignments'
