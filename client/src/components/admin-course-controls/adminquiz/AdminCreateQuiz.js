@@ -43,9 +43,7 @@ class AdminCreateQuiz extends React.Component {
       const quiz = {...this.state.quizValues}
       axios.post('/api/quizzes', quiz)
       .then( res => {
-        // res.data.id === quiz.id
         this.state.questions.map( question => {
-          console.log(question);
           axios.post(`/api/quizzes/${res.data.id}/questions`, question)
         })
         this.setState({ quizValues: {title: '', body: '',}, questions: []})
