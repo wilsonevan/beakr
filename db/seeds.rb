@@ -151,9 +151,7 @@ Course.all.each do |course|
       role: 'student'
     )
 
-    course.sections.each() {|section| 
-      unit = section.units.first 
-      quiz = unit.quizzes.first()
+    Quiz.all().each() {|quiz|
       QuizSubmission.create(
         quiz_id: quiz.id,
         enrollment_id: e.id,
