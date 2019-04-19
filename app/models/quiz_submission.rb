@@ -22,4 +22,19 @@ class QuizSubmission < ApplicationRecord
       AND enrollment_id = ?
     ", quiz_id, enrollment_id]).first()
   end
+
+  def self.get_users_submissions_by_quiz(quiz_id)
+    User.find_by_sql(["
+      SELECT 
+          qs.*, 
+          u.first_name, 
+          u.last_name 
+      FROM quiz_submissions AS qs
+      INNER JOIN enrollments AS e
+          ON qs.enrollment_id = e.id
+      INNER JOIN users AS u
+          ON e.user_id = u.id
+      WHERE qs.quiz_id = ?
+    ", quiz_id])
+  end
 end

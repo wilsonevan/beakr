@@ -120,7 +120,7 @@ class Unit extends React.Component {
     return this.state.assignments.map((assignment, index) => {
       return (
         <Link 
-          to={`/courses/${this.props.courseId}/assignments/${assignment.id}`} 
+          to={`/courses/${this.props.courseId}/units/${this.props.unit.id}/assignments/${assignment.id}`} 
           key={index}
         >
           <UnitModelsItem>

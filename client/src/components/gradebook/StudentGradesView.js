@@ -181,27 +181,19 @@ const StudentGradesView = ({ auth, student }) => {
                 if (grade.course_id == activeCourse.id) {
                   return (
                     <Table.Row>
-                      {grades[0].assignment_id ? (
-                        <Table.Cell>
-                          <Link
-                            to={`/courses/${grade.course_id}/assignments/${
-                              grade.assignment_id
-                            }`}
-                          >
-                            <TableHeader as="h4">{grade.title}</TableHeader>
-                          </Link>
-                        </Table.Cell>
-                      ) : (
-                        <Table.Cell>
-                          <Link
-                            to={`/courses/${grade.course_id}/units/${
-                              grade.unit_id
-                            }/quizzes/${grade.quiz_id}`}
-                          >
-                            <TableHeader as="h4">{grade.title}</TableHeader>
-                          </Link>
-                        </Table.Cell>
-                      )}
+                      { grades[0].assignment_id ? 
+                          <Table.Cell>
+                            <Link to={`/courses/${grade.course_id}/units/${grades.unit_id}/assignments/${grade.assignment_id}`}>
+                              <TableHeader as="h4">{grade.title}</TableHeader>
+                            </Link>
+                          </Table.Cell>
+                        :
+                          <Table.Cell>
+                            <Link to={`/courses/${grade.course_id}/units/${grade.unit_id}/quizzes/${grade.quiz_id}`}>
+                              <TableHeader as="h4">{grade.title}</TableHeader>
+                            </Link>
+                          </Table.Cell>
+                        }
                       <Table.Cell textAlign="center">
                         {grade.due_date ? (
                           <>
