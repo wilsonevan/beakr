@@ -1,10 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import Code from './Code';
+import Moment from 'react-moment';
 import GradeSubmission from './GradeSubmission';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ButtonGreen, } from '../styles/Components';
-import { Segment, Header, Icon, Divider } from 'semantic-ui-react';
+import { Header, Icon, Divider } from 'semantic-ui-react';
 
 class SubmissionView extends React.Component {
   state = { 
@@ -50,10 +52,10 @@ class SubmissionView extends React.Component {
       case 'url':
         return (
           <>
-            <div>
+            <Instructions>
               <a target="_blank" href={url}>{url}</a>
-            </div>
-            <div 
+            </Instructions>
+            <Instructions 
             dangerouslySetInnerHTML=
             {this.createMarkup(body)}
             style={{padding: '15px'}}
@@ -66,7 +68,7 @@ class SubmissionView extends React.Component {
         )
       case 'none':
         return (
-          <div 
+          <Instructions 
             dangerouslySetInnerHTML=
             {this.createMarkup(body)}
             style={{padding: '15px'}}
@@ -82,7 +84,7 @@ class SubmissionView extends React.Component {
   }
 
   render() {
-    const { assignment, user, points_awarded, points_possible, grading, grade } = this.state
+    const { assignment, user, points_awarded, points_possible, grading, grade, } = this.state
 
     return (
       <>
@@ -91,8 +93,15 @@ class SubmissionView extends React.Component {
           <Icon name='block layout' color='green' />
             {assignment.title} Submission for {user.first_name} {user.last_name}
         </Header>
-        <Segment>
-          <div 
+        <AssignmentContainer>
+          <AssignmentHeading>
+            <h2 style={{margin: "0", color: "#23a24d", fontSize: "1.75rem"}} >Instructions</h2>
+            <div style={{display: "flex", alignItems: "center"}}>
+              <Moment format='ddd, MMM D, LT' date={assignment.due_date} style={styles.dueDate} /> 
+            </div>
+          </AssignmentHeading>
+          <StyledHr/>
+          <Instructions 
             dangerouslySetInnerHTML=
             {this.createMarkup(assignment.body)}
             style={{padding: '15px'}}
@@ -102,12 +111,12 @@ class SubmissionView extends React.Component {
           <Divider />
             { !grading ?
               <>
-                <div>
+                <Instructions>
                   {points_awarded}/{points_possible}
-                </div>
-                <div>
+                </Instructions>
+                <Instructions>
                   Grade:{grade}%
-                </div>
+                </Instructions>
                 <ButtonGreen onClick={this.toggleGrading}>
                   Grade Submission
                 </ButtonGreen>
@@ -122,10 +131,47 @@ class SubmissionView extends React.Component {
                 />
               </>
             }
-        </Segment>
+        </AssignmentContainer>
       </>
     )
   }
 }
+
+const AssignmentContainer = styled.div`
+  min-height: 50%;
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 1px 2px 1px rgba(150,150,150,0.1);
+`
+
+const AssignmentHeading = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const Instructions = styled.div`
+  width: 100%;
+  text-align: left;
+`
+
+const styles = {
+  dueDate: {
+      fontSize: "1.75rem",
+      color: "#23a24d",
+      marginRight: "2rem",
+  }
+}
+
+const StyledHr = styled.hr`
+  border: none;
+  height: 2px;
+  width: 100%;
+  background-color: #23a24d;
+  margin: 1rem 0;
+`
 
 export default SubmissionView

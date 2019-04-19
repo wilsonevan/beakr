@@ -31,6 +31,7 @@ class GradeSubmission extends React.Component {
         />
         / {points_possible}
         <br />
+        <br />
         <ButtonGreen>Submit Grade</ButtonGreen>
         <ButtonGrey onClick={this.props.toggle}>Cancel Grade</ButtonGrey>
       </TitleForm>
