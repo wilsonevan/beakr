@@ -22,4 +22,14 @@ class Quiz < ApplicationRecord
       ORDER BY a.title
     ", "#{input}%"])
   end
+
+  def self.get_quiz_with_attrs(quiz_id, unit_id)
+
+    User.find_by_sql(["
+      SELECT q.*, uq.due_date, uq.sequence, uq.visible, uq.id AS unit_quiz_id FROM quizzes AS q
+      INNER JOIN unit_quizzes AS uq
+        ON uq.quiz_id = ?
+      WHERE uq.unit_id = ?
+      ", quiz_id, unit_id]).first()
+  end
 end

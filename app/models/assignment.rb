@@ -19,4 +19,13 @@ class Assignment < ApplicationRecord
       ORDER BY a.title
     ", "#{input}%"])
   end
+
+  def self.get_assignment_with_attrs(assignment_id, unit_id)
+    User.find_by_sql(["
+      SELECT a.*, ua.due_date, ua.sequence, ua.visible, ua.id AS unit_assignment_id FROM assignments AS a
+      INNER JOIN unit_assignments AS ua
+        ON ua.assignment_id = ?
+      WHERE ua.unit_id = ?
+      ", assignment_id, unit_id]).first()
+  end
 end

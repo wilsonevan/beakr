@@ -3,11 +3,18 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 
-const UserItem = ({ result }) => (
-    <Link to={``} style={{width: "100%"}} >
+const UserItem = ({ result }) => {
+    return (
+    <Link to={{
+        pathname: '/profile',
+        state: {
+          user: result
+        }}}
+        style={{width: "100%"}} >
         <Item> { `${result.first_name} ${result.last_name}` } </Item>
     </Link>
-)
+    )
+}
 
 
 const Item = styled.div`
@@ -23,7 +30,7 @@ const Item = styled.div`
     cursor: pointer;
 
     :hover {
-        color: #0029ff;
+        color: #2979ff;
         background-color: #f7f7f7;
     }
 `

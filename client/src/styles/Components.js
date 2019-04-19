@@ -22,9 +22,7 @@ const ButtonBlue = styled.button`
   border: none;
   border-radius: 5px;
   padding: 1rem 1.8rem;
-  // background-color: #2979ff;
-  // background-color: #4b7bec;
-  background-color:   #0029ff;
+  background-color: #2979ff;
   color: white;
   letter-spacing: 1.5px;
   cursor: pointer;
@@ -97,4 +95,4 @@ const ButtonGrey = styled.button`
   }
 `;
 
-export { Bar, ButtonBlue, ButtonGreen, ButtonGrey };
+export { Bar, ButtonBlue, ButtonGreen, ButtonGrey, };

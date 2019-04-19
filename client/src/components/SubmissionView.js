@@ -1,11 +1,21 @@
 import React from 'react';
 import axios from 'axios';
 import Code from './Code';
+import Moment from 'react-moment';
+import GradeSubmission from './GradeSubmission';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Segment, Header, Icon, Divider } from 'semantic-ui-react';
+import { ButtonGreen, } from '../styles/Components';
+import { Header, Icon, Divider } from 'semantic-ui-react';
 
 class SubmissionView extends React.Component {
-  state = { body: '', url: '', code: '', assignment: {}, user: {} }
+  state = { 
+    body: '', url: '', code: '', 
+    points_awarded: 0, points_possible: 0, 
+    grade: '', graded: false, 
+    assignment: {}, user: {}, 
+    grading: false 
+  }
 
   componentDidMount() {
     const { assignment_id, id } = this.props.match.params
@@ -15,7 +25,8 @@ class SubmissionView extends React.Component {
       })
     axios.get(`/api/assignments/${assignment_id}/assignment_submissions/${id}`)
       .then( res => {
-        this.setState({ body: res.data.body, url: res.data.url, code: res.data.code })
+        const { body, url, code, points_awarded, points_possible, graded, grade } = res.data 
+        this.setState({ body, url, code, points_awarded, points_possible, graded, grade })
       })
     axios.get(`/api/assignments/${assignment_id}/assignment_submissions/${id}/find_user`)
       .then( res => {
@@ -27,16 +38,24 @@ class SubmissionView extends React.Component {
     return { __html: html };
   };
 
+  gradeSubmission = (assignment_submission) => {
+    const { assignment_id, id } = this.props.match.params
+    axios.put(`/api/assignments/${assignment_id}/assignment_submissions/${id}`, assignment_submission)
+      .then(res => {
+        this.setState({points_awarded: res.data.points_awarded, grade: res.data.grade, graded: res.data.graded, grading: false})
+      }) 
+  }
+
   renderSubmission = () => {
     const { assignment, body, url, code } = this.state
     switch(assignment.kind) {
       case 'url':
         return (
           <>
-            <div>
+            <Instructions>
               <a target="_blank" href={url}>{url}</a>
-            </div>
-            <div 
+            </Instructions>
+            <Instructions 
             dangerouslySetInnerHTML=
             {this.createMarkup(body)}
             style={{padding: '15px'}}
@@ -49,7 +68,7 @@ class SubmissionView extends React.Component {
         )
       case 'none':
         return (
-          <div 
+          <Instructions 
             dangerouslySetInnerHTML=
             {this.createMarkup(body)}
             style={{padding: '15px'}}
@@ -60,8 +79,12 @@ class SubmissionView extends React.Component {
     };
   }
 
+  toggleGrading = () => {
+    this.setState({ grading: !this.state.grading })
+  }
+
   render() {
-    const { assignment, user } = this.state
+    const { assignment, user, points_awarded, points_possible, grading, grade, } = this.state
 
     return (
       <>
@@ -70,18 +93,85 @@ class SubmissionView extends React.Component {
           <Icon name='block layout' color='green' />
             {assignment.title} Submission for {user.first_name} {user.last_name}
         </Header>
-        <Segment>
-          <div 
+        <AssignmentContainer>
+          <AssignmentHeading>
+            <h2 style={{margin: "0", color: "#23a24d", fontSize: "1.75rem"}} >Instructions</h2>
+            <div style={{display: "flex", alignItems: "center"}}>
+              <Moment format='ddd, MMM D, LT' date={assignment.due_date} style={styles.dueDate} /> 
+            </div>
+          </AssignmentHeading>
+          <StyledHr/>
+          <Instructions 
             dangerouslySetInnerHTML=
             {this.createMarkup(assignment.body)}
             style={{padding: '15px'}}
           />
           <Divider />
             {this.renderSubmission()}
-        </Segment>
+          <Divider />
+            { !grading ?
+              <>
+                <Instructions>
+                  {points_awarded}/{points_possible}
+                </Instructions>
+                <Instructions>
+                  Grade:{grade}%
+                </Instructions>
+                <ButtonGreen onClick={this.toggleGrading}>
+                  Grade Submission
+                </ButtonGreen>
+              </>
+            :
+              <>
+                <GradeSubmission 
+                  submitGrade={this.gradeSubmission} 
+                  toggle={this.toggleGrading} 
+                  points_awarded={points_awarded} 
+                  points_possible={points_possible}
+                />
+              </>
+            }
+        </AssignmentContainer>
       </>
     )
   }
 }
+
+const AssignmentContainer = styled.div`
+  min-height: 50%;
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 1px 2px 1px rgba(150,150,150,0.1);
+`
+
+const AssignmentHeading = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const Instructions = styled.div`
+  width: 100%;
+  text-align: left;
+`
+
+const styles = {
+  dueDate: {
+      fontSize: "1.75rem",
+      color: "#23a24d",
+      marginRight: "2rem",
+  }
+}
+
+const StyledHr = styled.hr`
+  border: none;
+  height: 2px;
+  width: 100%;
+  background-color: #23a24d;
+  margin: 1rem 0;
+`
 
 export default SubmissionView

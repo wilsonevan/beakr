@@ -3,8 +3,10 @@ import { Link, } from 'react-router-dom';
 import { AuthConsumer, } from "../../providers/AuthProvider";
 import { Form, Grid, Container, Divider, Header, Segment, Card, Image } from 'semantic-ui-react';
 import Dropzone from 'react-dropzone';
-import { ButtonGreen, ButtonGrey, } from '../../styles/Components'
-import Moment from 'react-moment'
+import { ButtonGreen, ButtonGrey, } from '../../styles/Components';
+import Moment from 'react-moment';
+// import axios from 'axios';
+// import Flatpickr from 'flatpickr'
 
 const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/15724-200.png';
 
@@ -12,8 +14,15 @@ class Profile extends React.Component {
   state = { editing: false, formValues: { first_name: '', last_name: '', email: '', biography: '', birth_date: '', file: '', }, };
   
   componentDidMount() {
-    const { auth: { user: { first_name, last_name, email, biography, birth_date,}, }, } = this.props;
-    this.setState({ formValues: { first_name, last_name, email, biography, birth_date, file: '', }, });
+    // If this component is being accessed by a student
+    if (this.props.location.state){
+      const { user: { first_name, last_name, email, biography, birth_date, image}, } = this.props.location.state
+      this.setState({ formValues: { first_name, last_name, email, biography, birth_date, file: '', }, image, });
+    }
+    else{
+      const { auth: { user: { first_name, last_name, email, biography, birth_date, image,}, }, } = this.props;
+      this.setState({ formValues: { first_name, last_name, email, biography, birth_date, file: '', }, image });
+    }
   }
 
   handleSubmit = (e) => {
@@ -54,22 +63,24 @@ class Profile extends React.Component {
     const { editing, } = this.state;
 
     const { auth: { user }, } = this.props;
+    const { formValues: { first_name, last_name, email, biography, birth_date, file }, image } = this.state;
+
     return (
       <>
         <Grid.Column width={4}>
         <Card>
-          <Image src={user.image || defaultImage} />
+          <Image src={image || defaultImage} />
         </Card>
         </Grid.Column>
         <Grid.Column width={12}>
         <Segment>
-          <Header as="h1">{user.first_name} {user.last_name}</Header>
+          <Header as="h1">{first_name} {last_name}</Header>
           <Header as='h3'>
             Biography:
           </Header>
           <div style={{marginLeft: '20px'}}>
             <Header as="h5">
-                {user.biography}
+                {biography}
             </Header>
           </div>
           <Header as='h3'>
@@ -77,14 +88,14 @@ class Profile extends React.Component {
           </Header>
           <div style={{marginLeft: '20px'}}>
             <Header as="h5">
-            <Moment format='MMM D, YYYY'date={user.birth_date} />
+            <Moment format='MMM D, YYYY'date={birth_date} />
             </Header>
           </div>
           <Header as='h3'>
             Email:
           </Header>
           <div style={{marginLeft: '20px'}}>
-            <Header as="h5">{user.email}</Header>
+            <Header as="h5">{email}</Header>
           </div>
         </Segment>
         <ButtonGrey style={{margin: '5px'}} onClick={this.toggleEdit}>{editing ? 'Cancel' : 'Edit'}</ButtonGrey>
@@ -97,7 +108,7 @@ class Profile extends React.Component {
     const { editing, } = this.state;
     const { auth: {user, }, } = this.props
 
-    const { formValues: { first_name, last_name, email, biography, birth_date, file } } = this.state;
+    const { formValues: { first_name, last_name, email, biography, birth_date, file }, image } = this.state;
     const blob = new Blob([file], {type: 'image/png'});
     const url = URL.createObjectURL(blob);
     console.log(url)
@@ -116,8 +127,8 @@ class Profile extends React.Component {
                 
               >
                 <input {...getInputProps()} />
-                { isDragActive ? <Card.Content>Drop files here...</Card.Content> 
-                : <Image src={ blob.size === 0 ? user.image || defaultImage : url } />
+                { isDragActive ? <Card.Content style={{minHeight: '200px'}}>Drop files here...</Card.Content> 
+                : <Image src={ blob.size === 0 ? image || defaultImage : url } />
 
                 }
               </Card>
@@ -148,6 +159,12 @@ class Profile extends React.Component {
               value={birth_date}
               onChange={this.handleChange}
             />
+            {/* <Flatpickr
+            required
+            name="birt_hdate"
+            value={birth_date}
+            dateFormat='Y-m-d'
+            onChange={(birth_date) => this.handleChange(birth_date)} /> */}
             <Form.TextArea
               label="Biography"
               name="biography"
@@ -175,7 +192,7 @@ class Profile extends React.Component {
     return (
       <Container>
         <Link to='/dashboard'>
-        <h1> {`<`} Dashboard </h1> 
+          <h1> {`<`} Dashboard </h1> 
         </Link>
         <Divider hidden />
         <Grid>

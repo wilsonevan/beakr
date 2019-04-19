@@ -5,6 +5,7 @@ import EditContentTitle from './EditContentTitle';
 import EditContentBody from './EditContentBody';
 import { Link } from 'react-router-dom';
 import { Segment, Header, Icon, } from 'semantic-ui-react';
+import { AuthConsumer, } from '../providers/AuthProvider';
 
 class ContentView extends React.Component {
   state = { title: '', body: '', id: '', editingTitle: false, editingBody: false }
@@ -60,6 +61,7 @@ class ContentView extends React.Component {
 
   render() {
     const { title, body, id, editingTitle, editingBody } = this.state
+    const { auth: {user, }, } = this.props
 
     return (
       <>
@@ -68,24 +70,31 @@ class ContentView extends React.Component {
           <Icon name='block layout' color='green' />
             {!editingTitle && title}
         </Header>
-        {!editingTitle ? (
-          <>
-            <BlueLink onClick={() => this.toggleEditingTitle()}>
-              Edit Name
-            </BlueLink>
-            <span style={{ color: "#0029ff", fontSize: "0.7rem" }}>
-              &nbsp;or&nbsp;
-            </span>
-            <BlueLink onClick={() => this.deleteContent(id)}>
-              Delete
-            </BlueLink>
+        { user.admin ?
+          <> 
+            {!editingTitle ? (
+              <>
+                <BlueLink onClick={() => this.toggleEditingTitle()}>
+                  Edit Name
+                </BlueLink>
+                <span style={{ color: "#0029ff", fontSize: "0.7rem" }}>
+                  &nbsp;or&nbsp;
+                </span>
+                <BlueLink onClick={() => this.deleteContent(id)}>
+                  Delete
+                </BlueLink>
+              </>
+            ) : (
+              <EditContentTitle
+                title={title}
+                updateContentTitle={this.updateContentTitle}
+              />
+            )}
           </>
-        ) : (
-          <EditContentTitle
-            title={title}
-            updateContentTitle={this.updateContentTitle}
-          />
-        )}
+        :
+          <>
+          </> 
+        }
         <Segment>
           {editingBody ? (
             <EditContentBody
@@ -99,19 +108,34 @@ class ContentView extends React.Component {
               style={{padding: '15px'}}
             />
           )}
-          <div>    
-            {editingBody? 
-              <BlueLink onClick={() => this.toggleEditingBody()}>
-                Cancel Edit 
-              </BlueLink>
-            : 
-            <BlueLink onClick={() => this.toggleEditingBody()}>
-                Edit Content
-              </BlueLink>
-            }
-          </div>
+          { user.admin ?
+            <div>    
+              {editingBody? 
+                <BlueLink onClick={() => this.toggleEditingBody()}>
+                  Cancel Edit 
+                </BlueLink>
+              : 
+                <BlueLink onClick={() => this.toggleEditingBody()}>
+                  Edit Content
+                </BlueLink>
+              }
+            </div>
+          :
+            <>
+            </>
+          }
         </Segment>
       </>
+    )
+  }
+}
+
+class connectContentView extends React.Component {
+  render(){
+    return(
+      <AuthConsumer>
+        {auth => <ContentView {...this.props} auth={auth}/>}
+      </AuthConsumer>
     )
   }
 }
@@ -121,7 +145,7 @@ const BlueLink = styled.button`
   text-decoration: none;
   background-color: transparent;
   border: none;
-  color: #0029ff;
+  color: #2979ff;
   font-family: "Poppins";
   font-size: 0.7rem;
   letter-spacing: 1px;
@@ -136,4 +160,4 @@ const BlueLink = styled.button`
   }
 `;
 
-export default ContentView
+export default connectContentView

@@ -32,7 +32,7 @@ class EditContentTitle extends React.Component {
 const TitleForm = styled.form`
   display: inline-block;
   margin: 0 0.25rem 3rem 0;
-  font-size: 2.25rem;
+  font-size: 1rem;
   font-weight: 600;
 `;
 
@@ -54,7 +54,7 @@ const BlueLink = styled.button`
   text-decoration: none;
   background-color: transparent;
   border: none;
-  color: #0029ff;
+  color: #2979ff;
   font-family: "Poppins";
   font-size: 0.7rem;
   letter-spacing: 1px;

@@ -3,6 +3,7 @@ import axios from "axios";
 import anime from "animejs";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Icon } from "semantic-ui-react";
 
 class AdminUnit extends React.Component {
   state = { contents: [], assignments: [], quizzes: [], opened: false, loaded: false };
@@ -85,7 +86,7 @@ class AdminUnit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-            <UnitModelsIcon className="models-icon" />
+            <Icon name="file alternate outline" />
             {content.title}
           </UnitModelsItem>
         </Link>
@@ -100,7 +101,7 @@ class AdminUnit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-            <UnitModelsIcon className="models-icon" />
+            <Icon name="check" />
             {quiz.title}
           </UnitModelsItem>
         </Link>
@@ -111,11 +112,11 @@ class AdminUnit extends React.Component {
     return this.state.assignments.map((assignment, index) => {
       return (
         <Link
-          to={`/assignments/${assignment.id}`}
+          to={`/courses/${this.props.course_id}/assignments/${assignment.id}`}
           key={index}
         >
           <UnitModelsItem>
-            <UnitModelsIcon className="models-icon" />
+            <Icon name="edit outline" />
             {assignment.title}
           </UnitModelsItem>
         </Link>
@@ -133,8 +134,8 @@ class AdminUnit extends React.Component {
             {unit.title}
             <UnitModelsContainer ref={this.unitModelsRef}>
               {this.renderContents()}
-              {this.renderQuizzes()}
               {this.renderAssignments()}
+              {this.renderQuizzes()}
             </UnitModelsContainer>
           </OpenedSectionUnit>
         </>
@@ -157,7 +158,7 @@ const SectionUnit = styled.div`
   font-size: 1.2rem;
 
   :hover {
-    color: #0029ff;
+    color: #23a24d;
   }
 `;
 
@@ -173,7 +174,7 @@ const OpenedSectionUnit = styled.div`
   font-size: 1.2rem;
 
   :hover {
-    color: #0029ff;
+    color: #23a24d;
   }
 `;
 

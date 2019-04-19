@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { ButtonGreen, ButtonBlue } from "../../styles/Components";
+import { ButtonGreen } from "../../styles/Components";
 import SearchBar from "../SearchBar";
 import AddContentLink from "./AddContentLink";
 import ContentBlock from "./ContentBlock";
@@ -10,43 +10,42 @@ import AssignmentBlock from "./AssignmentBlock";
 import AddQuizLink from "./AddQuizLink";
 import QuizBlock from "./QuizBlock";
 import EditUnitTitle from "./EditUnitTitle";
-import anime from "animejs";
+import { Icon } from "semantic-ui-react";
+
+
 
 class UnitControls extends React.Component {
 
   state = { editing: false, unit: this.props.unit, contents: [], assignments: [], quizzes: [], search: "contents" };
 
-  formRef = React.createRef();
-
   componentDidMount() {
     axios
-      .get(`/api/units/${this.props.unit.id}/contents`)
+      .get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`)
       .then(res => {
         this.setState({ contents: res.data });
       })
       .catch(err => console.log(err));
+
     axios
-      .get(`/api/units/${this.props.unit.id}/assignments`)
+      .get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`)
       .then(res => {
-        this.setState({ assignments: res.data })
+        this.setState({ assignments: res.data });
       })
       .catch(err => console.log(err));
+
     axios
-      .get(`/api/units/${this.props.unit.id}/quizzes`)
+      .get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`)
       .then(res => {
         this.setState({ quizzes: res.data })
       })
-  }
-
-  componentWillUnmount() {
-    anime.remove(this.formRef.current);
+      .catch(err => console.log(err));
   }
 
   createUnitContent = content_id => {
     axios
       .post(`/api/unit_contents`, { content_id, unit_id: this.props.unit.id })
       .then(res => {
-        return axios.get(`/api/units/${this.props.unit.id}/contents`);
+        return axios.get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`);
       })
       .then(res => {
         this.setState({ contents: res.data });
@@ -58,7 +57,7 @@ class UnitControls extends React.Component {
     axios
       .post(`/api/unit_assignments`, { assignment_id, unit_id: this.props.unit.id })
       .then(res => {
-        return axios.get(`/api/units/${this.props.unit.id}/assignments`);
+        return axios.get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`);
       })
       .then(res => {
         this.setState({ assignments: res.data });
@@ -70,7 +69,7 @@ class UnitControls extends React.Component {
     axios
       .post(`/api/unit_quizzes`, { quiz_id, unit_id: this.props.unit.id})
       .then(res => {
-        return axios.get(`/api/units/${this.props.unit.id}/quizzes`);
+        return axios.get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`);
       })
       .then(res => {
         this.setState({ quizzes: res.data });
@@ -83,7 +82,6 @@ class UnitControls extends React.Component {
     axios
       .delete(`/api/unit/${unit_id}/contents/${content_id}/unit_content`)
       .then(res => {
-        console.log(res.data);
         const contents = this.state.contents.filter(content => {
           if (content.id !== content_id) return this.renderUnitContents;
         });
@@ -97,7 +95,6 @@ class UnitControls extends React.Component {
     axios
       .delete(`/api/unit/${unit_id}/assignments/${assignment_id}/unit_assignment`)
       .then(res => {
-        console.log(res.data);
         const assignments = this.state.assignments.filter(assignment => {
           if (assignment.id !== assignment_id) return this.renderUnitAssignments;
         });
@@ -111,7 +108,6 @@ class UnitControls extends React.Component {
     axios
     .delete(`/api/unit/${unit_id}/quizzes/${quiz_id}/unit_quiz`)
     .then(res => {
-      console.log(res.data);
       const quizzes = this.state.quizzes.filter(quiz => {
         if (quiz.id !== quiz_id) return this.renderUnitQuizzes;
       });
@@ -120,51 +116,115 @@ class UnitControls extends React.Component {
     .catch(err => console.log(err));
   }
 
-  AddContentLinkWithProps = () => {
-    return <AddContentLink createUnitContent={this.createUnitContent} />;
-  };
-
-  AddAssignmentLinkWithProps = () => {
-    return <AddAssignmentLink createUnitAssignment={this.createUnitAssignment} />;
+  toggleUnitVisibility = () => {
+    axios.put(
+      `/api/sections/${this.props.section.id}/units/${this.state.unit.id}`, 
+      {unit: {visible: !this.state.unit.visible}}
+    )
+    .then((res) => {
+      this.setState({ unit: res.data });
+    })
+    .catch((err) => console.log(err));
   }
 
-  AddQuizLinkWithProps = () => {
-    return <AddQuizLink createUnitQuiz={this.createUnitQuiz} />;
+  toggleContentVisibility = (visible, id, unit_content_id) => {
+    if(visible) {
+      axios.put(`/api/unit_contents/${unit_content_id}`, {unit_content: { visible: false } })
+      .then((res) => {
+        const contents = this.state.contents.map((content) => {
+          if(content.id === id) content.visible = false;
+          return content;
+        })
+        this.setState({ contents });
+      })
+      .catch((err) => console.log(err));
+    } else {
+      axios.put(`/api/unit_contents/${unit_content_id}`, {unit_content: { visible: true } })
+      .then((res) => {
+        const contents = this.state.contents.map((content) => {
+          if(content.id === id) content.visible = true;
+          return content;
+        })
+        this.setState({ contents });
+      })
+      .catch((err) => console.log(err));
+    }
+  }
+
+  toggleAssignmentVisibility = (visible, id, unit_assignment_id) => {
+    if(visible) {
+      axios.put(`/api/unit_assignments/${unit_assignment_id}`, {unit_assignment: { visible: false } })
+      .then((res) => {
+        const assignments = this.state.assignments.map((assignment) => {
+          if(assignment.id === id) assignment.visible = false;
+          return assignment;
+        })
+        this.setState({ assignments });
+      })
+      .catch((err) => console.log(err));
+    } else {
+      axios.put(`/api/unit_assignments/${unit_assignment_id}`, {unit_assignment: { visible: true } })
+      .then((res) => {
+        const assignments = this.state.assignments.map((assignment) => {
+          if(assignment.id === id) assignment.visible = true;
+          return assignment;
+        })
+        this.setState({ assignments });
+      })
+      .catch((err) => console.log(err));
+    }
+  }
+
+  toggleQuizVisibility = (visible, id, unit_quiz_id) => {
+    if(visible) {
+      axios.put(`/api/unit_quizzes/${unit_quiz_id}`, {unit_quiz: { visible: false } })
+      .then((res) => {
+        const quizzes = this.state.quizzes.map((quiz) => {
+          if(quiz.id === id) quiz.visible = false;
+          return quiz;
+        })
+        this.setState({ quizzes });
+      })
+      .catch((err) => console.log(err));
+    } else {
+      axios.put(`/api/unit_quizzes/${unit_quiz_id}`, {unit_quiz: { visible: true } })
+      .then((res) => {
+        const quizzes = this.state.quizzes.map((quiz) => {
+          if(quiz.id === id) quiz.visible = true;
+          return quiz;
+        })
+        this.setState({ quizzes });
+      })
+      .catch((err) => console.log(err));
+    }
+  }
+
+  setAssignmentDueDate = (due_date, unit_assignment_id) => {
+    axios.put(`/api/unit_assignments/${unit_assignment_id}`, {unit_assignment: { due_date } })
+    .then((res) => {
+      const assignments = this.state.assignments.map((assignment) => {
+        if(assignment.unit_assignment_id === unit_assignment_id) assignment.due_date = due_date;
+        return assignment;
+      })
+      this.setState({ assignments });
+    })
+    .catch((err) => console.log(err));
+  }
+
+  setQuizDueDate = (due_date, unit_quiz_id) => {
+    axios.put(`/api/unit_quizzes/${unit_quiz_id}`, {unit_quiz: { due_date } })
+    .then((res) => {
+      const quizzes = this.state.quizzes.map((quiz) => {
+        if(quiz.unit_quiz_id === unit_quiz_id) quiz.due_date = due_date;
+        return quiz;
+      })
+      this.setState({ quizzes });
+    })
+    .catch((err) => console.log(err));
   }
 
   toggleEditing = () => {
-    if (!this.state.editing) {
-      this.setState({ editing: true }, () => {
-        anime
-          .timeline({
-            targets: this.formRef.current
-          })
-          .add({
-            height: "36rem",
-            easing: "linear",
-            duration: 100
-          })
-          .add({
-            opacity: 1,
-            duration: 100
-          });
-      });
-    } else {
-      anime
-        .timeline({
-          targets: this.formRef.current
-        })
-        .add({
-          height: "1.75rem",
-          easing: "linear",
-          duration: 200
-        })
-        .add({
-          opacity: 0,
-          duration: 375
-        })
-        .finished.then(() => this.setState({ editing: false }));
-    }
+    this.setState({ editing: !this.state.editing })
   };
 
   renderUnitContents = () => {
@@ -176,6 +236,7 @@ class UnitControls extends React.Component {
           unit={this.props.unit}
           index={index}
           deleteUnitContent={this.deleteUnitContent}
+          toggleContentVisibility={this.toggleContentVisibility}
         />
       );
     });
@@ -190,6 +251,8 @@ class UnitControls extends React.Component {
           unit={this.props.unit}
           index={index}
           deleteUnitAssignment={this.deleteUnitAssignment}
+          toggleAssignmentVisibility={this.toggleAssignmentVisibility}
+          setAssignmentDueDate={this.setAssignmentDueDate}
         />
       );
     });
@@ -204,6 +267,8 @@ class UnitControls extends React.Component {
           unit={this.props.unit}
           index={index}
           deleteUnitQuiz={this.deleteUnitQuiz}
+          toggleQuizVisibility={this.toggleQuizVisibility}
+          setQuizDueDate={this.setQuizDueDate}
         />
       );
     });
@@ -224,13 +289,14 @@ class UnitControls extends React.Component {
             route={`/api/contents/search/${unit.id}`}
             render={props => (
               <AddContentLink
-                  {...props}
-                  createUnitContent={this.createUnitContent}
-                  unit={unit}
+                {...props}
+                createUnitContent={this.createUnitContent}
+                unit={unit}
               />
             )}
             placeholder="Search Contents To Add ..."
             width="100%"
+            height="29rem"
           />
         )
       case "assignments":
@@ -246,6 +312,7 @@ class UnitControls extends React.Component {
             )}
             placeholder="Search Assignments To Add ..."
             width="100%"
+            height="29rem"
           />
         )
       case "quizzes":
@@ -261,6 +328,7 @@ class UnitControls extends React.Component {
             )}
             placeholder="Search Quizzes To Add ..."
             width="100%"
+            height="29rem"
           />
         )
       default:
@@ -273,52 +341,24 @@ class UnitControls extends React.Component {
     const { unit, updateUnit, deleteUnit } = this.props;
     if (!this.state.editing)
       return (
-        <UnitText onClick={() => this.toggleEditing()}>{unit.title}</UnitText>
+        <>
+          <UnitText>
+            <VisibilityButton onClick={() => this.toggleUnitVisibility()}>
+              { this.state.unit.visible
+                ? <Icon name='eye' />
+                : <Icon name='eye slash' />
+              }
+            </VisibilityButton>
+            <UnitToggle onClick={() => this.toggleEditing()} > {unit.title} </UnitToggle>
+          </UnitText>
+        </>
       );
     else
       return (
         <UnitForm onSubmit={this.handleSubmit} ref={this.formRef}>
           <FormTop>
-            <div>
-              <ButtonGreen
-                as="a"
-                href="/addunitmaterial"
-                target="_blank"
-                style={{ padding: "0.325rem 0.75rem" }}
-              >
-                Create New
-              </ButtonGreen>
-              <ButtonBlue
-                style={{
-                  padding: "0.5rem 0.75rem",
-                  marginLeft: "0.5rem"
-                }}
-                value='contents'
-                onClick={this.toggleSearchBar}
-              >
-                Contents
-              </ButtonBlue>
-              <ButtonBlue
-                style={{
-                  padding: "0.5rem 0.75rem",
-                  marginLeft: "0.5rem"
-                }}
-                value='assignments'
-                onClick={this.toggleSearchBar}
-              >
-                Assignments
-              </ButtonBlue>
-              <ButtonBlue
-                style={{
-                  padding: "0.5rem 0.75rem",
-                  marginLeft: "0.5rem"
-                }}
-                value='quizzes'
-                onClick={this.toggleSearchBar}
-              >
-                Quizzes
-              </ButtonBlue>
-            </div>
+            <h3>Unit Management</h3>
+
 
             <div>
               <ButtonGreen
@@ -330,19 +370,49 @@ class UnitControls extends React.Component {
               >
                 Finished
               </ButtonGreen>
-              <ButtonBlue
-                style={{
-                  padding: "0.5rem 0.75rem",
-                  marginLeft: "0.5rem"
-                }}
-                onClick={() => deleteUnit(unit.id)}
-              >
-                Delete
-              </ButtonBlue>
+              <DeleteIcon>
+                <Icon 
+                  name="trash alternate outline" 
+                  size="large" 
+                  onClick={() => deleteUnit(unit.id)}
+                />
+              </DeleteIcon>
             </div>
           </FormTop>
           <FormBottom>
             <FormBottomLeft>
+            <div>
+              <SearchToggle
+                style={this.state.search === "contents" ? {
+                  backgroundColor: "white",
+                  color: "#23a24d"
+                } : null}
+                value='contents'
+                onClick={this.toggleSearchBar}
+              >
+                Contents
+              </SearchToggle>
+              <SearchToggle
+                style={this.state.search === "assignments" ? {
+                  backgroundColor: "white",
+                  color: "#23a24d"
+                } : null}
+                value='assignments'
+                onClick={this.toggleSearchBar}
+              >
+                Assignments
+              </SearchToggle>
+              <SearchToggle
+                style={this.state.search === "quizzes" ? {
+                  backgroundColor: "white",
+                  color: "#23a24d"
+                } : null}
+                value='quizzes'
+                onClick={this.toggleSearchBar}
+              >
+                Quizzes
+              </SearchToggle>
+            </div>
 
               {this.renderSearchBar()}
 
@@ -355,9 +425,11 @@ class UnitControls extends React.Component {
                   updateUnit={updateUnit}
                 />
               </ContentHeading>
-              {this.renderUnitContents()}
-              {this.renderUnitAssignments()}
-              {this.renderUnitQuizzes()}
+                <MaterialsContainer>
+                  {this.renderUnitContents()}
+                  {this.renderUnitAssignments()}
+                  {this.renderUnitQuizzes()}
+                </MaterialsContainer>
             </FormBottomRight>
           </FormBottom>
         </UnitForm>
@@ -373,13 +445,29 @@ const UnitText = styled.p`
   width: 90%;
   margin: 0 auto;
   padding-top: 2rem;
+`;
+
+const UnitToggle = styled.span`
   cursor: pointer;
-  // transition-duration: 0.1s;
 
   :hover {
-    color: #0029ff;
+    color: #2979ff;
   }
-`;
+`
+
+const VisibilityButton = styled.button`
+  display: inline;
+  text-decoration: none;
+  background-color: transparent;
+  color: grey;
+  margin-right: 1rem;
+  border: none;
+  cursor: pointer;
+
+  hover {
+    color: color: #2979ff;;
+  }
+`
 
 const ContentHeading = styled.div`
   position: absolute;
@@ -387,15 +475,11 @@ const ContentHeading = styled.div`
   left: 0;
   width: 100%;
   height: 3rem;
-  color: white;
-  background-color: #bdbdbd;
-  padding-top: 0.5rem;
-  text-align: center;
 `;
 
 const UnitForm = styled.div`
-  height: 2rem;
-  opacity: 0;
+  height: 37rem;
+  opacity: 1;
   width: 90%;
   margin: 2rem auto 0 auto;
   border: 1px solid #bdbdbd;
@@ -403,37 +487,62 @@ const UnitForm = styled.div`
   border-radius: 5px;
   overflow: hidden;
   transition-duration: 0.5s;
+  background-color: #23a24d;
+  padding: 1rem;
 `;
 
 const FormTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 0.5rem;
   width: 100%;
   min-height: 3rem;
-  background-color: #bdbdbd;
   color: white;
 `;
 
 const FormBottom = styled.div`
   display: flex;
-  justify-contents: center;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const FormBottomLeft = styled.div`
-  height: 30rem;
-  width: 50%;
-  border-right: 1px solid #bdbdbd;
-  background-color: #bdbdbd;
+  height: 32rem;
+  width: calc(50% - 0.5rem);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  overflow: hidden;
 `;
 const FormBottomRight = styled.div`
   position: relative;
-  height: 30rem;
-  overflow-y: scroll;
-  width: 50%;
-  padding: 3rem 0.5rem 0 0.5rem;
+  height: 32rem;
+  width: calc(50% - 0.5rem);
+  padding-top: 3rem;
 `;
+
+const MaterialsContainer = styled.div`
+  height: 29rem;
+  overflow: auto;
+  background-color: white;
+  border-radius: 5px;
+`
+
+const SearchToggle = styled.button`
+  display; inline-block;
+  background-color: transparent;
+  color: white;
+  height: 3rem;
+  border: none;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  outline: none;
+`
+
+const DeleteIcon = styled.span`
+  cursor: pointer;
+  :hover {
+    color: #2979ff;
+  }
+`
 
 export default UnitControls;

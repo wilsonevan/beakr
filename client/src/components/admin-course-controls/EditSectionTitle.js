@@ -31,7 +31,7 @@ class EditSectionTitle extends React.Component {
 
 const TitleForm = styled.form`
   display: inline-block;
-  margin: 0 0.25rem 3rem 0;
+  margin-top: 1rem;
   font-size: 2.25rem;
   font-weight: 600;
 `;

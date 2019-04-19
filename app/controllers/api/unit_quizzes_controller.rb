@@ -26,6 +26,15 @@ class Api::UnitQuizzesController < ApplicationController
     end
   end
 
+  def update
+    unit_quiz = UnitQuiz.find(params[:id])
+    if(unit_quiz.update(unit_quiz_params))
+        render( json: unit_quiz )
+    else
+        render( json: {errors: unit_quiz.errors}, status: 422)
+    end
+  end
+
   def destroy
     UnitQuiz.destroy(params[:id])
     render( json: "Data Deleted" )
@@ -38,6 +47,6 @@ class Api::UnitQuizzesController < ApplicationController
 
   private
     def unit_quiz_params
-        return params.require(:unit_quiz).permit(:unit_id, :quiz_id)
+        return params.require(:unit_quiz).permit(:unit_id, :quiz_id, :sequence, :due_date, :visible)
     end
 end

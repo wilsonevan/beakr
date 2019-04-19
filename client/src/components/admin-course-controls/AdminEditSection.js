@@ -4,6 +4,7 @@ import axios from "axios";
 import AddUnit from "./AddUnit";
 import UnitControls from "./UnitControls";
 import EditSectionTitle from "./EditSectionTitle";
+import { Icon } from "semantic-ui-react";
 
 class AdminEditSection extends React.Component {
   state = { section: {}, units: [], editing: false };
@@ -20,12 +21,22 @@ class AdminEditSection extends React.Component {
       .catch(err => console.log(err));
   }
 
-  updateSection = sectionTitle => {
+  updateSectionTitle = sectionTitle => {
     const { course_id, id } = this.props.match.params;
     axios
       .put(`/api/courses/${course_id}/sections/${id}`, sectionTitle)
       .then(res => {
         this.setState({ section: res.data, editing: false });
+      })
+      .catch(err => console.log(err));
+  };
+
+  toggleSectionVisibility = () => {
+    const { course_id, id } = this.props.match.params;
+    axios
+      .put(`/api/courses/${course_id}/sections/${id}`, {section: { visible: !this.state.section.visible }} )
+      .then(res => {
+        this.setState({ section: res.data });
       })
       .catch(err => console.log(err));
   };
@@ -89,27 +100,37 @@ class AdminEditSection extends React.Component {
       <>
         <div className="admin-edit-section__container">
           <div>
-            <Heading onClick={() => this.props.history.goBack()}>
-              {"< Section"} {!editing && section.title}
+            <Heading>
+              <span onClick={() => this.props.history.goBack()} >
+                {"< Section"}
+              </span> 
+              {" "}{!editing && section.title}
+              <br/>
+              {!editing ? (
+                <SectionEditButtons>
+                  <VisibilityButton onClick={() => this.toggleSectionVisibility()}>
+                    { section.visible
+                      ? <Icon name='eye' size="small" />
+                      : <Icon name='eye slash' size="small" />
+                    }
+                  </VisibilityButton>
+                  <BlueLink onClick={() => this.toggleEditing()}>
+                    Edit Name
+                  </BlueLink>
+                  <span style={{ color: "#2979ff", fontSize: "0.7rem" }}>
+                    &nbsp;or&nbsp;
+                  </span>
+                  <BlueLink onClick={() => this.deleteSection(section.id)}>
+                    Delete
+                  </BlueLink>
+                </SectionEditButtons>
+              ) : (
+                <EditSectionTitle
+                  section={section}
+                  updateSection={this.updateSectionTitle}
+                />
+              )}
             </Heading>
-            {!editing ? (
-              <>
-                <BlueLink onClick={() => this.toggleEditing()}>
-                  Edit Name
-                </BlueLink>
-                <span style={{ color: "#0029ff", fontSize: "0.7rem" }}>
-                  &nbsp;or&nbsp;
-                </span>
-                <BlueLink onClick={() => this.deleteSection(section.id)}>
-                  Delete
-                </BlueLink>
-              </>
-            ) : (
-              <EditSectionTitle
-                section={section}
-                updateSection={this.updateSection}
-              />
-            )}
           </div>
           <AdminControls>
             <AddUnit id={section.id} addUnit={this.addUnit} />
@@ -130,12 +151,36 @@ const Heading = styled.div`
   cursor: pointer;
 `;
 
+const SectionEditButtons = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-left: 2rem;
+`
+
+const VisibilityButton = styled.button`
+  position: relative;
+  bottom: 0.15rem;
+  display: inline;
+  text-decoration: none;
+  background-color: transparent;
+  color: grey;
+  margin-right: 1rem;
+  border: none;
+  cursor: pointer;
+
+  hover {
+    color: color: #2979ff;;
+  }
+`
+
 const BlueLink = styled.button`
   display: inline-block;
   text-decoration: none;
   background-color: transparent;
   border: none;
-  color: #0029ff;
+  color: #2979ff;
   font-family: "Poppins";
   font-size: 0.7rem;
   letter-spacing: 1px;

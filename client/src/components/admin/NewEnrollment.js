@@ -111,12 +111,14 @@ class NewEnrollment extends React.Component {
       <>
         <CourseContainer>
           <CourseHeading>Select Course</CourseHeading>
-          <Select
-            name="selectedCourseId"
-            onChange={this.handleChange}
-            options={this.mapOptions()}
-            placeholder="Search Courses..."
-          />
+          <SelectContainer>
+            <Select
+              name="selectedCourseId"
+              onChange={this.handleChange}
+              options={this.mapOptions()}
+              placeholder="Search Courses..."
+            />
+          </SelectContainer>
         </CourseContainer>
 
         {selectedCourseId && (
@@ -146,8 +148,8 @@ class NewEnrollment extends React.Component {
               <SearchHeading>
                 <SearchHeadingText>Enrolled Users</SearchHeadingText>
                 <div>
-                  <TeacherButton onClick={() => this.setTeacherTrue()} style={teacher? {backgroundColor: "#1577ff"} : null} > Teachers </TeacherButton>
-                  <TeacherButton onClick={() => this.setTeacherFalse()} style={!teacher? {backgroundColor: "#1577ff"} : null} > Students </TeacherButton>
+                  <TeacherButton onClick={() => this.setTeacherTrue()} style={teacher? {backgroundColor: "white", color: "#2979ff"} : null} > Teachers </TeacherButton>
+                  <TeacherButton onClick={() => this.setTeacherFalse()} style={!teacher? {backgroundColor: "white", color: "#2979ff"} : null} > Students </TeacherButton>
                 </div>
               </SearchHeading>
               { this.renderSearch() }
@@ -163,6 +165,17 @@ const CourseContainer = styled.div`
   margin: 3rem auto;
   width: 50%;
 `;
+
+const SelectContainer = styled.div`
+  position: absolute;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  z-index: 1;
+  // margin: auto;
+  // padding: 0px;
+`
 
 const CourseHeading = styled.h2`
   color: #23a24d;
@@ -215,7 +228,7 @@ const LeftContainer = styled.div`
 
 
 const TeacherButton = styled.button`
-  background-color: blue;
+  background-color: #2979ff;
   border: none;
   border-radius: 5px;
   color: white;

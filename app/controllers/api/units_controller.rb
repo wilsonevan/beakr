@@ -42,6 +42,6 @@ class Api::UnitsController < ApplicationController
   end
 
   def unit_params
-    params.require(:unit).permit(:title)
+    params.require(:unit).permit(:title, :visible, :sequence)
   end
 end

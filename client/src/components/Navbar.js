@@ -10,6 +10,24 @@ class Navbar extends React.Component {
 
 	state = { activeItem: 0, visible: false, }
 
+	componentDidMount() {
+		const url = window.location.pathname
+		switch (url) {
+			case "/dashboard":
+				this.activateItem(1)
+				break;
+			case "/login":
+				this.activateItem(3)
+				break;
+			case "/register":
+				this.activateItem(4)
+				break;
+			default:
+				this.activateItem(1)
+				break;
+		}
+	}
+
 	activateItem = (MenuItem) => {
 			this.setState( { activeItem: MenuItem, } )
 	}
@@ -41,7 +59,7 @@ class Navbar extends React.Component {
 									onClick={() => this.activateItem(1)}
 								>
 									<MenuItem as={this.isActive(1)} >
-										<Item>Dashboard</Item>
+										<Item>{user.admin ? 'Admin Dashboard' : 'Dashboard'}</Item>
 									</MenuItem>
 								</NavLink>
 								<NavLink to='/login' onClick={() => handleLogout( history )}>
@@ -143,9 +161,9 @@ const MenuItem = styled.li`
 const ActiveMenuItem = styled.li`
 	float: left;
 	font-size: 1.25rem;
-	// border-bottom: #23a24d;
-	// border-bottom-width: thin;
-	// border-bottom-style: solid;
+	border-bottom: #23a24d;
+	border-bottom-width: thin;
+	border-bottom-style: solid;
 `;
 
 const Item = styled.p`

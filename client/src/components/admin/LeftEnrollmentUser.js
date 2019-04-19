@@ -51,7 +51,7 @@ const PlusContainer = styled.button`
 `
 
 const RoleText = styled.div`
-    color: #0029ff;
+    color: #2979ff;
     margin-left: 0.5rem;
     font-size: 0.75rem;
 `

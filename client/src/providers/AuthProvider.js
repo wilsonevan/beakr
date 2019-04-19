@@ -16,7 +16,7 @@ export class AuthProvider extends React.Component {
         history.push("/dashboard");
       })
       .catch(res => {
-        console.log(res);
+        alert(res);
       });
   };
 
@@ -28,7 +28,7 @@ export class AuthProvider extends React.Component {
         history.push("/dashboard");
       })
       .catch(res => {
-        console.log(res);
+        alert('Incorrect login credentials, try again.');
       });
   };
 
@@ -69,4 +69,12 @@ export class AuthProvider extends React.Component {
       </AuthContext.Provider>
     );
   }
+}
+
+export const withAuth = (Component) => {
+  return (props) => (
+      <AuthContext.Consumer>
+          { (value) => <Component {...props} {...value} /> }
+      </AuthContext.Consumer>
+  )
 }

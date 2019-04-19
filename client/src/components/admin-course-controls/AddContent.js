@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
-import { Form, } from 'semantic-ui-react';
+import styled from 'styled-components';
 import { ButtonGreen, } from '../../styles/Components';
 import axios from 'axios';
 
@@ -31,13 +31,12 @@ class AddContent extends React.Component {
     const { title, body } = this.state
 
     return(
-      <>
-        <Form 
-          onSubmit={this.handleSubmit}
-          style={{height: '35rem'}}
-        >
-          <Form.Input
-            label='Content Title'
+      <ContainAll>
+        <ContentContainer>
+          <h2>
+            Content Title
+          </h2>
+          <BodyInput
             required
             autoFocus
             name='title'
@@ -45,19 +44,77 @@ class AddContent extends React.Component {
             placeholder='Title'
             onChange={this.handleChange}
           />
+          <h2>
+            Content Body
+          </h2>
           <ReactQuill 
             name='body'
             value={body}
+            modules={modules}
+            formats={formats}
             onChange={this.handleQuillChange} 
             style={{height: '25rem', paddingBottom: '4rem'}}
           />
-          <ButtonGreen>
-            Submit
+          <ButtonGreen onClick={this.handleSubmit}>
+            Add Content
           </ButtonGreen>
-        </Form>
-      </>
+        </ContentContainer>
+      </ContainAll>
     )
   }
 }
+
+const ContainAll = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between
+  background: #23a24d;
+  padding: 1%; 
+  border-radius: 5px;
+`
+
+const ContentContainer = styled.div`
+  background: white;
+  width: 100%;
+  padding: 10px;
+
+`
+
+const BodyInput = styled.input`
+  width: 100%;
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1.5rem;
+  padding: 2px;
+  border: 2px solid #ededed;
+  color: grey;
+  min-height: 30px;
+
+  :focus {
+    box-shadow: 0 0 0 2px #23a24d;
+  }
+`
+
+const modules = {
+  toolbar: [
+    [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+    [{size: []}],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [{'list': 'ordered'}, {'list': 'bullet'}, 
+     {'indent': '-1'}, {'indent': '+1'}],
+    ['color', 'background'],
+    ['link', 'code-block', 'image', 'video'],
+    ['clean']
+  ]
+}
+const formats = [
+  'header', 'font', 'size',
+  'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'color', 'background',
+  'list', 'bullet', 'indent',
+  'link', 'code-block', 'image', 'video'
+]
 
 export default AddContent
