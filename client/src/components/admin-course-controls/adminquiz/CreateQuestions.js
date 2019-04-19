@@ -1,11 +1,11 @@
 import React from 'react'
-import { ButtonGreen } from '../../../styles/Components';
+import { ButtonGreen } from '../../../styles/Components'
 import QuizChoices from './QuizChoices'
 import styled from 'styled-components'
 // import Choices from './Choices'
 
 class CreateQuestions extends React.Component {
-  state = { questionValues: {kind: 'text', body: '', choices: [], points_possible: 5.0, points_awarded: 0,}, addChoice: false, option: 0}
+  state = { questionValues: {kind: 'text', body: '', choices: [], points_possible: 0, points_awarded: 0,}, addChoice: false, option: 0}
 
 
 handleChange = (e) => {
@@ -17,6 +17,21 @@ handleChange = (e) => {
     questionValues[name] = value; }
   this.setState({ questionValues })
 }
+handleSubmit = (e) => {
+  e.preventDefault();
+  if ( this.state.questionValues.kind === 'choice' && this.state.questionValues.choices.length >= 2){
+    this.handleAdd()
+    this.toggleChoiceForm()
+  }
+  else if (this.state.questionValues.kind != 'choice'){
+    this.handleAdd()
+    this.toggleChoiceForm()
+  } else {
+    alert('You must add at least 2 choices')
+  }
+    
+  }
+
 
 setChoicesState = (choices) => {
   const {questionValues: {kind, body, points_possible, points_awarded}} = this.state
@@ -33,13 +48,13 @@ toggleChoiceForm = () => this.setState({ addChoice: !this.state.addChoice })
 
 renderChoices = () => {
   const output_arr = this.state.questionValues.choices.map( (choice, index) => {
-    return (<h5 style={{margin: 0}} key={index} >Q{index + 1}: {choice.text}</h5>)
+    return (<h5 style={{margin: 0}} key={index} >Q{index + 1}: {choice.text} {choice.correct ? '(Correct)': ''}</h5>)
   })
   return output_arr
 }
 
 renderKind = () => {
-  const { kind, body, points_possible} = this.state.questionValues
+  const { kind, body,} = this.state.questionValues
    if (kind === 'choice'){
      return (
      <>
@@ -59,9 +74,13 @@ renderKind = () => {
           setChoicesState={this.setChoicesState}
           toggleChoiceForm={this.toggleChoiceForm}
           option={this.state.option}
+          handleChoiceSubmit={this.handleChoiceSubmit}
         /> : null}
-        <ButtonAdd onClick={() => this.toggleChoiceForm()}>{this.state.addChoice ? 'Cancel' : 'Add Choice'}</ButtonAdd>
-     </>
+        <ButtonAdd style={{display: 'inline-block'}} onClick={() => this.toggleChoiceForm()}>{this.state.addChoice ? 'Cancel' : 'Add Choice'}</ButtonAdd>
+        <br />
+        <br />
+      </>
+
      )
     } else {
     return (
@@ -84,8 +103,8 @@ renderKind = () => {
     const { kind, points_possible } = this.state
     return(
       <>
+      <form onSubmit={this.handleSubmit} id='question' style={{display: 'inline'}}>
       <FiftyDiv>
-
         <InputHeader>
         Kind of Question
         </InputHeader>
@@ -96,19 +115,20 @@ renderKind = () => {
           value={kind}
           onChange={this.handleChange}
           placeholder='kind' >
+            <option value='text'>Text</option>
             <option value='code'>Code</option>
             <option value='choice'>Multiple Choice</option>
-            <option value='text'>Text</option>
           </BodyInput>
           </FiftyDiv>
           <FiftyDiv>
             <InputHeader>
               Points Possible
             </InputHeader>
-            <BodyNumberInput type='number' name='points_possible' onChange={this.handleChange} value={points_possible} />
+            <BodyNumberInput type='number' required name='points_possible' onChange={this.handleChange} value={points_possible} />
           </FiftyDiv>
           {this.renderKind()}
-        <ButtonGreen onClick={() => this.handleAdd()} style={{marginRight: '10px'}}>Add Question</ButtonGreen>
+        <ButtonGreen style={{marginRight: '10px'}}>Add Question</ButtonGreen>
+      </form>
       </>
     )
   }
@@ -157,10 +177,10 @@ const BodyInput = styled.select`
   background: #23a24d;
   color: white;
   border: 1px solid white;
-  padding: 3px;
+  padding: 5px;
   box-shadow: 1px 1px 2px #ededed;
   border-radius: 5px;
-  margin-top: 10px;
+  margin-top: 3px;
   max-width: 150px;
 
   :hover {
