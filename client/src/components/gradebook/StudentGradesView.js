@@ -148,7 +148,6 @@ const StudentGradesView = ({ auth }) => {
             <Table.Body>
               {grades.map(grade => {
                 if (grade.course_id == activeCourse.id) {
-                  debugger
                   return (
                     <Table.Row>
                       { grades[0].assignment_id ? 
