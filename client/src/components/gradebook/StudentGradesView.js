@@ -148,19 +148,20 @@ const StudentGradesView = ({ auth }) => {
             <Table.Body>
               {grades.map(grade => {
                 if (grade.course_id == activeCourse.id) {
+                  debugger
                   return (
                     <Table.Row>
                       { grades[0].assignment_id ? 
-                          <Table.Cell singleLine>
-                        <Link to={`/courses/${grade.course_id}/assignments/${grade.assignment_id}`}>
-                            <TableHeader as="h4">{grade.title}</TableHeader>
-                        </Link>
+                          <Table.Cell>
+                            <Link to={`/courses/${grade.course_id}/assignments/${grade.assignment_id}`}>
+                              <TableHeader as="h4">{grade.title}</TableHeader>
+                            </Link>
                           </Table.Cell>
                         :
-                          <Table.Cell singleLine>
-                        <Link to={`/quizzes/${grade.quiz_id}`}>
-                            <TableHeader as="h4">{grade.title}</TableHeader>
-                        </Link>
+                          <Table.Cell>
+                            <Link to={`/courses/${grade.course_id}/units/${grade.unit_id}/quizzes/${grade.quiz_id}`}>
+                              <TableHeader as="h4">{grade.title}</TableHeader>
+                            </Link>
                           </Table.Cell>
                         }
                       <Table.Cell textAlign="center">

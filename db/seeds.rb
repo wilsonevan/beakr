@@ -144,76 +144,86 @@ Course.all.each do |course|
       password: 'password',
       admin: false
     )
-  1.times do
-    e = Enrollment.create(
-      user_id: user.id,
-      course_id: course.id,
-      role: 'student'
-    )
+    1.times do
+      e = Enrollment.create(
+        user_id: user.id,
+        course_id: course.id,
+        role: 'student'
+      )
 
-    Quiz.all().each() {|quiz|
-      QuizSubmission.create(
-        quiz_id: quiz.id,
-        enrollment_id: e.id,
-        points_possible: 60,
-        points_awarded: 20,
-        grade: 33.33,
-        graded: false,
-        comment: "teacher comment enetered on quiz submission here",
-        questions: [
-          {
-            id: 1,
-            kind: "choice",
-            body: "The coice-based question is being asked here",
-            choices: [
-              {option: 1, text: "choice one text here", correct: true}, 
-              {option: 2, text: "choice two text here", correct: false},
-              {option: 3, text: "choice three text here", correct: false},
-              {option: 4, text: "choice four text here", correct: false}
-            ],
-            submitted_choice: 1,
-            submitted_text: nil,
-            submitted_code: nil,
-            points_possible: 20,
-            points_awarded: 20,
-          },
-          {
-            id: 2,
-            kind: "text",
-            body: "The text-based question is being asked here",
-            choices: nil,
-            submitted_choice: nil,
-            submitted_text: "user answered text question here",
-            submitted_code: nil,
-            points_possible: 20,
-            points_awarded: 0,
-          },
-          {
-            id: 3,
-            kind: "code",
-            body: "The code-based question is being asked here",
-            choices: nil,
-            submitted_choice: nil,
-            submitted_text: nil,
-            submitted_code: "user answered code question here",
-            points_possible: 20,
-            points_awarded: 0,
-          }
-        ]
-      )
-      awarded = Faker::Number.between(0, 100)
-      AssignmentSubmission.create(
-        assignment_id: assignment.id,
-        enrollment_id: e.id,
-        points_possible: 100,
-        points_awarded: awarded,
-        grade: awarded,
-        graded: true,
-        url: Faker::Internet.url,
-        body: Faker::TvShows::TwinPeaks.quote,
-        feedback: 'Good Job!'
-      )
-    }
+      # Quiz.all().each() {|quiz|
+      course.sections.each do |section|
+        section.units.each do |unit|
+          unit.quizzes.each do |quiz|
+        
+            QuizSubmission.create(
+              quiz_id: quiz.id,
+              enrollment_id: e.id,
+              points_possible: 60,
+              points_awarded: 20,
+              grade: 33.33,
+              graded: false,
+              comment: "teacher comment enetered on quiz submission here",
+              questions: [
+                {
+                  id: 1,
+                  kind: "choice",
+                  body: "The coice-based question is being asked here",
+                  choices: [
+                    {option: 1, text: "choice one text here", correct: true}, 
+                    {option: 2, text: "choice two text here", correct: false},
+                    {option: 3, text: "choice three text here", correct: false},
+                    {option: 4, text: "choice four text here", correct: false}
+                  ],
+                  submitted_choice: 1,
+                  submitted_text: nil,
+                  submitted_code: nil,
+                  points_possible: 20,
+                  points_awarded: 20,
+                },
+                {
+                  id: 2,
+                  kind: "text",
+                  body: "The text-based question is being asked here",
+                  choices: nil,
+                  submitted_choice: nil,
+                  submitted_text: "user answered text question here",
+                  submitted_code: nil,
+                  points_possible: 20,
+                  points_awarded: 0,
+                },
+                {
+                  id: 3,
+                  kind: "code",
+                  body: "The code-based question is being asked here",
+                  choices: nil,
+                  submitted_choice: nil,
+                  submitted_text: nil,
+                  submitted_code: "user answered code question here",
+                  points_possible: 20,
+                  points_awarded: 0,
+                }
+              ]
+            )
+          end
+        
+          unit.assignments.each do |assignment|
+            awarded = Faker::Number.between(0, 100)
+            AssignmentSubmission.create(
+              assignment_id: assignment.id,
+              enrollment_id: e.id,
+              points_possible: 100,
+              points_awarded: awarded,
+              grade: awarded,
+              graded: true,
+              url: Faker::Internet.url,
+              body: Faker::TvShows::TwinPeaks.quote,
+              feedback: 'Good Job!'
+            )
+          end
+        end
+      end
+      
 
       1.times do 
         Attendance.create(

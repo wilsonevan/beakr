@@ -56,7 +56,9 @@ export const BottomContainer = styled.div`
   padding: 10px;
 `;
 
-export const TableHeader = styled.h4``;
+export const TableHeader = styled.h4`
+  color: #455A64;
+`;
 
 export const ChartContainer = styled.div`
   padding: 5px;
