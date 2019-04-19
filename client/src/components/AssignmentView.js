@@ -20,8 +20,8 @@ class AssignmentView extends React.Component {
 
   componentDidMount() {
     const { user } = this.props.auth
-    const { course_id, id } = this.props.match.params
-    axios.get(`/api/assignments/${id}`)
+    const { course_id, unit_id, id } = this.props.match.params
+    axios.get(`/api/units/${unit_id}/assignments/${id}/get_assignment_with_attrs`)
       .then( res => {
         this.setState( res.data )
       })
