@@ -17,7 +17,6 @@ const StudentGradesView = ({ auth }) => {
   const [allGrades, setAllGrades] = useState(0);
   // const [upcomingAssignments, setUpcomingAssignments] = useState(0);
 
-
   useEffect(() => {
     const id = auth.user.id;
 
@@ -56,8 +55,6 @@ const StudentGradesView = ({ auth }) => {
               dateFns.parse(grade.due_date),
               "MM/DD/YY"
             )}`
-            // description: "",
-            // feedback: "Test"
           });
         }
       });
@@ -256,13 +253,13 @@ const StudentGradesView = ({ auth }) => {
       <>
         {renderSummary(allGrades)}
         <br />
+        <TrendsTable grades={allGrades} courses={courses} />
+        <br />
         {renderDropDown()}
         <br />
         {renderGrades(assignmentGrades)}
         <br />
         {renderGrades(quizGrades)}
-        <br />
-        <TrendsTable grades={allGrades} courses={courses} />
         {/* <br />
         {renderRecentAssignments()} */}
       </>
