@@ -1,10 +1,16 @@
+
+puts "\n1) DESTROYING OLD DATA"
+
 Course.destroy_all
 User.destroy_all
 Content.destroy_all
 Quiz.destroy_all
 Assignment.destroy_all
 
-1.times do
+
+
+puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
+5.times do
   course = Course.create(
     title: Faker::Educator.course_name
   )
@@ -99,13 +105,15 @@ Assignment.destroy_all
           visible: true,
           sequence: nil,
           due_date: Faker::Date.forward(60),
-
         )
       end
     end
   end
 end
 
+
+
+puts "\n3) CREATING ENROLLED USERS / QUIZ_SUBMISSIONS / ATTENDANCES"
 Course.all.each do |course|
   1.times do
     user = User.create(
@@ -143,7 +151,9 @@ Course.all.each do |course|
       role: 'student'
     )
 
-    Quiz.all().each() {|quiz|
+    course.sections.each() {|section| 
+      unit = section.units.first 
+      quiz = unit.quizzes.first()
       QuizSubmission.create(
         quiz_id: quiz.id,
         enrollment_id: e.id,
@@ -220,6 +230,9 @@ Course.all.each do |course|
   end
 end
 
+
+
+puts "\n4) CREATING STUDENT@TEST.COM"
 1.times do
   user = User.create(
     first_name: Faker::Name.first_name,
@@ -260,6 +273,9 @@ end
   end
 end
 
+
+
+puts "\n5) CREATING TEST@TEST.COM"
 1.times do
   user = User.create(
     first_name: Faker::Name.first_name,
@@ -281,6 +297,8 @@ end
   end
 end
 
+
+puts "\n6) CREATING UNENROLLED STUDENTS"
 30.times do
   user = User.create(
     first_name: Faker::Name.first_name,
@@ -294,4 +312,6 @@ end
 end
 
 
-puts 'Planted the seeds'
+puts "\n- -------------------- ----- ---- --- --- -- -- -- -- - - - -"
+puts "- - - --------------  PLANTED THE SEEDS  -------------- - - -"
+puts "- - - -- -- -- -- --- --- ---- ----- ---------------------- -"
