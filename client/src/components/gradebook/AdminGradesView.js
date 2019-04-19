@@ -39,29 +39,29 @@ const AdminGradesView = ({ courseId }) => {
               {totalGrades.map(grade => {
                 const studentGrade = grade[0];
                 return (
-                  <Table.Row>
-                    <Table.Cell singleLine>
-                      <Modal
-                        trigger={
-                          <TableHeader as="h4">
+                  <Modal
+                    trigger={
+                      <Table.Row>
+                        <Table.Cell singleLine>
+                          <TableHeader>
                             {studentGrade.user_first_name}{" "}
                             {studentGrade.user_last_name}
                           </TableHeader>
-                        }
-                      >
-                        <ModalContainer>
-                          <StudentGradesView student={studentGrade} />
-                        </ModalContainer>
-                      </Modal>
-                    </Table.Cell>
-                    {studentGrade.grade_percent ? (
-                      <Table.Cell textAlign="center">
-                        {studentGrade.grade_percent}%
-                      </Table.Cell>
-                    ) : (
-                      <Table.Cell textAlign="center">0%</Table.Cell>
-                    )}
-                  </Table.Row>
+                        </Table.Cell>
+                        {studentGrade.grade_percent ? (
+                          <Table.Cell textAlign="center">
+                            {studentGrade.grade_percent}%
+                          </Table.Cell>
+                        ) : (
+                          <Table.Cell textAlign="center">0%</Table.Cell>
+                        )}
+                      </Table.Row>
+                    }
+                  >
+                    <ModalContainer>
+                      <StudentGradesView student={studentGrade} />
+                    </ModalContainer>
+                  </Modal>
                 );
               })}
             </Table.Body>
