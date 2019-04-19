@@ -10,6 +10,11 @@ class ShowQuestion extends React.Component {
   toggleEdit = () => {
     this.setState({ editQuestion: !this.state.editQuestion})
   }
+  handleSetQuestioningState = (index, editedQuestion) => {
+    this.props.handleSetQuestionState(index, editedQuestion)
+    this.setState({ question: {...editedQuestion}, })
+  }
+
 
 
   render () {
@@ -20,16 +25,16 @@ class ShowQuestion extends React.Component {
       <>
       { editQuestion ?
         <QuestionDiv>
-         <EditQuestion question={this.state.question} index={index} editQuestion={editQuestion} />
+         <EditQuestion question={this.state.question} index={index} toggleEdit={this.toggleEdit} handleSetQuestioningState={this.handleSetQuestioningState} />
             <SmallDelete onClick={() => this.props.filterQuestion(index)}><Icon name='trash alternate outline' size='large' /></SmallDelete>
             <SmallEdit onClick={() => this.toggleEdit()}><Icon name='setting' size='large' /></SmallEdit>
         </QuestionDiv>
           :
           <QuestionDiv>
             <h3>Question {index + 1}</h3>
-            <h4 style={{margin: 0}}>Type: {question.kind}</h4>
-            <h4 style={{margin: 0}}>Points: {question.points_possible}</h4>
-            <h4 style={{margin: 0}}>Question: {question.body}</h4>
+            <StyledH4>Type: {question.kind}</StyledH4>
+            <StyledH4>Points: {question.points_possible}</StyledH4>
+            <StyledH4>Question: {question.body}</StyledH4>
             {question.choices.map( (choice, index) => 
               <h5 style={{margin: 0}} key={index}>
                 Q{index+1}: {choice.text} {choice.correct ? '(Correct)' : ''}
@@ -84,6 +89,10 @@ const SmallEdit = styled.div`
     color: #23a24d;
     cursor: pointer;
   }
+`
+
+const StyledH4 = styled.h4`
+  margin: 0;
 `
 
 export default ShowQuestion;

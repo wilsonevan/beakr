@@ -4,7 +4,6 @@ import { ButtonGreen } from '../../../styles/Components';
 import axios from 'axios';
 import CreateQuestions from './CreateQuestions'
 import styled from 'styled-components'
-import { Icon, } from 'semantic-ui-react'
 import ShowQuestion from './ShowQuestion';
 
 class AdminCreateQuiz extends React.Component {
@@ -22,6 +21,13 @@ class AdminCreateQuiz extends React.Component {
     this.setState({quizValues: { title, body: value }})
   }
 
+  handleSetQuestionState = (index, question) => {
+    const { quizValues, addQuestion } = this.state
+    const questions = this.state.questions;
+    questions[index] = question
+    this.setState({ quizValues, addQuestion, questions, })
+  }
+
 
   handleSubmit = (e) => {
     e.preventDefault()
@@ -36,9 +42,7 @@ class AdminCreateQuiz extends React.Component {
       const quiz = {...this.state.quizValues}
       axios.post('/api/quizzes', quiz)
       .then( res => {
-        // res.data.id === quiz.id
         this.state.questions.map( question => {
-          console.log(question);
           axios.post(`/api/quizzes/${res.data.id}/questions`, question)
         })
         this.setState({ quizValues: {title: '', body: '',}, questions: []})
@@ -70,7 +74,7 @@ class AdminCreateQuiz extends React.Component {
   renderQuestions = () => {
       return this.state.questions.map( ( question, index ) => {
         return ( 
-          <ShowQuestion key={index} question={question} filterQuestion={this.filterQuestion} index={index} />
+          <ShowQuestion key={index} question={question} handleSetQuestionState={this.handleSetQuestionState} filterQuestion={this.filterQuestion} index={index} />
       )
       })
   }
@@ -103,7 +107,7 @@ class AdminCreateQuiz extends React.Component {
           modules={modules}
           formats={formats}
           onChange={this.handleQuillChange} 
-          style={{height: '25rem', paddingBottom: '4rem'}}
+          style={{height: '25rem', paddingBottom: '4rem', marginBottom: '1rem'}}
         />
         </QuizContainer>
         <QuizContainer>
