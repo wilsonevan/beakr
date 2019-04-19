@@ -34,8 +34,6 @@ const WhiteBackground = styled.div`
     transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
-    // height: calc(100% - 0.5rem);
-    // width: calc(100% - 0.5rem);
     height: 100%;
     width: 100%;
     background-color: #f7f7f7;
