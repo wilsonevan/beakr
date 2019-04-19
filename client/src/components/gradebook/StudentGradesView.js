@@ -151,7 +151,7 @@ const StudentGradesView = ({ auth }) => {
                     <Table.Row>
                       { grades[0].assignment_id ? 
                           <Table.Cell>
-                            <Link to={`/courses/${grade.course_id}/assignments/${grade.assignment_id}`}>
+                            <Link to={`/courses/${grade.course_id}/units/${grades.unit_id}/assignments/${grade.assignment_id}`}>
                               <TableHeader as="h4">{grade.title}</TableHeader>
                             </Link>
                           </Table.Cell>

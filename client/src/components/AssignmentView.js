@@ -20,8 +20,8 @@ class AssignmentView extends React.Component {
 
   componentDidMount() {
     const { user } = this.props.auth
-    const { course_id, id } = this.props.match.params
-    axios.get(`/api/assignments/${id}`)
+    const { course_id, unit_id, id } = this.props.match.params
+    axios.get(`/api/units/${unit_id}/assignments/${id}/get_assignment_with_attrs`)
       .then( res => {
         this.setState( res.data )
       })
@@ -80,27 +80,37 @@ class AssignmentView extends React.Component {
 
   renderAdminView = () => {
     const { id } = this.props.match.params
-    return (
-      <> 
-        <ListHeader>
-          Student Submissions
-        </ListHeader>
-        <SubmissionContainer>
-          {this.state.submissions.map((submission, index) => {
-            return (
-              <Link
-                to={`/assignments/${id}/submissions/${submission.id}`}
-                key={index}
-              >
-                <div>
-                  {submission.user.first_name} {submission.user.last_name}
-                </div>
-              </Link>
-            )
-          })}
-        </SubmissionContainer>
-      </>
-    )
+    const { submissions } = this.state
+    if (submissions.length !== 0 ) {
+      return (
+        <> 
+          <ListHeader>
+            Student Submissions
+          </ListHeader>
+          <SubmissionContainer>
+            {submissions
+              .sort(function(a, b){
+                if(a.user.last_name < b.user.last_name) { return -1; }
+                if(a.user.last_name > b.user.last_name) { return 1; }
+                return 0;
+              })
+              .map((submission, index) => {
+                return (
+                  <Link
+                    to={`/assignments/${id}/submissions/${submission.id}`}
+                    key={index}
+                  >
+                    <div>
+                      {submission.user.first_name} {submission.user.last_name}
+                    </div>
+                  </Link>
+                )
+              })
+            }
+          </SubmissionContainer>
+        </>
+      )
+    }
   };
 
   renderStudentView = () => {

@@ -250,6 +250,7 @@ class UnitControls extends React.Component {
           assignment={assignment}
           unit={this.props.unit}
           index={index}
+          course_id={this.props.course_id}
           deleteUnitAssignment={this.deleteUnitAssignment}
           toggleAssignmentVisibility={this.toggleAssignmentVisibility}
           setAssignmentDueDate={this.setAssignmentDueDate}
