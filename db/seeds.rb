@@ -154,6 +154,7 @@ Course.all.each do |course|
     course.sections.each() {|section| 
       unit = section.units.first 
       quiz = unit.quizzes.first()
+      assignment = unit.assignments.first()
       QuizSubmission.create(
         quiz_id: quiz.id,
         enrollment_id: e.id,
@@ -202,6 +203,18 @@ Course.all.each do |course|
             points_awarded: 0,
           }
         ]
+      )
+      awarded = Faker::Number.between(0, 100)
+      AssignmentSubmission.create(
+        assignment_id: assignment.id,
+        enrollment_id: e.id,
+        points_possible: 100,
+        points_awarded: awarded,
+        grade: awarded,
+        graded: true,
+        url: Faker::Internet.url,
+        body: Faker::TvShows::TwinPeaks.quote,
+        feedback: 'Good Job!'
       )
     }
 
