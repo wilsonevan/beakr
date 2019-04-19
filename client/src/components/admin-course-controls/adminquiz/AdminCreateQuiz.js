@@ -4,7 +4,6 @@ import { ButtonGreen } from '../../../styles/Components';
 import axios from 'axios';
 import CreateQuestions from './CreateQuestions'
 import styled from 'styled-components'
-import { Icon, } from 'semantic-ui-react'
 import ShowQuestion from './ShowQuestion';
 
 class AdminCreateQuiz extends React.Component {
@@ -23,8 +22,9 @@ class AdminCreateQuiz extends React.Component {
   }
 
   handleSetQuestionState = (index, question) => {
-    const { quizValues, addQuestion, questions} = this.state
-    this.state.questions[index] = question
+    const { quizValues, addQuestion } = this.state
+    const questions = this.state.questions;
+    questions[index] = question
     this.setState({ quizValues, addQuestion, questions, })
   }
 
