@@ -88,18 +88,25 @@ class AssignmentView extends React.Component {
             Student Submissions
           </ListHeader>
           <SubmissionContainer>
-            {this.state.submissions.map((submission, index) => {
-              return (
-                <Link
-                  to={`/assignments/${id}/submissions/${submission.id}`}
-                  key={index}
-                >
-                  <div>
-                    {submission.user.first_name} {submission.user.last_name}
-                  </div>
-                </Link>
-              )
-            })}
+            {submissions
+              .sort(function(a, b){
+                if(a.user.last_name < b.user.last_name) { return -1; }
+                if(a.user.last_name > b.user.last_name) { return 1; }
+                return 0;
+              })
+              .map((submission, index) => {
+                return (
+                  <Link
+                    to={`/assignments/${id}/submissions/${submission.id}`}
+                    key={index}
+                  >
+                    <div>
+                      {submission.user.first_name} {submission.user.last_name}
+                    </div>
+                  </Link>
+                )
+              })
+            }
           </SubmissionContainer>
         </>
       )
