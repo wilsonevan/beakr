@@ -2,8 +2,8 @@ import React from 'react';
 import ReactQuill from 'react-quill';
 import axios from 'axios';
 import Code from './Code';
+import styled from 'styled-components';
 import { ButtonGreen } from '../styles/Components';
-import { Header, Form } from 'semantic-ui-react';
 
 class AssignmentSubmissionForm extends React.Component {
   state = { body: '', code: '', url: '', points_awarded: 0 }
@@ -50,14 +50,17 @@ class AssignmentSubmissionForm extends React.Component {
     switch (this.props.kind) {
       case 'url':
         return (
-          <Form>
-            <Form.Input
-              label='Submission URL'
+          <>
+            <h5>
+              Submission URL
+            </h5>
+            <BodyInput
               name='url'
               value={url}
               onChange={this.handleChange}
             />
-          </Form>  
+            <br/>
+          </>
         )
       case 'code':
         return (
@@ -77,26 +80,63 @@ class AssignmentSubmissionForm extends React.Component {
     const { body } = this.state
 
     return (
-      <>
-        <Header style={{color: '#23A24D'}} content='Assignment Submission' />
-        {this.renderForm()}
-        <br />
-        <ReactQuill 
-          name='body'
-          value={body}
-          modules={modules}
-          formats={formats}
-          onChange={this.handleQuillChange}
-          style={{height: '25rem', paddingBottom: '4rem'}}
-        />
-        <ButtonGreen onClick={this.handleSubmit}>
-          Submit
-        </ButtonGreen>
-        <br/>
-      </>
+      <ContainAll>
+        <AssignmentContainer>
+          <h2 style={{color: '#23A24D'}}>
+            Assignment Submission
+          </h2>
+          {this.renderForm()}
+          <br />
+          <ReactQuill 
+            name='body'
+            value={body}
+            modules={modules}
+            formats={formats}
+            onChange={this.handleQuillChange}
+            style={{height: '25rem', paddingBottom: '4rem'}}
+          />
+          <ButtonGreen onClick={this.handleSubmit}>
+            Submit
+          </ButtonGreen>
+          <br/>
+        </AssignmentContainer>
+      </ContainAll>
     )
   }
 }
+
+const ContainAll = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between
+  background: #23a24d;
+  padding: 2px; 
+  border-radius: 2px;
+`
+
+const AssignmentContainer = styled.div`
+  background: white;
+  width: 100%;
+  padding: 10px;
+
+`
+
+const BodyInput = styled.input`
+  width: 100%;
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1rem;
+  padding: 2px;
+  border: 2px solid #ededed;
+  color: grey;
+  min-height: 30px;
+
+  :focus {
+    box-shadow: 0 0 0 2px #23a24d;
+  }
+`
 
 const modules = {
   toolbar: [

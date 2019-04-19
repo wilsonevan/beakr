@@ -80,18 +80,27 @@ class AssignmentView extends React.Component {
 
   renderAdminView = () => {
     const { id } = this.props.match.params
-    return this.state.submissions.map((submission, index) => {
-      return (
-        <Link
-          to={`/assignments/${id}/submissions/${submission.id}`}
-          key={index}
-        >
-          <div>
-            {submission.user.first_name} {submission.user.last_name}
-          </div>
-        </Link>
-      );
-    });
+    return (
+      <> 
+        <ListHeader>
+          Student Submissions
+        </ListHeader>
+        <SubmissionContainer>
+          {this.state.submissions.map((submission, index) => {
+            return (
+              <Link
+                to={`/assignments/${id}/submissions/${submission.id}`}
+                key={index}
+              >
+                <div>
+                  {submission.user.first_name} {submission.user.last_name}
+                </div>
+              </Link>
+            )
+          })}
+        </SubmissionContainer>
+      </>
+    )
   };
 
   renderStudentView = () => {
@@ -231,7 +240,6 @@ class connectAssignmentView extends React.Component {
   const AssignmentContainer = styled.div`
   min-height: 50%;
   width: 100%;
-  margin-top: 2rem;
   background-color: white;
   border-radius: 10px;
   padding: 2rem;
@@ -293,5 +301,25 @@ const BlueLink = styled.button`
     color: darkgrey;
   }
 `;
+
+const SubmissionContainer = styled.div`
+    width: 95%;
+    margin: 0 auto 3rem auto;
+    padding: 1.25rem;
+    text-align: left;
+    border-radius: 10px;
+`
+
+const ListHeader = styled.h2`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+  font-family: "Poppins";
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+`
 
 export default connectAssignmentView
