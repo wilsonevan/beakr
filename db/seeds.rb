@@ -151,14 +151,7 @@ Course.all.each do |course|
       role: 'student'
     )
 
-<<<<<<< HEAD
-    course.sections.each() {|section| 
-      unit = section.units.first 
-      quiz = unit.quizzes.first()
-      assignment = unit.assignments.first()
-=======
     Quiz.all().each() {|quiz|
->>>>>>> parent of 75eb5c5... Update seeds.rb
       QuizSubmission.create(
         quiz_id: quiz.id,
         enrollment_id: e.id,
