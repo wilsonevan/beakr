@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
       ORDER BY first_name, last_name
       ", "#{input}%", "#{input}%"])
   end
+  
 
   def self.search_users_with_role(input, course_id)
     User.find_by_sql(["
@@ -60,6 +61,7 @@ class User < ActiveRecord::Base
     ", "#{input}%", "#{input}%", course_id, "#{input}%", "#{input}%", course_id, "#{input}%", "#{input}%"])
   end
 
+
   def self.search_staff_enrolled(input, course_id)
     User.find_by_sql(["
       SELECT u.*, e.role  FROM users AS u
@@ -71,6 +73,7 @@ class User < ActiveRecord::Base
       ORDER BY u.first_name
     ", course_id, "#{input}%", "#{input}%" ])
   end
+
 
   def self.search_students_enrolled(input, course_id)
     User.find_by_sql(["
@@ -84,7 +87,31 @@ class User < ActiveRecord::Base
     ", course_id, "#{input}%", "#{input}%" ])
   end
 
-  def self.get_user_grades(user_id)
+
+  def self.get_user_grades_assignments(user_id)
+    User.find_by_sql(["
+      SELECT 
+        enrollments.id AS enrollment_id, 
+        enrollments.course_id, 
+        users.id AS user_id, 
+        assignment_submissions.points_possible, 
+        assignment_submissions.points_awarded, 
+        assignment_submissions.id as assignment_submission_id,
+        assignments.title,
+        unit_assignments.due_date,
+        assignments.id as assignment_id
+      FROM enrollments
+      INNER JOIN users ON users.id = enrollments.user_id
+      LEFT JOIN assignment_submissions ON assignment_submissions.enrollment_id = enrollments.id
+      LEFT JOIN assignments ON assignments.id = assignment_submissions.assignment_id
+      LEFT JOIN unit_assignments ON unit_assignments.assignment_id = assignments.id
+      WHERE users.id = ?
+      ORDER BY due_date
+    ", user_id, ])
+  end
+
+
+  def self.get_user_grades_quizzes(user_id)
     User.find_by_sql(["
       SELECT 
         enrollments.id AS enrollment_id, 
@@ -92,10 +119,34 @@ class User < ActiveRecord::Base
         users.id AS user_id, 
         quiz_submissions.points_possible, 
         quiz_submissions.points_awarded, 
+        quiz_submissions.id as quiz_submission_id,
+        quizzes.title,
+        unit_quizzes.due_date,
+        quizzes.id as quiz_id
+      FROM enrollments
+      INNER JOIN users ON users.id = enrollments.user_id
+      LEFT JOIN quiz_submissions ON quiz_submissions.enrollment_id = enrollments.id
+      LEFT JOIN quizzes ON quizzes.id = quiz_submissions.quiz_id
+      LEFT JOIN unit_quizzes ON unit_quizzes.quiz_id = quizzes.id
+      WHERE users.id = ?
+      ORDER BY due_date
+    ", user_id, ])
+  end
+
+
+  def get_all_user_grades(user_id)
+    User.find_by_sql(["
+      SELECT 
+        enrollments.id AS enrollment_id, 
+        users.id AS user_id, 
+        quiz_submissions.points_possible, 
+        quiz_submissions.points_awarded, 
         quiz_submissions.id as submission_id,
+        quiz_submissions.id as quiz_submission_id,
         quizzes.title,
         unit_quizzes.due_date,
         quizzes.id as quiz_or_assignment_id
+        quizzes.id as quiz_id
       FROM enrollments
       INNER JOIN users ON users.id = enrollments.user_id
       LEFT JOIN quiz_submissions ON quiz_submissions.enrollment_id = enrollments.id
@@ -123,8 +174,8 @@ class User < ActiveRecord::Base
         WHERE users.id = ?
         ORDER BY due_date
     ", user_id, user_id, ])
-
   end
+
 
   def self.calc_total_grades(user_id)
     courses = User.find(user_id).courses
