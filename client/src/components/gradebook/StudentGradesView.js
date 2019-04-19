@@ -7,6 +7,7 @@ import { AuthConsumer } from "../../providers/AuthProvider";
 import dateFns from "date-fns";
 import TrendsTable from "./TrendsTable";
 import { SummaryContainer, TopContainer, GradesContainer, HeaderSummary, DataSummary, Split, TableHeader, } from './GradeBookStyles'
+import { Link } from "react-router-dom";
 
 const StudentGradesView = ({ auth }) => {
   const [courses, setCourses] = useState(0);
@@ -134,9 +135,19 @@ const StudentGradesView = ({ auth }) => {
                 if (grade.course_id == activeCourse.id) {
                   return (
                     <Table.Row>
-                      <Table.Cell singleLine>
-                        <TableHeader as="h4">{grade.title}</TableHeader>
-                      </Table.Cell>
+                      { grade.id ? 
+                        <Link to={`/courses/${grade.course_id}/assignments/${grade.quiz_or_submission_id}`}>
+                          <Table.Cell singleLine>
+                            <TableHeader as="h4">{grade.title}</TableHeader>
+                          </Table.Cell>
+                        </Link>
+                        :
+                        <Link to={`/quizzes/${grade.quiz_or_submission_id}`}>
+                          <Table.Cell singleLine>
+                            <TableHeader as="h4">{grade.title}</TableHeader>
+                          </Table.Cell>
+                        </Link>
+                      }
                       <Table.Cell textAlign="center">
                       { grade.due_date ?
                         <>
