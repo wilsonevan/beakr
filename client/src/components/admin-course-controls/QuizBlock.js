@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
-import Flatpickr from 'react-flatpickr';
 
 class QuizBlock extends React.Component {
   // state = { visible: this.props.content.visible }
 
   render() {
-    const { quiz, deleteUnitQuiz, toggleQuizVisibility, setQuizDueDate } = this.props;
+    const { quiz, deleteUnitQuiz, toggleQuizVisibility } = this.props;
     return (
       <BlockContainer>
         <QuizBlockText
@@ -17,29 +16,11 @@ class QuizBlock extends React.Component {
           <Tag><Icon name="check" /></Tag> {quiz.title}
         </QuizBlockText>
           <Buttons>
-            <Flatpickr
-                style={{
-                  border: "none",
-                  color: "grey",
-                  textAlign: "center",
-                  fontSize: "1rem",
-                  height: "100%",
-                }}
-                placeholder="Set Due Date"
-                required
-                name="recordDate"
-                value={quiz.due_date}
-                options={{
-                  enableTime: true,
-                  dateFormat: "Y-m-d H:i",
-                }}
-                onChange={(due_date) => setQuizDueDate(new Date(due_date), quiz.unit_quiz_id)} 
-            />
-            <ButtonLeft onClick={() => toggleQuizVisibility(quiz.visible, quiz.id, quiz.unit_quiz_id)} >
-                { quiz.visible
-                  ? <Icon name='eye' size='large' />
-                  : <Icon name='eye slash' size='large' />
-                }
+          <ButtonLeft onClick={() => toggleQuizVisibility(quiz.visible, quiz.id, quiz.unit_quiz_id)} >
+              { quiz.visible
+                ? <Icon name='eye' size='large' />
+                : <Icon name='eye slash' size='large' />
+              }
             </ButtonLeft>
             <ButtonRight
               onClick={() => deleteUnitQuiz(quiz.id)}

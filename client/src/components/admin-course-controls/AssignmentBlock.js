@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
-import Flatpickr from 'react-flatpickr';
 
 class AssignmentBlock extends React.Component {
+  // state = { visible: this.props.content.visible }
 
   render() {
-    const { assignment, deleteUnitAssignment, toggleAssignmentVisibility, setAssignmentDueDate } = this.props;
-    console.log(assignment.due_date)
+    const { assignment, deleteUnitAssignment, toggleAssignmentVisibility } = this.props;
     return (
       <BlockContainer>
         <AssignmentBlockText
@@ -17,35 +16,17 @@ class AssignmentBlock extends React.Component {
           <Tag><Icon name="edit outline" /></Tag> {assignment.title}
         </AssignmentBlockText>
           <Buttons>
-            <Flatpickr
-                style={{
-                  border: "none",
-                  color: "grey",
-                  textAlign: "center",
-                  fontSize: "1rem",
-                  height: "100%",
-                }}
-                placeholder="Set Due Date"
-                required
-                name="recordDate"
-                value={assignment.due_date}
-                options={{
-                  enableTime: true,
-                  dateFormat: "Y-m-d H:i",
-                }}
-                onChange={(due_date) => setAssignmentDueDate(new Date(due_date), assignment.unit_assignment_id)} 
-            />
-            <ButtonLeft onClick={() => toggleAssignmentVisibility(assignment.visible, assignment.id, assignment.unit_assignment_id)} >
-                { assignment.visible
-                  ? <Icon name='eye' size='large' />
-                  : <Icon name='eye slash' size='large' />
-                }
-              </ButtonLeft>
-              <ButtonRight
-                onClick={() => deleteUnitAssignment(assignment.id)}
-              >
-                <Close src={require("../../images/grey-close.svg")} alt=""/>
-              </ButtonRight>
+          <ButtonLeft onClick={() => toggleAssignmentVisibility(assignment.visible, assignment.id, assignment.unit_assignment_id)} >
+              { assignment.visible
+                ? <Icon name='eye' size='large' />
+                : <Icon name='eye slash' size='large' />
+              }
+            </ButtonLeft>
+            <ButtonRight
+              onClick={() => deleteUnitAssignment(assignment.id)}
+            >
+              <Close src={require("../../images/grey-close.svg")} alt=""/>
+            </ButtonRight>
           </Buttons>
       </BlockContainer>
     )

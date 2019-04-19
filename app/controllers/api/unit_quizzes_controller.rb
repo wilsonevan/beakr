@@ -47,6 +47,6 @@ class Api::UnitQuizzesController < ApplicationController
 
   private
     def unit_quiz_params
-        return params.require(:unit_quiz).permit(:unit_id, :quiz_id, :sequence, :due_date, :visible)
+        return params.require(:unit_quiz).permit(:unit_id, :quiz_id, :sequence, :visible, :due_date)
     end
 end
