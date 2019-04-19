@@ -25,7 +25,6 @@ class AdminCreateQuiz extends React.Component {
   handleSetQuestionState = (index, question) => {
     const { quizValues, addQuestion, questions} = this.state
     this.state.questions[index] = question
-    console.log(this.state.questions[index])
     this.setState({ quizValues, addQuestion, questions, })
   }
 
@@ -43,9 +42,7 @@ class AdminCreateQuiz extends React.Component {
       const quiz = {...this.state.quizValues}
       axios.post('/api/quizzes', quiz)
       .then( res => {
-        // res.data.id === quiz.id
         this.state.questions.map( question => {
-          console.log(question);
           axios.post(`/api/quizzes/${res.data.id}/questions`, question)
         })
         this.setState({ quizValues: {title: '', body: '',}, questions: []})
@@ -110,7 +107,7 @@ class AdminCreateQuiz extends React.Component {
           modules={modules}
           formats={formats}
           onChange={this.handleQuillChange} 
-          style={{height: '25rem', paddingBottom: '4rem'}}
+          style={{height: '25rem', paddingBottom: '4rem', marginBottom: '1rem'}}
         />
         </QuizContainer>
         <QuizContainer>
