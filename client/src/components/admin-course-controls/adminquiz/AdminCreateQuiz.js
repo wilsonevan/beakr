@@ -22,6 +22,13 @@ class AdminCreateQuiz extends React.Component {
     this.setState({quizValues: { title, body: value }})
   }
 
+  handleSetQuestionState = (index, question) => {
+    const { quizValues, addQuestion, questions} = this.state
+    this.state.questions[index] = question
+    console.log(this.state.questions[index])
+    this.setState({ quizValues, addQuestion, questions, })
+  }
+
 
   handleSubmit = (e) => {
     e.preventDefault()
@@ -70,7 +77,7 @@ class AdminCreateQuiz extends React.Component {
   renderQuestions = () => {
       return this.state.questions.map( ( question, index ) => {
         return ( 
-          <ShowQuestion key={index} question={question} filterQuestion={this.filterQuestion} index={index} />
+          <ShowQuestion key={index} question={question} handleSetQuestionState={this.handleSetQuestionState} filterQuestion={this.filterQuestion} index={index} />
       )
       })
   }

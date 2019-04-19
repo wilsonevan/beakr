@@ -10,6 +10,11 @@ class ShowQuestion extends React.Component {
   toggleEdit = () => {
     this.setState({ editQuestion: !this.state.editQuestion})
   }
+  handleSetQuestioningState = (index, editedQuestion) => {
+    this.props.handleSetQuestionState(index, editedQuestion)
+    this.setState({ question: {...editedQuestion}, })
+  }
+
 
 
   render () {
@@ -20,7 +25,7 @@ class ShowQuestion extends React.Component {
       <>
       { editQuestion ?
         <QuestionDiv>
-         <EditQuestion question={this.state.question} index={index} editQuestion={editQuestion} />
+         <EditQuestion question={this.state.question} index={index} toggleEdit={this.toggleEdit} handleSetQuestioningState={this.handleSetQuestioningState} />
             <SmallDelete onClick={() => this.props.filterQuestion(index)}><Icon name='trash alternate outline' size='large' /></SmallDelete>
             <SmallEdit onClick={() => this.toggleEdit()}><Icon name='setting' size='large' /></SmallEdit>
         </QuestionDiv>

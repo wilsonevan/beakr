@@ -62,9 +62,7 @@ class QuizChoices extends React.Component {
         </InputHeader>
         <SepDiv>
 
-          {correct ? <Checked onClick={this.toggleCorrect}><CheckMark /></Checked> : <Check
-          onClick={this.toggleCorrect}
-          />}
+          {correct ? <Checked onClick={this.toggleCorrect}><CheckMark /></Checked> : <Check onClick={this.toggleCorrect} />}
         </SepDiv>
       </ThirtyDiv>
       </Contain>
