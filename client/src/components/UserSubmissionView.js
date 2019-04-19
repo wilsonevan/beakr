@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Code from './Code';
+import styled from 'styled-components';
 import { Divider } from 'semantic-ui-react';
 import { ButtonGreen, ButtonGrey } from '../styles/Components';
 import AssignmentSubmissionForm from './AssignmentSubmissionForm';
@@ -8,7 +9,7 @@ import AssignmentSubmissionForm from './AssignmentSubmissionForm';
 class UserSubmissionView extends React.Component {
   state = { 
     id: '', body: '', url: '', code: '', kind: '', 
-    points_awarded: '', points_possible: '', grade: '',
+    points_awarded: '', points_possible: '', grade: '', graded: false,
     editing: false, warning: false 
   }
 
@@ -39,10 +40,10 @@ class UserSubmissionView extends React.Component {
       case 'url':
         return (
           <>
-            <div>
+            <Text>
               <a target="_blank" href={url}>{url}</a>
-            </div>
-            <div 
+            </Text>
+            <Text 
             dangerouslySetInnerHTML=
             {this.createMarkup(body)}
             style={{padding: '15px'}}
@@ -53,7 +54,7 @@ class UserSubmissionView extends React.Component {
         return (
           <>
             <Code value={code} />
-            <div 
+            <Text 
               dangerouslySetInnerHTML=
               {this.createMarkup(body)}
               style={{padding: '15px'}}
@@ -62,7 +63,7 @@ class UserSubmissionView extends React.Component {
         )
       case 'none':
         return (
-          <div 
+          <Text 
             dangerouslySetInnerHTML=
             {this.createMarkup(body)}
             style={{padding: '15px'}}
@@ -86,18 +87,24 @@ class UserSubmissionView extends React.Component {
   }
 
   render() {
-    const { editing, warning, body, url, code, kind, id, points_awarded, points_possible, grade } = this.state
+    const { editing, warning, body, url, code, kind, id, points_awarded, points_possible, grade, graded } = this.state
     const { assignment_id, course_id, user } = this.props 
 
     return (
       <>
         <Divider />
-        <div>
+        <Text>
           {points_awarded}/{points_possible}
-        </div>
-        <div>
-          Grade: {grade}%
-        </div>
+        </Text>
+        { graded ? 
+          <Text>
+            Grade: {grade}%
+          </Text>
+        :
+          <Text>
+            Not Yet Graded
+          </Text>
+        }
         <br/>
         { editing ?
           <AssignmentSubmissionForm
@@ -139,5 +146,10 @@ class UserSubmissionView extends React.Component {
     )
   }
 }
+
+const Text = styled.div`
+  width: 100%;
+  text-align: left;
+`
 
 export default UserSubmissionView
