@@ -80,27 +80,30 @@ class AssignmentView extends React.Component {
 
   renderAdminView = () => {
     const { id } = this.props.match.params
-    return (
-      <> 
-        <ListHeader>
-          Student Submissions
-        </ListHeader>
-        <SubmissionContainer>
-          {this.state.submissions.map((submission, index) => {
-            return (
-              <Link
-                to={`/assignments/${id}/submissions/${submission.id}`}
-                key={index}
-              >
-                <div>
-                  {submission.user.first_name} {submission.user.last_name}
-                </div>
-              </Link>
-            )
-          })}
-        </SubmissionContainer>
-      </>
-    )
+    const { submissions } = this.state
+    if (submissions.length !== 0 ) {
+      return (
+        <> 
+          <ListHeader>
+            Student Submissions
+          </ListHeader>
+          <SubmissionContainer>
+            {this.state.submissions.map((submission, index) => {
+              return (
+                <Link
+                  to={`/assignments/${id}/submissions/${submission.id}`}
+                  key={index}
+                >
+                  <div>
+                    {submission.user.first_name} {submission.user.last_name}
+                  </div>
+                </Link>
+              )
+            })}
+          </SubmissionContainer>
+        </>
+      )
+    }
   };
 
   renderStudentView = () => {
