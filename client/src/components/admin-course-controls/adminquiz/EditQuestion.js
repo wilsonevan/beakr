@@ -15,8 +15,7 @@ class EditQuestion extends React.Component {
     const { name, value } = e.target
     if (name === "points_possible") {
       this.setState({points_possible: parseFloat(value)})  
-    } else {
-      this.state[name] = value; }
+    }
     this.setState({ [name]: value })
   }
 
