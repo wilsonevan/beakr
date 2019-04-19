@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Card, Table, Dropdown } from "semantic-ui-react";
+import { Card, Table, Dropdown, Modal } from "semantic-ui-react";
 import { Line } from "react-chartjs-2";
 import CourseCard from "./CourseCard";
 import axios from "axios";
 import { AuthConsumer } from "../../providers/AuthProvider";
 import dateFns from "date-fns";
+import StudentGradesView from "./StudentGradesView";
 
 const AdminGradesView = ({ courseId }) => {
   // const [studentGrades, setStudentGrades] = useState(0);
@@ -40,20 +41,26 @@ const AdminGradesView = ({ courseId }) => {
                 return (
                   <Table.Row>
                     <Table.Cell singleLine>
-                      <TableHeader as="h4">
-                        {studentGrade.user_first_name}{" "}
-                        {studentGrade.user_last_name}
-                      </TableHeader>
+                      <Modal
+                        trigger={
+                          <TableHeader as="h4">
+                            {studentGrade.user_first_name}{" "}
+                            {studentGrade.user_last_name}
+                          </TableHeader>
+                        }
+                      >
+                        <ModalContainer>
+                          <StudentGradesView student={studentGrade} />
+                        </ModalContainer>
+                      </Modal>
                     </Table.Cell>
-                    {studentGrade.grade_percent ? 
+                    {studentGrade.grade_percent ? (
                       <Table.Cell textAlign="center">
                         {studentGrade.grade_percent}%
                       </Table.Cell>
-                    : 
-                    <Table.Cell textAlign="center">
-                      0%
-                    </Table.Cell>
-                    }
+                    ) : (
+                      <Table.Cell textAlign="center">0%</Table.Cell>
+                    )}
                   </Table.Row>
                 );
               })}
@@ -137,6 +144,11 @@ const BottomContainer = styled.div`
   // justify-content: flex-start;
   align-items: stretch;
   padding: 10px;
+`;
+
+const ModalContainer = styled.div`
+  padding: 20px;
+  // margin: 10px;
 `;
 
 const TableHeader = styled.h4``;

@@ -8,7 +8,7 @@ import TrendsTable from "./TrendsTable";
 import { SummaryContainer, TopContainer, GradesContainer, HeaderSummary, DataSummary, Split, TableHeader, CardHeader, } from './GradeBookStyles'
 import { Link } from "react-router-dom";
 
-const StudentGradesView = ({ auth }) => {
+const StudentGradesView = ({ auth, student }) => {
   const [courses, setCourses] = useState(0);
   const [activeCourse, setActiveCourse] = useState(0);
   const [assignmentGrades, setAssignmentGrades] = useState(0);
@@ -17,15 +17,21 @@ const StudentGradesView = ({ auth }) => {
   const [allGrades, setAllGrades] = useState(0);
 
   useEffect(() => {
-    const id = auth.user.id;
+    
+    let id = 0;
+      if (student){
+        id = student.user_id
+      } else{
+        id = auth.user.id;
+      }
 
-    axios.get("/api/user_courses").then(res => {
+    axios.get("/api/student_courses", { params: { id: id } }).then(res => {
       setCourses(res.data);
       setActiveCourse(res.data[0]);
-    });
-    axios.get("api/calc_total_grades", { params: { id: id } }).then(res => {
+    })
+    axios.get("/api/calc_total_grades", { params: { id: id } }).then(res => {
       setTotalGrades(res.data);
-    });
+    })
     axios.get("/api/get_user_grades_assignments", { params: { id: id } }).then(res => {
       setAssignmentGrades(res.data);
     });
