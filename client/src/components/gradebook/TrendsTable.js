@@ -115,6 +115,14 @@ const TrendsTable = ({ grades, courses }) => {
             suggestedMax: 100
           }
         }
+      ],
+      xAxes: [
+        {
+          scaleLabel: {
+            display: true,
+            labelString: "Total Grade Over Time"
+          },
+        }
       ]
     },
     animation: {

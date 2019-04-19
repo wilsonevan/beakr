@@ -60,6 +60,11 @@ export const TableHeader = styled.h4`
   color: #455A64;
 `;
 
+export const CardHeader = styled.h3`
+  color: #455A64;
+
+`;
+
 export const ChartContainer = styled.div`
   padding: 5px;
   padding-top: 20px;

@@ -5,7 +5,7 @@ import axios from "axios";
 import { AuthConsumer } from "../../providers/AuthProvider";
 import dateFns from "date-fns";
 import TrendsTable from "./TrendsTable";
-import { SummaryContainer, TopContainer, GradesContainer, HeaderSummary, DataSummary, Split, TableHeader, } from './GradeBookStyles'
+import { SummaryContainer, TopContainer, GradesContainer, HeaderSummary, DataSummary, Split, TableHeader, CardHeader, } from './GradeBookStyles'
 import { Link } from "react-router-dom";
 
 const StudentGradesView = ({ auth }) => {
@@ -39,26 +39,39 @@ const StudentGradesView = ({ auth }) => {
   }, []);
 
 
-  const getUpcomingAssignments = (grades) => {
+  const renderUpcomingAssignments = (grades) => {
     let count = 0;
-    let assignments = [];
     if (grades) {
-      grades.map(grade => {
-        if (dateFns.isFuture(grade.due_date) && count < 4) {
-          // Since Assignments are already in order by date, take the first 4 assignments with due dates in the future
-          count++;
-          assignments.push({
-            id: grade.submission_id,
-            header: grade.title,
-            meta: `due: ${dateFns.format(
-              dateFns.parse(grade.due_date),
-              "MM/DD/YY"
-            )}`
-          });
-        }
-      });
+      return grades.map(grade => {
+        if (dateFns.isFuture(grade.due_date) && count < 4) 
+          {
+            // Since Assignments are already in order by date, take the first 4 assignments with due dates in the future
+            count++;
+            return (
+              <Card>
+                <Card.Content>
+                  { grades[0].assignment_id ? 
+                    <Link to={`/courses/${grade.course_id}/units/${grades.unit_id}/assignments/${grade.assignment_id}`}>
+                      <CardHeader>{grade.title}</CardHeader>
+                    </Link>
+                  :
+                    <Link to={`/courses/${grade.course_id}/units/${grade.unit_id}/quizzes/${grade.quiz_id}`}>
+                      <CardHeader>{grade.title}</CardHeader>
+                    </Link>
+                  }
+                  <Card.Meta>
+                    {`due: ${dateFns.format(dateFns.parse(grade.due_date),"MM/DD/YY")}`}
+                  </Card.Meta>
+                </Card.Content>
+              </Card>
+            );
+          }
+      })
+    } else {
+      return (
+        <></>
+      )
     }
-    return assignments;
   };
 
 
@@ -70,11 +83,11 @@ const StudentGradesView = ({ auth }) => {
     return (
       <SummaryContainer>
         <TopContainer>
-          <HeaderSummary>Grades Summary</HeaderSummary>
+          <HeaderSummary>Current Total Grades</HeaderSummary>
           <DataSummary>
             {totalGrades ? (
               <>
-                {totalGrades.map((course, index) => {
+                {totalGrades.map(course => {
                   return <CourseCard course={course} />;
                 })}
               </>
@@ -89,11 +102,9 @@ const StudentGradesView = ({ auth }) => {
         <TopContainer>
           <HeaderSummary>Upcoming Assignments/Quizzes</HeaderSummary>
           <DataSummary>
-            <Card.Group
-              fluid
-              items={getUpcomingAssignments(grades)}
-              itemsPerRow={2}
-            />
+            <Card.Group fluid itemsPerRow={2}>
+              {renderUpcomingAssignments(grades)}
+            </Card.Group>
           </DataSummary>
         </TopContainer>
       </SummaryContainer>
