@@ -33,7 +33,7 @@ class OptionsMenu extends React.Component {
 						name="Assignments" 
 						value="assignments" 
 						checked={ this.props.assignmentsView ? 'checked' : null }
-						/> Assignments
+						/> Assignments and Quizzes
 						<br />
 				</form>
 				<br />

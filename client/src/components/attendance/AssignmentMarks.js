@@ -15,7 +15,7 @@ class AssignmentMarks extends React.Component {
               <div>
                 {assignments.length > 1 ? (
                   <div className="assignmentStatus">
-                    <p>Due: {assignments.length} Assignments</p>
+                    <p>Due: {assignments.length} Items</p>
                   </div>
                 ) : (
                   <div className="assignmentStatus">
