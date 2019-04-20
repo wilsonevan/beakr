@@ -54,7 +54,7 @@ import { Link } from "react-router-dom";
 
 
 class Dashboard extends React.Component {
-  state = { selected: this.props.items[0] };
+  state = { selected: localStorage.getItem('previous') };
 
   setSelected = selected => {
     this.setState({ selected });
@@ -104,6 +104,7 @@ class DashboardNav extends React.Component {
     };
   
     handleClick = selected => {
+      localStorage.setItem('previous',selected) // Set the previous selected item in localStorage, if the page refreshes
       this.props.setSelected(selected);
       if(this.props.handleSelected) {
         this.props.handleSelected(selected)
