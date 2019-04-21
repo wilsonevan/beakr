@@ -54,6 +54,13 @@ class Api::UsersController < ApplicationController
     render json: courses
   end
 
+  def send_sms
+    # user = User.find(params[:id])
+    issues = params[:input].gsub("<p>", "").gsub("</p>", "")
+    message = "#{current_user.first_name} #{current_user.last_name} needs help. Here is their description of their issue: #{issues}"
+    mailer = SendsmsMailer.with(user: current_user).test_mailer('+18016109268', message).deliver_now
+  end
+
   def update
     # updates the user information including the image file
     user = User.find(params[:id])

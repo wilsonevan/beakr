@@ -16,12 +16,14 @@ const AdminGradesView = ({ courseId }) => {
   // const [upcomingAssignments, setUpcomingAssignments] = useState(0);
 
   useEffect(() => {
-    if (courseId)
+    if (courseId) {
       axios
         .get(`/api/calc_grades_all_students`, { params: { id: courseId } })
         .then(res => {
           setTotalGrades(res.data);
         });
+      }
+      
   }, []);
 
   const renderGrades = () => {
