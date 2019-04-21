@@ -4,37 +4,48 @@ import styled from "styled-components";
 import { AuthConsumer } from "../../providers/AuthProvider";
 import ReactQuill from "react-quill";
 import { ButtonGreen } from "../../styles/Components";
+import { Portal, Segment, Header, Button } from "semantic-ui-react";
 
 const StudentHelpView = ({ auth }) => {
   const [courses, setCourses] = useState("");
   const [teachers, setTeachers] = useState("");
   const [activeCourse, setActiveCourse] = useState("");
   const [body, setBody] = useState("");
-  const [responseMessage, setResponseMessage] = useState("");
+  const [portalOpen, setPortalOpen] = useState(false);
 
   useEffect(() => {
     const id = auth.user.id;
     axios.get("/api/student_courses", { params: { id: id } }).then(res => {
       setCourses(res.data);
+      setActiveCourse(res.data[0]);
     });
   }, []);
 
-  // const handleHelpSubmission = () => {
-  //   const id = auth.user.id
-  //   axios.get('/api/send_sms'), { params: { id: id} }
-  // }
+  const handleResponse = () => {
+    setPortalOpen(true);
+  };
 
-  // divRef = React.createRef()
+  const handleClosePortal = () => {
+    setPortalOpen(false);
+  };
 
-  const handleQuillChange = (e) => {
+  const handleQuillChange = e => {
     setBody(e);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     const messageBody = body;
-    axios.post("/api/send_sms", { input: messageBody } ).then(res => {
-      setResponseMessage(res.data);
-    });
+    axios
+      .post(`/api/search_staff_enrolled/${activeCourse.id}`, {
+        input: "",
+        id: activeCourse.id
+      })
+      .then(res => {
+        setTeachers(res.data);
+        axios.post("/api/send_sms", { input: messageBody }).then( () => {
+          handleResponse();
+        });
+      });
   };
 
   const renderDropDown = () => {
@@ -62,6 +73,31 @@ const StudentHelpView = ({ auth }) => {
   if (courses)
     return (
       <ContainAll>
+        <Portal onClose={handleClosePortal} open={portalOpen}>
+          <Segment
+            style={{
+              left: "40%",
+              position: "absolute",
+              top: "50%",
+              zIndex: 1000
+            }}
+          >
+            <Header>Your Help Request has been sent to:</Header>
+            {teachers.length > 0
+              ? teachers.map(teacher => {
+                  return (
+                    <p>
+                      {teacher.first_name} {teacher.last_name}
+                    </p>
+                  );
+                })
+              : null}
+            <br />
+            <p>To close, simply click the close button or click away</p>
+
+            <Button content="Close" negative onClick={handleClosePortal} />
+          </Segment>
+        </Portal>
         <ContentContainer>
           <h2>What course do you need help with?</h2>
           {renderDropDown()}
@@ -71,11 +107,11 @@ const StudentHelpView = ({ auth }) => {
             value={body}
             modules={modules}
             formats={formats}
-            onChange={(e) => handleQuillChange(e)}
+            onChange={e => handleQuillChange(e)}
             style={{ height: "25rem", paddingBottom: "4rem" }}
           />
           <br />
-          <ButtonGreen onClick={() => handleSubmit()}>Ask for Help</ButtonGreen>
+          <ButtonGreen onClick={() => handleSubmit()}>Ask for Help with {activeCourse.title}</ButtonGreen>
         </ContentContainer>
       </ContainAll>
     );
