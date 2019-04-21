@@ -34,7 +34,9 @@ const StudentHelpView = ({ auth }) => {
   };
 
   const handleSubmit = e => {
-    const messageBody = body;
+    const user = auth.user;
+    const messageBody = `${user.first_name} ${user.last_name} needs help. 
+    Here is their description of their issue: ${body}`;
     axios
       .post(`/api/search_staff_enrolled/${activeCourse.id}`, {
         input: "",
@@ -42,7 +44,7 @@ const StudentHelpView = ({ auth }) => {
       })
       .then(res => {
         setTeachers(res.data);
-        axios.post("/api/send_sms", { input: messageBody }).then( () => {
+        axios.post("/api/send_sms", { input: messageBody }).then(() => {
           handleResponse();
         });
       });
@@ -83,20 +85,20 @@ const StudentHelpView = ({ auth }) => {
             }}
           >
             <PortalContainer>
-            <Header>Your Help Request has been sent to:</Header>
-            {teachers.length > 0
-              ? teachers.map(teacher => {
-                  return (
-                    <p>
-                      {teacher.first_name} {teacher.last_name}
-                    </p>
-                  );
-                })
-              : null}
-            <br />
-            <p>To close, simply click the close button or click away</p>
+              <Header>Your Help Request has been sent to:</Header>
+              {teachers.length > 0
+                ? teachers.map(teacher => {
+                    return (
+                      <p>
+                        {teacher.first_name} {teacher.last_name}
+                      </p>
+                    );
+                  })
+                : null}
+              <br />
+              <p>To close, simply click the close button or click away</p>
 
-            <Button content="Close" negative onClick={handleClosePortal} />
+              <Button content="Close" negative onClick={handleClosePortal} />
             </PortalContainer>
           </Segment>
         </Portal>
@@ -113,13 +115,14 @@ const StudentHelpView = ({ auth }) => {
             style={{ height: "25rem", paddingBottom: "4rem" }}
           />
           <br />
-          <Button onClick={() => handleSubmit()}>Ask for Help with {activeCourse.title}</Button>
+          <Button onClick={() => handleSubmit()}>
+            Ask for Help with {activeCourse.title}
+          </Button>
         </ContentContainer>
       </ContainAll>
     );
   else return <></>;
 };
-
 
 const PortalContainer = styled.div`
   text-align: center !important;

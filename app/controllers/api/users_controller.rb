@@ -55,8 +55,7 @@ class Api::UsersController < ApplicationController
   end
 
   def send_sms
-    issues = params[:input].gsub("<p>", "").gsub("</p>", "")
-    message = "#{current_user.first_name} #{current_user.last_name} needs help. Here is their description of their issue: #{issues}"
+    message = params[:input].gsub("<p>", "").gsub("</p>", "")
     SendsmsMailer.with(user: current_user).test_mailer('+18016109268', message)
   end
 
