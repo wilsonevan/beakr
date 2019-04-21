@@ -76,12 +76,13 @@ const StudentHelpView = ({ auth }) => {
         <Portal onClose={handleClosePortal} open={portalOpen}>
           <Segment
             style={{
-              left: "40%",
+              left: "35vw",
               position: "absolute",
-              top: "50%",
+              top: "50vh",
               zIndex: 1000
             }}
           >
+            <PortalContainer>
             <Header>Your Help Request has been sent to:</Header>
             {teachers.length > 0
               ? teachers.map(teacher => {
@@ -96,6 +97,7 @@ const StudentHelpView = ({ auth }) => {
             <p>To close, simply click the close button or click away</p>
 
             <Button content="Close" negative onClick={handleClosePortal} />
+            </PortalContainer>
           </Segment>
         </Portal>
         <ContentContainer>
@@ -111,12 +113,21 @@ const StudentHelpView = ({ auth }) => {
             style={{ height: "25rem", paddingBottom: "4rem" }}
           />
           <br />
-          <ButtonGreen onClick={() => handleSubmit()}>Ask for Help with {activeCourse.title}</ButtonGreen>
+          <Button onClick={() => handleSubmit()}>Ask for Help with {activeCourse.title}</Button>
         </ContentContainer>
       </ContainAll>
     );
   else return <></>;
 };
+
+
+const PortalContainer = styled.div`
+  text-align: center !important;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  align-items: center;
+`;
 
 const HeaderSummary = styled.h3`
   width: 30%;
