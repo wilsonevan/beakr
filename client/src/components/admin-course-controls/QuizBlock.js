@@ -11,7 +11,7 @@ class QuizBlock extends React.Component {
     return (
       <BlockContainer>
         <QuizBlockText
-          href={`/quizzes/${quiz.id}`}
+          href={`/courses/${this.props.course_id}/units/${this.props.unit.id}/quizzes/${quiz.id}`}
           target="_blank"
         >
           <Tag><Icon name="check" /></Tag> {quiz.title}

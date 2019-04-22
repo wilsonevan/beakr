@@ -19,6 +19,7 @@ class UnitControls extends React.Component {
   state = { editing: false, unit: this.props.unit, contents: [], assignments: [], quizzes: [], search: "contents" };
 
   componentDidMount() {
+    console.log(this.props)
     axios
       .get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`)
       .then(res => {
@@ -250,7 +251,7 @@ class UnitControls extends React.Component {
           assignment={assignment}
           unit={this.props.unit}
           index={index}
-          course_id={this.props.course_id}
+          course_id={this.props.courseId}
           deleteUnitAssignment={this.deleteUnitAssignment}
           toggleAssignmentVisibility={this.toggleAssignmentVisibility}
           setAssignmentDueDate={this.setAssignmentDueDate}
@@ -270,6 +271,7 @@ class UnitControls extends React.Component {
           deleteUnitQuiz={this.deleteUnitQuiz}
           toggleQuizVisibility={this.toggleQuizVisibility}
           setQuizDueDate={this.setQuizDueDate}
+          course_id={this.props.courseId}
         />
       );
     });
