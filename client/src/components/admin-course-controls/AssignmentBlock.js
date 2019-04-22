@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
 import Flatpickr from 'react-flatpickr';
+import { Link } from "react-router-dom";
 
 class AssignmentBlock extends React.Component {
 
@@ -10,8 +11,8 @@ class AssignmentBlock extends React.Component {
     return (
       <BlockContainer>
         <AssignmentBlockText
-          href={`/courses/${course_id}/units/${unit.id}/assignments/${assignment.id}`}
-          target="_blank"
+          as={Link}
+          to={`/courses/${course_id}/units/${unit.id}/assignments/${assignment.id}`}
         >
           <Tag><Icon name="edit outline" /></Tag> {assignment.title}
         </AssignmentBlockText>
