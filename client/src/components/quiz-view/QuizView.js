@@ -198,8 +198,6 @@ class QuizView extends React.Component {
       return total += value? value : 0 ;
     }, 0)
 
-    console.log(points_awarded)
-
     const submission = this.state.submission;
     submission.points_awarded = points_awarded;
     submission.grade = (points_awarded/submission.points_possible) * 100;
@@ -211,7 +209,6 @@ class QuizView extends React.Component {
     const { submission } = this.state;
     axios.put(`/api/quiz_submissions/${submission.id}/calculate_grade`, {quiz_submission: { ...submission} })
     .then((res) => {
-      console.log(res)
       this.setState({ submission: res.data });
     })
     .catch((err) => console.log(err));

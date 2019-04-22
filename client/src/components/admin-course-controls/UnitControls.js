@@ -19,7 +19,6 @@ class UnitControls extends React.Component {
   state = { editing: false, unit: this.props.unit, contents: [], assignments: [], quizzes: [], search: "contents" };
 
   componentDidMount() {
-    console.log(this.props)
     axios
       .get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`)
       .then(res => {
