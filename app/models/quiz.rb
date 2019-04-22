@@ -11,7 +11,7 @@ class Quiz < ApplicationRecord
     Quiz.find_by_sql(["
       SELECT * FROM quizzes
       WHERE title ILIKE ?
-      ORDER BY title
+      ORDER BY LOWER(title)
     ", "#{input}%"])
   end
 

@@ -8,7 +8,7 @@ class Assignment < ApplicationRecord
     Assignment.find_by_sql(["
       SELECT * FROM assignments
       WHERE title ILIKE ?
-      ORDER BY title
+      ORDER BY LOWER(title)
     ", "#{input}%"])
   end
 
