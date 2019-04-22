@@ -10,6 +10,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'devise_token_auth', '~> 1.0.0'
 gem 'cloudinary'
 gem "tinify"
+gem 'twilio', '~> 3.1', '>= 3.1.1'
 
 group :development, :test do
   gem 'pry'
