@@ -68,6 +68,9 @@ const SecondContainer = styled.div`
   align-items: center;
   height: 100vh;
   width: 100%;
+  border-bottom: #23a24d;
+  border-bottom-width: 3px;
+  border-bottom-style: solid;
 `;
 
 
