@@ -56,7 +56,9 @@ class Api::UsersController < ApplicationController
 
   def send_sms
     message = params[:input].gsub("<p>", "").gsub("</p>", "")
-    SendsmsMailer.with(user: current_user).test_mailer('+18016109268', message).deliver_now
+
+    SendsmsMailer.with(user: current_user).test_mailer(ENV['EW_PHONE'], message).deliver_now
+    SendsmsMailer.with(user: current_user).test_mailer(ENV['JP_PHONE'], message).deliver_now
   end
 
   def update
