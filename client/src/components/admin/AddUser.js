@@ -1,21 +1,17 @@
 import React from 'react';
 import axios from 'axios';
 import { ButtonGreen, } from '../../styles/Components';
-import { Form, Segment, Header, } from 'semantic-ui-react';
+import { Form, Segment, Header, Checkbox } from 'semantic-ui-react';
 
 class AddUser extends React.Component {
-  state = { email: '', password: '', password_confirmation: '', first_name: '', last_name: ''};
+  state = { email: '', password: '', password_confirmation: '', first_name: '', last_name: '', admin: false};
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { password, password_confirmation } = this.state;
-    const user = this.state;
-
-    if (password === password_confirmation)
-      axios.post('/api/auth', user)
+    if (this.state.password === this.state.password_confirmation)
+      axios.post('/api/users', {user : this.state})
         .then( res => {
           this.props.toggleNewUser();
-          this.props.resetUserList();
         })
     else
       alert('Passwords Do Not Match!')
@@ -26,12 +22,16 @@ class AddUser extends React.Component {
     this.setState({ [name]: value, }); 
   }
 
+  toggleAdmin = (e) => {
+    this.setState({ admin: !this.state.admin })
+  }
+
   render() {
     const { email, password, password_confirmation, first_name, last_name, } = this.state;
 
     return (
       <Segment basic>
-        <Header as='h1' textAlign='center'>Register</Header>
+        <Header as='h1' textAlign='center'>Add User</Header>
         <Form onSubmit={this.handleSubmit}>
           <Form.Input
             label='First Name'
@@ -75,6 +75,12 @@ class AddUser extends React.Component {
             placeholder='Password Confirmation'
             type='password'
             onChange={this.handleChange}
+          />
+          <Form.Field
+            control={Checkbox}
+            label="Admin"
+            value="admin"
+            onChange={this.toggleAdmin}
           />
           <Segment textAlign='center' basic>
             <ButtonGreen>

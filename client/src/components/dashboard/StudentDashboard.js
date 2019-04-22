@@ -7,6 +7,7 @@ import Calendar from "../attendance/Calendar";
 import StudentGradesView from "../gradebook/StudentGradesView";
 import DashboardNav from "../DashboardNav";
 import CourseItem from "./CourseItem";
+import StudentHelpView from './../student-help/StudentHelpView';
 
 class StudentDashboard extends React.Component {
   state = { userCourses: [] };
@@ -27,7 +28,7 @@ class StudentDashboard extends React.Component {
         <Header as="h1">Welcome {user.first_name}</Header>
         <DashboardNav
           items={["courses", "calendar", "grades"]}
-          rightItems={[{ name: "profile", path: "/profile" }]}
+          rightItems={['help', { name: "profile", path: "/profile" }]}
           courses={
             <>
               {this.state.userCourses.length > 0 ? (
@@ -43,6 +44,7 @@ class StudentDashboard extends React.Component {
           }
           calendar={<Calendar />}
           grades={<StudentGradesView />}
+          help={<StudentHelpView />}
         />
       </Segment>
     );

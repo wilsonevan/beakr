@@ -5,6 +5,7 @@ import axios from "axios";
 import { AuthConsumer } from "../../providers/AuthProvider";
 import dateFns from "date-fns";
 import TrendsTable from "./TrendsTable";
+import { Loader, Dimmer } from "semantic-ui-react";
 import {
   SummaryContainer,
   TopContainer,
@@ -115,9 +116,7 @@ const StudentGradesView = ({ auth, student }) => {
                 })}
               </>
             ) : (
-              <>
-                <HeaderSummary>Loading...</HeaderSummary>
-              </>
+              <Loader />
             )}
           </DataSummary>
         </TopContainer>
@@ -181,19 +180,27 @@ const StudentGradesView = ({ auth, student }) => {
                 if (grade.course_id == activeCourse.id) {
                   return (
                     <Table.Row>
-                      { grades[0].assignment_id ? 
-                          <Table.Cell>
-                            <Link to={`/courses/${grade.course_id}/units/${grades.unit_id}/assignments/${grade.assignment_id}`}>
-                              <TableHeader as="h4">{grade.title}</TableHeader>
-                            </Link>
-                          </Table.Cell>
-                        :
-                          <Table.Cell>
-                            <Link to={`/courses/${grade.course_id}/units/${grade.unit_id}/quizzes/${grade.quiz_id}`}>
-                              <TableHeader as="h4">{grade.title}</TableHeader>
-                            </Link>
-                          </Table.Cell>
-                        }
+                      {grades[0].assignment_id ? (
+                        <Table.Cell>
+                          <Link
+                            to={`/courses/${grade.course_id}/units/${
+                              grades.unit_id
+                            }/assignments/${grade.assignment_id}`}
+                          >
+                            <TableHeader as="h4">{grade.title}</TableHeader>
+                          </Link>
+                        </Table.Cell>
+                      ) : (
+                        <Table.Cell>
+                          <Link
+                            to={`/courses/${grade.course_id}/units/${
+                              grade.unit_id
+                            }/quizzes/${grade.quiz_id}`}
+                          >
+                            <TableHeader as="h4">{grade.title}</TableHeader>
+                          </Link>
+                        </Table.Cell>
+                      )}
                       <Table.Cell textAlign="center">
                         {grade.due_date ? (
                           <>
@@ -248,7 +255,7 @@ const StudentGradesView = ({ auth, student }) => {
     } else
       return (
         <GradesContainer>
-          <HeaderSummary>No grades yet.</HeaderSummary>
+          <HeaderSummary>No Grades Yet...</HeaderSummary>
         </GradesContainer>
       );
   };
@@ -295,7 +302,9 @@ const StudentGradesView = ({ auth, student }) => {
   else
     return (
       <DataSummary>
-        <HeaderSummary>Not yet enrolled in any courses.</HeaderSummary>
+        <Dimmer active inverted>
+          <Loader inverted>Loading</Loader>
+        </Dimmer>
       </DataSummary>
     );
 };

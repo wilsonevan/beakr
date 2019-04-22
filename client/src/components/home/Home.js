@@ -92,7 +92,7 @@ const LeftTextContainer = styled.div`
   display: flex;
   align-items: flex-start;
   color: white;
-  margin-left: 20%;
+  margin-left: 18%;
   margin-top: 6%;
 `;
 
@@ -106,6 +106,7 @@ const RightTextContainer = styled.div`
 
 const PrimaryText = styled.h1`
   color: white !important;
+  font-size: 3rem;
 `;
 
 const PrimaryGreenText = styled.h1`
