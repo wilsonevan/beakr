@@ -20,62 +20,71 @@ class QuizView extends React.Component {
     validationPrompt: false,
     validationText: "",
     submission: null,
-    teacherView: true,
+    teacherView: null,
     submissionList: null,
   }
 
   componentDidMount() {
-    const { course_id, unit_id ,id } = this.props.match.params;
+    const { course_id, unit_id, id } = this.props.match.params;
     const { user } = this.props;
     const { teacherView } = this.state;
-    console.log(this.props)
+    // console.log(this.props)
 
     // If the user is an admin, teacherView is true
     // If not an admin, check if role === teacher
     if(user.admin) {
       this.setState({ teacherView: true });
+      this.handleTeacherView()
     } else {
       axios.get(`/api/users/${user.id}/courses/${course_id}/enrollments`)
       .then((res) =>{
-        console.log(res)
-        if(res.data.role === "student") this.setState({ teacherView: false }); 
+        if(res.data.role === "student") {
+          this.setState({ teacherView: false });
+          return this.handleStudentView()
+        } else {
+          this.setState({ teacherView: true });
+          return this.handleTeacherView()
+        }
       })
     }
+  }
 
-    if(teacherView) {
-      axios.get(`/api//quizzes/${id}/quiz_submissions`)
+  handleTeacherView = () => {
+    const { course_id, unit_id, id } = this.props.match.params;
+    return new Promise((resolve, reject) => {
+      axios.get(`/api/quizzes/${id}/quiz_submissions`)
       .then((res) => {
         this.setState({ submissionList: res.data });
+        return axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
       })
-      .catch((err) => console.log(err))
-    }
-
-    if(!teacherView) {
-      axios.get(`/api/quizzes/${this.props.match.params.id}`)
-        .then( res => {
-          const { title, due_date, body } = res.data;
-          this.setState({ title, due_date, body, page: "start" });
-          return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
-        })
-        .then((res) => this.setState({ questions: res.data }))
-        .catch((err) => console.log(err));
-
-    } else {
-      axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
       .then( res => {
         const { title, due_date, body } = res.data;
-        this.setState({ title, due_date, body });
-        return axios.get(`/api/courses/${course_id}/quizzes/${id}/quiz_submissions`)
+        this.setState({ title, due_date, body, page: "start" });
       })
+      .catch((err) => reject(err));
+    })
+  }
+
+  handleStudentView = () => {
+    const { course_id, unit_id, id } = this.props.match.params;
+    return new Promise((resolve, reject) => {
+      axios.get(`/api/courses/${course_id}/quizzes/${id}/quiz_submissions`)
       .then((res) => {
         if(res.data) this.setState({ submission: res.data, page: "submission" });
-        else this.setState({ page: "start" })
-        return axios.get(`/api/quizzes/${this.props.match.params.id}/questions`)
+        else return axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
       })
-      .then((res) => this.setState({ questions: res.data }))
-      .catch((err) => console.log(err));
-
-    }
+      .then( res => {
+        if(res) {
+          const { title, due_date, body } = res.data;
+          this.setState({ title, due_date, body, page: "start" });
+          return axios.get(`/api/quizzes/${id}/questions`)
+        }
+      })
+      .then((res) => {
+        if(res) this.setState({ questions: res.data });
+      })
+      .catch((err) => reject(err));
+    })
   }
 
   handleCodeChange = (value, currentQuestion) => {
@@ -103,7 +112,7 @@ class QuizView extends React.Component {
       quiz_id: this.props.match.params.id,
     })
     .then((res) => {
-      this.setState({ page: "submission" });
+      this.setSubmission(res.data.id);
     })
     .catch((err) => console.log(err));
   }
@@ -143,7 +152,6 @@ class QuizView extends React.Component {
   }
 
   setSubmission = (submission_id) => {
-    console.log(submission_id)
     axios.get(`/api/quiz_submissions/${submission_id}`)
     .then((res) => {
       this.setState({ submission: res.data, page: "submission" })
@@ -153,6 +161,51 @@ class QuizView extends React.Component {
 
   unsetSubmission = () => {
     this.setState({ submission: null, page: "start" });
+  }
+
+  updatePointsAwarded = (questionIndex, points) => {
+    const questions = this.state.submission.questions.map((question, index) => {
+      if(questionIndex === index) question.points_awarded = points;
+      return question;
+    })
+    const submission = this.state.submission;
+    submission.questions = questions;
+    this.setState({ submission });
+  }
+
+  setNewGrade = (submission_id, submission_grade) => {
+    const submissionList = this.state.submissionList.map((submission) => {
+      if(submission.id === submission_id) {
+        submission.graded = true;
+        submission.grade = submission_grade
+      }
+      return submission
+    })
+    this.setState({ submissionList });
+  }
+
+  calculateGrades = () => {
+    const points_awarded = this.state.submission.questions.reduce((total, question) => {
+      return total += parseFloat(question.points_awarded);
+    }, 0)
+
+    console.log(points_awarded)
+
+    const submission = this.state.submission;
+    submission.points_awarded = points_awarded;
+    submission.grade = (points_awarded/submission.points_possible) * 100;
+
+    this.setState({ submission });
+  }
+
+  submitForGrading = () => {
+    const { submission } = this.state;
+    axios.put(`/api/quiz_submissions/${submission.id}/calculate_grade`, {quiz_submission: { ...submission} })
+    .then((res) => {
+      console.log(res)
+      this.setState({ submission: res.data });
+    })
+    .catch((err) => console.log(err));
   }
 
   render() {
@@ -215,6 +268,14 @@ class QuizView extends React.Component {
       else if(page === "submission") return (
         <QuizSubmissionView 
           submission={submission}
+          title={title}
+          updatePointsAwarded={this.updatePointsAwarded}
+          submitForGrading={this.submitForGrading}
+          history={this.props.history}
+          teacherView={teacherView}
+          unsetSubmission={this.unsetSubmission}
+          setNewGrade={this.setNewGrade}
+          calculateGrades={this.calculateGrades}
         />
       )
       else return null
