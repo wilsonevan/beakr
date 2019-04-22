@@ -72,12 +72,15 @@ class QuizView extends React.Component {
       axios.get(`/api/courses/${course_id}/quizzes/${id}/quiz_submissions`)
       .then((res) => {
         if(res.data) this.setState({ submission: res.data, page: "submission" });
-        else return axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
+        return axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
       })
       .then( res => {
-        if(res) {
-          const { title, due_date, body } = res.data;
-          this.setState({ title, due_date, body, page: "start" });
+        const { title, due_date, body } = res.data;
+        this.setState({ title, due_date, body });
+
+        // if we aren't viewing a quiz submission, then get questions and display start
+        if(this.state.page !== "submission") {
+          this.setState({ page: "start" });
           return axios.get(`/api/quizzes/${id}/questions`)
         }
       })

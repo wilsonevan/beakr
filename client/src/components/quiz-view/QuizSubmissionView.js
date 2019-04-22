@@ -140,7 +140,7 @@ class QuizSubmissionView extends React.Component {
                 />
                 <Header style={{ color: '#23A24D' }}>
                 <Icon name='block layout' color='green' />
-                    { title } { userName && `Submission for ${userName}` }
+                { title }  { userName && `Submission for ${userName}` }
                 </Header>
                 <SubmissionContainer>
                     <GradeHeading>
