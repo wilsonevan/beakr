@@ -3,6 +3,7 @@ import axios from "axios";
 import AdminSection from "./AdminSection";
 import styled from "styled-components";
 import AddSection from "./AddSection";
+import ReactSortable from "react-sortablejs";
 
 
 class SectionIndex extends React.Component {
@@ -21,10 +22,17 @@ class SectionIndex extends React.Component {
         this.setState({ sections });
     };
 
+    sequenceChange = (newSections) => {
+        const sections = newSections.map((section) => {
+          return JSON.parse(section)
+        })
+        this.setState({ sections });
+      }
+
     renderSections = () => {
         return this.state.sections.map((section, index) => {
             return (
-            <AdminSection key={index} title={section.title} section={section} />
+                <AdminSection key={section.id} title={section.title} section={section} />
             );
         });
     };
@@ -37,7 +45,9 @@ class SectionIndex extends React.Component {
                     courseId={this.props.courseId}
                     addSection={this.addSection}
                 />
-              {this.state.sections.length > 0 && this.renderSections()}
+                <ReactSortable onChange={(newSections) => this.sequenceChange(newSections) } >
+                    {this.state.sections.length > 0 && this.renderSections()}
+                </ReactSortable>
             </div>
           </AdminControlsContainer>
         );

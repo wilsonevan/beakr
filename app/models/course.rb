@@ -10,7 +10,7 @@ class Course < ApplicationRecord
     Course.find_by_sql(["
       SELECT * FROM courses
       WHERE title ILIKE ?
-      ORDER BY title
+      ORDER BY LOWER(title)
       ", "#{input}%"])
   end
 

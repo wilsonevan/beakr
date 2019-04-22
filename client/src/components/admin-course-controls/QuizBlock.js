@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
 import Flatpickr from 'react-flatpickr';
+import { Link } from "react-router-dom";
 
 class QuizBlock extends React.Component {
   // state = { visible: this.props.content.visible }
@@ -11,8 +12,8 @@ class QuizBlock extends React.Component {
     return (
       <BlockContainer>
         <QuizBlockText
-          href={`/quizzes/${quiz.id}`}
-          target="_blank"
+          as={Link}
+          to={`/courses/${this.props.course_id}/units/${this.props.unit.id}/quizzes/${quiz.id}`}
         >
           <Tag><Icon name="check" /></Tag> {quiz.title}
         </QuizBlockText>
