@@ -145,6 +145,7 @@ const UserSubmissionBtn = styled.button`
     text-align: left;
     cursor: pointer;
     border-right: 1px solid rgba(150,150,150, 0.1);
+    transition-duration: 0.1s;
 
 
     :hover {
