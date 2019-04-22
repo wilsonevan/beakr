@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Modal } from "semantic-ui-react";
+import { Table, Modal, Loader, Dimmer, Segment, } from "semantic-ui-react";
 import axios from "axios";
 import StudentGradesView from "./StudentGradesView";
 import {
@@ -7,7 +7,8 @@ import {
   TableHeader,
   ModalContainer,
   DataSummary,
-  HeaderSummary
+  HeaderSummary,
+  LoadingSegment,
 } from "./GradeBookStyles";
 
 const AdminGradesView = ({ courseId }) => {
@@ -16,12 +17,13 @@ const AdminGradesView = ({ courseId }) => {
   // const [upcomingAssignments, setUpcomingAssignments] = useState(0);
 
   useEffect(() => {
-    if (courseId)
+    if (courseId) {
       axios
         .get(`/api/calc_grades_all_students`, { params: { id: courseId } })
         .then(res => {
           setTotalGrades(res.data);
         });
+    }
   }, []);
 
   const renderGrades = () => {
@@ -73,7 +75,9 @@ const AdminGradesView = ({ courseId }) => {
     } else
       return (
         <GradesContainer>
-          <HeaderSummary>No grades yet.</HeaderSummary>
+          <Dimmer active inverted>
+            <Loader inverted>Loading</Loader>
+          </Dimmer>
         </GradesContainer>
       );
   };
@@ -82,9 +86,13 @@ const AdminGradesView = ({ courseId }) => {
   else
     return (
       <DataSummary>
-        <HeaderSummary>No grades yet for this course.</HeaderSummary>
+        <Dimmer active inverted>
+          <Loader inverted>Loading</Loader>
+        </Dimmer>
       </DataSummary>
     );
 };
+
+
 
 export default AdminGradesView;

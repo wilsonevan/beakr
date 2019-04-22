@@ -54,6 +54,13 @@ class Api::UsersController < ApplicationController
     render json: courses
   end
 
+  def send_sms
+    message = params[:input].gsub("<p>", "").gsub("</p>", "")
+
+    SendsmsMailer.with(user: current_user).test_mailer(ENV['EW_PHONE'], message).deliver_now
+    SendsmsMailer.with(user: current_user).test_mailer(ENV['JP_PHONE'], message).deliver_now
+  end
+
   def update
     # updates the user information including the image file
     user = User.find(params[:id])
