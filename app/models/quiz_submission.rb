@@ -35,6 +35,7 @@ class QuizSubmission < ApplicationRecord
       INNER JOIN users AS u
           ON e.user_id = u.id
       WHERE qs.quiz_id = ?
+      ORDER BY LOWER(u.first_name)
     ", quiz_id])
   end
 end

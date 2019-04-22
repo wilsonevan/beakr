@@ -56,8 +56,7 @@ class Api::QuizSubmissionsController < ApplicationController
   end
 
   def calculate_final_grade
-    graded_questions = grade_choices(params[:questions])
-    grades = calculate_grades(graded_questions)
+    grades = calculate_grades(params[:quiz_submission][:questions])
 
     if(@quiz_submission.update(
         points_possible: grades[:points_possible],
@@ -65,7 +64,7 @@ class Api::QuizSubmissionsController < ApplicationController
         grade: grades[:grade],
         graded: true,
         comment: params[:comment],
-        questions: graded_questions,
+        questions: params[:quiz_submission][:questions],
       ))
       render( json: @quiz_submission )
     else
@@ -113,14 +112,14 @@ class Api::QuizSubmissionsController < ApplicationController
       
       questions_array.each() {|question|
         question[:points_awarded] = 0 if(question[:points_awarded] == nil)
-        points_possible += question[:points_possible]
-        points_awarded += question[:points_awarded]
+        points_possible += question[:points_possible].to_f
+        points_awarded += question[:points_awarded].to_f
       }
 
       return {
-        points_possible: points_possible.to_f,
-        points_awarded: points_awarded.to_f,
-        grade: (points_awarded == 0)? 0 : (points_awarded.to_f/points_possible.to_f) * 100,
+        points_possible: points_possible,
+        points_awarded: points_awarded,
+        grade: (points_awarded == 0)? 0 : (points_awarded/points_possible) * 100,
       }
     end
 end

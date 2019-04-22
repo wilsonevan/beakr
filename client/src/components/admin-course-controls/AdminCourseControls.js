@@ -31,7 +31,7 @@ class AdminCourseControl extends React.Component {
             edit={<SectionIndex courseId={course.id} />}
             grades={<AdminGradesView courseId={course.id} />}
             attendance={<AdminCourseAttendance courseId={course.id} />}
-          />
+          />  
         </>
       ) 
     } else {

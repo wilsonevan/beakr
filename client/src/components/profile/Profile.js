@@ -11,25 +11,25 @@ import Moment from 'react-moment';
 const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/15724-200.png';
 
 class Profile extends React.Component {
-  state = { editing: false, formValues: { first_name: '', last_name: '', email: '', biography: '', birth_date: '', file: '', }, };
+  state = { editing: false, formValues: { first_name: '', last_name: '', email: '', biography: '', file: '', }, };
   
   componentDidMount() {
     // If this component is being accessed by a student
     if (this.props.location.state){
-      const { user: { first_name, last_name, email, biography, birth_date, image}, } = this.props.location.state
-      this.setState({ formValues: { first_name, last_name, email, biography, birth_date, file: '', }, image, });
+      const { user: { first_name, last_name, email, biography, image}, } = this.props.location.state
+      this.setState({ formValues: { first_name, last_name, email, biography, file: '', }, image, });
     }
     else{
-      const { auth: { user: { first_name, last_name, email, biography, birth_date, image,}, }, } = this.props;
-      this.setState({ formValues: { first_name, last_name, email, biography, birth_date, file: '', }, image });
+      const { auth: { user: { first_name, last_name, email, biography, image,}, }, } = this.props;
+      this.setState({ formValues: { first_name, last_name, email, biography, file: '', }, image });
     }
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { formValues: { first_name, last_name, email, biography, birth_date, file, }, } = this.state;
+    const { formValues: { first_name, last_name, email, biography, file, }, } = this.state;
     const { auth: { user, updateUser, }, } = this.props;
-    updateUser(user.id, { first_name, last_name, email, biography, birth_date, file, });
+    updateUser(user.id, { first_name, last_name, email, biography, file, });
     this.setState({
       editing: false,
       formValues: {
@@ -63,7 +63,7 @@ class Profile extends React.Component {
     const { editing, } = this.state;
 
     const { auth: { user }, } = this.props;
-    const { formValues: { first_name, last_name, email, biography, birth_date, file }, image } = this.state;
+    const { formValues: { first_name, last_name, email, biography, file }, image } = this.state;
 
     return (
       <>
@@ -84,14 +84,6 @@ class Profile extends React.Component {
             </Header>
           </div>
           <Header as='h3'>
-            Birthday:
-          </Header>
-          <div style={{marginLeft: '20px'}}>
-            <Header as="h5">
-            <Moment format='MMM D, YYYY'date={birth_date} />
-            </Header>
-          </div>
-          <Header as='h3'>
             Email:
           </Header>
           <div style={{marginLeft: '20px'}}>
@@ -108,7 +100,7 @@ class Profile extends React.Component {
     const { editing, } = this.state;
     const { auth: {user, }, } = this.props
 
-    const { formValues: { first_name, last_name, email, biography, birth_date, file }, image } = this.state;
+    const { formValues: { first_name, last_name, email, biography, file }, image } = this.state;
     const blob = new Blob([file], {type: 'image/png'});
     const url = URL.createObjectURL(blob);
     console.log(url)
@@ -152,19 +144,6 @@ class Profile extends React.Component {
               required
               onChange={this.handleChange}
             />
-            <Form.Input
-              type='date'
-              label="Birth Date"
-              name="birth_date"
-              value={birth_date}
-              onChange={this.handleChange}
-            />
-            {/* <Flatpickr
-            required
-            name="birt_hdate"
-            value={birth_date}
-            dateFormat='Y-m-d'
-            onChange={(birth_date) => this.handleChange(birth_date)} /> */}
             <Form.TextArea
               label="Biography"
               name="biography"
