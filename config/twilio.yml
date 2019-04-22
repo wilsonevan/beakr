@@ -1,9 +1,9 @@
 development:
-  accound_sid: = <%= ENV['TEST_ACCOUNT_SID'] %>
-  auth_token: <%= ENV['TEST_AUTH_TOKEN'] %>
+  accound_sid: = <%= ENV['ACCOUNT_SID'] %>
+  auth_token: <%= ENV['AUTH_TOKEN'] %>
 production:
   accound_sid: = <%= ENV['ACCOUNT_SID'] %>
   auth_token: <%= ENV['AUTH_TOKEN'] %>
 test:
-  accound_sid: = <%= ENV['TEST_ACCOUNT_SID'] %>
-  auth_token: <%= ENV['TEST_AUTH_TOKEN'] %>
+  accound_sid: = <%= ENV['ACCOUNT_SID'] %>
+  auth_token: <%= ENV['AUTH_TOKEN'] %>

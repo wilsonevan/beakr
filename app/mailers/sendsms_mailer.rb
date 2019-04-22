@@ -5,6 +5,7 @@ class SendsmsMailer < ApplicationMailer
     client = Twilio.connect(account_sid, auth_token)
 
     from = ENV['TWILIO_PHONE'] # Your Twilio number
+
     outbound_sms = Twilio::Sms.message(from, user_number, message) 
   end
 end

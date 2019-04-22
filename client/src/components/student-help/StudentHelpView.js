@@ -35,8 +35,7 @@ const StudentHelpView = ({ auth }) => {
 
   const handleSubmit = e => {
     const user = auth.user;
-    const messageBody = `${user.first_name} ${user.last_name} needs help. 
-    Here is their description of their issue: ${body}`;
+    const messageBody = `${user.first_name} ${user.last_name} needs help. Here is their description of their issue: ${body}`;
     axios
       .post(`/api/search_staff_enrolled/${activeCourse.id}`, {
         input: "",
