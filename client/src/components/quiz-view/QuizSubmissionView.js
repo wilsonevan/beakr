@@ -125,7 +125,7 @@ class QuizSubmissionView extends React.Component {
     }
 
     render() {
-        const { submission, title, teacherView, unsetSubmission } = this.props;
+        const { submission, title, teacherView, unsetSubmission, userName } = this.props;
         return (
             <>
                 <Header 
@@ -140,7 +140,7 @@ class QuizSubmissionView extends React.Component {
                 />
                 <Header style={{ color: '#23A24D' }}>
                 <Icon name='block layout' color='green' />
-                    { title }
+                    { title } { userName && `Submission for ${userName}` }
                 </Header>
                 <SubmissionContainer>
                     <GradeHeading>
@@ -154,6 +154,9 @@ class QuizSubmissionView extends React.Component {
                     </GradeHeading>
                     <StyledHr />
                     { this.renderQuestions() }
+                    {this.props.teacherView && 
+                        <BottomSubmit onClick={() => this.handleClick()} >Submit Grade</BottomSubmit> 
+                    }
                 </SubmissionContainer>
             </>
         )
@@ -162,6 +165,10 @@ class QuizSubmissionView extends React.Component {
 
 
 const SubmissionContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     min-height: 50%;
     width: 100%;
     margin-top: 2rem;
@@ -176,6 +183,7 @@ const GradeHeading = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     font-size: 1.75rem;
     color: #23a24d;
 `
@@ -231,6 +239,23 @@ const PointsPossible = styled.div`
 
 const Points = styled.div`
     text-align: right;
+`
+
+const BottomSubmit = styled.button`
+    min-width: 15rem;
+    width: 40%;
+    padding: 1.5rem 0;
+    background-color: #23a24d;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+
+    :hover {
+        color: white;
+        background-color: #41c36c;
+    }
 `
 
 export default QuizSubmissionView;

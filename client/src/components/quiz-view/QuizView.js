@@ -22,6 +22,7 @@ class QuizView extends React.Component {
     submission: null,
     teacherView: null,
     submissionList: null,
+    userName: "",
   }
 
   componentDidMount() {
@@ -163,6 +164,10 @@ class QuizView extends React.Component {
     this.setState({ submission: null, page: "start" });
   }
 
+  setUserName = (userName) => {
+    this.setState({ userName });
+  }
+
   updatePointsAwarded = (questionIndex, points) => {
     const questions = this.state.submission.questions.map((question, index) => {
       if(questionIndex === index) question.points_awarded = points;
@@ -209,7 +214,7 @@ class QuizView extends React.Component {
   }
 
   render() {
-    const { title, questions, page, startPrompt, submitPrompt, validationPrompt, validationText, due_date, body, teacherView, submission, submissionList } = this.state;
+    const { title, questions, page, startPrompt, submitPrompt, validationPrompt, validationText, due_date, body, teacherView, submission, submissionList, userName } = this.state;
     if(page === "start") return (
         <>
         <Header as={Link} to='' onClick={() => this.props.history.goBack()} content='< Course Work' color='green' size='huge' textAlign='left'/>
@@ -224,6 +229,7 @@ class QuizView extends React.Component {
             teacherView={teacherView}
             submissionList={submissionList}
             setSubmission={this.setSubmission}
+            setUserName={this.setUserName}
           />
           { startPrompt &&
             <QuizPrompt 
@@ -276,6 +282,7 @@ class QuizView extends React.Component {
           unsetSubmission={this.unsetSubmission}
           setNewGrade={this.setNewGrade}
           calculateGrades={this.calculateGrades}
+          userName={userName}
         />
       )
       else return null
