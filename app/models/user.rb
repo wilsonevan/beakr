@@ -175,6 +175,7 @@ class User < ActiveRecord::Base
       WHERE users.id = ?
       ORDER BY due_date
     ", user_id, user_id, ])
+
   end
 
 

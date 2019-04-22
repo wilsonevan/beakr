@@ -54,7 +54,16 @@ import { Link } from "react-router-dom";
 
 
 class Dashboard extends React.Component {
+
   state = { selected: localStorage.getItem('previous') };
+
+  componentDidMount() {
+    // Check whether the previous selected tab is within the current dashboard, 
+    // otherwise set to the default to be the far left tab (items[0])
+    if (!this.props.items.includes(localStorage.getItem('previous'))){
+      this.setState({ selected: this.props.items[0]})
+    }
+  }
 
   setSelected = selected => {
     this.setState({ selected });

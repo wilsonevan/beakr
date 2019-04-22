@@ -24,6 +24,7 @@ const StudentGradesView = ({ auth, student }) => {
   const [quizGrades, setQuizGrades] = useState(0);
   const [totalGrades, setTotalGrades] = useState(0);
   const [allGrades, setAllGrades] = useState(0);
+  const [noGradesFlag, setNoGradesFlag] = useState(false);
 
   useEffect(() => {
     let id = 0;
@@ -158,93 +159,91 @@ const StudentGradesView = ({ auth, student }) => {
 
   const renderGrades = grades => {
     if (grades) {
-      return (
-        <GradesContainer>
-          <Table celled selectable color="green">
-            <Table.Header>
-              <Table.Row>
-                {grades[0].assignment_id ? (
+      if (grades[0].points_possible || grades.length > 2) {
+        return (
+          <GradesContainer>
+            <Table celled selectable color="green">
+              <Table.Header>
+                <Table.Row>
+                  {grades[0].assignment_id ? (
+                    <Table.HeaderCell textAlign="center">
+                      Assignments
+                    </Table.HeaderCell>
+                  ) : (
+                    <Table.HeaderCell textAlign="center">
+                      Quizzes
+                    </Table.HeaderCell>
+                  )}
                   <Table.HeaderCell textAlign="center">
-                    Assignments
+                    Due Date
                   </Table.HeaderCell>
-                ) : (
-                  <Table.HeaderCell textAlign="center">
-                    Quizzes
-                  </Table.HeaderCell>
-                )}
-                <Table.HeaderCell textAlign="center">Due Date</Table.HeaderCell>
-                <Table.HeaderCell textAlign="center">Score</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {grades.map(grade => {
-                if (grade.course_id == activeCourse.id) {
-                  return (
-                    <Table.Row>
-                      { grades[0].assignment_id ? 
+                  <Table.HeaderCell textAlign="center">Score</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {grades.map(grade => {
+                  if (grade.course_id == activeCourse.id) {
+                    return (
+                      <Table.Row>
+                        {grades[0].assignment_id ? (
                           <Table.Cell>
-                            <Link to={`/courses/${grade.course_id}/units/${grades.unit_id}/assignments/${grade.assignment_id}`}>
+                            <Link
+                              to={`/courses/${grade.course_id}/units/${
+                                grades.unit_id
+                              }/assignments/${grade.assignment_id}`}
+                            >
                               <TableHeader as="h4">{grade.title}</TableHeader>
                             </Link>
                           </Table.Cell>
-                        :
-                          <Table.Cell>
-                            <Link to={`/courses/${grade.course_id}/units/${grade.unit_id}/quizzes/${grade.quiz_id}`}>
-                              <TableHeader as="h4">{grade.title}</TableHeader>
-                            </Link>
-                          </Table.Cell>
-                        }
-                      <Table.Cell textAlign="center">
-                        {grade.due_date ? (
-                          <>
-                            {dateFns.format(
-                              dateFns.parse(grade.due_date),
-                              "MM/DD/YY"
-                            )}
-                          </>
                         ) : (
-                          <>No Date Yet</>
+                          <Table.Cell>
+                            <Link
+                              to={`/courses/${grade.course_id}/units/${
+                                grade.unit_id
+                              }/quizzes/${grade.quiz_id}`}
+                            >
+                              <TableHeader as="h4">{grade.title}</TableHeader>
+                            </Link>
+                          </Table.Cell>
                         )}
-                      </Table.Cell>
-                      {grade.points_possible > 0 ? (
                         <Table.Cell textAlign="center">
-                          {Math.round(
-                            (grade.points_awarded / grade.points_possible) * 100
+                          {grade.due_date ? (
+                            <>
+                              {dateFns.format(
+                                dateFns.parse(grade.due_date),
+                                "MM/DD/YY"
+                              )}
+                            </>
+                          ) : (
+                            <>No Date Yet</>
                           )}
-                          %
                         </Table.Cell>
-                      ) : (
-                        <Table.Cell textAlign="center">0%</Table.Cell>
-                      )}
-                    </Table.Row>
-                  );
-                }
-              })}
-            </Table.Body>
-            {/* <Table.Footer>
-              <Table.Row>
-                <Table.HeaderCell>Total Grade</Table.HeaderCell>
-                {totalGrades ? (
-                  <>
-                    {totalGrades.map(course => {
-                      if (course.course_id == activeCourse.id)
-                        return (
-                          <Table.HeaderCell colSpan="3" textAlign="center">
-                            {course.grade_percent}%
-                          </Table.HeaderCell>
-                        );
-                    })}
-                  </>
-                ) : (
-                  <>
-                    <HeaderSummary>Loading...</HeaderSummary>
-                  </>
-                )}
-              </Table.Row>
-            </Table.Footer> */}
-          </Table>
-        </GradesContainer>
-      );
+                        {grade.points_possible > 0 ? (
+                          <Table.Cell textAlign="center">
+                            {Math.round(
+                              (grade.points_awarded / grade.points_possible) *
+                                100
+                            )}
+                            %
+                          </Table.Cell>
+                        ) : (
+                          <Table.Cell textAlign="center">0%</Table.Cell>
+                        )}
+                      </Table.Row>
+                    );
+                  }
+                })}
+              </Table.Body>
+            </Table>
+          </GradesContainer>
+        );
+      } else {
+        return (
+          <GradesContainer>
+            <HeaderSummary>No grades yet.</HeaderSummary>
+          </GradesContainer>
+        );
+      }
     } else
       return (
         <GradesContainer>
