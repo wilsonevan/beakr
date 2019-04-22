@@ -15,7 +15,7 @@ class QuizSubmissionView extends React.Component {
         while(optionPoints <= points_possible) {
             optionArray.push(
                 <option value={optionPoints} key={optionPoints} >    
-                    {optionPoints}
+                    {optionPoints.toFixed(1)}
                 </option>    
             )
             optionPoints += 0.5;
@@ -23,8 +23,14 @@ class QuizSubmissionView extends React.Component {
         return optionArray
     }
 
+    handleChange = (event, index) => {
+        this.props.updatePointsAwarded(index, event.target.value);
+        this.props.calculateGrades();
+    }
+
     handleClick = () => {
         this.props.submitForGrading();
+        this.props.setNewGrade(this.props.submission.id, this.props.submission.grade);
         this.props.unsetSubmission();
     }
 
@@ -35,13 +41,22 @@ class QuizSubmissionView extends React.Component {
                     <QuestionControls>
                         Question {index + 1}
                         <RightContainer>
-                            <SelectContainer>
-                                <select 
-                                    value={question.points_awarded} 
-                                    onChange={(event) => this.props.updatePointsAwarded(index, event.target.value)} >
-                                    { this.pointsOptions(question.points_possible) }
-                                </select>
-                            </SelectContainer>
+                            {this.props.teacherView
+                            ? (
+                                <SelectContainer>
+                                    <select 
+                                        value={question.points_awarded} 
+                                        onChange={(event) => this.handleChange(event, index)} >
+                                        { this.pointsOptions(question.points_possible) }
+                                    </select>
+                                </SelectContainer>
+                            )
+                            : (
+                                <Points>
+                                    { question.points_awarded }
+                                </Points>
+                            )
+                            }
                             <PointsPossible>
                                 / {question.points_possible}
                             </PointsPossible>
@@ -58,13 +73,22 @@ class QuizSubmissionView extends React.Component {
                     <QuestionControls>
                         Question {index + 1}
                         <RightContainer>
-                            <SelectContainer>
-                                <select 
-                                    value={question.points_awarded} 
-                                    onChange={(event) => this.props.updatePointsAwarded(index, event.target.value)} >
-                                    { this.pointsOptions(question.points_possible) }
-                                </select>
-                            </SelectContainer>
+                            {this.props.teacherView
+                            ? (
+                                <SelectContainer>
+                                    <select 
+                                        value={question.points_awarded} 
+                                        onChange={(event) => this.handleChange(event, index)} >
+                                        { this.pointsOptions(question.points_possible) }
+                                    </select>
+                                </SelectContainer>
+                            )
+                            : (
+                                <Points>
+                                    { question.points_awarded }
+                                </Points>
+                            )
+                            }
                             <PointsPossible>
                                 / {question.points_possible}
                             </PointsPossible>
@@ -82,9 +106,9 @@ class QuizSubmissionView extends React.Component {
                         Question {index + 1}
                         <RightContainer>
                             <SelectContainer>
-                                <ChoicePoints>
+                                <Points>
                                 { question.points_awarded }
-                                </ChoicePoints>
+                                </Points>
                             </SelectContainer>
                             <PointsPossible>
                                 / {question.points_possible}
@@ -121,9 +145,11 @@ class QuizSubmissionView extends React.Component {
                 <SubmissionContainer>
                     <GradeHeading>
                         <h2 style={{margin: "0"}} >{ submission.graded? "Graded" : <span style={{color: "#2979ff", margin: "0"}} > Not Graded </span> }</h2>
-                        <ButtonGreen onClick={() => this.handleClick()} >
-                            Submit Grade
-                        </ButtonGreen>
+                        {this.props.teacherView &&
+                            <ButtonGreen onClick={() => this.handleClick()} >
+                                Submit Grade
+                            </ButtonGreen>
+                        }
                         <GradePercent>{ submission.grade.toFixed(1) }%</GradePercent>
                     </GradeHeading>
                     <StyledHr />
@@ -203,7 +229,7 @@ const PointsPossible = styled.div`
     overflow: hidden;
 `
 
-const ChoicePoints = styled.div`
+const Points = styled.div`
     text-align: right;
 `
 

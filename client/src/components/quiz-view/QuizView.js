@@ -164,13 +164,37 @@ class QuizView extends React.Component {
   }
 
   updatePointsAwarded = (questionIndex, points) => {
-    console.log(points)
     const questions = this.state.submission.questions.map((question, index) => {
       if(questionIndex === index) question.points_awarded = points;
       return question;
     })
     const submission = this.state.submission;
     submission.questions = questions;
+    this.setState({ submission });
+  }
+
+  setNewGrade = (submission_id, submission_grade) => {
+    const submissionList = this.state.submissionList.map((submission) => {
+      if(submission.id === submission_id) {
+        submission.graded = true;
+        submission.grade = submission_grade
+      }
+      return submission
+    })
+    this.setState({ submissionList });
+  }
+
+  calculateGrades = () => {
+    const points_awarded = this.state.submission.questions.reduce((total, question) => {
+      return total += parseFloat(question.points_awarded);
+    }, 0)
+
+    console.log(points_awarded)
+
+    const submission = this.state.submission;
+    submission.points_awarded = points_awarded;
+    submission.grade = (points_awarded/submission.points_possible) * 100;
+
     this.setState({ submission });
   }
 
@@ -250,6 +274,8 @@ class QuizView extends React.Component {
           history={this.props.history}
           teacherView={teacherView}
           unsetSubmission={this.unsetSubmission}
+          setNewGrade={this.setNewGrade}
+          calculateGrades={this.calculateGrades}
         />
       )
       else return null
