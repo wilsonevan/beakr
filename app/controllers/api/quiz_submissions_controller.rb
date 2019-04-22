@@ -56,10 +56,6 @@ class Api::QuizSubmissionsController < ApplicationController
   end
 
   def calculate_final_grade
-    # puts "==================================================================================================="
-    # puts params[:quiz_submission][:questions]
-    # puts "==================================================================================================="
-    # graded_questions = grade_choices(params[:questions])
     grades = calculate_grades(params[:quiz_submission][:questions])
 
     if(@quiz_submission.update(
