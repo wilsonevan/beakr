@@ -11,20 +11,33 @@ class AdminSection extends React.Component {
   state = {
     laoded: false,
     opened: false,
-    units: []
+    units: [],
+    noUnits: true,
   };
 
   unitContainerRef = React.createRef();
   sectionRef = React.createRef();
 
   componentDidMount = () => {
-    axios
+      axios
+        .get(`/api/sections/${this.props.section.id}/units`)
+        .then(res => {
+          this.setState({ units: res.data, loaded: true, noUnits: (res.data.length === 0)? true : false });
+        })
+        .catch(err => console.log(err));
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if(prevProps.section.id !== this.props.section.id) {
+      this.setState({ loaded: false, opened: false })
+      axios
       .get(`/api/sections/${this.props.section.id}/units`)
       .then(res => {
-        this.setState({ units: res.data, loaded: true });
+        this.setState({ units: res.data, loaded: true, noUnits: (res.data.length === 0)? true : false });
       })
       .catch(err => console.log(err));
-  };
+    }
+  }
 
   componentWillUnmount() {
     anime.remove(this.unitContainerRef.current, this.sectionRef.current);
@@ -69,7 +82,6 @@ class AdminSection extends React.Component {
         easing: "linear"
       }).finished.then(() => this.setState({ opened: !this.state.opened }));
     }
-    // this.setState({ opened: !this.state.opened });
   };
 
   renderUnits = () => {
@@ -87,18 +99,20 @@ class AdminSection extends React.Component {
 
   render() {
     const { title } = this.props;
-    const { loaded, units } = this.state;
+    const { loaded, units, noUnits } = this.state;
 
     if (this.state.opened) {
       return (
-        <>
+        <div data-id={JSON.stringify(this.props.section)} >
             <Section
               onClick={this.handleClick}
               ref={this.sectionRef}
               style={{marginBottom: "0"}}
+              // onDragStart={() => this.setState({ noUnits: false })}
+              // onDragEnd={() => this.setState({ noUnits: false })}
             >
               <SectionTitle>
-                {loaded && units.length === 0 && "(No Units)"} {title}
+                {title} {noUnits && "( No Units )" }
               </SectionTitle>
               <SectionIcon>
                 <Link
@@ -116,14 +130,20 @@ class AdminSection extends React.Component {
             >
               {this.renderUnits()}
             </UnitsContainer>
-        </>
+        </div>
       );
     } else {
       return (
         <>
-            <Section ref={this.sectionRef} onClick={this.handleClick}>
+            <Section 
+              ref={this.sectionRef} 
+              onClick={this.handleClick} 
+              data-id={JSON.stringify(this.props.section)} 
+              // onDragStart={() => this.setState({ noUnits: false })}
+              // onDragEnd={() => this.setState({ noUnits: false })}
+            >
               <SectionTitle>
-                {loaded && units.length === 0 && "(No Units)"} {title}
+                {title} {noUnits && "( No Units )"}
               </SectionTitle>
               <SectionIcon>
                 <Link
