@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
     ON e.user_id = u.id
     WHERE course_id = ?
     AND ( u.first_name ILIKE ? OR u.last_name ILIKE ? )
-    ORDER BY LOWER(first_name), LOWER(last_name)
+    ORDER BY first_name, last_name
     ", "#{input}%", "#{input}%", course_id, "#{input}%", "#{input}%", course_id, "#{input}%", "#{input}%"])
   end
 
