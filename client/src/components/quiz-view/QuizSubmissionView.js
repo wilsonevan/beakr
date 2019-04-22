@@ -24,8 +24,8 @@ class QuizSubmissionView extends React.Component {
     }
 
     handleChange = (event, index, points_possible) => {
-        const value = parseFloat(event.target.value)
-        if(value > points_possible || value < 0 || isNaN(value)) return null;
+        const value = parseFloat(event.target.value)? parseFloat(event.target.value) : "";
+        if(value > points_possible || value < 0) return null;
         this.props.updatePointsAwarded(index, value);
         this.props.calculateGrades();
     }

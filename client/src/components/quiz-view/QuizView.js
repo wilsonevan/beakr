@@ -194,7 +194,8 @@ class QuizView extends React.Component {
 
   calculateGrades = () => {
     const points_awarded = this.state.submission.questions.reduce((total, question) => {
-      return total += parseFloat(question.points_awarded);
+      const value = parseFloat(question.points_awarded)
+      return total += value? value : 0 ;
     }, 0)
 
     console.log(points_awarded)
