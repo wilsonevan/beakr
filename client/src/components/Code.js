@@ -4,6 +4,7 @@ import { Controlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
 require('codemirror/mode/javascript/javascript');
+require('codemirror/mode/css/css');
 require('codemirror/mode/ruby/ruby');
 require('codemirror/mode/python/python');
 
@@ -65,6 +66,8 @@ class Code extends React.Component {
                             <option value="javascript">Javascript</option>
                             <option value="ruby">Ruby</option>
                             <option value="python">Python</option>
+                            <option value="css">CSS</option>
+                            <option value="none">None</option>
                         </CodeSelect>
                     </SelectLabel>
                     <CodeMirror
