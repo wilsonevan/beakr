@@ -75,12 +75,12 @@ const App = () => (
             component={QuizView}
           />
           <ProtectedRoute exact path="/users/new" component={AddUser} />
-          <Route component={NoMatch} />
         </Container>
       </FetchUser>
+      <Route component={NoMatch} />
     </Switch>
   </>
-);
+)
 
 // This styling allows any App view and the Sidebar to fill up the entire page height
 const AppContainer = styled.div`

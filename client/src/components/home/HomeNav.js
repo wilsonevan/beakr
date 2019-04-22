@@ -57,17 +57,13 @@ class HomeNav extends React.Component {
   };
 
   render() {
-    const { visible } = this.state;
-
     return (
       <>
         <NavMenu borderless>
-          <NavLink to="/dashboard" onClick={() => this.activateItem(0)}>
-            <MenuItem>
-              <Logo src={logo} alt="logo" className="App-logo" />
-              <CompanyName>Beakr</CompanyName>
-            </MenuItem>
-          </NavLink>
+          <MenuItem>
+            <Logo src={logo} alt="logo" className="App-logo" />
+            <CompanyName>Beakr</CompanyName>
+          </MenuItem>
           {this.rightNavItems()}
         </NavMenu>
       </>
@@ -112,7 +108,7 @@ const CompanyName = styled.h1`
   left: 7rem;
   height: 4rem;
   width: 4rem;
-`
+`;
 
 const NavMenu = styled.ul`
   list-style-type: none;
