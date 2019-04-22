@@ -237,3 +237,12 @@ main {
   left: 3em;
   /* font-weight: 700; */
 }
+
+.assignmentStatus {
+  position: absolute;
+  font-size: 82.5%;
+  line-height: 1;
+  top: 2em;
+  left: 1em;
+  /* font-weight: 700; */
+}

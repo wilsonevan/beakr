@@ -1,11 +1,12 @@
 class Api::EnrollmentsController < ApplicationController
-  before_action :set_enrollment, only: [:update, :destroy]
+  before_action :set_enrollment, only: [:update, :destroy, :show]
 
   # def index
   # end
 
-  # def show
-  # end
+  def show
+    render( json: @enrollment )
+  end
 
   def create
     enrollment = Enrollment.new(enrollment_params)

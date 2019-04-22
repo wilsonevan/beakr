@@ -70,3 +70,11 @@ export class AuthProvider extends React.Component {
     );
   }
 }
+
+export const withAuth = (Component) => {
+  return (props) => (
+      <AuthContext.Consumer>
+          { (value) => <Component {...props} {...value} /> }
+      </AuthContext.Consumer>
+  )
+}

@@ -24,12 +24,14 @@ class GradeSubmission extends React.Component {
     return(
       <TitleForm onSubmit={this.handleSubmit}>
         <TitleInput
-          type="integer"
+          type="number"
+          max={points_possible}
           name="points_awarded"
           value={points_awarded}
           onChange={this.handleChange}
         />
         / {points_possible}
+        <br />
         <br />
         <ButtonGreen>Submit Grade</ButtonGreen>
         <ButtonGrey onClick={this.props.toggle}>Cancel Grade</ButtonGrey>

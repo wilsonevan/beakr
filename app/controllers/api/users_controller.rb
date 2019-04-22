@@ -1,7 +1,7 @@
 
 class Api::UsersController < ApplicationController
   before_action :authorize_admin, only: [:index]
-  before_action :set_user, only: [:show, :get_user_grades, :calc_total_grades]
+  before_action :set_user, only: [:show, :get_user_grades_assignments, :get_user_grades_quizzes, :get_all_user_grades, :calc_total_grades, :student_courses, ]
 
   def index
     users = User.all
@@ -28,8 +28,16 @@ class Api::UsersController < ApplicationController
     render( json: User.search_students_enrolled(params[:input], params[:id]) )
   end
 
-  def get_user_grades
-    render json: User.get_user_grades(@user.id)
+  def get_user_grades_assignments
+    render json: User.get_user_grades_assignments(@user.id)
+  end
+  
+  def get_user_grades_quizzes
+    render json: User.get_user_grades_quizzes(@user.id)
+  end
+
+  def get_all_user_grades
+    render json: User.get_all_user_grades(@user.id)
   end
 
   def calc_total_grades
@@ -38,6 +46,11 @@ class Api::UsersController < ApplicationController
 
   def user_courses
     courses = current_user.courses
+    render json: courses
+  end
+
+  def student_courses
+    courses = @user.courses
     render json: courses
   end
 

@@ -97,7 +97,7 @@ class AdminUnit extends React.Component {
     return this.state.quizzes.map((quiz, index) => {
       return (
         <Link
-          to={`/quizzes/${quiz.id}`}
+        to={`/courses/${this.props.course_id}/units/${this.props.unit.id}/quizzes/${quiz.id}`}
           key={index}
         >
           <UnitModelsItem>
@@ -112,7 +112,7 @@ class AdminUnit extends React.Component {
     return this.state.assignments.map((assignment, index) => {
       return (
         <Link
-          to={`/courses/${this.props.course_id}/assignments/${assignment.id}`}
+          to={`/courses/${this.props.course_id}/units/${this.props.unit.id}/assignments/${assignment.id}`}
           key={index}
         >
           <UnitModelsItem>

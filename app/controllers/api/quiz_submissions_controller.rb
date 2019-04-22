@@ -13,6 +13,10 @@ class Api::QuizSubmissionsController < ApplicationController
     render( json: User.find(params[:user_id]).quiz_submissions )
   end
 
+  def get_users_submissions_by_quiz
+    render( json: QuizSubmission.get_users_submissions_by_quiz(params[:quiz_id]) )
+  end
+
   def show
     render( json: @quiz_submission )
   end
@@ -52,8 +56,7 @@ class Api::QuizSubmissionsController < ApplicationController
   end
 
   def calculate_final_grade
-    graded_questions = grade_choices(params[:questions])
-    grades = calculate_grades(graded_questions)
+    grades = calculate_grades(params[:quiz_submission][:questions])
 
     if(@quiz_submission.update(
         points_possible: grades[:points_possible],
@@ -61,7 +64,7 @@ class Api::QuizSubmissionsController < ApplicationController
         grade: grades[:grade],
         graded: true,
         comment: params[:comment],
-        questions: graded_questions,
+        questions: params[:quiz_submission][:questions],
       ))
       render( json: @quiz_submission )
     else
@@ -76,7 +79,7 @@ class Api::QuizSubmissionsController < ApplicationController
 
   private
     def set_quiz_submission
-      @quiz_submission = QuizSubmission.find(:id)
+      @quiz_submission = QuizSubmission.find(params[:id])
       # Note that functions to find the quiz submission by user_id, course_id, and quiz_id OR by quiz_id and enrollment_id also exist
       # QuizSubmission.find_by_user_course_and_quiz(user_id, course_id, quiz_id)
       # QuizSubmission.find_by_quiz_and_enrollment(quiz_id, enrollment_id)
@@ -109,14 +112,14 @@ class Api::QuizSubmissionsController < ApplicationController
       
       questions_array.each() {|question|
         question[:points_awarded] = 0 if(question[:points_awarded] == nil)
-        points_possible += question[:points_possible]
-        points_awarded += question[:points_awarded]
+        points_possible += question[:points_possible].to_f
+        points_awarded += question[:points_awarded].to_f
       }
 
       return {
-        points_possible: points_possible.to_f,
-        points_awarded: points_awarded.to_f,
-        grade: (points_awarded == 0)? 0 : (points_awarded.to_f/points_possible.to_f) * 100,
+        points_possible: points_possible,
+        points_awarded: points_awarded,
+        grade: (points_awarded == 0)? 0 : (points_awarded/points_possible) * 100,
       }
     end
 end

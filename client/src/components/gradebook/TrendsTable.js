@@ -53,7 +53,7 @@ const TrendsTable = ({ grades, courses }) => {
       grades.map(grade => {
         if (
           grade.course_id === courseId &&
-          dateFns.isBefore(grade.due_date, dateFns.addWeeks(week, 1))
+          dateFns.isBefore(grade.due_date, week)
         ) {
           weeklyPP = weeklyPP + grade.points_possible;
           weeklyPA = weeklyPA + grade.points_awarded;
@@ -75,12 +75,15 @@ const TrendsTable = ({ grades, courses }) => {
   const generateChartData = () => {
     const weeks = calcWeeks();
 
-    const totalGrades = courses.map(course => {
+    const totalGrades = courses.map((course,index) => {
       const weeklyGrades = calcTotalGradesByWeek(weeks, course.id);
+      
+      if (index > chartColors.length - 1)
+        index = chartColors.length - 1;
+
       return {
         label: course.title,
-        // backgroundColor: "#f7f7f7",
-        borderColor: chartColors[0],
+        borderColor: chartColors[index],
         data: weeklyGrades
       };
     });
@@ -111,6 +114,14 @@ const TrendsTable = ({ grades, courses }) => {
             beginAtZero: true,
             suggestedMax: 100
           }
+        }
+      ],
+      xAxes: [
+        {
+          scaleLabel: {
+            display: true,
+            labelString: "Total Grade Over Time"
+          },
         }
       ]
     },

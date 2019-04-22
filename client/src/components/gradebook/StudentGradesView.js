@@ -1,61 +1,104 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { Card, Table, Dropdown } from "semantic-ui-react";
+import { Card, Table } from "semantic-ui-react";
 import CourseCard from "./CourseCard";
 import axios from "axios";
 import { AuthConsumer } from "../../providers/AuthProvider";
 import dateFns from "date-fns";
 import TrendsTable from "./TrendsTable";
-import { SummaryContainer, TopContainer, GradesContainer, HeaderSummary, DataSummary, Split, TableHeader, } from './GradeBookStyles'
+import {
+  SummaryContainer,
+  TopContainer,
+  GradesContainer,
+  HeaderSummary,
+  DataSummary,
+  Split,
+  TableHeader,
+  CardHeader
+} from "./GradeBookStyles";
+import { Link } from "react-router-dom";
 
-const StudentGradesView = ({ auth }) => {
+const StudentGradesView = ({ auth, student }) => {
   const [courses, setCourses] = useState(0);
   const [activeCourse, setActiveCourse] = useState(0);
-  const [grades, setGrades] = useState(0);
+  const [assignmentGrades, setAssignmentGrades] = useState(0);
+  const [quizGrades, setQuizGrades] = useState(0);
   const [totalGrades, setTotalGrades] = useState(0);
-  const [upcomingAssignments, setUpcomingAssignments] = useState(0);
+  const [allGrades, setAllGrades] = useState(0);
 
   useEffect(() => {
-    const id = auth.user.id;
+    let id = 0;
+    if (student) {
+      id = student.user_id;
+    } else {
+      id = auth.user.id;
+    }
 
-    axios.get("/api/user_courses").then(res => {
+    axios.get("/api/student_courses", { params: { id: id } }).then(res => {
       setCourses(res.data);
       setActiveCourse(res.data[0]);
     });
-    axios.get("api/calc_total_grades", { params: { id: id } }).then(res => {
+    axios.get("/api/calc_total_grades", { params: { id: id } }).then(res => {
       setTotalGrades(res.data);
     });
-    axios.get("/api/get_user_grades", { params: { id: id } }).then(res => {
-      setGrades(res.data);
-
+    axios
+      .get("/api/get_user_grades_assignments", { params: { id: id } })
+      .then(res => {
+        setAssignmentGrades(res.data);
+      });
+    axios
+      .get("/api/get_user_grades_quizzes", { params: { id: id } })
+      .then(res => {
+        setQuizGrades(res.data);
+      });
+    axios.get("/api/get_all_user_grades", { params: { id: id } }).then(res => {
+      setAllGrades(res.data);
     });
   }, []);
 
-  const getUpcomingAssignments = () => {
+  const renderUpcomingAssignments = grades => {
     let count = 0;
-    let assignments = [];
     if (grades) {
-      grades.map(grade => {
+      return grades.map(grade => {
         if (dateFns.isFuture(grade.due_date) && count < 4) {
           // Since Assignments are already in order by date, take the first 4 assignments with due dates in the future
           count++;
-          assignments.push({
-            id: grade.submission_id,
-            header: grade.title,
-            meta: `due: ${dateFns.format(
-              dateFns.parse(grade.due_date),
-              "MM/DD/YY"
-            )}`
-            // description: "",
-            // feedback: "Test"
-          });
+          return (
+            <Card>
+              <Card.Content>
+                {grades[0].assignment_id ? (
+                  <Link
+                    to={`/courses/${grade.course_id}/units/${
+                      grades.unit_id
+                    }/assignments/${grade.assignment_id}`}
+                  >
+                    <CardHeader>{grade.title}</CardHeader>
+                  </Link>
+                ) : (
+                  <Link
+                    to={`/courses/${grade.course_id}/units/${
+                      grade.unit_id
+                    }/quizzes/${grade.quiz_id}`}
+                  >
+                    <CardHeader>{grade.title}</CardHeader>
+                  </Link>
+                )}
+                <Card.Meta>
+                  {`due: ${dateFns.format(
+                    dateFns.parse(grade.due_date),
+                    "MM/DD/YY"
+                  )}`}
+                </Card.Meta>
+              </Card.Content>
+            </Card>
+          );
         }
       });
+    } else {
+      return <></>;
     }
-    return assignments;
   };
 
-  const renderSummary = () => {
+  const renderSummary = grades => {
     // Make sure to only display max 4 courses
     if (courses.length > 4) {
       courses.length = 4;
@@ -63,11 +106,11 @@ const StudentGradesView = ({ auth }) => {
     return (
       <SummaryContainer>
         <TopContainer>
-          <HeaderSummary>Grades Summary</HeaderSummary>
+          <HeaderSummary>Current Total Grades</HeaderSummary>
           <DataSummary>
             {totalGrades ? (
               <>
-                {totalGrades.map((course, index) => {
+                {totalGrades.map(course => {
                   return <CourseCard course={course} />;
                 })}
               </>
@@ -82,11 +125,9 @@ const StudentGradesView = ({ auth }) => {
         <TopContainer>
           <HeaderSummary>Upcoming Assignments/Quizzes</HeaderSummary>
           <DataSummary>
-            <Card.Group
-              fluid
-              items={getUpcomingAssignments()}
-              itemsPerRow={2}
-            />
+            <Card.Group fluid itemsPerRow={2}>
+              {renderUpcomingAssignments(grades)}
+            </Card.Group>
           </DataSummary>
         </TopContainer>
       </SummaryContainer>
@@ -115,16 +156,22 @@ const StudentGradesView = ({ auth }) => {
     );
   };
 
-  const renderGrades = () => {
+  const renderGrades = grades => {
     if (grades) {
       return (
         <GradesContainer>
           <Table celled selectable color="green">
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell textAlign="center">
-                  Assignments/Quizzes
-                </Table.HeaderCell>
+                {grades[0].assignment_id ? (
+                  <Table.HeaderCell textAlign="center">
+                    Assignments
+                  </Table.HeaderCell>
+                ) : (
+                  <Table.HeaderCell textAlign="center">
+                    Quizzes
+                  </Table.HeaderCell>
+                )}
                 <Table.HeaderCell textAlign="center">Due Date</Table.HeaderCell>
                 <Table.HeaderCell textAlign="center">Score</Table.HeaderCell>
               </Table.Row>
@@ -134,22 +181,30 @@ const StudentGradesView = ({ auth }) => {
                 if (grade.course_id == activeCourse.id) {
                   return (
                     <Table.Row>
-                      <Table.Cell singleLine>
-                        <TableHeader as="h4">{grade.title}</TableHeader>
-                      </Table.Cell>
-                      <Table.Cell textAlign="center">
-                      { grade.due_date ?
-                        <>
-                        {dateFns.format(
-                          dateFns.parse(grade.due_date),
-                          "MM/DD/YY"
-                        )}
-                        </>
+                      { grades[0].assignment_id ? 
+                          <Table.Cell>
+                            <Link to={`/courses/${grade.course_id}/units/${grades.unit_id}/assignments/${grade.assignment_id}`}>
+                              <TableHeader as="h4">{grade.title}</TableHeader>
+                            </Link>
+                          </Table.Cell>
                         :
-                        <>
-                          No Date Yet
-                        </>
-                      }
+                          <Table.Cell>
+                            <Link to={`/courses/${grade.course_id}/units/${grade.unit_id}/quizzes/${grade.quiz_id}`}>
+                              <TableHeader as="h4">{grade.title}</TableHeader>
+                            </Link>
+                          </Table.Cell>
+                        }
+                      <Table.Cell textAlign="center">
+                        {grade.due_date ? (
+                          <>
+                            {dateFns.format(
+                              dateFns.parse(grade.due_date),
+                              "MM/DD/YY"
+                            )}
+                          </>
+                        ) : (
+                          <>No Date Yet</>
+                        )}
                       </Table.Cell>
                       {grade.points_possible > 0 ? (
                         <Table.Cell textAlign="center">
@@ -166,7 +221,7 @@ const StudentGradesView = ({ auth }) => {
                 }
               })}
             </Table.Body>
-            <Table.Footer>
+            {/* <Table.Footer>
               <Table.Row>
                 <Table.HeaderCell>Total Grade</Table.HeaderCell>
                 {totalGrades ? (
@@ -186,7 +241,7 @@ const StudentGradesView = ({ auth }) => {
                   </>
                 )}
               </Table.Row>
-            </Table.Footer>
+            </Table.Footer> */}
           </Table>
         </GradesContainer>
       );
@@ -198,41 +253,43 @@ const StudentGradesView = ({ auth }) => {
       );
   };
 
-  const renderRecentAssignments = () => {
-    const feedbackItems = assignments.filter(assignment => {
-      // Only add to array if there is feedback, otherwise skip it
-      if (assignment.feedback)
-        return {
-          header: assignment.header,
-          description: assignment.feedback
-        };
-    });
+  // const renderRecentAssignments = () => {
+  //   const feedbackItems = assignments.filter(assignment => {
+  //     // Only add to array if there is feedback, otherwise skip it
+  //     if (assignment.feedback)
+  //       return {
+  //         header: assignment.header,
+  //         description: assignment.feedback
+  //       };
+  //   });
 
-    return (
-      <SummaryContainer>
-        <HeaderSummary>Recent Feedback</HeaderSummary>
-        <Split />
-        <TopContainer>
-          <DataSummary>
-            <Card.Group items={feedbackItems} itemsPerRow={1} />
-          </DataSummary>
-        </TopContainer>
-      </SummaryContainer>
-    );
-  };
+  //   return (
+  //     <SummaryContainer>
+  //       <HeaderSummary>Recent Feedback</HeaderSummary>
+  //       <Split />
+  //       <TopContainer>
+  //         <DataSummary>
+  //           <Card.Group items={feedbackItems} itemsPerRow={1} />
+  //         </DataSummary>
+  //       </TopContainer>
+  //     </SummaryContainer>
+  //   );
+  // };
 
   if (courses.length > 0)
     return (
       <>
-        {renderSummary()}
+        {renderSummary(allGrades)}
+        <br />
+        <TrendsTable grades={allGrades} courses={courses} />
         <br />
         {renderDropDown()}
         <br />
-        {renderGrades()}
+        {renderGrades(assignmentGrades)}
         <br />
-        <TrendsTable grades={grades} courses={courses} />
-        <br />
-        {renderRecentAssignments()}
+        {renderGrades(quizGrades)}
+        {/* <br />
+        {renderRecentAssignments()} */}
       </>
     );
   else
@@ -242,72 +299,6 @@ const StudentGradesView = ({ auth }) => {
       </DataSummary>
     );
 };
-
-
-// FAKE DATA FOR TESTING
-
-// const testGrades = [
-//   {
-//     assignment: "Quiz A",
-//     grade: "87%"
-//   },
-//   {
-//     assignment: "Quiz B",
-//     grade: "60%"
-//   },
-//   {
-//     assignment: "Assignment C",
-//     grade: "12%"
-//   }
-// ];
-
-// var testCourses = [
-//   {
-//     header: "Course A",
-//     grade: 89,
-//     grades: testGrades,
-//   },
-//   {
-//     header: "Course B",
-//     grade: 34,
-//     grades: null,
-//   },
-//   {
-//     header: "Course C",
-//     grade: 27,
-//     grades: null,
-//   }
-// ];
-
-var assignments = [
-  {
-    header: "Assignment A",
-    meta: "due: tomorrow",
-    description: "Lorum Ipsum",
-    feedback: "Test"
-  },
-  {
-    header: "Assignment B",
-    meta: "due: tomorrow",
-    description: "Lorum Ipsum",
-    feedback: "Test"
-  },
-  {
-    header: "Assignment C",
-    meta: "due: tomorrow",
-    description: "Lorum Ipsum"
-  },
-  {
-    header: "Assignment D",
-    meta: "due: tomorrow",
-    description: "Lorum Ipsum"
-  },
-  {
-    header: "Assignment E",
-    meta: "due: tomorrow",
-    description: "Lorum Ipsum"
-  }
-];
 
 class ConnectedStudentGradesView extends React.Component {
   render() {
