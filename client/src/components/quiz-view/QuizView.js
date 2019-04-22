@@ -58,7 +58,6 @@ class QuizView extends React.Component {
         return axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
       })
       .then( res => {
-        console.log(res.data)
         const { title, due_date, body } = res.data;
         this.setState({ title, due_date, body, page: "start" });
       })
@@ -76,7 +75,6 @@ class QuizView extends React.Component {
       })
       .then( res => {
         if(res) {
-          console.log(res.data)
           const { title, due_date, body } = res.data;
           this.setState({ title, due_date, body, page: "start" });
           return axios.get(`/api/quizzes/${id}/questions`)
@@ -154,7 +152,6 @@ class QuizView extends React.Component {
   }
 
   setSubmission = (submission_id) => {
-    console.log(submission_id)
     axios.get(`/api/quiz_submissions/${submission_id}`)
     .then((res) => {
       this.setState({ submission: res.data, page: "submission" })
@@ -164,6 +161,27 @@ class QuizView extends React.Component {
 
   unsetSubmission = () => {
     this.setState({ submission: null, page: "start" });
+  }
+
+  updatePointsAwarded = (questionIndex, points) => {
+    console.log(points)
+    const questions = this.state.submission.questions.map((question, index) => {
+      if(questionIndex === index) question.points_awarded = points;
+      return question;
+    })
+    const submission = this.state.submission;
+    submission.questions = questions;
+    this.setState({ submission });
+  }
+
+  submitForGrading = () => {
+    const { submission } = this.state;
+    axios.put(`/api/quiz_submissions/${submission.id}/calculate_grade`, {quiz_submission: { ...submission} })
+    .then((res) => {
+      console.log(res)
+      this.setState({ submission: res.data });
+    })
+    .catch((err) => console.log(err));
   }
 
   render() {
@@ -226,6 +244,12 @@ class QuizView extends React.Component {
       else if(page === "submission") return (
         <QuizSubmissionView 
           submission={submission}
+          title={title}
+          updatePointsAwarded={this.updatePointsAwarded}
+          submitForGrading={this.submitForGrading}
+          history={this.props.history}
+          teacherView={teacherView}
+          unsetSubmission={this.unsetSubmission}
         />
       )
       else return null
