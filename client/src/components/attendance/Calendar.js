@@ -1,10 +1,12 @@
 import React from "react";
 import dateFns from "date-fns";
-import './Calendar.css';
-import OptionsMenu from './OptionsMenu'
+import "./Calendar.css";
+import OptionsMenu from "./OptionsMenu";
 import AttendanceMarks from "./AttendanceMarks";
+import AssignmentMarks from "./AssignmentMarks";
 import axios from "axios";
-import { Icon, } from 'semantic-ui-react';
+import { Icon } from "semantic-ui-react";
+import { AuthConsumer } from "../../providers/AuthProvider";
 
 class Calendar extends React.Component {
   state = {
@@ -14,15 +16,23 @@ class Calendar extends React.Component {
     attendanceView: true,
     assignmentsView: true,
     attendanceRecords: [],
+    grades: []
   };
 
   componentDidMount() {
     // Get all of the attendance records for this course
-    axios.get('/api/attendances')
-      .then( res => {
-        // debugger
-        this.setState({ attendanceRecords: res.data })
+    axios.get("/api/attendances").then(res => {
+      // debugger
+      this.setState({ attendanceRecords: res.data });
+    });
+    // Get all of the assignments & quizzes (grades)
+    axios
+      .get("/api/get_all_user_grades", {
+        params: { id: this.props.auth.user.id }
       })
+      .then(res => {
+        this.setState({ grades: res.data });
+      });
   }
 
   renderHeader() {
@@ -32,7 +42,7 @@ class Calendar extends React.Component {
       <div className="header row flex-middle">
         <div className="col col-start">
           <div className="icon" onClick={this.prevMonth}>
-            <Icon name='chevron left' />
+            <Icon name="chevron left" />
           </div>
         </div>
         <div className="col col-center">
@@ -40,14 +50,13 @@ class Calendar extends React.Component {
         </div>
         <div className="col col-end" onClick={this.nextMonth}>
           <div className="icon">
-            <Icon name='chevron right' />
+            <Icon name="chevron right" />
           </div>
         </div>
       </div>
     );
   }
 
-  
   renderDays() {
     const dateFormat = "dddd";
     const days = [];
@@ -66,7 +75,14 @@ class Calendar extends React.Component {
   }
 
   renderCells() {
-    const { currentMonth, selectedDate, attendanceView, attendanceRecords, } = this.state;
+    const {
+      currentMonth,
+      selectedDate,
+      attendanceView,
+      assignmentsView,
+      attendanceRecords,
+      grades
+    } = this.state;
     const monthStart = dateFns.startOfMonth(currentMonth);
     const monthEnd = dateFns.endOfMonth(monthStart);
     const startDate = dateFns.startOfWeek(monthStart);
@@ -80,19 +96,27 @@ class Calendar extends React.Component {
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
-
         formattedDate = dateFns.format(day, dateFormat);
         const cloneDay = day;
 
         // Find today's attendance record
-        const formattedDateFull = dateFns.format(day, 'YYYY-MM-DD')
-        let todaysRecord = '';
+        const formattedDateFull = dateFns.format(day, "YYYY-MM-DD");
+        let todaysRecord = "";
         if (attendanceRecords.length > 0) {
           attendanceRecords.map(record => {
             if (record.record_date === formattedDateFull) {
-              todaysRecord = record.attendance_record
+              todaysRecord = record.attendance_record;
             }
-          })
+          });
+        }
+        let todaysAssignments = [];
+        if (grades.length > 0) {
+          grades.map(grade => {
+            const gradeDate = dateFns.format(grade.due_date, "YYYY-MM-DD")
+            if (gradeDate === formattedDateFull) {
+              todaysAssignments.push(grade);
+            }
+          });
         }
 
         // Push all of the data for each specific day
@@ -101,7 +125,9 @@ class Calendar extends React.Component {
             className={`col cell ${
               !dateFns.isSameMonth(day, monthStart)
                 ? "disabled"
-                : dateFns.isSameDay(day, selectedDate) ? "selected" : ""
+                : dateFns.isSameDay(day, selectedDate)
+                ? "selected"
+                : ""
             }`}
             key={day}
             onClick={() => this.onDateClick(dateFns.parse(cloneDay))}
@@ -110,11 +136,12 @@ class Calendar extends React.Component {
             <span className="bg">{formattedDate}</span>
             {/* <p>{ this.dailyEvents(day) }</p> */}
             {/* <p className='absentStatus'></p> */}
-            { attendanceView ? 
-              <AttendanceMarks attendance={ {record: todaysRecord} }/>
-              :
-              null
-            }
+            {attendanceView ? (
+              <AttendanceMarks attendance={{ record: todaysRecord }} />
+            ) : null}
+            {assignmentsView ? (
+              <AssignmentMarks assignments={todaysAssignments} />
+            ) : null}
           </div>
         );
         day = dateFns.addDays(day, 1);
@@ -135,7 +162,6 @@ class Calendar extends React.Component {
     });
   };
 
-
   nextMonth = () => {
     this.setState({
       currentMonth: dateFns.addMonths(this.state.currentMonth, 1)
@@ -148,38 +174,53 @@ class Calendar extends React.Component {
     });
   };
 
-  dailyEvents = (todaysDate) => {
+  dailyEvents = todaysDate => {
     let todaysEvents = 0;
-    
-    this.state.monthEvents.map( event => {
-      if ( event.date === todaysDate ) {
+
+    this.state.monthEvents.map(event => {
+      if (event.date === todaysDate) {
         todaysEvents++;
       }
-    })
-    
-    return todaysEvents
-  }
+    });
+
+    return todaysEvents;
+  };
 
   toggleAttendance = () => {
-    this.setState({ attendanceView: !this.state.attendanceView, })
-  }
+    this.setState({ attendanceView: !this.state.attendanceView });
+  };
 
   toggleAssignments = () => {
-
-  }
+    this.setState({ assignmentsView: !this.state.assignmentsView });
+  };
 
   render() {
     return (
-			<>
-				<OptionsMenu toggleAttendance={ this.toggleAttendance } attendanceView={this.state.attendanceView} />
-				<div className="calendar">
-					{this.renderHeader()}
-					{this.renderDays()}
-					{this.renderCells()}
-				</div>
-		</>
+      <>
+        <OptionsMenu
+          toggleAttendance={this.toggleAttendance}
+          toggleAssignments={this.toggleAssignments}
+          attendanceView={this.state.attendanceView}
+          assignmentsView={this.state.assignmentsView}
+        />
+        <div className="calendar">
+          {this.renderHeader()}
+          {this.renderDays()}
+          {this.renderCells()}
+        </div>
+      </>
     );
   }
 }
 
-export default Calendar;
+class ConnectedCalendar extends React.Component {
+  render() {
+    return (
+      <AuthConsumer>
+        {auth => <Calendar {...this.props} auth={auth} />}
+      </AuthConsumer>
+    );
+  }
+}
+
+export default ConnectedCalendar;
