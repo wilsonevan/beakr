@@ -27,7 +27,7 @@ class ShowQuestion extends React.Component {
         <QuestionDiv>
          <EditQuestion question={this.state.question} index={index} toggleEdit={this.toggleEdit} handleSetQuestioningState={this.handleSetQuestioningState} />
             <SmallDelete onClick={() => this.props.filterQuestion(index)}><Icon name='trash alternate outline' size='large' /></SmallDelete>
-            <SmallEdit onClick={() => this.toggleEdit()}><Icon name='setting' size='large' /></SmallEdit>
+            <SmallEdit onClick={() => this.toggleEdit()}><Icon name='edit' size='large' /></SmallEdit>
         </QuestionDiv>
           :
           <QuestionDiv>
@@ -41,7 +41,7 @@ class ShowQuestion extends React.Component {
               </h5>
               )}
             <SmallDelete onClick={() => this.props.filterQuestion(index)}><Icon name='trash alternate outline' size='large' /></SmallDelete>
-            <SmallEdit onClick={() => this.toggleEdit()}><Icon name='setting' size='large' /></SmallEdit>
+            <SmallEdit onClick={() => this.toggleEdit()}><Icon name='edit' size='large' /></SmallEdit>
           </QuestionDiv>
         }
       </>
