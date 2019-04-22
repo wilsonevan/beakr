@@ -2,8 +2,12 @@ import React from 'react'
 
 class OptionsMenu extends React.Component {
 
-	toggleView = () => {
+	toggleAttendance = () => {
 		this.props.toggleAttendance()
+	}
+
+	toggleAssignments = () => {
+		this.props.toggleAssignments()
 	}
 
 	// isChecked = () => {
@@ -16,7 +20,7 @@ class OptionsMenu extends React.Component {
 			<>
 				<form>
 					<input 
-						onClick={ () => this.toggleView() }
+						onClick={ () => this.toggleAttendance() }
 						type="checkbox" 
 						name="Attendance" 
 						value='attendance'
@@ -24,10 +28,12 @@ class OptionsMenu extends React.Component {
 						/> Attendance
 						<br />
 						<input 
+						onClick={ () => this.toggleAssignments() }
 						type="checkbox" 
 						name="Assignments" 
 						value="assignments" 
-						/> Assignments (TBD)
+						checked={ this.props.assignmentsView ? 'checked' : null }
+						/> Assignments and Quizzes
 						<br />
 				</form>
 				<br />
