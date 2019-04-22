@@ -26,12 +26,16 @@ import AddUnitMaterial from "./components/admin-course-controls/AddUnitMaterial"
 
 const App = () => (
   <>
+    <div>
+      
+    </div>
+    <div>
     <GlobalStyles />
     <FetchUser>
       <Navbar />
+ 
       <Container as={AppContainer}>
         <Switch>
-          <ProtectedRoute exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <ProtectedRoute exact path="/dashboard" component={Dashboard} />
@@ -64,6 +68,7 @@ const App = () => (
         </Switch>
       </Container>
     </FetchUser>
+    </div>
   </>
 );
 
