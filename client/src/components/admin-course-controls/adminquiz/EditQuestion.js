@@ -40,7 +40,7 @@ class EditQuestion extends React.Component {
             placeholder={body}
           />
           <SmallSave>
-            <Icon name='save' />
+            <Icon name='save' size='large' />
           </SmallSave>
         </form>
           
