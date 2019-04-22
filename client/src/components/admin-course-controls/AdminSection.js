@@ -27,18 +27,6 @@ class AdminSection extends React.Component {
         .catch(err => console.log(err));
   };
 
-  componentDidUpdate = (prevProps, prevState) => {
-    if(prevProps.section.id !== this.props.section.id) {
-      this.setState({ loaded: false, opened: false })
-      axios
-      .get(`/api/sections/${this.props.section.id}/units`)
-      .then(res => {
-        this.setState({ units: res.data, loaded: true, noUnits: (res.data.length === 0)? true : false });
-      })
-      .catch(err => console.log(err));
-    }
-  }
-
   componentWillUnmount() {
     anime.remove(this.unitContainerRef.current, this.sectionRef.current);
   }

@@ -32,7 +32,7 @@ class SectionIndex extends React.Component {
     renderSections = () => {
         return this.state.sections.map((section, index) => {
             return (
-                <AdminSection key={index} title={section.title} section={section} />
+                <AdminSection key={section.id} title={section.title} section={section} />
             );
         });
     };
