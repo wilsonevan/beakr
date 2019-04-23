@@ -180,6 +180,25 @@ class User < ActiveRecord::Base
 
   end
 
+  def self.upcoming_q_and_a(course_id)
+    User.find_by_sql(["
+      SELECT
+          unit_assignments.due_date,
+          unit_assignments.unit_id,
+          unit_assignments.assignment_id,
+          unit_assignments.visible,
+          assignments.title,
+          courses.id AS course_id
+      FROM unit_assignments
+      LEFT JOIN assignments ON assignments.id = unit_assignments.assignment_id
+      LEFT JOIN units ON units.id = unit_assignments.unit_id
+      LEFT JOIN sections ON sections.id = units.section_id
+      LEFT JOIN courses ON courses.id = sections.id
+      WHERE course_id = 1
+      ORDER BY due_date
+    ", course_id ])
+  end
+
 
   def self.calc_total_grades(user_id)
     courses = User.find(user_id).courses

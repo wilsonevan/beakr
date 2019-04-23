@@ -25,6 +25,7 @@ const StudentGradesView = ({ auth, student }) => {
   const [totalGrades, setTotalGrades] = useState(0);
   const [allGrades, setAllGrades] = useState(0);
   const [noGradesFlag, setNoGradesFlag] = useState(false);
+  const [upcomingQandA, setUpcomingQandA] = useState(0);
 
   useEffect(() => {
     let id = 0;
@@ -54,13 +55,26 @@ const StudentGradesView = ({ auth, student }) => {
     axios.get("/api/get_all_user_grades", { params: { id: id } }).then(res => {
       setAllGrades(res.data);
     });
+    
   }, []);
+
+  const renderUpcomingAssignments = () => {
+    if (courses)
+    return (
+      courses.map(course => {
+        axios.get('/api/upcoming_q_and_a', { params: { course_id: course.id } }).then(res => {
+          debugger
+          setUpcomingQandA([ ...upcomingQandA, res.data])
+        });
+      })
+    )
+  }
 
   const renderRecentAssignments = grades => {
     let count = 0;
     if (grades) {
       return grades.map(grade => {
-        if (dateFns.isBefore(grade.due_date) && count < 4) {
+        if (dateFns.isPast(grade.due_date) && count < 4 && grade.points_possible) {
           // Since Assignments are already in order by date, take the first 4 assignments with due dates in the future
           count++;
           return (
@@ -128,6 +142,7 @@ const StudentGradesView = ({ auth, student }) => {
           <DataSummary>
             <Card.Group fluid itemsPerRow={2}>
               {renderRecentAssignments(grades)}
+              {renderUpcomingAssignments()}
             </Card.Group>
           </DataSummary>
         </TopContainer>
