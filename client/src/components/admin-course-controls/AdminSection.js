@@ -19,7 +19,7 @@ class AdminSection extends React.Component {
 
   componentDidMount = () => {
       axios
-        .get(`/api/sections/${this.props.section.id}/units`)
+        .get(`/api/sections/${this.props.section.id}/units_ordered_by_sequence`)
         .then(res => {
           this.setState({ units: res.data, loaded: true });
         })
@@ -75,7 +75,7 @@ class AdminSection extends React.Component {
     return this.state.units.map((unit, index) => {
       return (
         <AdminUnit
-          key={index}
+          key={unit.id}
           unit={unit}
           unitContainerRef={this.unitContainerRef}
           course_id={this.props.section.course_id}
@@ -153,6 +153,7 @@ const Section = styled.div`
   background-color: #23a24d;
   color: white;
   cursor: pointer;
+  overflow: hidden;
   background-image: linear-gradient(
     to right,
     rgba(75, 255, 100, 0.2) 15%,
@@ -176,10 +177,10 @@ const SectionIcon = styled.div`
   top: 50%;
   padding: 1rem;
   font-size: 1.5rem;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+  // border-top-left-radius: 0;
+  // border-bottom-left-radius: 0;
+  // border-top-right-radius: 10px;
+  // border-bottom-right-radius: 10px;
   color: rgb(255,255,255);
   background-color: #2979ff;
 

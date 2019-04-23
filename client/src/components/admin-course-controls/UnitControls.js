@@ -344,7 +344,7 @@ class UnitControls extends React.Component {
     if (!this.state.editing)
       return (
         <>
-          <UnitText>
+          <UnitText data-id={JSON.stringify(this.props.unit)} >
             <VisibilityButton onClick={() => this.toggleUnitVisibility()}>
               { this.state.unit.visible
                 ? <Icon name='eye' />
@@ -357,10 +357,13 @@ class UnitControls extends React.Component {
       );
     else
       return (
-        <UnitForm onSubmit={this.handleSubmit} ref={this.formRef}>
+        <UnitForm 
+          onSubmit={this.handleSubmit} 
+          ref={this.formRef} 
+          data-id={JSON.stringify(this.props.unit)} 
+        >
           <FormTop>
             <h3>Unit Management</h3>
-
 
             <div>
               <ButtonGreen
@@ -447,6 +450,9 @@ const UnitText = styled.p`
   width: 90%;
   margin: 0 auto;
   padding-top: 2rem;
+  cursor: grab;
+
+  active: { cursor: grabbing; }
 `;
 
 const UnitToggle = styled.span`

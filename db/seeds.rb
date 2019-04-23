@@ -34,7 +34,8 @@ class Sequence
   end
 end
 
-course_sequence = Sequence.new()
+section_sequence = Sequence.new()
+unit_sequence = Sequence.new()
 
 
 Timer.start
@@ -58,16 +59,19 @@ puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
       title: Faker::ProgrammingLanguage.name,
       course_id: course.id,
       visible: true,
-      sequence: course_sequence.get(),
+      sequence: section_sequence.get(),
     )
-    course_sequence.inc()
+    section_sequence.inc()
 
     5.times do
       unit = Unit.create(
         title: Faker::Hacker.noun,
         section_id: section.id,
         visible: true,
+        sequence: unit_sequence.get(),
       )
+      unit_sequence.inc()
+
       5.times do
         content = Content.create(
           title: Faker::Hacker.verb,
@@ -150,9 +154,9 @@ puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
         )
       end
     end
+    unit_sequence.reset()
   end
-  
-  course_sequence.reset()
+  section_sequence.reset()
 end
 Timer.log_and_reset
 

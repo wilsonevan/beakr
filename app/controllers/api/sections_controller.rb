@@ -33,9 +33,6 @@ class Api::SectionsController < ApplicationController
 
   def update_sequence
     params[:sections].each_with_index() {|section, index|
-      puts "=========================================="
-      p section
-      puts "=========================================="
       section  = Section.find(section[:id].to_i)
       if(!section.update(sequence: index))
         render json: section.errors, status: 422

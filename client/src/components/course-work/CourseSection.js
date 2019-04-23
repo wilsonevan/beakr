@@ -17,7 +17,7 @@ class CourseSection extends React.Component {
 
   componentDidMount = () => {
     axios
-      .get(`/api/sections/${this.props.section.id}/units`)
+      .get(`/api/sections/${this.props.section.id}/units_ordered_by_sequence`)
       .then(res => {
         ///// Here we add quizzes and assignments just to have filler data
         ///// Delete this when those models actually exist

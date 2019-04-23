@@ -5,6 +5,7 @@ import AddUnit from "./AddUnit";
 import UnitControls from "./UnitControls";
 import EditSectionTitle from "./EditSectionTitle";
 import { Icon } from "semantic-ui-react";
+import ReactSortable from "react-sortablejs";
 
 class AdminEditSection extends React.Component {
   state = { section: {}, units: [], editing: false };
@@ -15,7 +16,7 @@ class AdminEditSection extends React.Component {
       .get(`/api/courses/${course_id}/sections/${id}`)
       .then(res => {
         this.setState({ section: res.data });
-        return axios.get(`/api/sections/${res.data.id}/units`);
+        return axios.get(`/api/sections/${id}/units_ordered_by_sequence`)
       })
       .then(res => this.setState({ units: res.data }))
       .catch(err => console.log(err));
@@ -76,6 +77,22 @@ class AdminEditSection extends React.Component {
       .catch(err => console.log(err));
   };
 
+  sequenceChange = (newUnits) => {
+    const units = newUnits.map((unit) => {
+      return JSON.parse(unit)
+    });
+
+    this.setState({ units }, () => {
+        axios.put(`/api/units/update_sequence`, { units: units })
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err))
+    });
+  }
+    
+  toggleEditing = () => {
+    this.setState({ editing: !this.state.editing });
+  };
+
   renderUnits = () => {
     return this.state.units.map(unit => {
       return (
@@ -89,10 +106,6 @@ class AdminEditSection extends React.Component {
         />
       );
     });
-  };
-
-  toggleEditing = () => {
-    this.setState({ editing: !this.state.editing });
   };
 
   render() {
@@ -135,7 +148,9 @@ class AdminEditSection extends React.Component {
           </div>
           <AdminControls>
             <AddUnit id={section.id} addUnit={this.addUnit} />
-            {this.renderUnits()}
+            <ReactSortable onChange={(newUnits) => this.sequenceChange(newUnits) } >
+              {this.renderUnits()}
+            </ReactSortable>
           </AdminControls>
         </div>
       </>

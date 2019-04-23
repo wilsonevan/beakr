@@ -52,6 +52,8 @@ Rails.application.routes.draw do
       resources :assignments, only: [:index]
       resources :quizzes, only: [:index]
     end
+    get '/sections/:section_id/units_ordered_by_sequence', to: '/api/units#get_ordered_by_sequence'
+    put '/units/update_sequence', to: '/api/units#update_sequence'
     
     get 'get_attendances', to: '/api/attendances#get_attendances'
     delete 'destroy_column', to: '/api/attendances#destroy_column'
