@@ -182,7 +182,7 @@ class User < ActiveRecord::Base
 
   end
 
-  def self.upcoming_q_and_a(course_id)
+  def self.upcoming_assignments(course_id)
     User.find_by_sql(["
       SELECT
           unit_assignments.due_date,
@@ -196,7 +196,26 @@ class User < ActiveRecord::Base
       LEFT JOIN units ON units.id = unit_assignments.unit_id
       LEFT JOIN sections ON sections.id = units.section_id
       LEFT JOIN courses ON courses.id = sections.id
-      WHERE course_id = 1
+      WHERE course_id = ?
+      ORDER BY due_date
+    ", course_id ])
+  end
+
+  def self.upcoming_quizzes(course_id)
+    User.find_by_sql(["
+      SELECT
+          unit_quizzes.due_date,
+          unit_quizzes.unit_id,
+          unit_quizzes.quiz_id,
+          unit_quizzes.visible,
+          quizzes.title,
+          courses.id AS course_id
+      FROM unit_quizzes
+      LEFT JOIN quizzes ON quizzes.id = unit_quizzes.quiz_id
+      LEFT JOIN units ON units.id = unit_quizzes.unit_id
+      LEFT JOIN sections ON sections.id = units.section_id
+      LEFT JOIN courses ON courses.id = sections.id
+      WHERE course_id = ?
       ORDER BY due_date
     ", course_id ])
   end

@@ -15,8 +15,10 @@ class Calendar extends React.Component {
     monthEvents: [],
     attendanceView: true,
     assignmentsView: true,
+    quizzesView: true,
     attendanceRecords: [],
-    grades: []
+    assignments: [],
+    quizzes: []
   };
 
   componentDidMount() {
@@ -27,12 +29,33 @@ class Calendar extends React.Component {
     });
     // Get all of the assignments & quizzes (grades)
     axios
-      .get("/api/get_all_user_grades", {
+      .get("/api/get_user_grades_assignments", {
         params: { id: this.props.auth.user.id }
       })
       .then(res => {
-        this.setState({ grades: res.data });
+        this.setState({
+          assignments: [...this.state.assignments, ...res.data]
+        });
       });
+    axios
+      .get("/api/get_user_grades_quizzes", {
+        params: { id: this.props.auth.user.id }
+      })
+      .then(res => {
+        this.setState({ quizzes: [...this.state.quizzes, ...res.data] });
+      });
+
+      axios.get("/api/student_courses", { params: { id: this.props.auth.user.id } }).then(res => {
+        res.data.map(course => {
+          axios.get("/api/upcoming_assignments", { params: { course_id: course.id } }).then(res => {
+            this.setState({ assignments: [...this.state.assignments, ...res.data] });
+          });
+          axios.get("/api/upcoming_quizzes", { params: { course_id: course.id } }).then(res => {
+            this.setState({ quizzes: [...this.state.quizzes, ...res.data] });
+          });
+        });
+      });
+   
   }
 
   renderHeader() {
@@ -81,7 +104,8 @@ class Calendar extends React.Component {
       attendanceView,
       assignmentsView,
       attendanceRecords,
-      grades
+      assignments,
+      quizzes
     } = this.state;
     const monthStart = dateFns.startOfMonth(currentMonth);
     const monthEnd = dateFns.endOfMonth(monthStart);
@@ -109,15 +133,50 @@ class Calendar extends React.Component {
             }
           });
         }
+
         let todaysAssignments = [];
-        if (grades.length > 0) {
-          grades.map(grade => {
-            const gradeDate = dateFns.format(grade.due_date, "YYYY-MM-DD")
-            if (gradeDate === formattedDateFull) {
-              todaysAssignments.push(grade);
+
+        // Add Upcoming Quizzes to assignments array
+        if (quizzes.length > 0) {
+          quizzes.map(quiz => {
+            const quizDate = dateFns.format(quiz.due_date, "YYYY-MM-DD");
+            if (quizDate === formattedDateFull) {
+              todaysAssignments.push(quiz);
             }
           });
         }
+
+        // Add Upcoming Assignments to assignments array
+        if (assignments.length > 0) {
+          assignments.map(assignment => {
+            const assignmentDate = dateFns.format(
+              assignment.due_date,
+              "YYYY-MM-DD"
+            );
+            if (assignmentDate === formattedDateFull) {
+              todaysAssignments.push(assignment);
+            }
+          });
+        }
+
+
+        // Map through and clean up duplicates
+        var assignmentsIdList = []
+        var quizzesIdList = []
+        todaysAssignments = todaysAssignments.filter(assignment => {
+          if (assignment.assignment_id)
+            if (!assignmentsIdList.includes(assignment.assignment_id)){
+              assignmentsIdList.push(assignment.assignment_id)
+              return assignment
+            }
+          else if (assignment.quiz_id)
+            if (!quizzesIdList.includes(assignment.quiz_id)){
+              quizzesIdList.push(assignment.quiz_id)
+              return assignment
+            }
+        })
+
+        todaysAssignments = todaysAssignments.filter(assignment => assignment)
 
         // Push all of the data for each specific day
         days.push(

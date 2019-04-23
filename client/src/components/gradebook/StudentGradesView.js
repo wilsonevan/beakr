@@ -40,7 +40,7 @@ const StudentGradesView = ({ auth, student }) => {
       setActiveCourse(res.data[0]);
       res.data.map(course => {
         axios
-          .get("/api/upcoming_q_and_a", { params: { course_id: course.id } })
+          .get("/api/upcoming_assignments", { params: { course_id: course.id } })
           .then(res => {
             setUpcomingAssignments([...upcomingAssignments, ...res.data]);
           });

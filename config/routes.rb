@@ -22,7 +22,8 @@ Rails.application.routes.draw do
     get 'user_courses', to: 'users#user_courses'
     get 'student_courses', to: 'users#student_courses'
     get 'calc_grades_all_students', to: 'courses#calc_grades_all_students'
-    get 'upcoming_q_and_a', to: 'users#upcoming_q_and_a'
+    get 'upcoming_assignments', to: 'users#upcoming_assignments'
+    get 'upcoming_quizzes', to: 'users#upcoming_quizzes'
     # get 'recently_graded_assignments' to: 'users#recently_graded_assignments'
 
     resources :unit_contents, only: [:index, :create, :update, :destroy]
