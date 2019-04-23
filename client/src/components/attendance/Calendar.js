@@ -24,7 +24,6 @@ class Calendar extends React.Component {
   componentDidMount() {
     // Get all of the attendance records for this course
     axios.get("/api/attendances").then(res => {
-      // debugger
       this.setState({ attendanceRecords: res.data });
     });
     // Get all of the assignments & quizzes (grades)
@@ -45,17 +44,26 @@ class Calendar extends React.Component {
         this.setState({ quizzes: [...this.state.quizzes, ...res.data] });
       });
 
-      axios.get("/api/student_courses", { params: { id: this.props.auth.user.id } }).then(res => {
+    axios
+      .get("/api/student_courses", { params: { id: this.props.auth.user.id } })
+      .then(res => {
         res.data.map(course => {
-          axios.get("/api/upcoming_assignments", { params: { course_id: course.id } }).then(res => {
-            this.setState({ assignments: [...this.state.assignments, ...res.data] });
-          });
-          axios.get("/api/upcoming_quizzes", { params: { course_id: course.id } }).then(res => {
-            this.setState({ quizzes: [...this.state.quizzes, ...res.data] });
-          });
+          axios
+            .get("/api/upcoming_assignments", {
+              params: { course_id: course.id }
+            })
+            .then(res => {
+              this.setState({
+                assignments: [...this.state.assignments, ...res.data]
+              });
+            });
+          axios
+            .get("/api/upcoming_quizzes", { params: { course_id: course.id } })
+            .then(res => {
+              this.setState({ quizzes: [...this.state.quizzes, ...res.data] });
+            });
         });
       });
-   
   }
 
   renderHeader() {
@@ -117,6 +125,8 @@ class Calendar extends React.Component {
     let days = [];
     let day = startDate;
     let formattedDate = "";
+    let assignmentsIdList = [];
+    let quizzesIdList = [];
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
@@ -159,24 +169,26 @@ class Calendar extends React.Component {
           });
         }
 
-
         // Map through and clean up duplicates
-        var assignmentsIdList = []
-        var quizzesIdList = []
-        todaysAssignments = todaysAssignments.filter(assignment => {
-          if (assignment.assignment_id)
-            if (!assignmentsIdList.includes(assignment.assignment_id)){
-              assignmentsIdList.push(assignment.assignment_id)
-              return assignment
-            }
-          else if (assignment.quiz_id)
-            if (!quizzesIdList.includes(assignment.quiz_id)){
-              quizzesIdList.push(assignment.quiz_id)
-              return assignment
-            }
-        })
 
-        todaysAssignments = todaysAssignments.filter(assignment => assignment)
+
+        todaysAssignments = todaysAssignments.map(assignment => {
+          if (assignment.assignment_id) {
+            if (!assignmentsIdList.includes(assignment.assignment_id)) {
+              assignmentsIdList.push(assignment.assignment_id);
+              return assignment;
+            }
+          }
+          if (assignment.quiz_id) {
+            if (!quizzesIdList.includes(assignment.quiz_id)) {
+              quizzesIdList.push(assignment.quiz_id);
+              return assignment;
+            }
+          }
+          return null
+        });
+
+        todaysAssignments = todaysAssignments.filter(assignment => assignment);
 
         // Push all of the data for each specific day
         days.push(
