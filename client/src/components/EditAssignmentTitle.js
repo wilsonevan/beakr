@@ -22,6 +22,7 @@ class EditAssignmentTitle extends React.Component {
           name="title"
           value={this.state.title}
           onChange={this.handleChange}
+          required
         />
         <BlueLink>Update</BlueLink>
       </TitleForm>

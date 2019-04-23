@@ -29,6 +29,7 @@ class GradeSubmission extends React.Component {
           name="points_awarded"
           value={points_awarded}
           onChange={this.handleChange}
+          required
         />
         / {points_possible}
         <br />
