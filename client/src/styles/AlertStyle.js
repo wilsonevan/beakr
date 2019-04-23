@@ -5,12 +5,14 @@ import styled from 'styled-components'
 
 const AlertStyle = styled.div`
   margin-top: 10px;
-  background-color: #d6ffe3;
-  color: #23a24d;
+  background-color: #ededed;
+  color: #119e40;
   padding: 12px;
   text-transform: uppercase;
   border-radius: 5px;
   display: flex;
+  border: 5px solid #119e40;
+  opacity: .9;
   justify-content: space-around;
   align-items: center;
   box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.03);
@@ -23,9 +25,10 @@ const AlertStyle = styled.div`
 `
 const ErrorStyle = styled.div`
   margin-top: 10px;
-  background-color: #ffe5e5;
+  background-color: #ededed;
   font-weight: bold;
-  color: #23a24d;
+  border: 5px solid #c90000;
+  color: #c90000;
   padding: 12px;
   text-transform: uppercase;
   border-radius: 5px;
@@ -39,6 +42,7 @@ const ErrorStyle = styled.div`
   min-width: 450px;
   min-height: 75px;
   box-sizing: border-box;
+  opacity: .8;
 `
 
 
