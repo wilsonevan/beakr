@@ -97,6 +97,7 @@ class User < ActiveRecord::Base
         assignment_submissions.points_possible, 
         assignment_submissions.points_awarded, 
         assignment_submissions.id as assignment_submission_id,
+        assignment_submissions.graded,
         assignments.title,
         unit_assignments.due_date,
         unit_assignments.unit_id,
@@ -121,6 +122,7 @@ class User < ActiveRecord::Base
         quiz_submissions.points_possible, 
         quiz_submissions.points_awarded, 
         quiz_submissions.id as quiz_submission_id,
+        quiz_submissions.graded,
         quizzes.title,
         unit_quizzes.due_date,
         unit_quizzes.unit_id,
@@ -144,6 +146,7 @@ class User < ActiveRecord::Base
         users.id AS user_id, 
         quiz_submissions.points_possible, 
         quiz_submissions.points_awarded, 
+        quiz_submissions.graded,
         quiz_submissions.id AS submission_id,
         quizzes.title,
         unit_quizzes.due_date,
@@ -163,6 +166,7 @@ class User < ActiveRecord::Base
         users.id AS user_id, 
         assignment_submissions.points_possible, 
         assignment_submissions.points_awarded, 
+        assignment_submissions.graded,
         assignment_submissions.id AS submission_id,
         assignments.title,
         unit_assignments.due_date,
@@ -175,6 +179,45 @@ class User < ActiveRecord::Base
       WHERE users.id = ?
       ORDER BY due_date
     ", user_id, user_id, ])
+
+  end
+
+  def self.upcoming_assignments(course_id)
+    User.find_by_sql(["
+      SELECT
+          unit_assignments.due_date,
+          unit_assignments.unit_id,
+          unit_assignments.assignment_id,
+          unit_assignments.visible,
+          assignments.title,
+          courses.id AS course_id
+      FROM unit_assignments
+      LEFT JOIN assignments ON assignments.id = unit_assignments.assignment_id
+      LEFT JOIN units ON units.id = unit_assignments.unit_id
+      LEFT JOIN sections ON sections.id = units.section_id
+      LEFT JOIN courses ON courses.id = sections.id
+      WHERE course_id = ?
+      ORDER BY due_date
+    ", course_id ])
+  end
+
+  def self.upcoming_quizzes(course_id)
+    User.find_by_sql(["
+      SELECT
+          unit_quizzes.due_date,
+          unit_quizzes.unit_id,
+          unit_quizzes.quiz_id,
+          unit_quizzes.visible,
+          quizzes.title,
+          courses.id AS course_id
+      FROM unit_quizzes
+      LEFT JOIN quizzes ON quizzes.id = unit_quizzes.quiz_id
+      LEFT JOIN units ON units.id = unit_quizzes.unit_id
+      LEFT JOIN sections ON sections.id = units.section_id
+      LEFT JOIN courses ON courses.id = sections.id
+      WHERE course_id = ?
+      ORDER BY due_date
+    ", course_id ])
   end
 
 

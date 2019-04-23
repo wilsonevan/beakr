@@ -9,23 +9,43 @@ import { Icon } from "semantic-ui-react";
 
 class AdminSection extends React.Component {
   state = {
-    laoded: false,
+    loaded: false,
     opened: false,
     units: [],
-    noUnits: true,
   };
 
   unitContainerRef = React.createRef();
   sectionRef = React.createRef();
 
   componentDidMount = () => {
-      axios
-        .get(`/api/sections/${this.props.section.id}/units`)
-        .then(res => {
-          this.setState({ units: res.data, loaded: true, noUnits: (res.data.length === 0)? true : false });
-        })
-        .catch(err => console.log(err));
+    axios
+    .get(`/api/sections/${this.props.section.id}/units`)
+    .then(res => {
+      this.setState({ units: res.data, loaded: true }, () => {
+        if (localStorage.getItem(`section${this.props.section.id}`)  == 'true') {
+          this.setState({ opened: false }, () => {
+            this.handleClick();
+          });
+        }
+      });
+    })
+    .catch(err => console.log(err));
   };
+
+  // loadUnits = () => {
+  //   axios
+  //     .get(`/api/sections/${this.props.section.id}/units`)
+  //     .then(res => {
+  //       this.setState({ units: res.data, loaded: true }, () => {
+  //         if (localStorage.getItem(`section${this.props.section.id}`)  == 'true') {
+  //           this.setState({ opened: false }, () => {
+  //             this.handleClick();
+  //           });
+  //         }
+  //       });
+  //     })
+  //     .catch(err => console.log(err));
+  // };
 
   componentWillUnmount() {
     anime.remove(this.unitContainerRef.current, this.sectionRef.current);
@@ -33,6 +53,7 @@ class AdminSection extends React.Component {
 
   handleClick = event => {
     if (!this.state.opened && this.state.loaded) {
+      localStorage.setItem(`section${this.props.section.id}`, true);
       this.setState({ opened: !this.state.opened }, () => {
         anime({
           targets: this.unitContainerRef.current,
@@ -68,7 +89,10 @@ class AdminSection extends React.Component {
         opacity: "0",
         duration: `${this.state.units.length * 55}`,
         easing: "linear"
-      }).finished.then(() => this.setState({ opened: !this.state.opened }));
+      }).finished.then(() => {
+        localStorage.setItem(`section${this.props.section.id}`, false);
+        this.setState({ opened: !this.state.opened });
+      });
     }
   };
 
@@ -87,7 +111,7 @@ class AdminSection extends React.Component {
 
   render() {
     const { title } = this.props;
-    const { loaded, units, noUnits } = this.state;
+    const { loaded, units } = this.state;
 
     if (this.state.opened) {
       return (
@@ -96,11 +120,9 @@ class AdminSection extends React.Component {
               onClick={this.handleClick}
               ref={this.sectionRef}
               style={{marginBottom: "0"}}
-              // onDragStart={() => this.setState({ noUnits: false })}
-              // onDragEnd={() => this.setState({ noUnits: false })}
             >
               <SectionTitle>
-                {title} {noUnits && "( No Units )" }
+                {title} {loaded && units.length === 0  && "( No Units )" }
               </SectionTitle>
               <SectionIcon>
                 <Link
@@ -108,7 +130,7 @@ class AdminSection extends React.Component {
                     this.props.section.id
                   }`}
                 >
-                  <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
+                  <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
                 </Link>
               </SectionIcon>
             </Section>
@@ -127,11 +149,9 @@ class AdminSection extends React.Component {
               ref={this.sectionRef} 
               onClick={this.handleClick} 
               data-id={JSON.stringify(this.props.section)} 
-              // onDragStart={() => this.setState({ noUnits: false })}
-              // onDragEnd={() => this.setState({ noUnits: false })}
             >
               <SectionTitle>
-                {title} {noUnits && "( No Units )"}
+                {title} {loaded && units.length === 0  && "( No Units )" }
               </SectionTitle>
               <SectionIcon>
                 <Link
@@ -139,7 +159,7 @@ class AdminSection extends React.Component {
                     this.props.section.id
                   }`}
                 >
-                  <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
+                  <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
                 </Link>
               </SectionIcon>
             </Section>
@@ -175,9 +195,18 @@ const SectionTitle = styled.div`
 const SectionIcon = styled.div`
   position: absolute;
   transform: translateY(-50%);
-  right: 0.5rem;
+  right: 0rem;
   top: 50%;
+  padding: 1rem;
   font-size: 1.5rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  color: rgb(255,255,255);
+  background-color: #2979ff;
+
+  :hover { background-color: #498dff; }
 `;
 
 const UnitsContainer = styled.div`
@@ -193,11 +222,7 @@ const UnitsContainer = styled.div`
   height: 0;
   width: 90%;
   opacity: 0;
-  box-shadow: 0 1px 1px 1px rgba(100,100,100,0.1);
+  box-shadow: 0 1px 1px 1px rgba(100, 100, 100, 0.1);
 `;
-
-const buttonStyles = {
-  padding: "0.8rem 1rem"
-};
 
 export default AdminSection;
