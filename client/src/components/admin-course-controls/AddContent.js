@@ -29,7 +29,7 @@ class AddContent extends React.Component {
 
   render() {
     const { title, body } = this.state
-
+    
     return(
       <ContainAll>
         <ContentContainer>
@@ -52,6 +52,7 @@ class AddContent extends React.Component {
             value={body}
             modules={modules}
             formats={formats}
+            bounds={'.app'}
             onChange={this.handleQuillChange} 
             style={{height: '25rem', paddingBottom: '4rem'}}
           />
