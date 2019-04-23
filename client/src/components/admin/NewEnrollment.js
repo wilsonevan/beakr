@@ -162,25 +162,26 @@ class NewEnrollment extends React.Component {
 }
 
 const CourseContainer = styled.div`
-  margin: 3rem auto;
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
+  top: 10rem;
   width: 50%;
+  z-index: 100;
 `;
 
 const SelectContainer = styled.div`
   position: absolute;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 40%;
-  z-index: 1;
-  // margin: auto;
-  // padding: 0px;
+  width: 100%;
+  z-index: 100;
 `
 
 const CourseHeading = styled.h2`
   color: #23a24d;
   text-align: center;
   font-family: "Poppins";
+  z-index: 100;
 `;
 
 const SearchContainer = styled.div`
@@ -188,7 +189,7 @@ const SearchContainer = styled.div`
   justify-content: space-around;  
   align-items: center;
   width: 100%;
-  margin-top: 4rem; 
+  margin-top: 12.5rem; 
 `
 const SearchHeading = styled.div`
   display: flex;
@@ -196,7 +197,7 @@ const SearchHeading = styled.div`
   align-items: center;
   width: 100%;
   padding: 1rem; 
-  height: 4rem
+  height: 4rem;
 `
 const SearchHeadingText = styled.h2`
   margin: 0;
