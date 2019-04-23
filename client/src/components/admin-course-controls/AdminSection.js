@@ -12,7 +12,6 @@ class AdminSection extends React.Component {
     laoded: false,
     opened: false,
     units: [],
-    noUnits: true,
   };
 
   unitContainerRef = React.createRef();
@@ -22,7 +21,7 @@ class AdminSection extends React.Component {
       axios
         .get(`/api/sections/${this.props.section.id}/units`)
         .then(res => {
-          this.setState({ units: res.data, loaded: true, noUnits: (res.data.length === 0)? true : false });
+          this.setState({ units: res.data, loaded: true });
         })
         .catch(err => console.log(err));
   };
@@ -87,7 +86,7 @@ class AdminSection extends React.Component {
 
   render() {
     const { title } = this.props;
-    const { loaded, units, noUnits } = this.state;
+    const { loaded, units } = this.state;
 
     if (this.state.opened) {
       return (
@@ -96,11 +95,9 @@ class AdminSection extends React.Component {
               onClick={this.handleClick}
               ref={this.sectionRef}
               style={{marginBottom: "0"}}
-              // onDragStart={() => this.setState({ noUnits: false })}
-              // onDragEnd={() => this.setState({ noUnits: false })}
             >
               <SectionTitle>
-                {title} {noUnits && "( No Units )" }
+                {title} {loaded && units.length === 0  && "( No Units )" }
               </SectionTitle>
               <SectionIcon>
                 <Link
@@ -108,7 +105,7 @@ class AdminSection extends React.Component {
                     this.props.section.id
                   }`}
                 >
-                  <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
+                  <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
                 </Link>
               </SectionIcon>
             </Section>
@@ -127,11 +124,9 @@ class AdminSection extends React.Component {
               ref={this.sectionRef} 
               onClick={this.handleClick} 
               data-id={JSON.stringify(this.props.section)} 
-              // onDragStart={() => this.setState({ noUnits: false })}
-              // onDragEnd={() => this.setState({ noUnits: false })}
             >
               <SectionTitle>
-                {title} {noUnits && "( No Units )"}
+                {title} {loaded && units.length === 0  && "( No Units )" }
               </SectionTitle>
               <SectionIcon>
                 <Link
@@ -139,7 +134,7 @@ class AdminSection extends React.Component {
                     this.props.section.id
                   }`}
                 >
-                  <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
+                  <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
                 </Link>
               </SectionIcon>
             </Section>
@@ -177,7 +172,13 @@ const SectionIcon = styled.div`
   transform: translateY(-50%);
   right: 0.5rem;
   top: 50%;
+  padding: 0.5rem 0.4rem;
   font-size: 1.5rem;
+  border-radius: 10px;
+  color: rgb(255,255,255);
+  background-color: #2979ff;
+
+  :hover { background-color: #498dff; }
 `;
 
 const UnitsContainer = styled.div`
