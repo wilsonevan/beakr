@@ -200,8 +200,4 @@ const UnitsContainer = styled.div`
   box-shadow: 0 1px 1px 1px rgba(100,100,100,0.1);
 `;
 
-const buttonStyles = {
-  padding: "0.8rem 1rem"
-};
-
 export default AdminSection;
