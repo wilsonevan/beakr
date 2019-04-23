@@ -107,6 +107,21 @@ class SubmissionView extends React.Component {
               {this.createMarkup(body)}
               style={{padding: '15px'}}
             />
+            { !grading ?
+              <> 
+                <br />
+                <ButtonGreen onClick={this.toggleGrading}>
+                  Grade Submission
+                </ButtonGreen>
+              </>
+            :
+              <GradeSubmission 
+                submitGrade={this.gradeSubmission} 
+                toggle={this.toggleGrading} 
+                points_awarded={points_awarded} 
+                points_possible={points_possible}
+              />
+            }
           </Submission>
         )
       case 'none':
@@ -128,6 +143,21 @@ class SubmissionView extends React.Component {
               {this.createMarkup(body)}
               style={{padding: '15px'}}
             />
+            { !grading ?
+              <> 
+                <br />
+                <ButtonGreen onClick={this.toggleGrading}>
+                  Grade Submission
+                </ButtonGreen>
+              </>
+            :
+              <GradeSubmission 
+                submitGrade={this.gradeSubmission} 
+                toggle={this.toggleGrading} 
+                points_awarded={points_awarded} 
+                points_possible={points_possible}
+              />
+            }
           </Submission>
         )
       default:
