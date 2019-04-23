@@ -170,11 +170,14 @@ const SectionTitle = styled.div`
 const SectionIcon = styled.div`
   position: absolute;
   transform: translateY(-50%);
-  right: 0.5rem;
+  right: 0rem;
   top: 50%;
-  padding: 0.5rem 0.4rem;
+  padding: 1rem;
   font-size: 1.5rem;
-  border-radius: 10px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   color: rgb(255,255,255);
   background-color: #2979ff;
 
