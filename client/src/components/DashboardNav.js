@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-
+import { Link } from "react-router-dom"; /////////////////////
 
 /* /// EXAMPLE USE /////
   ITEMS_PROP____________
@@ -49,12 +48,16 @@ import { Link } from "react-router-dom";
     grades={<p>We still have to add grades</p>}
   />
 
-*//////////////////////
+*/ class Dashboard extends React.Component {
+  state = { selected: localStorage.getItem("previous") };
 
-
-
-class Dashboard extends React.Component {
-  state = { selected: localStorage.getItem('previous') };
+  componentDidMount() {
+    // Check whether the previous selected tab is within the current dashboard,
+    // otherwise set to the default to be the far left tab (items[0])
+    if (!this.props.items.includes(localStorage.getItem("previous"))) {
+      this.setState({ selected: this.props.items[0] });
+    }
+  }
 
   setSelected = selected => {
     this.setState({ selected });
@@ -65,143 +68,147 @@ class Dashboard extends React.Component {
     const { items, rightItems, handleSelected } = this.props;
     return (
       <DashboardContainer>
-          <DashboardNav
-            selected={selected}
-            setSelected={this.setSelected}
-            items={items}
-            rightItems={rightItems}
-            handleSelected={handleSelected ? handleSelected : null}
-          />
-          <SelectedContainer>
-            { this.props[selected] }
-          </SelectedContainer>
+        <DashboardNav
+          selected={selected}
+          setSelected={this.setSelected}
+          items={items}
+          rightItems={rightItems}
+          handleSelected={handleSelected ? handleSelected : null}
+        />
+        <SelectedContainer>{this.props[selected]}</SelectedContainer>
       </DashboardContainer>
     );
   }
 }
 
 const DashboardContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    background-color: white;
-    min-height: 25vh;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  background-color: white;
+  min-height: 25vh;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1);
 `;
 
 const SelectedContainer = styled.div`
   padding: 1rem;
-`
-
-
+`;
 
 class DashboardNav extends React.Component {
-    highlightIf = itemName => {
-      if (this.props.selected !== itemName) return null;
-      return { backgroundColor: "rgba(0,0,0,0.1)" };
-    };
-  
-    handleClick = selected => {
-      localStorage.setItem('previous',selected) // Set the previous selected item in localStorage, if the page refreshes
-      this.props.setSelected(selected);
-      if(this.props.handleSelected) {
-        this.props.handleSelected(selected)
-      }
-    };
+  highlightIf = itemName => {
+    if (this.props.selected !== itemName) return null;
+    return { backgroundColor: "rgba(0,0,0,0.1)" };
+  };
 
-    renderNavItems = () => {
-       return this.props.items.map((item, index) => {
-           if( typeof item === "string")
-            return ( 
-                <NavItem
-                    key={index}
-                    style={this.highlightIf(item)}
-                    onClick={() => this.handleClick(item)}    
-                >
-                    { item.charAt(0).toUpperCase() + item.slice(1, item.length) }
-                </NavItem>
-            )
-            else return (
-                <Link to={item.path} key={index} target={item.newTab? "blank" : null} >
-                    <NavItem
-                    >
-                    { item.name.charAt(0).toUpperCase() + item.name.slice(1, item.length) }
-                    </NavItem>
-                </Link>
-            )
-       })
+  handleClick = selected => {
+    localStorage.setItem("previous", selected);
+    this.props.setSelected(selected);
+    if (this.props.handleSelected) {
+      this.props.handleSelected(selected);
     }
+  };
 
-    renderRightNavItems = () => {
-       return this.props.rightItems.map((item, index) => {
-           if( typeof item === "string")
-            return ( 
-                <NavItem
-                    key={index}
-                    style={this.highlightIf(item)}
-                    onClick={() => this.handleClick(item)}    
-                >
-                    { item.charAt(0).toUpperCase() + item.slice(1, item.length) }
-                </NavItem>
-            )
-            else return (
-                <Link to={item.path} key={index} target={item.newTab? "blank" : null} >
-                    <NavItem
-                    >
-                    { item.name.charAt(0).toUpperCase() + item.name.slice(1, item.name.length) }
-                    </NavItem>
-                </Link>
-            )
-       })
-    }
-  
-    render() {
-      return (
-        <NavContainer>
-          <div className="left-items">
-            { this.renderNavItems() }
-          </div>
-          <div className="right-items">
-            { this.props.rightItems && this.renderRightNavItems() }
-          </div>
-        </NavContainer>
-      );
-    }
+  renderNavItems = () => {
+    return this.props.items.map((item, index) => {
+      if (typeof item === "string")
+        return (
+          <NavItem
+            key={index}
+            style={this.highlightIf(item)}
+            onClick={() => this.handleClick(item)}
+          >
+            {item.charAt(0).toUpperCase() + item.slice(1, item.length)}
+          </NavItem>
+        );
+      else
+        return (
+          <Link
+            to={item.path}
+            key={index}
+            target={item.newTab ? "blank" : null}
+          >
+            <NavItem>
+              {item.name.charAt(0).toUpperCase() +
+                item.name.slice(1, item.length)}
+            </NavItem>
+          </Link>
+        );
+    });
+  };
+
+  renderRightNavItems = () => {
+    return this.props.rightItems.map((item, index) => {
+      if (typeof item === "string")
+        return (
+          <NavItem
+            key={index}
+            style={this.highlightIf(item)}
+            onClick={() => this.handleClick(item)}
+          >
+            {item.charAt(0).toUpperCase() + item.slice(1, item.length)}
+          </NavItem>
+        );
+      else
+        return (
+          <Link
+            to={item.path}
+            key={index}
+            target={item.newTab ? "blank" : null}
+          >
+            <NavItem>
+              {item.name.charAt(0).toUpperCase() +
+                item.name.slice(1, item.name.length)}
+            </NavItem>
+          </Link>
+        );
+    });
+  };
+
+  render() {
+    return (
+      <NavContainer>
+        <div className="left-items">{this.renderNavItems()}</div>
+        <div className="right-items">
+          {this.props.rightItems && this.renderRightNavItems()}
+        </div>
+      </NavContainer>
+    );
   }
-  
-  const NavContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    background-color: #23a24d;
-    // overflow: hidden;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
-  `;
-  
-  const NavItem = styled.button`
-    heght: 100%;
-    background-color: transparent;
-    border: none;
-    color: white;
-    padding: 1rem 2rem;
-    font-family: "Poppins";
-    font-size: 1.3rem;
-    letter-spacing: 2.5px;
-    cursor: pointer;
-    transition-duration: 0.1s;
-    outline: none;
-  
-    :hover {
-      background-color: #41c36c;
-    }
-  
-    :active {
-      color: #23a24d;
-      background-color: white;
-    }
-  `;
+}
+
+const NavContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #23a24d;
+  // overflow: hidden;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+`;
+
+const NavItem = styled.button`
+  heght: 100%;
+  background-color: transparent;
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  font-family: "Poppins";
+  font-size: 1.3rem;
+  letter-spacing: 2.5px;
+  cursor: pointer;
+  transition-duration: 0.1s;
+  outline: none;
+
+  :hover {
+    background-color: #41c36c;
+  }
+
+  :active {
+    color: #23a24d;
+    background-color: white;
+  }
+`;
 
 export default Dashboard;

@@ -25,6 +25,8 @@ const StudentGradesView = ({ auth, student }) => {
   const [quizGrades, setQuizGrades] = useState(0);
   const [totalGrades, setTotalGrades] = useState(0);
   const [allGrades, setAllGrades] = useState(0);
+  const [noGradesFlag, setNoGradesFlag] = useState(false);
+  const [upcomingAssignments, setUpcomingAssignments] = useState([]);
 
   useEffect(() => {
     let id = 0;
@@ -37,6 +39,13 @@ const StudentGradesView = ({ auth, student }) => {
     axios.get("/api/student_courses", { params: { id: id } }).then(res => {
       setCourses(res.data);
       setActiveCourse(res.data[0]);
+      res.data.map(course => {
+        axios
+          .get("/api/upcoming_assignments", { params: { course_id: course.id } })
+          .then(res => {
+            setUpcomingAssignments([...upcomingAssignments, ...res.data]);
+          });
+      });
     });
     axios.get("/api/calc_total_grades", { params: { id: id } }).then(res => {
       setTotalGrades(res.data);
@@ -56,11 +65,52 @@ const StudentGradesView = ({ auth, student }) => {
     });
   }, []);
 
-  const renderUpcomingAssignments = grades => {
+  const renderUpcomingAssignments = () => {
+    let count = 0;
+    if (upcomingAssignments) {
+      return upcomingAssignments.map(upcomingAssignment => {
+        if (
+          dateFns.isFuture(upcomingAssignment.due_date) &&
+          count < 4 &&
+          upcomingAssignment.visible == true
+        ) {
+          // Since Assignments are already in order by date, take the first 4 assignments with due dates in the future
+          count++;
+          return (
+            <Card>
+              <Card.Content>
+                <Link
+                  to={`/courses/${upcomingAssignment.course_id}/units/${
+                    upcomingAssignment.unit_id
+                  }/assignments/${upcomingAssignment.assignment_id}`}
+                >
+                  <CardHeader>{upcomingAssignment.title}</CardHeader>
+                </Link>
+                <Card.Meta>
+                  {`due: ${dateFns.format(
+                    dateFns.parse(upcomingAssignment.due_date),
+                    "MM/DD/YY"
+                  )}`}
+                </Card.Meta>
+              </Card.Content>
+            </Card>
+          );
+        }
+      });
+    } else {
+      return <></>;
+    }
+  };
+
+  const renderRecentAssignments = grades => {
     let count = 0;
     if (grades) {
       return grades.map(grade => {
-        if (dateFns.isFuture(grade.due_date) && count < 4) {
+        if (
+          dateFns.isPast(grade.due_date) &&
+          count < 4 &&
+          grade.points_possible
+        ) {
           // Since Assignments are already in order by date, take the first 4 assignments with due dates in the future
           count++;
           return (
@@ -122,10 +172,19 @@ const StudentGradesView = ({ auth, student }) => {
         </TopContainer>
         <Split />
         <TopContainer>
-          <HeaderSummary>Upcoming Assignments/Quizzes</HeaderSummary>
+          <HeaderSummary>Upcoming Assignments</HeaderSummary>
           <DataSummary>
-            <Card.Group fluid itemsPerRow={2}>
-              {renderUpcomingAssignments(grades)}
+            <Card.Group fluid>
+              {renderUpcomingAssignments()}
+            </Card.Group>
+          </DataSummary>
+        </TopContainer>
+        <Split />
+        <TopContainer>
+          <HeaderSummary>Recent Assignments/Quizzes</HeaderSummary>
+          <DataSummary>
+            <Card.Group fluid>
+              {renderRecentAssignments(grades)}
             </Card.Group>
           </DataSummary>
         </TopContainer>
@@ -157,101 +216,91 @@ const StudentGradesView = ({ auth, student }) => {
 
   const renderGrades = grades => {
     if (grades) {
-      return (
-        <GradesContainer>
-          <Table celled selectable color="green">
-            <Table.Header>
-              <Table.Row>
-                {grades[0].assignment_id ? (
+      if (grades[0].points_possible || grades.length > 2) {
+        return (
+          <GradesContainer>
+            <Table celled selectable color="green">
+              <Table.Header>
+                <Table.Row>
+                  {grades[0].assignment_id ? (
+                    <Table.HeaderCell textAlign="center">
+                      Assignments
+                    </Table.HeaderCell>
+                  ) : (
+                    <Table.HeaderCell textAlign="center">
+                      Quizzes
+                    </Table.HeaderCell>
+                  )}
                   <Table.HeaderCell textAlign="center">
-                    Assignments
+                    Due Date
                   </Table.HeaderCell>
-                ) : (
-                  <Table.HeaderCell textAlign="center">
-                    Quizzes
-                  </Table.HeaderCell>
-                )}
-                <Table.HeaderCell textAlign="center">Due Date</Table.HeaderCell>
-                <Table.HeaderCell textAlign="center">Score</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {grades.map(grade => {
-                if (grade.course_id == activeCourse.id) {
-                  return (
-                    <Table.Row>
-                      {grades[0].assignment_id ? (
-                        <Table.Cell>
-                          <Link
-                            to={`/courses/${grade.course_id}/units/${
-                              grades.unit_id
-                            }/assignments/${grade.assignment_id}`}
-                          >
-                            <TableHeader as="h4">{grade.title}</TableHeader>
-                          </Link>
-                        </Table.Cell>
-                      ) : (
-                        <Table.Cell>
-                          <Link
-                            to={`/courses/${grade.course_id}/units/${
-                              grade.unit_id
-                            }/quizzes/${grade.quiz_id}`}
-                          >
-                            <TableHeader as="h4">{grade.title}</TableHeader>
-                          </Link>
-                        </Table.Cell>
-                      )}
-                      <Table.Cell textAlign="center">
-                        {grade.due_date ? (
-                          <>
-                            {dateFns.format(
-                              dateFns.parse(grade.due_date),
-                              "MM/DD/YY"
-                            )}
-                          </>
+                  <Table.HeaderCell textAlign="center">Score</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {grades.map(grade => {
+                  if (grade.course_id == activeCourse.id) {
+                    return (
+                      <Table.Row>
+                        {grades[0].assignment_id ? (
+                          <Table.Cell>
+                            <Link
+                              to={`/courses/${grade.course_id}/units/${
+                                grades.unit_id
+                              }/assignments/${grade.assignment_id}`}
+                            >
+                              <TableHeader as="h4">{grade.title}</TableHeader>
+                            </Link>
+                          </Table.Cell>
                         ) : (
-                          <>No Date Yet</>
+                          <Table.Cell>
+                            <Link
+                              to={`/courses/${grade.course_id}/units/${
+                                grade.unit_id
+                              }/quizzes/${grade.quiz_id}`}
+                            >
+                              <TableHeader as="h4">{grade.title}</TableHeader>
+                            </Link>
+                          </Table.Cell>
                         )}
-                      </Table.Cell>
-                      {grade.points_possible > 0 ? (
                         <Table.Cell textAlign="center">
-                          {Math.round(
-                            (grade.points_awarded / grade.points_possible) * 100
-                          )}
-                          %
+                          <TableHeader>
+                            {grade.due_date ? (
+                              <>
+                                {dateFns.format(
+                                  dateFns.parse(grade.due_date),
+                                  "MM/DD/YY"
+                                )}
+                              </>
+                            ) : (
+                              <>No Date Yet</>
+                            )}
+                          </TableHeader>
                         </Table.Cell>
-                      ) : (
-                        <Table.Cell textAlign="center">0%</Table.Cell>
-                      )}
-                    </Table.Row>
-                  );
-                }
-              })}
-            </Table.Body>
-            {/* <Table.Footer>
-              <Table.Row>
-                <Table.HeaderCell>Total Grade</Table.HeaderCell>
-                {totalGrades ? (
-                  <>
-                    {totalGrades.map(course => {
-                      if (course.course_id == activeCourse.id)
-                        return (
-                          <Table.HeaderCell colSpan="3" textAlign="center">
-                            {course.grade_percent}%
-                          </Table.HeaderCell>
-                        );
-                    })}
-                  </>
-                ) : (
-                  <>
-                    <HeaderSummary>Loading...</HeaderSummary>
-                  </>
-                )}
-              </Table.Row>
-            </Table.Footer> */}
-          </Table>
-        </GradesContainer>
-      );
+                        {grade.graded && grade.points_possible > 0 ? (
+                          <Table.Cell textAlign="center">
+                            <TableHeader>
+                              {Math.round(
+                                (grade.points_awarded / grade.points_possible) *
+                                  100
+                              )}
+                              %
+                            </TableHeader>
+                          </Table.Cell>
+                        ) : (
+                          <Table.Cell textAlign="center">
+                            <TableHeader>Not Yet Graded</TableHeader>
+                          </Table.Cell>
+                        )}
+                      </Table.Row>
+                    );
+                  }
+                })}
+              </Table.Body>
+            </Table>
+          </GradesContainer>
+        );
+      }
     } else
       return (
         <GradesContainer>
@@ -259,29 +308,6 @@ const StudentGradesView = ({ auth, student }) => {
         </GradesContainer>
       );
   };
-
-  // const renderRecentAssignments = () => {
-  //   const feedbackItems = assignments.filter(assignment => {
-  //     // Only add to array if there is feedback, otherwise skip it
-  //     if (assignment.feedback)
-  //       return {
-  //         header: assignment.header,
-  //         description: assignment.feedback
-  //       };
-  //   });
-
-  //   return (
-  //     <SummaryContainer>
-  //       <HeaderSummary>Recent Feedback</HeaderSummary>
-  //       <Split />
-  //       <TopContainer>
-  //         <DataSummary>
-  //           <Card.Group items={feedbackItems} itemsPerRow={1} />
-  //         </DataSummary>
-  //       </TopContainer>
-  //     </SummaryContainer>
-  //   );
-  // };
 
   if (courses.length > 0)
     return (

@@ -7,7 +7,6 @@ import styled from 'styled-components';
 class AssignmentMarks extends React.Component {
   chooseMarks(assignments) {
     if (assignments.length > 0) {
-      // debugger;
       return (
         <>
           <Popup
@@ -36,7 +35,7 @@ class AssignmentMarks extends React.Component {
                     {assignment.assignment_id ? (
                       <Link
                         to={`/courses/${assignment.course_id}/units/${
-                          assignments.unit_id
+                          assignment.unit_id
                         }/assignments/${assignment.assignment_id}`}
                       >
                         <Header as="h4">{assignment.title}</Header>
