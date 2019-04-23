@@ -56,11 +56,11 @@ const StudentGradesView = ({ auth, student }) => {
     });
   }, []);
 
-  const renderUpcomingAssignments = grades => {
+  const renderRecentAssignments = grades => {
     let count = 0;
     if (grades) {
       return grades.map(grade => {
-        if (dateFns.isFuture(grade.due_date) && count < 4) {
+        if (dateFns.isBefore(grade.due_date) && count < 4) {
           // Since Assignments are already in order by date, take the first 4 assignments with due dates in the future
           count++;
           return (
@@ -124,10 +124,10 @@ const StudentGradesView = ({ auth, student }) => {
         </TopContainer>
         <Split />
         <TopContainer>
-          <HeaderSummary>Upcoming Assignments/Quizzes</HeaderSummary>
+          <HeaderSummary>Recent Assignments/Quizzes</HeaderSummary>
           <DataSummary>
             <Card.Group fluid itemsPerRow={2}>
-              {renderUpcomingAssignments(grades)}
+              {renderRecentAssignments(grades)}
             </Card.Group>
           </DataSummary>
         </TopContainer>
@@ -207,6 +207,7 @@ const StudentGradesView = ({ auth, student }) => {
                           </Table.Cell>
                         )}
                         <Table.Cell textAlign="center">
+                        <TableHeader>
                           {grade.due_date ? (
                             <>
                               {dateFns.format(
@@ -217,17 +218,22 @@ const StudentGradesView = ({ auth, student }) => {
                           ) : (
                             <>No Date Yet</>
                           )}
+                          </TableHeader>
                         </Table.Cell>
-                        {grade.points_possible > 0 ? (
+                        {grade.graded && grade.points_possible > 0 ? (
                           <Table.Cell textAlign="center">
-                            {Math.round(
-                              (grade.points_awarded / grade.points_possible) *
-                                100
-                            )}
-                            %
+                            <TableHeader>
+                              {Math.round(
+                                (grade.points_awarded / grade.points_possible) *
+                                  100
+                              )}
+                              %
+                            </TableHeader>
                           </Table.Cell>
                         ) : (
-                          <Table.Cell textAlign="center">0%</Table.Cell>
+                          <Table.Cell textAlign="center">
+                            <TableHeader>Not Yet Graded</TableHeader>
+                          </Table.Cell>
                         )}
                       </Table.Row>
                     );
@@ -235,12 +241,6 @@ const StudentGradesView = ({ auth, student }) => {
                 })}
               </Table.Body>
             </Table>
-          </GradesContainer>
-        );
-      } else {
-        return (
-          <GradesContainer>
-            <HeaderSummary>No grades yet.</HeaderSummary>
           </GradesContainer>
         );
       }
