@@ -10,7 +10,7 @@ class SectionIndex extends React.Component {
     state = { sections: [] };
 
     componentDidMount() {
-        axios.get(`/api/courses/${this.props.courseId}/sections`)
+        axios.get(`/api/courses/${this.props.courseId}/sections_ordered_by_sequence`)
         .then(res => {
             this.setState({ sections: res.data });
         })
@@ -26,7 +26,11 @@ class SectionIndex extends React.Component {
         const sections = newSections.map((section) => {
           return JSON.parse(section)
         })
-        this.setState({ sections });
+        this.setState({ sections }, () => {
+            axios.put(`/api/sections/update_sequence`, {sections: sections})
+            .then((res) => console.log(res.data))
+            .catch((err) => console.log(err))
+        });
       }
 
     renderSections = () => {

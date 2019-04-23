@@ -44,6 +44,8 @@ Rails.application.routes.draw do
     resources :sections, only: [] do
       resources :units
     end
+    get '/courses/:course_id/sections_ordered_by_sequence', to: '/api/sections#get_ordered_by_sequence'
+    put '/sections/update_sequence', to: '/api/sections#update_sequence'
     
     resources :units, only: [] do
       resources :contents, only: [:index]

@@ -151,9 +151,10 @@ puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
       end
     end
   end
+  
+  course_sequence.reset()
 end
 Timer.log_and_reset
-course_sequence.reset()
 
 
 puts "\n3) CREATING ENROLLED USERS / SUBMISSIONS / ATTENDANCES"
