@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import Code from './Code';
-import Moment from 'react-moment';
 import GradeSubmission from './GradeSubmission';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -47,31 +46,84 @@ class SubmissionView extends React.Component {
   }
 
   renderSubmission = () => {
-    const { assignment, body, url, code } = this.state
+    const { assignment, body, url, code, points_awarded, points_possible, grading } = this.state
     switch(assignment.kind) {
       case 'url':
         return (
           <Submission>
-            <Instructions>
-              <a target="_blank" href={url}>{url}</a>
-            </Instructions>
-            <Instructions 
+            <SubmissionControls>
+              Submission
+              <RightContainer>
+                <Points>
+                  { points_awarded }
+                </Points>
+                <PointsPossible>
+                   /{ points_possible }
+                </PointsPossible>
+              </RightContainer>
+            </SubmissionControls>
+              <SubmissionBody>
+                Submission URL: <a target="_blank" href={url}>{url}</a>
+              </SubmissionBody>
+              <SubmittedText 
+                dangerouslySetInnerHTML=
+                {this.createMarkup(body)}
+                style={{padding: '15px'}}
+              />
+              { !grading ?
+                <> 
+                  <br />
+                  <ButtonGreen onClick={this.toggleGrading}>
+                    Grade Submission
+                  </ButtonGreen>
+                </>
+              :
+                <GradeSubmission 
+                  submitGrade={this.gradeSubmission} 
+                  toggle={this.toggleGrading} 
+                  points_awarded={points_awarded} 
+                  points_possible={points_possible}
+                />
+              }
+          </Submission>
+        )
+      case 'code':
+        return (
+          <Submission>
+            <SubmissionControls>
+              Submission
+              <RightContainer>
+                <Points>
+                  { points_awarded }
+                </Points>
+                <PointsPossible>
+                   /{ points_possible }
+                </PointsPossible>
+              </RightContainer>
+            </SubmissionControls>
+            <Code value={code} />
+            <SubmittedText 
               dangerouslySetInnerHTML=
               {this.createMarkup(body)}
               style={{padding: '15px'}}
             />
           </Submission>
         )
-      case 'code':
-        return (
-          <Submission>
-            <Code value={code} />
-          </Submission>
-        )
       case 'none':
         return (
           <Submission>
-            <Instructions 
+            <SubmissionControls>
+              Submission
+              <RightContainer>
+                <Points>
+                  { points_awarded }
+                </Points>
+                <PointsPossible>
+                   /{ points_possible }
+                </PointsPossible>
+              </RightContainer>
+            </SubmissionControls>
+            <SubmittedText 
               dangerouslySetInnerHTML=
               {this.createMarkup(body)}
               style={{padding: '15px'}}
@@ -88,7 +140,7 @@ class SubmissionView extends React.Component {
   }
 
   render() {
-    const { assignment, user, points_awarded, points_possible, grading, grade, graded } = this.state
+    const { assignment, user, grade, graded } = this.state
 
     return (
       <>
@@ -110,29 +162,6 @@ class SubmissionView extends React.Component {
           />
           <Divider />
             {this.renderSubmission()}
-          <Divider />
-            { !grading ?
-              <>
-                <Instructions>
-                  {points_awarded}/{points_possible}
-                </Instructions>
-                <Instructions>
-                  Grade:{grade}%
-                </Instructions>
-                <ButtonGreen onClick={this.toggleGrading}>
-                  Grade Submission
-                </ButtonGreen>
-              </>
-            :
-              <>
-                <GradeSubmission 
-                  submitGrade={this.gradeSubmission} 
-                  toggle={this.toggleGrading} 
-                  points_awarded={points_awarded} 
-                  points_possible={points_possible}
-                />
-              </>
-            }
         </SubmissionContainer>
       </>
     )
@@ -183,6 +212,43 @@ const Submission = styled.div`
     margin: 4rem auto;
     background-color: #f7f7f7;
     box-shadow: 0 1px 1px 2px rgba(150,150,150,0.2);
+`
+
+const SubmissionControls = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #23a24d;
+    font-size: 1.5rem;
+    color: #23a24d;
+    height: 4rem;
+`
+
+const RightContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 20rem;
+`
+
+const PointsPossible = styled.div`
+    display: inline-block;
+    max-width: 9rem;
+    overflow: hidden;
+`
+
+const Points = styled.div`
+    text-align: right;
+`
+
+const SubmissionBody = styled.h3`
+    margin: 2rem 0;
+`
+
+const SubmittedText = styled.div`
+    border: 1px solid grey;
+    border-radius: 10px;
+    min-height: 20rem;
 `
 
 export default SubmissionView
