@@ -3,6 +3,7 @@ import ReactQuill from 'react-quill';
 import styled from 'styled-components';
 import { ButtonGreen, } from '../../styles/Components';
 import axios from 'axios';
+import { withAlert } from 'react-alert';
 
 class AddContent extends React.Component {
   state = { title: '', body: '', };
@@ -18,13 +19,32 @@ class AddContent extends React.Component {
     this.setState({ body: value })
   }
 
+  SuccessAlert = (message) => this.props.alert.show( message, {
+    timeout: 4000, // custom timeout just for this one alert
+    type: 'success',
+
+  })
+  ErrorAlert = (message) => this.props.alert.show( message, {
+    timeout: 4000, // custom timeout just for this one alert
+    type: 'error',
+  })
+
+
   handleSubmit = (e) => {
     e.preventDefault();
+    
     const content = {...this.state}
+    if ( content.title === ''){
+      this.ErrorAlert('Please enter a title')
+    } else if ( content.body === ''){
+      this.ErrorAlert('Please Enter Content Body')
+    } else {
     axios.post('/api/contents', content)
       .then( res => {
+        this.SuccessAlert('Content Created Successfully')
         this.setState({ title: '', body: '' })
       })
+    }
   }
 
   render() {
@@ -117,4 +137,4 @@ const formats = [
   'link', 'code-block', 'image', 'video'
 ]
 
-export default AddContent
+export default withAlert()(AddContent)

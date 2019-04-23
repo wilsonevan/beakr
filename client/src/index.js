@@ -8,14 +8,19 @@ import "semantic-ui-css/semantic.min.css";
 import './components/attendance/CalendarFlatpickr.css';
 import "react-quill/dist/quill.snow.css";
 import { initMiddleware } from "devise-axios";
+import { transitions, positions, Provider as AlertProvider } from 'react-alert'
+import whatever from './styles/AlertStyle'
+
 
 initMiddleware();
 
 ReactDOM.render(
   <AuthProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <AlertProvider template={whatever} >
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AlertProvider>
   </AuthProvider>,
   document.getElementById("root")
 );
