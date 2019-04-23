@@ -23,8 +23,10 @@ class QuizSubmissionView extends React.Component {
         return optionArray
     }
 
-    handleChange = (event, index) => {
-        this.props.updatePointsAwarded(index, event.target.value);
+    handleChange = (event, index, points_possible) => {
+        const value = parseFloat(event.target.value)? parseFloat(event.target.value) : "";
+        if(value > points_possible || value < 0) return null;
+        this.props.updatePointsAwarded(index, value);
         this.props.calculateGrades();
     }
 
@@ -43,13 +45,11 @@ class QuizSubmissionView extends React.Component {
                         <RightContainer>
                             {this.props.teacherView
                             ? (
-                                <SelectContainer>
-                                    <select 
-                                        value={question.points_awarded} 
-                                        onChange={(event) => this.handleChange(event, index)} >
-                                        { this.pointsOptions(question.points_possible) }
-                                    </select>
-                                </SelectContainer>
+                                <PointsAwardedInput 
+                                    type="number"
+                                    value={question.points_awarded} 
+                                    onChange={(event) => this.handleChange(event, index, question.points_possible)}
+                                />
                             )
                             : (
                                 <Points>
@@ -75,13 +75,11 @@ class QuizSubmissionView extends React.Component {
                         <RightContainer>
                             {this.props.teacherView
                             ? (
-                                <SelectContainer>
-                                    <select 
-                                        value={question.points_awarded} 
-                                        onChange={(event) => this.handleChange(event, index)} >
-                                        { this.pointsOptions(question.points_possible) }
-                                    </select>
-                                </SelectContainer>
+                                <PointsAwardedInput 
+                                    type="number"
+                                    value={question.points_awarded} 
+                                    onChange={(event) => this.handleChange(event, index, question.points_possible)}
+                                />
                             )
                             : (
                                 <Points>
@@ -105,11 +103,11 @@ class QuizSubmissionView extends React.Component {
                     <QuestionControls>
                         Question {index + 1}
                         <RightContainer>
-                            <SelectContainer>
+                            <div>
                                 <Points>
                                 { question.points_awarded }
                                 </Points>
-                            </SelectContainer>
+                            </div>
                             <PointsPossible>
                                 / {question.points_possible}
                             </PointsPossible>
@@ -125,7 +123,7 @@ class QuizSubmissionView extends React.Component {
     }
 
     render() {
-        const { submission, title, teacherView, unsetSubmission } = this.props;
+        const { submission, title, teacherView, unsetSubmission, userName } = this.props;
         return (
             <>
                 <Header 
@@ -140,7 +138,7 @@ class QuizSubmissionView extends React.Component {
                 />
                 <Header style={{ color: '#23A24D' }}>
                 <Icon name='block layout' color='green' />
-                    { title }
+                { title }  { userName && `Submission for ${userName}` }
                 </Header>
                 <SubmissionContainer>
                     <GradeHeading>
@@ -154,6 +152,9 @@ class QuizSubmissionView extends React.Component {
                     </GradeHeading>
                     <StyledHr />
                     { this.renderQuestions() }
+                    {this.props.teacherView && 
+                        <BottomSubmit onClick={() => this.handleClick()} >Submit Grade</BottomSubmit> 
+                    }
                 </SubmissionContainer>
             </>
         )
@@ -162,6 +163,10 @@ class QuizSubmissionView extends React.Component {
 
 
 const SubmissionContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     min-height: 50%;
     width: 100%;
     margin-top: 2rem;
@@ -176,6 +181,7 @@ const GradeHeading = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     font-size: 1.75rem;
     color: #23a24d;
 `
@@ -219,18 +225,41 @@ const RightContainer = styled.div`
     width: 20rem;
 `
 
-const SelectContainer = styled.div`
-    margin-right: 0.5rem;
-    z-index: 100;
+const PointsAwardedInput = styled.input`
+    border: none;
+    border-radius: 100px;
+    width: 7.5rem;
+    padding: 0.25rem 0.75rem;
+    box-shadow: 0 1px 2px 1px rgba(150,150,150,0.1);
+    color: #23a24d;
 `
+
 const PointsPossible = styled.div`
     display: inline-block;
     max-width: 9rem;
     overflow: hidden;
+    margin-left: 0.5rem;
 `
 
 const Points = styled.div`
     text-align: right;
+`
+
+const BottomSubmit = styled.button`
+    min-width: 15rem;
+    width: 40%;
+    padding: 1.5rem 0;
+    background-color: #23a24d;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+
+    :hover {
+        color: white;
+        background-color: #41c36c;
+    }
 `
 
 export default QuizSubmissionView;

@@ -13,6 +13,15 @@ class Api::UsersController < ApplicationController
     render json: @user
   end
 
+  def create
+    @user = User.new(user_params)
+    if @user.save
+      render json: @user
+    else
+      render json: @user.errors, status: 422
+    end
+  end
+
   def search_users
     render( json: User.search_users(params[:input]))
   end
@@ -63,6 +72,13 @@ class Api::UsersController < ApplicationController
     render json: courses
   end
 
+  def send_sms
+    message = params[:input].gsub("<p>", "").gsub("</p>", "")
+
+    SendsmsMailer.with(user: current_user).test_mailer(ENV['EW_PHONE'], message).deliver_now
+    SendsmsMailer.with(user: current_user).test_mailer(ENV['JP_PHONE'], message).deliver_now
+  end
+
   def update
     # updates the user information including the image file
     user = User.find(params[:id])
@@ -106,6 +122,10 @@ class Api::UsersController < ApplicationController
 
   def set_course
     @course = User.find(params[:course_id])
+  end
+  
+  def user_params
+    params.require(:user).permit(:first_name, :last_name, :email, :password, :admin)
   end
   
 end

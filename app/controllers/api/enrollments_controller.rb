@@ -1,20 +1,18 @@
 class Api::EnrollmentsController < ApplicationController
   before_action :set_enrollment, only: [:update, :destroy, :show]
 
-  # def index
-  # end
-
   def show
     render( json: @enrollment )
   end
 
   def create
+    user = User.find(params[:user_id])
     enrollment = Enrollment.new(enrollment_params)
     duplicate = Course.find(params[:course_id]).enrollments.select() {|old_enrollment| 
-        enrollment.user_id === old_enrollment.id 
+        enrollment.user_id == old_enrollment.user_id 
     }
 
-    if(duplicate.length == 0 && enrollment.save)
+    if(!user.admin && duplicate.length == 0 && enrollment.save)
       enrollment.create_attendances()
       render json: enrollment
     else

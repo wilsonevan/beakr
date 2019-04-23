@@ -84,30 +84,38 @@ class AssignmentView extends React.Component {
     if (submissions.length !== 0 ) {
       return (
         <> 
-          <ListHeader>
-            Student Submissions
-          </ListHeader>
-          <SubmissionContainer>
-            {submissions
-              .sort(function(a, b){
-                if(a.user.last_name < b.user.last_name) { return -1; }
-                if(a.user.last_name > b.user.last_name) { return 1; }
-                return 0;
-              })
-              .map((submission, index) => {
-                return (
-                  <Link
-                    to={`/assignments/${id}/submissions/${submission.id}`}
-                    key={index}
-                  >
-                    <div>
-                      {submission.user.first_name} {submission.user.last_name}
-                    </div>
-                  </Link>
-                )
-              })
-            }
-          </SubmissionContainer>
+          <div>
+            <h3 style={{margin: "1rem 0 2rem 0"}} >Student Submissions</h3>
+              <GreenBackground>
+                <SubmissionContainer>
+                  {submissions
+                    .sort(function(a, b){
+                      if(a.user.last_name < b.user.last_name) { return -1; }
+                      if(a.user.last_name > b.user.last_name) { return 1; }
+                      return 0;
+                    })
+                    .map((submission, index) => {
+                      return (
+                        <SubmissionBlock key={ index }>
+                          <UserSubmissionBtn 
+                            as={Link} 
+                            to={`/assignments/${id}/submissions/${submission.id}`}
+                          >
+                            { submission.user.first_name } { submission.user.last_name }
+                          </UserSubmissionBtn>
+                          <GradedBoolean style={{ color: submission.graded? "#23a24d" : "#2979ff" }} >
+                            { submission.graded? "Graded" : "Not Graded" }
+                          </GradedBoolean>
+                          <SubmissionGrade>
+                            { submission.grade.toFixed(1) }% 
+                          </SubmissionGrade>
+                        </SubmissionBlock>
+                      )
+                    })
+                  }
+                </SubmissionContainer>
+              </GreenBackground>
+          </div>
         </>
       )
     }
@@ -193,12 +201,17 @@ class AssignmentView extends React.Component {
           </AssignmentHeading>
           <StyledHr/>
         {editingBody ? (
-            <EditAssignmentBody
-              body={body}
-              kind={kind}
-              points_possible={points_possible}
-              updateAssignmentBody={this.updateAssignmentBody}
-            />
+            <>
+              <EditAssignmentBody
+                body={body}
+                kind={kind}
+                points_possible={points_possible}
+                updateAssignmentBody={this.updateAssignmentBody}
+              />
+              <ButtonGreen onClick={() => this.toggleEditingBody()}>
+                Cancel Edit 
+              </ButtonGreen>
+            </>
           ) : (
             <>
               { userSubmission ?
@@ -217,13 +230,14 @@ class AssignmentView extends React.Component {
             <>
               {this.renderAdminView()}
               {editingBody? 
-                <ButtonGreen onClick={() => this.toggleEditingBody()}>
-                  Cancel Edit 
-                </ButtonGreen>
+                <></>
               : 
-                <ButtonGreen onClick={() => this.toggleEditingBody()}>
-                  Edit Content
-                </ButtonGreen>
+                <>
+                  <br />
+                  <ButtonGreen onClick={() => this.toggleEditingBody()}>
+                    Edit Content
+                  </ButtonGreen>
+                </>
               }
             </>
           :
@@ -312,24 +326,72 @@ const BlueLink = styled.button`
   }
 `;
 
-const SubmissionContainer = styled.div`
-    width: 95%;
-    margin: 0 auto 3rem auto;
-    padding: 1.25rem;
-    text-align: left;
-    border-radius: 10px;
+const GreenBackground = styled.div`
+    padding: 1.25rem 0.75rem;
+    background-color: #23a24d;
+    border-radius: 5px;
 `
 
-const ListHeader = styled.h2`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem !important;
-  margin-bottom: 2rem !important;
-  font-family: "Poppins";
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 2px;
+const SubmissionContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+`
+
+const SubmissionBlock = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    text-align: left;
+    font-size: 1.25rem;
+    border-bottom: 1px solid rgba(150,150,150, 0.1);
+`
+
+const UserSubmissionBtn = styled.button`
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    width: calc(100% / 3);
+    padding-left: 0.5rem;
+    border: none;
+    background-color: transparent;
+    color: grey;
+    cursor: pointer;
+    border-right: 1px solid rgba(150,150,150, 0.1);
+    transition-duration: 0.1s;
+
+
+    :hover {
+        background-color: rgba(0,0,0,0.1);
+        color: #23a24d;
+    }
+`
+
+const GradedBoolean = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    width: calc(100% / 3);
+    padding-left: 0.5rem;
+    border-left: 1px solid rgba(150,150,150, 0.1);
+    border-right: 1px solid rgba(150,150,150, 0.1);
+`
+
+const SubmissionGrade = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    width: calc(100% / 3);
+    padding-left: 0.5rem;
+    color: grey;
 `
 
 export default connectAssignmentView

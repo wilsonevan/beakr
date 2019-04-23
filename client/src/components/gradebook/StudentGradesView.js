@@ -5,6 +5,7 @@ import axios from "axios";
 import { AuthConsumer } from "../../providers/AuthProvider";
 import dateFns from "date-fns";
 import TrendsTable from "./TrendsTable";
+import { Loader, Dimmer } from "semantic-ui-react";
 import {
   SummaryContainer,
   TopContainer,
@@ -165,9 +166,7 @@ const StudentGradesView = ({ auth, student }) => {
                 })}
               </>
             ) : (
-              <>
-                <HeaderSummary>Loading...</HeaderSummary>
-              </>
+              <Loader />
             )}
           </DataSummary>
         </TopContainer>
@@ -305,7 +304,7 @@ const StudentGradesView = ({ auth, student }) => {
     } else
       return (
         <GradesContainer>
-          <HeaderSummary>No grades yet.</HeaderSummary>
+          <HeaderSummary>No Grades Yet...</HeaderSummary>
         </GradesContainer>
       );
   };
@@ -329,7 +328,9 @@ const StudentGradesView = ({ auth, student }) => {
   else
     return (
       <DataSummary>
-        <HeaderSummary>Not yet enrolled in any courses.</HeaderSummary>
+        <Dimmer active inverted>
+          <Loader inverted>Loading</Loader>
+        </Dimmer>
       </DataSummary>
     );
 };

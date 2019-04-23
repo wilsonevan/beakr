@@ -11,7 +11,7 @@ class AdminSection extends React.Component {
   state = {
     loaded: false,
     opened: false,
-    units: []
+    units: [],
   };
 
   unitContainerRef = React.createRef();
@@ -94,7 +94,6 @@ class AdminSection extends React.Component {
         this.setState({ opened: !this.state.opened });
       });
     }
-    // this.setState({ opened: !this.state.opened });
   };
 
   renderUnits = () => {
@@ -116,50 +115,54 @@ class AdminSection extends React.Component {
 
     if (this.state.opened) {
       return (
-        <>
-          <Section
-            onClick={this.handleClick}
-            ref={this.sectionRef}
-            style={{ marginBottom: "0" }}
-          >
-            <SectionTitle>
-              {loaded && units.length === 0 && "(No Units)"} {title}
-            </SectionTitle>
-            <SectionIcon>
-              <Link
-                to={`/admin/courses/${this.props.section.course_id}/sections/${
-                  this.props.section.id
-                }`}
-              >
-                <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
-              </Link>
-            </SectionIcon>
-          </Section>
-          <UnitsContainer
-            ref={this.unitContainerRef}
-            className="units-container"
-          >
-            {this.renderUnits()}
-          </UnitsContainer>
-        </>
+        <div data-id={JSON.stringify(this.props.section)} >
+            <Section
+              onClick={this.handleClick}
+              ref={this.sectionRef}
+              style={{marginBottom: "0"}}
+            >
+              <SectionTitle>
+                {title} {loaded && units.length === 0  && "( No Units )" }
+              </SectionTitle>
+              <SectionIcon>
+                <Link
+                  to={`/admin/courses/${this.props.section.course_id}/sections/${
+                    this.props.section.id
+                  }`}
+                >
+                  <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
+                </Link>
+              </SectionIcon>
+            </Section>
+            <UnitsContainer
+              ref={this.unitContainerRef}
+              className="units-container"
+            >
+              {this.renderUnits()}
+            </UnitsContainer>
+        </div>
       );
     } else {
       return (
         <>
-          <Section ref={this.sectionRef} onClick={this.handleClick}>
-            <SectionTitle>
-              {loaded && units.length === 0 && "(No Units)"} {title}
-            </SectionTitle>
-            <SectionIcon>
-              <Link
-                to={`/admin/courses/${this.props.section.course_id}/sections/${
-                  this.props.section.id
-                }`}
-              >
-                <ButtonBlue style={buttonStyles}>Edit Section</ButtonBlue>
-              </Link>
-            </SectionIcon>
-          </Section>
+            <Section 
+              ref={this.sectionRef} 
+              onClick={this.handleClick} 
+              data-id={JSON.stringify(this.props.section)} 
+            >
+              <SectionTitle>
+                {title} {loaded && units.length === 0  && "( No Units )" }
+              </SectionTitle>
+              <SectionIcon>
+                <Link
+                  to={`/admin/courses/${this.props.section.course_id}/sections/${
+                    this.props.section.id
+                  }`}
+                >
+                  <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
+                </Link>
+              </SectionIcon>
+            </Section>
         </>
       );
     }
@@ -192,9 +195,18 @@ const SectionTitle = styled.div`
 const SectionIcon = styled.div`
   position: absolute;
   transform: translateY(-50%);
-  right: 0.5rem;
+  right: 0rem;
   top: 50%;
+  padding: 1rem;
   font-size: 1.5rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  color: rgb(255,255,255);
+  background-color: #2979ff;
+
+  :hover { background-color: #498dff; }
 `;
 
 const UnitsContainer = styled.div`
@@ -212,9 +224,5 @@ const UnitsContainer = styled.div`
   opacity: 0;
   box-shadow: 0 1px 1px 1px rgba(100, 100, 100, 0.1);
 `;
-
-const buttonStyles = {
-  padding: "0.8rem 1rem"
-};
 
 export default AdminSection;

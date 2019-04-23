@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
     Course.find_by_sql(["
       SELECT * FROM users
       WHERE ( first_name ILIKE ? OR last_name ILIKE ? )
-      ORDER BY first_name, last_name
+      ORDER BY LOWER(first_name), LOWER(last_name)
       ", "#{input}%", "#{input}%"])
   end
   
@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
       WHERE e.course_id = ?
       AND e.role = 'staff'
       AND ( u.first_name ILIKE ? OR u.last_name ILIKE ? )
-      ORDER BY u.first_name
+      ORDER BY LOWER(u.first_name)
     ", course_id, "#{input}%", "#{input}%" ])
   end
 
@@ -83,7 +83,7 @@ class User < ActiveRecord::Base
       WHERE e.course_id = ?
       AND e.role = 'student'
       AND ( u.first_name ILIKE ? OR u.last_name ILIKE ? )
-      ORDER BY u.first_name
+      ORDER BY LOWER(u.first_name)
     ", course_id, "#{input}%", "#{input}%" ])
   end
 

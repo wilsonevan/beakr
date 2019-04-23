@@ -4,18 +4,23 @@ import { ButtonGreen } from "../../styles/Components";
 import Moment from 'react-moment';
 import moment from "moment";
 
-const QuizStart = ({ toggleStartPrompt, due_date, body, teacherView, submissionList, setSubmission }) => {
+const QuizStart = ({ toggleStartPrompt, due_date, body, teacherView, submissionList, setSubmission, setUserName }) => {
     const beforeDue = moment(Date.now()).isBefore(due_date);
 
     const createMarkup = (html) => {
         return { __html: html };
     };
 
+    const handleSelection = (submissionId, userName) => {
+        setSubmission(submissionId);
+        setUserName(userName);
+    }
+
     const renderSubmissionList = () => {
         return submissionList.map((submission, index) => {
             return(
                 <SubmissionBlock key={ index }>
-                    <UserSubmissionBtn onClick={() => setSubmission(submission.id)}>
+                    <UserSubmissionBtn onClick={() => handleSelection(submission.id, `${submission.first_name} ${submission.last_name}`)}>
                         { submission.first_name } { submission.last_name }
                     </UserSubmissionBtn>
                     <GradedBoolean style={{ color: submission.graded? "#23a24d" : "#2979ff" }} >

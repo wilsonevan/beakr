@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   
     resources :attendances
 
-    resources :users, only: [:index,:show, :update]
+    resources :users, only: [:index, :show, :create, :update]
     
     post '/search_users', to: '/api/users#search_users'
     post '/search_users_with_role/:course_id', to: '/api/users#search_users_with_role'
@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     get 'calc_total_grades', to: 'users#calc_total_grades'
     get 'user_courses', to: 'users#user_courses'
     get 'student_courses', to: 'users#student_courses'
+    post '/send_sms', to: '/api/users#send_sms'
     get 'calc_grades_all_students', to: 'courses#calc_grades_all_students'
     get 'upcoming_assignments', to: 'users#upcoming_assignments'
     get 'upcoming_quizzes', to: 'users#upcoming_quizzes'

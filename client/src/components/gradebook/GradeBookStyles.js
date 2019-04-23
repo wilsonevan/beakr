@@ -36,6 +36,14 @@ export const DataSummary = styled.div`
   justify-content: flex-start;
 `;
 
+export const LoadingSegment = styled.div`
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  height: 50%;
+`
+
 export const BottomContainer = styled.div`
   display: flex;
   align-items: stretch;
