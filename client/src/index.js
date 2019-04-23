@@ -9,14 +9,14 @@ import './components/attendance/CalendarFlatpickr.css';
 import "react-quill/dist/quill.snow.css";
 import { initMiddleware } from "devise-axios";
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
-import whatever from './styles/AlertStyle'
+import FlashTemplate from './styles/AlertStyle'
 
 
 initMiddleware();
 
 ReactDOM.render(
   <AuthProvider>
-    <AlertProvider template={whatever} >
+    <AlertProvider template={FlashTemplate} >
       <BrowserRouter>
         <App />
       </BrowserRouter>
