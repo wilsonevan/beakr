@@ -22,6 +22,7 @@ class QuizView extends React.Component {
     submission: null,
     teacherView: null,
     submissionList: null,
+    userName: "",
   }
 
   componentDidMount() {
@@ -71,12 +72,15 @@ class QuizView extends React.Component {
       axios.get(`/api/courses/${course_id}/quizzes/${id}/quiz_submissions`)
       .then((res) => {
         if(res.data) this.setState({ submission: res.data, page: "submission" });
-        else return axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
+        return axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)
       })
       .then( res => {
-        if(res) {
-          const { title, due_date, body } = res.data;
-          this.setState({ title, due_date, body, page: "start" });
+        const { title, due_date, body } = res.data;
+        this.setState({ title, due_date, body });
+
+        // if we aren't viewing a quiz submission, then get questions and display start
+        if(this.state.page !== "submission") {
+          this.setState({ page: "start" });
           return axios.get(`/api/quizzes/${id}/questions`)
         }
       })
@@ -163,6 +167,10 @@ class QuizView extends React.Component {
     this.setState({ submission: null, page: "start" });
   }
 
+  setUserName = (userName) => {
+    this.setState({ userName });
+  }
+
   updatePointsAwarded = (questionIndex, points) => {
     const questions = this.state.submission.questions.map((question, index) => {
       if(questionIndex === index) question.points_awarded = points;
@@ -186,10 +194,9 @@ class QuizView extends React.Component {
 
   calculateGrades = () => {
     const points_awarded = this.state.submission.questions.reduce((total, question) => {
-      return total += parseFloat(question.points_awarded);
+      const value = parseFloat(question.points_awarded)
+      return total += value? value : 0 ;
     }, 0)
-
-    console.log(points_awarded)
 
     const submission = this.state.submission;
     submission.points_awarded = points_awarded;
@@ -202,14 +209,13 @@ class QuizView extends React.Component {
     const { submission } = this.state;
     axios.put(`/api/quiz_submissions/${submission.id}/calculate_grade`, {quiz_submission: { ...submission} })
     .then((res) => {
-      console.log(res)
       this.setState({ submission: res.data });
     })
     .catch((err) => console.log(err));
   }
 
   render() {
-    const { title, questions, page, startPrompt, submitPrompt, validationPrompt, validationText, due_date, body, teacherView, submission, submissionList } = this.state;
+    const { title, questions, page, startPrompt, submitPrompt, validationPrompt, validationText, due_date, body, teacherView, submission, submissionList, userName } = this.state;
     if(page === "start") return (
         <>
         <Header as={Link} to='' onClick={() => this.props.history.goBack()} content='< Course Work' color='green' size='huge' textAlign='left'/>
@@ -224,6 +230,7 @@ class QuizView extends React.Component {
             teacherView={teacherView}
             submissionList={submissionList}
             setSubmission={this.setSubmission}
+            setUserName={this.setUserName}
           />
           { startPrompt &&
             <QuizPrompt 
@@ -276,6 +283,7 @@ class QuizView extends React.Component {
           unsetSubmission={this.unsetSubmission}
           setNewGrade={this.setNewGrade}
           calculateGrades={this.calculateGrades}
+          userName={userName}
         />
       )
       else return null

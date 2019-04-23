@@ -11,7 +11,7 @@ class Api::EnrollmentsController < ApplicationController
   def create
     enrollment = Enrollment.new(enrollment_params)
     duplicate = Course.find(params[:course_id]).enrollments.select() {|old_enrollment| 
-        enrollment.user_id === old_enrollment.id 
+        enrollment.user_id == old_enrollment.user_id 
     }
 
     if(duplicate.length == 0 && enrollment.save)
