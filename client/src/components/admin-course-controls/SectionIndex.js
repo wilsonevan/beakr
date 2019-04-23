@@ -49,6 +49,7 @@ class SectionIndex extends React.Component {
                     courseId={this.props.courseId}
                     addSection={this.addSection}
                 />
+                <BlueText>Click to view or drag to reorder.</BlueText>
                 <ReactSortable onChange={(newSections) => this.sequenceChange(newSections) } >
                     {this.state.sections.length > 0 && this.renderSections()}
                 </ReactSortable>
@@ -59,9 +60,21 @@ class SectionIndex extends React.Component {
 }
 
 const AdminControlsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+`;
+
+const BlueText = styled.p`
+    width: 90%;
+    margin: 0 auto 2rem auto;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    color: #2979ff;
+    font-family: "Poppins";
+    font-size: 0.7rem;
+    letter-spacing: 1px;
 `;
 
 export default SectionIndex;

@@ -159,6 +159,8 @@ const Section = styled.div`
     #23a24d,
     rgba(75, 255, 100, 0.2) 85%
   );
+
+  :active { cursor: grabbing }
 `;
 
 const SectionTitle = styled.div`
