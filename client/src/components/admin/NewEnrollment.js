@@ -7,7 +7,7 @@ import LeftEnrollmentUser from "./LeftEnrollmentUser";
 import RightEnrollmentUser from "./RightEnrollmentUser";
 
 class NewEnrollment extends React.Component {
-  state = { users: [], selectedCourseId: null, courses: [], teacher: false, searchUpdate: false};
+  state = { users: [], selectedCourseId: null, courses: [], searchUpdate: false};
 
   componentDidMount() {
     axios
@@ -16,14 +16,6 @@ class NewEnrollment extends React.Component {
         this.setState({ courses: res.data });
       })
       .catch(res => console.log(res));
-  }
-
-  setTeacherTrue = () => {
-    this.setState({ teacher: true });
-  }
-
-  setTeacherFalse = () => {
-    this.setState({ teacher: false });
   }
 
   updateSearch = () => {
@@ -61,52 +53,12 @@ class NewEnrollment extends React.Component {
 
   deleteEnrollment = (user_id, course_id) => {
     axios.delete(`/api/users/${user_id}/courses/${course_id}/enrollments`)
-    .then((res) => {
-      this.updateSearch();
-    })
+    .then((res) => this.updateSearch())
     .catch((err) => console.log(err));
   }
 
-  renderSearch = () => {
-    const { teacher, selectedCourseId, searchUpdate} = this.state;
-    if(teacher)
-      return (
-        <SearchBar
-          render={props => (
-            <RightEnrollmentUser 
-              {...props} 
-              deleteEnrollment={this.deleteEnrollment} 
-              selectedCourseId={selectedCourseId} 
-            />
-          )}
-          route={`/api/search_staff_enrolled/${selectedCourseId}`}
-          height="40rem"
-          width="100%"
-          placeholder="Search Teachers Enrolled ..."
-          updateFromParent={searchUpdate}
-        />
-      )
-    else 
-      return (
-        <SearchBar
-          render={props => (
-            <RightEnrollmentUser 
-              {...props} 
-              deleteEnrollment={this.deleteEnrollment} 
-              selectedCourseId={selectedCourseId} 
-            />
-          )}
-          route={`/api/search_students_enrolled/${selectedCourseId}`}
-          height="40rem"
-          width="100%"
-          placeholder="Search Students Enrolled ..."
-          updateFromParent={searchUpdate}
-        />
-    )
-  }
-
   render() {
-    const { selectedCourseId, teacher, searchUpdate } = this.state;
+    const { selectedCourseId, searchUpdate } = this.state;
     return (
       <>
         <CourseContainer>
@@ -141,18 +93,26 @@ class NewEnrollment extends React.Component {
                 placeholder="Search Users To Add ..."
                 updateFromParent={searchUpdate}
               />
-
             </LeftContainer>
 
             <RightContainer>
               <SearchHeading>
-                <SearchHeadingText>Enrolled Users</SearchHeadingText>
-                <div>
-                  <TeacherButton onClick={() => this.setTeacherTrue()} style={teacher? {backgroundColor: "white", color: "#2979ff"} : null} > Teachers </TeacherButton>
-                  <TeacherButton onClick={() => this.setTeacherFalse()} style={!teacher? {backgroundColor: "white", color: "#2979ff"} : null} > Students </TeacherButton>
-                </div>
+                <SearchHeadingText>Enrolled Students</SearchHeadingText>
               </SearchHeading>
-              { this.renderSearch() }
+              <SearchBar
+                render={props => (
+                  <RightEnrollmentUser 
+                    {...props} 
+                    deleteEnrollment={this.deleteEnrollment} 
+                    selectedCourseId={selectedCourseId} 
+                  />
+                )}
+                route={`/api/search_students_enrolled/${selectedCourseId}`}
+                height="40rem"
+                width="100%"
+                placeholder="Search Students Enrolled ..."
+                updateFromParent={searchUpdate}
+              />
             </RightContainer>
           </SearchContainer>
         )}
@@ -199,6 +159,7 @@ const SearchHeading = styled.div`
   padding: 1rem; 
   height: 4rem;
 `
+
 const SearchHeadingText = styled.h2`
   margin: 0;
   color: white;
@@ -225,20 +186,6 @@ const LeftContainer = styled.div`
   padding: 0.75rem;
   background-color: #23a24d;
   border-radius: 10px;
-`
-
-
-const TeacherButton = styled.button`
-  background-color: #2979ff;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  font-family: "Poppins";
-  padding: 0.25rem 0.5rem;
-  margin-left: 1rem;
-  cursor: pointer;
-
-  :hover { background-color: #1577ff }
 `
 
 export default NewEnrollment;
