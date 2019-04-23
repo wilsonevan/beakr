@@ -113,27 +113,8 @@ end
 
 
 
-puts "\n3) CREATING ENROLLED USERS / QUIZ_SUBMISSIONS / ATTENDANCES"
+puts "\n3) CREATING ENROLLED USERS / SUBMISSIONS / ATTENDANCES"
 Course.all.each do |course|
-  1.times do
-    user = User.create(
-    first_name: Faker::Name.first_name,
-    last_name: Faker::Name.last_name,
-    biography: Faker::TvShows::MichaelScott.quote,
-    birth_date: Faker::Date.birthday(18, 65),
-    email: Faker::Internet.email,
-    password: 'password',
-    admin: true
-  )
-    1.times do
-      Enrollment.create(
-        user_id: user.id,
-        course_id: course.id,
-        role: 'staff'
-      )
-    end
-  end
-
   20.times do
     user = User.create(
       first_name: Faker::Name.first_name,
@@ -151,7 +132,6 @@ Course.all.each do |course|
         role: 'student'
       )
 
-      # Quiz.all().each() {|quiz|
       course.sections.each do |section|
         section.units.each do |unit|
           unit.quizzes.each do |quiz|
@@ -255,8 +235,8 @@ end
 puts "\n4) CREATING STUDENT@TEST.COM"
 1.times do
   user = User.create(
-    first_name: Faker::Name.first_name,
-    last_name: Faker::Name.last_name,
+    first_name: "Student",
+    last_name: "Stu",
     email: 'student@test.com',
     biography: Faker::TvShows::MichaelScott.quote,
     birth_date: Faker::Date.birthday(18, 65),
@@ -298,23 +278,14 @@ end
 puts "\n5) CREATING TEST@TEST.COM"
 1.times do
   user = User.create(
-    first_name: Faker::Name.first_name,
-    last_name: Faker::Name.last_name,
+    first_name: "Admin",
+    last_name: "Al",
     biography: Faker::TvShows::MichaelScott.quote,
     birth_date: Faker::Date.birthday(18, 65),
     email: 'test@test.com',
     password: 'password',
     admin: true
   )
-  Course.all.each do |course|
-    1.times do
-      Enrollment.create(
-        user_id: user.id,
-        course_id: course.id,
-        role: 'staff'
-      )
-    end
-  end
 end
 
 
