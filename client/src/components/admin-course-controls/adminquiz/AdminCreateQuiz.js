@@ -44,12 +44,12 @@ class AdminCreateQuiz extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     if (this.state.quizValues.title === ''){
-      this.ErrorAlert('You must give the quiz a title')
+      this.ErrorAlert('Please enter a title')
     } else if ( this.state.quizValues.body === '' ) {
-      this.ErrorAlert('You must fill out quiz instructions')
+      this.ErrorAlert('please enter instructions')
     } else {
       if (this.state.questions.length < 1){
-        this.ErrorAlert('You must add questions')
+        this.ErrorAlert('please add questions')
       } else {
       const quiz = {...this.state.quizValues}
       axios.post('/api/quizzes', quiz)

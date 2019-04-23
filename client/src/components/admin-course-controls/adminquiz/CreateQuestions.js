@@ -29,7 +29,7 @@ handleSubmit = (e) => {
     this.handleAdd()
     this.toggleChoiceForm()
   } else {
-    this.ErrorAlert('You must add at least 2 choices')
+    this.ErrorAlert('Please add at least 2 choices')
   }
     
   }
