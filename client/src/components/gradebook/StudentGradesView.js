@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table } from "semantic-ui-react";
 import CourseCard from "./CourseCard";
 import axios from "axios";
 import { AuthConsumer } from "../../providers/AuthProvider";
 import dateFns from "date-fns";
 import TrendsTable from "./TrendsTable";
-import { Loader, Dimmer } from "semantic-ui-react";
+import { Loader, Card, Table } from "semantic-ui-react";
 import {
   SummaryContainer,
   TopContainer,
@@ -14,7 +13,8 @@ import {
   DataSummary,
   Split,
   TableHeader,
-  CardHeader
+  CardHeader,
+  DropdownContainer,
 } from "./GradeBookStyles";
 import { Link } from "react-router-dom";
 
@@ -41,7 +41,9 @@ const StudentGradesView = ({ auth, student }) => {
       setActiveCourse(res.data[0]);
       res.data.map(course => {
         axios
-          .get("/api/upcoming_assignments", { params: { course_id: course.id } })
+          .get("/api/upcoming_assignments", {
+            params: { course_id: course.id }
+          })
           .then(res => {
             setUpcomingAssignments([...upcomingAssignments, ...res.data]);
           });
@@ -105,45 +107,56 @@ const StudentGradesView = ({ auth, student }) => {
   const renderRecentAssignments = grades => {
     let count = 0;
     if (grades) {
-      return grades.map(grade => {
-        if (
-          dateFns.isPast(grade.due_date) &&
-          count < 4 &&
-          grade.points_possible
-        ) {
-          // Since Assignments are already in order by date, take the first 4 assignments with due dates in the future
-          count++;
-          return (
-            <Card>
-              <Card.Content>
-                {grades[0].assignment_id ? (
-                  <Link
-                    to={`/courses/${grade.course_id}/units/${
-                      grades.unit_id
-                    }/assignments/${grade.assignment_id}`}
-                  >
-                    <CardHeader>{grade.title}</CardHeader>
-                  </Link>
-                ) : (
-                  <Link
-                    to={`/courses/${grade.course_id}/units/${
-                      grade.unit_id
-                    }/quizzes/${grade.quiz_id}`}
-                  >
-                    <CardHeader>{grade.title}</CardHeader>
-                  </Link>
-                )}
-                <Card.Meta>
-                  {`due: ${dateFns.format(
-                    dateFns.parse(grade.due_date),
-                    "MM/DD/YY"
-                  )}`}
-                </Card.Meta>
-              </Card.Content>
-            </Card>
-          );
-        }
-      });
+      return (
+        <SummaryContainer>
+          <TopContainer>
+            <HeaderSummary>Recent Assignments/Quizzes</HeaderSummary>
+            <DataSummary>
+              <Card.Group fluid>
+                {grades.map(grade => {
+                  if (
+                    dateFns.isPast(grade.due_date) &&
+                    count < 4 &&
+                    grade.points_possible
+                  ) {
+                    // Since Assignments are already in order by date, take the first 4 assignments with due dates in the future
+                    count++;
+                    return (
+                      <Card>
+                        <Card.Content>
+                          {grades[0].assignment_id ? (
+                            <Link
+                              to={`/courses/${grade.course_id}/units/${
+                                grades.unit_id
+                              }/assignments/${grade.assignment_id}`}
+                            >
+                              <CardHeader>{grade.title}</CardHeader>
+                            </Link>
+                          ) : (
+                            <Link
+                              to={`/courses/${grade.course_id}/units/${
+                                grade.unit_id
+                              }/quizzes/${grade.quiz_id}`}
+                            >
+                              <CardHeader>{grade.title}</CardHeader>
+                            </Link>
+                          )}
+                          <Card.Meta>
+                            {`due: ${dateFns.format(
+                              dateFns.parse(grade.due_date),
+                              "MM/DD/YY"
+                            )}`}
+                          </Card.Meta>
+                        </Card.Content>
+                      </Card>
+                    );
+                  }
+                })}
+              </Card.Group>
+            </DataSummary>
+          </TopContainer>
+        </SummaryContainer>
+      );
     } else {
       return <></>;
     }
@@ -174,18 +187,7 @@ const StudentGradesView = ({ auth, student }) => {
         <TopContainer>
           <HeaderSummary>Upcoming Assignments</HeaderSummary>
           <DataSummary>
-            <Card.Group fluid>
-              {renderUpcomingAssignments()}
-            </Card.Group>
-          </DataSummary>
-        </TopContainer>
-        <Split />
-        <TopContainer>
-          <HeaderSummary>Recent Assignments/Quizzes</HeaderSummary>
-          <DataSummary>
-            <Card.Group fluid>
-              {renderRecentAssignments(grades)}
-            </Card.Group>
+            <Card.Group fluid>{renderUpcomingAssignments()}</Card.Group>
           </DataSummary>
         </TopContainer>
       </SummaryContainer>
@@ -194,7 +196,7 @@ const StudentGradesView = ({ auth, student }) => {
 
   const renderDropDown = () => {
     return (
-      <>
+      <DropdownContainer>
         <div class="ui green compact menu">
           <div class="ui simple dropdown item">
             Courses <i align="left" class="dropdown icon" />
@@ -210,7 +212,7 @@ const StudentGradesView = ({ auth, student }) => {
           </div>
         </div>
         <HeaderSummary>{activeCourse.title}</HeaderSummary>
-      </>
+      </DropdownContainer>
     );
   };
 
@@ -321,16 +323,14 @@ const StudentGradesView = ({ auth, student }) => {
         {renderGrades(assignmentGrades)}
         <br />
         {renderGrades(quizGrades)}
-        {/* <br />
-        {renderRecentAssignments()} */}
+        <br />
+        {renderRecentAssignments(allGrades)}
       </>
     );
   else
     return (
       <DataSummary>
-        <Dimmer active inverted>
-          <Loader inverted>Loading</Loader>
-        </Dimmer>
+        <Loader>Loading</Loader>
       </DataSummary>
     );
 };
