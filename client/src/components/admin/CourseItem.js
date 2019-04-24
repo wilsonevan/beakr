@@ -21,15 +21,18 @@ const CourseItem = ({ result, updateSearch }) => {
                     { result.title }
                 </Item>
             </Link>
-            <ButtonContainer>
-                <ButtonRed onClick={() => handleDelete(result)}>
-                    Delete
-                </ButtonRed>
+            <ButtonContainer onClick={() => handleDelete(result)} >
+                <Close src={require("../../images/grey-close.svg")} alt=""/>
             </ButtonContainer>
         </ItemContainer>
     )
 }
 
+const Close = styled.img`
+  height: 1.5rem;
+  width: 1.5rem;
+  vertical-align: middle;
+`
 
 const ItemContainer = styled.div`
     position: relative;
@@ -61,6 +64,9 @@ const ButtonContainer = styled.div`
     transform: translateY(-50%);
     top: 50%;
     right: 1rem;
+    border-radius: 100px;
+    padding: 0.5rem;
+    cursor: pointer;
 `
 
 
