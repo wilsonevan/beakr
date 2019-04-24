@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import axios from 'axios';
-import { ButtonRed, } from "../../styles/Components";
 import { Link } from "react-router-dom";
+import { Popup } from "semantic-ui-react";
 
 const CourseItem = ({ result, updateSearch }) => {
 
@@ -21,9 +21,14 @@ const CourseItem = ({ result, updateSearch }) => {
                     { result.title }
                 </Item>
             </Link>
-            <ButtonContainer onClick={() => handleDelete(result)} >
-                <Close src={require("../../images/grey-close.svg")} alt=""/>
-            </ButtonContainer>
+            <Popup 
+                trigger={
+                    <ButtonContainer onClick={() => handleDelete(result)} >
+                        <Close src={require("../../images/grey-close.svg")} alt=""/>
+                    </ButtonContainer>
+                }
+                header={<div style={{textAlign: "center", marginBottom: "0.5rem", color: "#2979ff", textDecoration: "underline" }} >WARNING: this will delete the entire course</div> }
+            />
         </ItemContainer>
     )
 }
