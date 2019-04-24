@@ -242,11 +242,11 @@ class UnitControls extends React.Component {
   setAssignmentDueDate = (due_date, unit_assignment_id) => {
     axios.put(`/api/unit_assignments/${unit_assignment_id}`, {unit_assignment: { due_date } })
     .then((res) => {
-      const assignments = this.state.assignments.map((assignment) => {
-        if(assignment.unit_assignment_id === unit_assignment_id) assignment.due_date = due_date;
-        return assignment;
+      const materials = this.state.materials.map((material) => {
+        if( material.material === "assignment" && material.unit_assignment_id === unit_assignment_id) material.due_date = due_date;
+        return material;
       })
-      this.setState({ assignments });
+      this.setState({ materials });
     })
     .catch((err) => console.log(err));
   }
@@ -254,11 +254,11 @@ class UnitControls extends React.Component {
   setQuizDueDate = (due_date, unit_quiz_id) => {
     axios.put(`/api/unit_quizzes/${unit_quiz_id}`, {unit_quiz: { due_date } })
     .then((res) => {
-      const quizzes = this.state.quizzes.map((quiz) => {
-        if(quiz.unit_quiz_id === unit_quiz_id) quiz.due_date = due_date;
-        return quiz;
+      const materials = this.state.materials.map((material) => {
+        if( material.material === "quiz" && material.unit_quiz_id === unit_quiz_id) material.due_date = due_date;
+        return material;
       })
-      this.setState({ quizzes });
+      this.setState({ materials });
     })
     .catch((err) => console.log(err));
   }
