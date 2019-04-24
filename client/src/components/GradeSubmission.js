@@ -29,6 +29,7 @@ class GradeSubmission extends React.Component {
           name="points_awarded"
           value={points_awarded}
           onChange={this.handleChange}
+          required
         />
         / {points_possible}
         <br />
@@ -45,6 +46,7 @@ const TitleForm = styled.form`
   margin: 0 0.25rem 3rem 0;
   font-size: 1rem;
   font-weight: 600;
+  margin: 2rem 0;
 `;
 
 const TitleInput = styled.input`

@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2019_04_24_011413) do
+=======
+ActiveRecord::Schema.define(version: 2019_04_24_012506) do
+>>>>>>> 28d6d6e125138a138beea0b8dd4233800ac79beb
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +67,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_011413) do
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "archived"
   end
 
   create_table "enrollments", force: :cascade do |t|
