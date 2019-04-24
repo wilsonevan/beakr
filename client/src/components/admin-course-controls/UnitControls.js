@@ -283,7 +283,7 @@ class UnitControls extends React.Component {
     return this.state.materials.map((material, index) => {
       if(material.material === "content") return (
           <ContentBlock
-          key={material.id}
+          key={Math.random() * material.id}
           content={material}
           unit={this.props.unit}
           index={index}
@@ -293,7 +293,7 @@ class UnitControls extends React.Component {
       )
       else if (material.material === "assignment") return (
         <AssignmentBlock
-          key={material.id}
+          key={Math.random() * material.id}
           assignment={material}
           unit={this.props.unit}
           index={index}
@@ -305,7 +305,7 @@ class UnitControls extends React.Component {
       )
       else if (material.material === "quiz") return (
         <QuizBlock
-          key={material.id}
+          key={Math.random() * material.id}
           quiz={material}
           unit={this.props.unit}
           index={index}
