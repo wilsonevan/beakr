@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
 
 class AdminUnit extends React.Component {
-  state = { contents: [], assignments: [], quizzes: [], opened: false, loaded: false };
+  state = { contents: [], assignments: [], quizzes: [], materials: [], opened: false, loaded: false };
 
   unitModelsRef = React.createRef();
 
