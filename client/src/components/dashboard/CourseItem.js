@@ -15,22 +15,25 @@ const CourseItem = ({ course }) => {
 };
 
 const Item = styled.div`
-  width: 100%;
-  text-decorattion: none;
-  font-size: 1.5rem;
-  letter-spacing: 2px;
-  color: #23a24d;
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid rgba(100, 100, 100, 0.1);
-  text-align: left;
-  transition-duration: 0.1s;
-  cursor: pointer;
-  background-color: #f7f7f7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    text-decorattion: none;
+    font-size: 1.25rem;
+    letter-spacing: 2px;
+    color: grey;
+    background-color: white;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(100,100,100, 0.1);
+    text-align: left;
+    transition-duration: 0.1s;
+    cursor: pointer;
 
-  :hover {
-    color: #2979ff;
-    // background-color: #f7f7f7;
-  }
-`;
+    :hover {
+        color: #23a24d;
+        background-color: #f7f7f7;
+    }
+`
 
 export default CourseItem;

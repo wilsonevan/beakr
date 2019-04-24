@@ -74,7 +74,7 @@ const Item = styled.div`
     text-decorattion: none;
     font-size: 1.25rem;
     letter-spacing: 2px;
-    color: #23a24d;
+    color: grey;
     padding: 1.5rem 2rem;
     border-bottom: 1px solid rgba(100,100,100, 0.1);
     text-align: left;
@@ -82,7 +82,7 @@ const Item = styled.div`
     cursor: pointer;
 
     :hover {
-        color: #2979ff;
+        color: #23a24d;
         background-color: #f7f7f7;
     }
 `
