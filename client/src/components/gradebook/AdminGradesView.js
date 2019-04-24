@@ -75,9 +75,7 @@ const AdminGradesView = ({ courseId }) => {
     } else
       return (
         <GradesContainer>
-          <Dimmer active inverted>
-            <Loader inverted>Loading</Loader>
-          </Dimmer>
+          <Loader inverted>Loading</Loader>
         </GradesContainer>
       );
   };
