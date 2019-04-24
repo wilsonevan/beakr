@@ -16,12 +16,21 @@ class Enrollment < ApplicationRecord
   end
 
   # find the dates based on another enrollment
-  def create_attendances
-    enroll = Enrollment.all.detect {|e| e["course_id"] == self.course_id }
-
-    enroll.attendances.each do |record|
-      self.attendances.create(record_date: record.record_date)
+  def create_attendances(course)
+    if(course.enrollments.length > 0) 
+      course.enrollments.first.attendances.each() {|attendance|
+        self.attendances.create(record_date: attendance.record_date)
+      }
     end
   end
+
+  ######## Keeping in case anyone wants to revert ########
+  # def create_attendances
+    # enroll = Enrollment.all.detect {|e| e["course_id"] == self.course_id }
+
+    # enroll.attendances.each do |record|
+    #   self.attendances.create(record_date: record.record_date)
+    # end
+  # end
 
 end
