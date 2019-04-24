@@ -5,6 +5,8 @@ import axios from 'axios';
 import CreateQuestions from './CreateQuestions'
 import styled from 'styled-components'
 import ShowQuestion from './ShowQuestion';
+import { withAlert } from 'react-alert'
+
 
 class AdminCreateQuiz extends React.Component {
   state = { quizValues: { title: '', body: ''}, addQuestion: false, questions: [], }
@@ -28,22 +30,33 @@ class AdminCreateQuiz extends React.Component {
     this.setState({ quizValues, addQuestion, questions, })
   }
 
+  SuccessAlert = (message) => this.props.alert.show( message, {
+    timeout: 4000, // custom timeout just for this one alert
+    type: 'success',
+
+  })
+  ErrorAlert = (message) => this.props.alert.show( message, {
+    timeout: 4000, // custom timeout just for this one alert
+    type: 'error',
+  })
+
 
   handleSubmit = (e) => {
     e.preventDefault()
     if (this.state.quizValues.title === ''){
-      alert('You must give the quiz a title')
+      this.ErrorAlert('Please enter a title')
     } else if ( this.state.quizValues.body === '' ) {
-      alert('You must fill out quiz instructions')
+      this.ErrorAlert('please enter instructions')
     } else {
       if (this.state.questions.length < 1){
-        alert('You must add questions')
+        this.ErrorAlert('please add questions')
       } else {
       const quiz = {...this.state.quizValues}
       axios.post('/api/quizzes', quiz)
       .then( res => {
         this.state.questions.map( question => {
           axios.post(`/api/quizzes/${res.data.id}/questions`, question)
+          this.SuccessAlert('Quiz created successfully')
         })
         this.setState({ quizValues: {title: '', body: '',}, questions: []})
       })
@@ -127,6 +140,8 @@ class AdminCreateQuiz extends React.Component {
   }
 }
 
+
+
 const ContainAll = styled.div`
   display: flex;
   flex-direction: row;
@@ -181,4 +196,4 @@ const formats = [
   'link', 'code-block', 'image', 'video'
 ]
 
-export default AdminCreateQuiz
+export default withAlert()(AdminCreateQuiz)

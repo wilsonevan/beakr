@@ -2,6 +2,8 @@ import React from 'react'
 import { ButtonGreen } from '../../../styles/Components'
 import QuizChoices from './QuizChoices'
 import styled from 'styled-components'
+import { withAlert } from 'react-alert'
+
 // import Choices from './Choices'
 
 class CreateQuestions extends React.Component {
@@ -27,10 +29,16 @@ handleSubmit = (e) => {
     this.handleAdd()
     this.toggleChoiceForm()
   } else {
-    alert('You must add at least 2 choices')
+    this.ErrorAlert('Please add at least 2 choices')
   }
     
   }
+
+  ErrorAlert = (message) => this.props.alert.show( message, {
+    timeout: 3500, // custom timeout just for this one alert
+    type: 'error',
+  })
+
 
 
 setChoicesState = (choices) => {
@@ -216,4 +224,4 @@ const BodyNumberInput = styled.input`
   }
 `
 
-export default CreateQuestions
+export default withAlert()(CreateQuestions)
