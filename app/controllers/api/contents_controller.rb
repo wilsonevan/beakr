@@ -22,8 +22,9 @@ class Api::ContentsController < ApplicationController
         unit_content_id: uc[:id],
         title: content[:title],
         body: content[:body],
+        material: content[:material],
         sequence: uc[:sequence],
-        visible: uc[:visible]
+        visible: uc[:visible],
       }
     }
 

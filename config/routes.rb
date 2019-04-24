@@ -54,10 +54,13 @@ Rails.application.routes.draw do
     end
     get '/sections/:section_id/units_ordered_by_sequence', to: '/api/units#get_ordered_by_sequence'
     put '/units/update_sequence', to: '/api/units#update_sequence'
+    put '/units/update_material_sequence', to: '/api/units#update_material_sequence'
     
+
     get 'get_attendances', to: '/api/attendances#get_attendances'
     delete 'destroy_column', to: '/api/attendances#destroy_column'
 
+    
     get 'courses/:course_id/assignments/:assignment_id/assignment_submissions/show_user_submission', to: '/api/assignment_submissions#show_user_submission'
 
     resources :contents, only: [:show, :create, :update, :destroy]

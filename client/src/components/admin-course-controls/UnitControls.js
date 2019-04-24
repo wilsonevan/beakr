@@ -11,34 +11,65 @@ import AddQuizLink from "./AddQuizLink";
 import QuizBlock from "./QuizBlock";
 import EditUnitTitle from "./EditUnitTitle";
 import { Icon } from "semantic-ui-react";
+import ReactSortable from "react-sortablejs";
 
 
 
 class UnitControls extends React.Component {
-
-  state = { editing: false, unit: this.props.unit, contents: [], assignments: [], quizzes: [], search: "contents" };
+  state = { 
+    editing: false, 
+    unit: this.props.unit, 
+    contents: [], 
+    assignments: [], 
+    quizzes: [], 
+    materials: [], 
+    search: "contents" 
+  };
 
   componentDidMount() {
-    axios
+    Promise.all([this.setContents(), this.setAssignments(), this.setQuizzes()])
+    .then((res) => {
+      let materials = [
+        ...this.state.quizzes, 
+        ...this.state.contents, 
+        ...this.state.assignments
+      ].sort((a, b) =>  a.sequence - b.sequence );
+      this.setState({ materials }, () => console.log(this.state.materials));
+    })
+    .catch((err) => console.log(err))
+  }
+
+  setContents = () => {
+    return new Promise((resolve, reject) => {
+      axios
       .get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`)
       .then(res => {
-        this.setState({ contents: res.data });
+        this.setState({ contents: res.data }, () => resolve("success"));
       })
-      .catch(err => console.log(err));
+      .catch(err => reject(err));
+    })
+  }
 
-    axios
+  setAssignments = () => {
+    return new Promise((resolve, reject) => {
+      axios
       .get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`)
       .then(res => {
-        this.setState({ assignments: res.data });
+        this.setState({ assignments: res.data }, () => resolve("success"));
       })
-      .catch(err => console.log(err));
+      .catch(err => resolve(err));
+    })
+  }
 
-    axios
+  setQuizzes = () => {
+    return new Promise((resolve, reject) => {
+      axios
       .get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`)
       .then(res => {
-        this.setState({ quizzes: res.data })
+        this.setState({ quizzes: res.data }, () => resolve("success"))
       })
-      .catch(err => console.log(err));
+      .catch(err => resolve(err));
+    })
   }
 
   createUnitContent = content_id => {
@@ -227,27 +258,34 @@ class UnitControls extends React.Component {
     this.setState({ editing: !this.state.editing })
   };
 
-  renderUnitContents = () => {
-    return this.state.contents.map((content, index) => {
-      return (
-        <ContentBlock
-          key={content.id}
-          content={content}
+  sequenceChange = (oldIndexes) => {
+    const materials = oldIndexes.map((oldIndexes, index) => {
+      let material = this.state.materials[oldIndexes];
+      return material;
+    })
+    this.setState({ materials }, () => {
+        axios.put(`/api//units/update_material_sequence`, { materials: materials })
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err))
+    });
+  }
+
+  renderMaterials = () => {
+    return this.state.materials.map((material, index) => {
+      if(material.material === "content") return (
+          <ContentBlock
+          key={material.id}
+          content={material}
           unit={this.props.unit}
           index={index}
           deleteUnitContent={this.deleteUnitContent}
           toggleContentVisibility={this.toggleContentVisibility}
         />
-      );
-    });
-  };
-
-  renderUnitAssignments = () => {
-    return this.state.assignments.map((assignment, index) => {
-      return (
+      )
+      else if (material.material === "assignment") return (
         <AssignmentBlock
-          key={assignment.id}
-          assignment={assignment}
+          key={material.id}
+          assignment={material}
           unit={this.props.unit}
           index={index}
           course_id={this.props.courseId}
@@ -255,16 +293,11 @@ class UnitControls extends React.Component {
           toggleAssignmentVisibility={this.toggleAssignmentVisibility}
           setAssignmentDueDate={this.setAssignmentDueDate}
         />
-      );
-    });
-  };
-
-  renderUnitQuizzes = () => {
-    return this.state.quizzes.map((quiz, index) => {
-      return (
+      )
+      else if (material.material === "quiz") return (
         <QuizBlock
-          key={quiz.id}
-          quiz={quiz}
+          key={material.id}
+          quiz={material}
           unit={this.props.unit}
           index={index}
           deleteUnitQuiz={this.deleteUnitQuiz}
@@ -272,9 +305,9 @@ class UnitControls extends React.Component {
           setQuizDueDate={this.setQuizDueDate}
           course_id={this.props.courseId}
         />
-      );
-    });
-  };
+      )
+    })
+  }
 
   toggleSearchBar = (e) => {
     const {value} = e.target
@@ -431,9 +464,9 @@ class UnitControls extends React.Component {
                 />
               </ContentHeading>
                 <MaterialsContainer>
-                  {this.renderUnitContents()}
-                  {this.renderUnitAssignments()}
-                  {this.renderUnitQuizzes()}
+                  <ReactSortable onChange={(newMaterials) => this.sequenceChange(newMaterials) } >
+                    { this.renderMaterials() }
+                  </ReactSortable>
                 </MaterialsContainer>
             </FormBottomRight>
           </FormBottom>

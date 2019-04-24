@@ -2,7 +2,6 @@ class Content < ApplicationRecord
   has_many :unit_contents, dependent: :destroy
   has_many :units, through: :unit_contents
 
-
   def self.search_contents(input)
     Content.find_by_sql(["
       SELECT * FROM contents
@@ -21,7 +20,7 @@ class Content < ApplicationRecord
 
   def self.get_content_with_attrs(content_id, unit_id)
     User.find_by_sql(["
-      SELECT c.*, uc.sequence, uc.visible, uc.id AS unit_content_id FROM contents AS c
+      SELECT c.*, uc.sequence, uc.visible, uc.id AS unit_content_id, c.material FROM contents AS c
       INNER JOIN unit_contents AS uc
         ON c.id = uc.content_id
       WHERE c.id = ?

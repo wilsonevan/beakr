@@ -36,6 +36,7 @@ end
 
 section_sequence = Sequence.new()
 unit_sequence = Sequence.new()
+material_sequence = Sequence.new()
 
 
 Timer.start
@@ -82,8 +83,9 @@ puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
           unit_id: unit.id,
           content_id: content.id,
           visible: true,
-          sequence: nil
+          sequence: material_sequence.get(),
         )
+        material_sequence.inc()
       end
       1.times do
         assignment = Assignment.create(
@@ -97,9 +99,10 @@ puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
           unit_id: unit.id,
           assignment_id: assignment.id,
           visible: true,
-          sequence: nil,
+          sequence: material_sequence.get(),
           due_date: Faker::Date.forward(60)
         )
+        material_sequence.inc()
       end
       1.times do
         quiz = Quiz.create(
@@ -149,10 +152,12 @@ puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
           unit_id: unit.id,
           quiz_id: quiz.id,
           visible: true,
-          sequence: nil,
+          sequence: material_sequence.get(),
           due_date: Faker::Date.forward(60),
         )
+        material_sequence.inc()
       end
+      material_sequence.reset()
     end
     unit_sequence.reset()
   end
