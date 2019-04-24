@@ -4,33 +4,55 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import { Popup } from "semantic-ui-react";
 
-const CourseItem = ({ result, updateSearch }) => {
+class CourseItem extends React.Component {
+    state = { deleting: false }
 
-    const handleDelete = (result) => {
-         axios.delete(`/api/courses/${result.id}`)
+
+
+    handleDelete = (result) => {
+        this.setState({ deleting: true })
+        axios.delete(`/api/courses/${result.id}`)
         .then(res => {
-            updateSearch()
+            this.props.updateSearch();
         })
-        
     }
+    render() {
+        const { result } = this.props;
 
-    return(
-        <ItemContainer>
-            <Link to={`/admin/courses/${result.id}`} style={{width: "100%"}} >
-                <Item>
-                    { result.title }
-                </Item>
-            </Link>
-            <Popup 
-                trigger={
-                    <ButtonContainer onClick={() => handleDelete(result)} >
-                        <Close src={require("../../images/grey-close.svg")} alt=""/>
-                    </ButtonContainer>
+        return(
+            <ItemContainer>
+                <Link to={`/admin/courses/${result.id}`} style={{width: "100%"}} >
+                    <Item>
+                        { result.title }
+                    </Item>
+                </Link>
+    
+                { !this.state.deleting
+                ?   (
+                        <Popup 
+                            trigger={
+                                <ButtonContainer onClick={() => this.handleDelete(result) } >
+                                    <Close src={require("../../images/grey-close.svg")} alt=""/>
+                                </ButtonContainer>
+                            }
+                            header={<div style={{textAlign: "center", marginBottom: "0.5rem", color: "#2979ff", textDecoration: "underline" }} >WARNING: this will delete the entire course</div> }
+                        />
+                    )
+                :   (
+                        <Popup 
+                            trigger={
+                                <ButtonContainer >
+                                    <Close src={require("../../images/grey-close.svg")} alt=""/>
+                                </ButtonContainer>
+                            }
+                            header={<div style={{textAlign: "center", marginBottom: "0.5rem", color: "red", textDecoration: "underline" }} >Course Is Being Deleted</div> }
+                        />
+                    )
                 }
-                header={<div style={{textAlign: "center", marginBottom: "0.5rem", color: "#2979ff", textDecoration: "underline" }} >WARNING: this will delete the entire course</div> }
-            />
-        </ItemContainer>
-    )
+    
+            </ItemContainer>
+        )
+    }
 }
 
 const Close = styled.img`
