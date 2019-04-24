@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import firstImage from "../../images/pano-person-view.jpg";
 import codeInputImage from "../../images/code-input.png";
-import HomeNav from "./HomeNav";
+import HomeNav from "../Navbar";
 import Footer from './Footer';
 import { ButtonGreen, ButtonBlue } from "../../styles/Components";
 import { Link } from "react-router-dom";
