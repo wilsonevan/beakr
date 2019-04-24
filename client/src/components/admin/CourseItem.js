@@ -72,7 +72,7 @@ const Item = styled.div`
     align-items: center;
     width: 100%;
     text-decorattion: none;
-    font-size: 1.75rem;
+    font-size: 1.25rem;
     letter-spacing: 2px;
     color: #23a24d;
     padding: 1.5rem 2rem;

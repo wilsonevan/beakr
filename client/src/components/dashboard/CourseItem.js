@@ -17,7 +17,7 @@ const CourseItem = ({ course }) => {
 const Item = styled.div`
   width: 100%;
   text-decorattion: none;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   letter-spacing: 2px;
   color: #23a24d;
   padding: 1.5rem 2rem;

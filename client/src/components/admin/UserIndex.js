@@ -30,15 +30,17 @@ class UserIndex extends React.Component {
                                 Add User
                             </ButtonGreen>
                         </ListHeader>
-                        <UsersContainer>
-                            <SearchBar 
-                                route={`/api/search_users`}
-                                width="100%"
-                                height="static"
-                                placeholder="User Name ..."
-                                render={(props) => <UserItem { ...props } />}
-                            />
-                        </UsersContainer>
+                        <GreenBackground>
+                            <UsersContainer>
+                                <SearchBar 
+                                    route={`/api/search_users`}
+                                    width="100%"
+                                    height="static"
+                                    placeholder="User Name ..."
+                                    render={(props) => <UserItem { ...props } />}
+                                />
+                            </UsersContainer>
+                        </GreenBackground>
                     </>
                 }
             </>
@@ -46,13 +48,19 @@ class UserIndex extends React.Component {
     }
 }
 
-const UsersContainer = styled.div`
-    width: 95%;
-    margin: 0 auto 3rem auto;
-    padding: 1.25rem;
-    text-align: center;
+const GreenBackground = styled.div`
+    padding: 1.25rem 0.75rem;
     background-color: #23a24d;
-    border-radius: 10px;
+    border-radius: 5px;
+    width: 97.5%;
+    margin: 0 auto;
+`
+
+const UsersContainer = styled.div`
+    width: 100%;
+    // text-align: center;
+    border-radius: 5px;
+    overflow: hidden;
 `
 
 const ListHeader = styled.h1`
