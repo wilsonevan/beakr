@@ -52,6 +52,11 @@ export const BottomContainer = styled.div`
 
 export const TableHeader = styled.h4`
   color: #455a64;
+
+  :hover {
+    color: black;
+    cursor: pointer;
+  }
 `;
 
 export const CardHeader = styled.h3`
@@ -80,3 +85,7 @@ export const GradesContainer = styled.div`
   padding-top: 10px;
   padding-bottom: 10px;
 `;
+
+export const DropdownContainer = styled.div`
+  z-index: 100;
+`

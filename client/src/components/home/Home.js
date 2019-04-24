@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import firstImage from "../../images/pano-person-view.jpg";
 import codeInputImage from "../../images/code-input.png";
-import HomeNav from "./HomeNav";
+import HomeNav from "../Navbar";
 import Footer from './Footer';
 import { ButtonGreen, ButtonBlue } from "../../styles/Components";
 import { Link } from "react-router-dom";
@@ -66,7 +66,7 @@ const SecondContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 80vh;
   width: 100%;
   border-bottom: #23a24d;
   border-bottom-width: 3px;
@@ -78,14 +78,19 @@ const InnerContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  flex-wrap: wrap-reverse;
   align-items: center;
   height: 100vh;
   width: 100%;
 `
 
 const SecondImage = styled.img`
-  width: 100vh;
-  height: auto;
+width: 70vh;
+height: auto;
+
+@media (max-width: 600px) {
+  width: 50vh;
+}
 `;
 
 const LeftTextContainer = styled.div`
@@ -102,6 +107,7 @@ const RightTextContainer = styled.div`
   align-items: flex-end;
   // text-align: right;
   margin-right: 5%;
+  padding: 20px;
 `;
 
 const PrimaryText = styled.h1`
