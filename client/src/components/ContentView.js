@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import EditContentTitle from './EditContentTitle';
 import EditContentBody from './EditContentBody';
+import { ButtonGreen, ButtonGrey } from '../styles/Components';
 import { Link } from 'react-router-dom';
 import { Segment, Header, Icon, } from 'semantic-ui-react';
 import { AuthConsumer, } from '../providers/AuthProvider';
@@ -110,14 +111,17 @@ class ContentView extends React.Component {
           )}
           { user.admin ?
             <div>    
-              {editingBody? 
-                <BlueLink onClick={() => this.toggleEditingBody()}>
-                  Cancel Edit 
-                </BlueLink>
+              {editingBody?
+                <>
+                  <br /> 
+                  <ButtonGrey onClick={() => this.toggleEditingBody()}>
+                    Cancel Edit 
+                  </ButtonGrey>
+                </>
               : 
-                <BlueLink onClick={() => this.toggleEditingBody()}>
+                <ButtonGreen onClick={() => this.toggleEditingBody()}>
                   Edit Content
-                </BlueLink>
+                </ButtonGreen>
               }
             </div>
           :

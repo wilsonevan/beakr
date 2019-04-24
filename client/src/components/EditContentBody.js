@@ -1,5 +1,6 @@
 import React from "react";
 import ReactQuill from 'react-quill';
+import { ButtonGreen, } from '../styles/Components'
 import styled from "styled-components";
 
 class EditContentTitle extends React.Component {
@@ -27,9 +28,9 @@ class EditContentTitle extends React.Component {
           onChange={this.handleChange} 
           style={{height: '25rem', paddingBottom: '4rem'}}
         />
-        <BlueLink onClick={this.handleSubmit}>
+        <ButtonGreen onClick={this.handleSubmit}>
           Update
-        </BlueLink>
+        </ButtonGreen>
       </>
     );
   }
@@ -63,7 +64,7 @@ const modules = {
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
     [{'list': 'ordered'}, {'list': 'bullet'}, 
      {'indent': '-1'}, {'indent': '+1'}],
-    ['color', 'background'],
+     [{'color': []}, {'background': []}],
     ['link', 'code-block', 'image', 'video'],
     ['clean']
   ]
