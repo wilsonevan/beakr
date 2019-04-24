@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_012506) do
     t.text "body"
     t.string "kind"
     t.float "points_possible"
+    t.string "material", default: "assignment"
   end
 
   create_table "attendances", force: :cascade do |t|
@@ -55,6 +56,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_012506) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "body"
+    t.string "material", default: "content"
   end
 
   create_table "courses", force: :cascade do |t|
@@ -109,6 +111,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_012506) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "body"
+    t.string "material", default: "quiz"
   end
 
   create_table "sections", force: :cascade do |t|

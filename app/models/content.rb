@@ -2,7 +2,6 @@ class Content < ApplicationRecord
   has_many :unit_contents, dependent: :destroy
   has_many :units, through: :unit_contents
 
-
   def self.search_contents(input)
     Content.find_by_sql(["
       SELECT * FROM contents

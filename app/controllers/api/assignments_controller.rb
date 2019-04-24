@@ -22,6 +22,7 @@ class Api::AssignmentsController < ApplicationController
         unit_assignment_id: ua[:id],
         title: assignment[:title],
         body: assignment[:body],
+        material: assignment[:material],
         sequence: ua[:sequence],
         due_date: ua[:due_date],
         visible: ua[:visible]

@@ -8,12 +8,13 @@ class Api::EnrollmentsController < ApplicationController
   def create
     user = User.find(params[:user_id])
     enrollment = Enrollment.new(enrollment_params)
-    duplicate = Course.find(params[:course_id]).enrollments.select() {|old_enrollment| 
+    course = Course.find(params[:course_id])
+    duplicate = course.enrollments.select() {|old_enrollment| 
         enrollment.user_id == old_enrollment.user_id 
     }
 
     if(!user.admin && duplicate.length == 0 && enrollment.save)
-      enrollment.create_attendances()
+      enrollment.create_attendances(course)
       render json: enrollment
     else
       render json: enrollment.errors, status: 422

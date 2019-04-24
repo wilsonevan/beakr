@@ -8,9 +8,9 @@ class QuizBlock extends React.Component {
   // state = { visible: this.props.content.visible }
 
   render() {
-    const { quiz, deleteUnitQuiz, toggleQuizVisibility, setQuizDueDate } = this.props;
+    const { quiz, deleteUnitQuiz, toggleQuizVisibility, setQuizDueDate, index } = this.props;
     return (
-      <BlockContainer>
+      <BlockContainer data-id={index}  >
         <QuizBlockText
           as={Link}
           to={`/courses/${this.props.course_id}/units/${this.props.unit.id}/quizzes/${quiz.id}`}

@@ -10,23 +10,17 @@ class Api::AttendancesController < ApplicationController
   # Move bulk of this code to a model method (fat model, skinny controllers)
   def get_attendances
 
-    # This loop rejects all users from the attendance data, who are not students of the desired course
-    attendanceinfo = @course.users.order(:first_name).reject(){|user| 
-      set_flag = false
-      enrollment = Enrollment.find_by_user_and_course(user.id, @course.id)
-      if enrollment.role != 'student' && enrollment.course_id == @course.id 
-        set_flag = true
-      end
-      set_flag == true
-    }.map(){|user| # This map adds relevant user data to the attendance data
+    attendanceinfo = @course.users
+      .order(:first_name)
+      .map(){|user| # This map adds relevant user data to the attendance data
         {
-          image: user.image,
-          user_id: user.id,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          attendances: user.attendances.order(record_date: :desc)
+          image: user[:image],
+          user_id: user[:id],
+          first_name: user[:first_name],
+          last_name: user[:last_name],
+          attendances: Enrollment.find_by_user_and_course(user.id, @course.id).attendances.order(record_date: :desc)
         }
-    }
+      }
     render( json: attendanceinfo )
   end
 

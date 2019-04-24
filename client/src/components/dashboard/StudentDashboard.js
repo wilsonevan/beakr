@@ -29,18 +29,16 @@ class StudentDashboard extends React.Component {
         <DashboardNav
           items={["courses", "calendar", "grades"]}
           rightItems={['help', { name: "profile", path: "/profile" }]}
-          courses={
-            <>
-              {this.state.userCourses.length > 0 ? (
+          courses={ this.state.userCourses.length > 0
+            ? (
                 <CoursesContainer>
-                  {this.state.userCourses.map(course => {
-                    return <CourseItem course={course} />;
-                  })}
+                  { this.state.userCourses.map(course => {
+                      return <CourseItem course={course} key={course.id} />;
+                    })
+                  }
                 </CoursesContainer>
-              ) : (
-                <></>
-              )}
-            </>
+              )
+            : <NoCourseText>You Are Not Enrolled In A Course Yet</NoCourseText>
           }
           calendar={<Calendar />}
           grades={<StudentGradesView />}
@@ -64,12 +62,9 @@ const CoursesContainer = styled.div`
   border-radius: 10px;
 `;
 
-const CourseOptions = styled.div`
-  color: #23a24d
-
-  :hover {
-    color: #41c36c;
-  }
-`;
+const NoCourseText = styled.h2`
+  text-align: center;
+  margin-top: 2rem !important;
+`
 
 export default StudentDashboard;
