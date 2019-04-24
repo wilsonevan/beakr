@@ -88,7 +88,7 @@ class Navbar extends React.Component {
             <MenuItem>
               <Item>
                 <Logo src={logo} alt="logo" className="App-logo" />
-                {window.location.pathname == "/" && (
+                {(window.location.pathname == "/" && window.innerWidth > 600) && (
                   <CompanyName>Beakr</CompanyName>
                 )}
               </Item>
@@ -122,7 +122,7 @@ const Item = styled.p`
   text-decoration: none;
   z-index: 1;
 `;
-
+  
 const Logo = styled.img`
   position: absolute;
   top: 1.5rem;
