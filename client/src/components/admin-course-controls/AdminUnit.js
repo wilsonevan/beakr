@@ -126,7 +126,7 @@ class AdminUnit extends React.Component {
       )
       else if (material.material === "assignment") return (
         <Link
-          to={`/courses/${this.props.courseId}/units/${this.props.unit.id}/assignments/${material.id}`}
+          to={`/courses/${this.props.course_id}/units/${this.props.unit.id}/assignments/${material.id}`}
           key={index}
         >
           <UnitModelsItem>
@@ -137,7 +137,7 @@ class AdminUnit extends React.Component {
       )
       else if (material.material === "quiz") return (
         <Link 
-          to={`/courses/${this.props.courseId}/units/${this.props.unit.id}/quizzes/${material.id}`} 
+          to={`/courses/${this.props.course_id}/units/${this.props.unit.id}/quizzes/${material.id}`} 
           key={index}
         >
           <UnitModelsItem>

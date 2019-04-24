@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
             u.id,
             u.first_name, 
             u.last_name,
+            u.admin,
             CASE WHEN e.role != '' THEN NULL END AS role
         FROM users AS u
         LEFT JOIN enrollments AS e
@@ -39,6 +40,7 @@ class User < ActiveRecord::Base
             u.id,
             u.first_name, 
             u.last_name,
+            u.admin,
             CASE WHEN e.role != '' THEN NULL END
         FROM users AS u
         LEFT JOIN enrollments AS e
@@ -51,6 +53,7 @@ class User < ActiveRecord::Base
         u.id,
         u.first_name, 
         u.last_name,
+        u.admin,
         e.role
     FROM users AS u
     LEFT JOIN enrollments AS e
