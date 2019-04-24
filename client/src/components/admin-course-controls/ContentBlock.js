@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
 
 class ContentBlock extends React.Component {
-  // state = { visible: this.props.content.visible })
 
   render() {
     const { content, deleteUnitContent, toggleContentVisibility, index} = this.props;

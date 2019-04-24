@@ -10,7 +10,6 @@ class AdminUnit extends React.Component {
 
   unitModelsRef = React.createRef();
 
-
   componentDidMount() {
     Promise.all([this.setContents(), this.setAssignments(), this.setQuizzes()])
     .then((res) => {
@@ -131,7 +130,7 @@ class AdminUnit extends React.Component {
           key={index}
         >
           <UnitModelsItem>
-          <Icon name="edit outline" />
+            <Icon name="edit outline" />
             {material.title}
           </UnitModelsItem>
         </Link>
