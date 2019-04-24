@@ -6,38 +6,70 @@ import { Link } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
 
 class Unit extends React.Component {
-  state = { contents: [], assignments: [], quizzes: [], opened: false, contentsLoaded: false, assignmentsLoaded: false, quizzesLoaded: false };
+  state = { 
+    contents: [], 
+    assignments: [], 
+    quizzes: [], 
+    materials: [],
+    opened: false, 
+    loaded: false,
+  };
 
   unitModelsRef = React.createRef();
 
   componentDidMount() {
-    axios
+    Promise.all([this.setContents(), this.setAssignments(), this.setQuizzes()])
+    .then((res) => {
+      let materials = [
+        ...this.state.quizzes, 
+        ...this.state.contents, 
+        ...this.state.assignments
+      ].sort((a, b) =>  a.sequence - b.sequence );
+      this.setState({ materials, loaded: true });
+    })
+    .catch((err) => console.log(err))
+  }
+
+  setContents = () => {
+    return new Promise((resolve, reject) => {
+      axios
       .get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`)
       .then(res => {
         const contents = res.data.filter((content) => {
           if(content.visible) return true
         })
-        this.setState({ contents });
+        this.setState({ contents }, () => resolve("success"));
       })
-      .catch(err => console.log(err));
-    axios
+      .catch(err => reject(err));
+    })
+  }
+
+  setAssignments = () => {
+    return new Promise((resolve, reject) => {
+      axios
       .get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`)
       .then(res => {
         const assignments = res.data.filter((assignment) => {
           if(assignment.visible) return assignment
         })
-        this.setState({ assignments });
+        this.setState({ assignments }, () => resolve("success"));
       })
-      .catch(err => console.log(err));
-    axios
+      .catch(err => reject(err));
+    })
+  }
+
+  setQuizzes = () => {
+    return new Promise((resolve, reject) => {
+      axios
       .get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`)
       .then(res => {
         const quizzes = res.data.filter((quiz) => {
           if(quiz.visible) return quiz
         })
-        this.setState({ quizzes });
+        this.setState({ quizzes }, () => resolve("success"))
       })
-      .catch(err => console.log(err));
+      .catch(err => reject(err));
+    })
   }
 
   componentWillUnmount() {
@@ -45,15 +77,15 @@ class Unit extends React.Component {
   }
 
   handleClick = event => {
-    const { contents, assignments, quizzes } = this.state
+    const { materials } = this.state;
 
     if (!this.state.opened) {
       this.setState({ opened: !this.state.opened }, () => {
         anime({
           targets: this.unitModelsRef.current,
           opacity: "1",
-          height: `${(contents.length + assignments.length + quizzes.length) * 1.6}rem`,
-          duration: (contents.length + assignments.length + quizzes.length) * 40,
+          height: `${materials.length * 1.6}rem`,
+          duration: materials.length * 40,
           easing: "linear"
         });
         anime({
@@ -61,9 +93,9 @@ class Unit extends React.Component {
           height: `${parseFloat(
             this.props.unitContainerRef.current.style.height
           ) +
-            (contents.length + assignments.length + quizzes.length) * 1.75}rem`,
+            (materials.length) * 1.75}rem`,
           easing: "linear",
-          duration: this.state.contents.length * 40
+          duration: materials.length * 40
         });
       });
     } else {
@@ -71,7 +103,7 @@ class Unit extends React.Component {
         targets: this.unitModelsRef.current,
         opacity: "0",
         height: 0,
-        duration: (contents.length + assignments.length + quizzes.length) * 40,
+        duration: (materials.length) * 40,
         easing: "linear"
       });
       anime({
@@ -79,71 +111,61 @@ class Unit extends React.Component {
         height: `${parseFloat(
           this.props.unitContainerRef.current.style.height
         ) -
-          (contents.length + assignments.length + quizzes.length) * 1.75}rem`,
+          (materials.length) * 1.75}rem`,
         easing: "linear",
-        duration: (contents.length + assignments.length + quizzes.length) * 45
+        duration: (materials.length) * 45
       }).finished.then(() => this.setState({ opened: !this.state.opened }));
     }
   };
 
-  renderContents = () => {
-    return this.state.contents.map((content, index) => {
-      return (
+  renderMaterials = () => {
+    return this.state.materials.map((material, index) => {
+      if(material.material === "content") return (
         <Link
-          to={`/contents/${content.id}`}
+          to={`/contents/${material.id}`}
           key={index}
         >
           <UnitModelsItem>
             <Icon name="file alternate outline" />
-            {content.title}
+            {material.title}
           </UnitModelsItem>
         </Link>
-      );
-    });
-  };
-  renderQuizzes = () => {
-    return this.state.quizzes.map((quiz, index) => {
-      return (
+      )
+      else if (material.material === "assignment") return (
         <Link
-          to={`/courses/${this.props.courseId}/units/${this.props.unit.id}/quizzes/${quiz.id}`}
-          key={index}
-        >
-          <UnitModelsItem>
-            <Icon name="check" />
-            {quiz.title}
-          </UnitModelsItem>
-        </Link>
-      );
-    });
-  };
-  renderAssignments = () => {
-    return this.state.assignments.map((assignment, index) => {
-      return (
-        <Link 
-          to={`/courses/${this.props.courseId}/units/${this.props.unit.id}/assignments/${assignment.id}`} 
+          to={`/courses/${this.props.courseId}/units/${this.props.unit.id}/assignments/${material.id}`}
           key={index}
         >
           <UnitModelsItem>
             <Icon name="edit outline" />
-            {assignment.title}
+            {material.title}
           </UnitModelsItem>
         </Link>
-      );
-    });
-  };
+      )
+      else if (material.material === "quiz") return (
+        <Link 
+          to={`/courses/${this.props.courseId}/units/${this.props.unit.id}/quizzes/${material.id}`} 
+          key={index}
+        >
+          <UnitModelsItem>
+            <Icon name="check" />
+            {material.title}
+          </UnitModelsItem>
+        </Link>
+      )
+    })
+  }
 
   render() {
     const { unit } = this.props;
 
-    if (this.state.opened) {
+    if (this.state.opened && this.state.loaded) {
       return (
         <>
           <OpenedSectionUnit onClick={this.handleClick}>
             {unit.title}
             <UnitModelsContainer ref={this.unitModelsRef}>
-              {this.renderContents()}
-              {this.renderAssignments()}
-              {this.renderQuizzes()}
+              { this.renderMaterials() }
             </UnitModelsContainer>
           </OpenedSectionUnit>
         </>

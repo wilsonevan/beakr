@@ -34,7 +34,7 @@ class UnitControls extends React.Component {
         ...this.state.contents, 
         ...this.state.assignments
       ].sort((a, b) =>  a.sequence - b.sequence );
-      this.setState({ materials }, () => console.log(this.state.materials));
+      this.setState({ materials });
     })
     .catch((err) => console.log(err))
   }
@@ -57,7 +57,7 @@ class UnitControls extends React.Component {
       .then(res => {
         this.setState({ assignments: res.data }, () => resolve("success"));
       })
-      .catch(err => resolve(err));
+      .catch(err => reject(err));
     })
   }
 
@@ -68,42 +68,48 @@ class UnitControls extends React.Component {
       .then(res => {
         this.setState({ quizzes: res.data }, () => resolve("success"))
       })
-      .catch(err => resolve(err));
+      .catch(err => reject(err));
     })
   }
 
   createUnitContent = content_id => {
+    const { materials } = this.state;
     axios
-      .post(`/api/unit_contents`, { content_id, unit_id: this.props.unit.id })
+      .post(`/api/unit_contents`, { content_id, unit_id: this.props.unit.id, sequence: materials.length })
       .then(res => {
-        return axios.get(`/api/units/${this.props.unit.id}/contents/get_contents_with_attrs`);
+        console.log(res.data)
+        return axios.get(`/api/units/${this.props.unit.id}/contents/${content_id}/get_content_with_attrs`);
       })
       .then(res => {
-        this.setState({ contents: res.data });
+        this.setState({ materials: [...materials, res.data] });
       })
       .catch(err => console.log(err));
   };
 
   createUnitAssignment = assignment_id => {
+    const { materials } = this.state;
     axios
-      .post(`/api/unit_assignments`, { assignment_id, unit_id: this.props.unit.id })
+      .post(`/api/unit_assignments`, { assignment_id, unit_id: this.props.unit.id, sequence: materials.length })
       .then(res => {
-        return axios.get(`/api/units/${this.props.unit.id}/assignments/get_assignments_with_attrs`);
+        console.log(res.data)
+        return axios.get(`/api/units/${this.props.unit.id}/assignments/${assignment_id}/get_assignment_with_attrs`);
       })
       .then(res => {
-        this.setState({ assignments: res.data });
+        this.setState({ materials: [...materials, res.data] });
       })
       .catch(err => console.log(err));
   };
 
   createUnitQuiz = quiz_id => {
+    const { materials } = this.state;
     axios
-      .post(`/api/unit_quizzes`, { quiz_id, unit_id: this.props.unit.id})
+      .post(`/api/unit_quizzes`, { quiz_id, unit_id: this.props.unit.id, sequence: materials.length })
       .then(res => {
-        return axios.get(`/api/units/${this.props.unit.id}/quizzes/get_quizzes_with_attrs`);
+        console.log(res.data)
+        return axios.get(`/api/units/${this.props.unit.id}/quizzes/${quiz_id}/get_quiz_with_attrs`);
       })
       .then(res => {
-        this.setState({ quizzes: res.data });
+        this.setState({ materials: [...materials, res.data] });
       })
       .catch(err => console.log(err));
   }
@@ -113,10 +119,10 @@ class UnitControls extends React.Component {
     axios
       .delete(`/api/unit/${unit_id}/contents/${content_id}/unit_content`)
       .then(res => {
-        const contents = this.state.contents.filter(content => {
-          if (content.id !== content_id) return this.renderUnitContents;
+        const materials = this.state.materials.filter(material => {
+          if (material.id !== content_id) return true;
         });
-        this.setState({ contents });
+        this.setState({ materials });
       })
       .catch(err => console.log(err));
   };
@@ -126,10 +132,10 @@ class UnitControls extends React.Component {
     axios
       .delete(`/api/unit/${unit_id}/assignments/${assignment_id}/unit_assignment`)
       .then(res => {
-        const assignments = this.state.assignments.filter(assignment => {
-          if (assignment.id !== assignment_id) return this.renderUnitAssignments;
+        const materials = this.state.materials.filter(material => {
+          if (material.id !== assignment_id) return true;
         });
-        this.setState({ assignments });
+        this.setState({ materials });
       })
       .catch(err => console.log(err));
   }
@@ -139,10 +145,10 @@ class UnitControls extends React.Component {
     axios
     .delete(`/api/unit/${unit_id}/quizzes/${quiz_id}/unit_quiz`)
     .then(res => {
-      const quizzes = this.state.quizzes.filter(quiz => {
-        if (quiz.id !== quiz_id) return this.renderUnitQuizzes;
+      const materials = this.state.materials.filter(material => {
+        if (material.id !== quiz_id) return true;
       });
-      this.setState({ quizzes });
+      this.setState({ materials });
     })
     .catch(err => console.log(err));
   }
@@ -162,21 +168,21 @@ class UnitControls extends React.Component {
     if(visible) {
       axios.put(`/api/unit_contents/${unit_content_id}`, {unit_content: { visible: false } })
       .then((res) => {
-        const contents = this.state.contents.map((content) => {
-          if(content.id === id) content.visible = false;
-          return content;
+        const materials = this.state.materials.map((material) => {
+          if(material.id === id && material.material === "content") material.visible = false;
+          return material;
         })
-        this.setState({ contents });
+        this.setState({ materials });
       })
       .catch((err) => console.log(err));
     } else {
       axios.put(`/api/unit_contents/${unit_content_id}`, {unit_content: { visible: true } })
       .then((res) => {
-        const contents = this.state.contents.map((content) => {
-          if(content.id === id) content.visible = true;
-          return content;
+        const materials = this.state.materials.map((material) => {
+          if(material.id === id && material.material === "content") material.visible = true;
+          return material;
         })
-        this.setState({ contents });
+        this.setState({ materials });
       })
       .catch((err) => console.log(err));
     }
@@ -186,21 +192,21 @@ class UnitControls extends React.Component {
     if(visible) {
       axios.put(`/api/unit_assignments/${unit_assignment_id}`, {unit_assignment: { visible: false } })
       .then((res) => {
-        const assignments = this.state.assignments.map((assignment) => {
-          if(assignment.id === id) assignment.visible = false;
-          return assignment;
+        const materials = this.state.materials.map((material) => {
+          if(material.id === id && material.material === "assignment") material.visible = false;
+          return material;
         })
-        this.setState({ assignments });
+        this.setState({ materials });
       })
       .catch((err) => console.log(err));
     } else {
       axios.put(`/api/unit_assignments/${unit_assignment_id}`, {unit_assignment: { visible: true } })
       .then((res) => {
-        const assignments = this.state.assignments.map((assignment) => {
-          if(assignment.id === id) assignment.visible = true;
-          return assignment;
+        const materials = this.state.materials.map((material) => {
+          if(material.id === id && material.material === "assignment") material.visible = true;
+          return material;
         })
-        this.setState({ assignments });
+        this.setState({ materials });
       })
       .catch((err) => console.log(err));
     }
@@ -210,21 +216,21 @@ class UnitControls extends React.Component {
     if(visible) {
       axios.put(`/api/unit_quizzes/${unit_quiz_id}`, {unit_quiz: { visible: false } })
       .then((res) => {
-        const quizzes = this.state.quizzes.map((quiz) => {
-          if(quiz.id === id) quiz.visible = false;
-          return quiz;
+        const materials = this.state.materials.map((material) => {
+          if(material.id === id && material.material === "quiz") material.visible = false;
+          return material;
         })
-        this.setState({ quizzes });
+        this.setState({ materials });
       })
       .catch((err) => console.log(err));
     } else {
       axios.put(`/api/unit_quizzes/${unit_quiz_id}`, {unit_quiz: { visible: true } })
       .then((res) => {
-        const quizzes = this.state.quizzes.map((quiz) => {
-          if(quiz.id === id) quiz.visible = true;
-          return quiz;
+        const materials = this.state.materials.map((material) => {
+          if(material.id === id && material.material === "quiz") material.visible = true;
+          return material;
         })
-        this.setState({ quizzes });
+        this.setState({ materials });
       })
       .catch((err) => console.log(err));
     }
