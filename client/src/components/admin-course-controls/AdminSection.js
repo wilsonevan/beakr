@@ -130,7 +130,7 @@ class AdminSection extends React.Component {
                   }`}
                 >
                   <SectionIcon>
-                    <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
+                    <Icon name="pencil" style={{color: "white", margin: "0"}} />
                   </SectionIcon>
                 </Link>
             </Section>
@@ -159,7 +159,7 @@ class AdminSection extends React.Component {
                   }`}
                 >
                   <SectionIcon>
-                    <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
+                    <Icon name="pencil" style={{color: "white", margin: "0"}} />
                   </SectionIcon>
                 </Link>
             </Section>
@@ -200,7 +200,7 @@ const SectionIcon = styled.div`
   transform: translateY(-50%);
   right: 0rem;
   top: 50%;
-  padding: 1rem;
+  padding: 1rem 0.75rem;
   font-size: 1.5rem;
   color: rgb(255,255,255);
   background-color: #2979ff;
