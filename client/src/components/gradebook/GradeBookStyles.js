@@ -52,6 +52,11 @@ export const BottomContainer = styled.div`
 
 export const TableHeader = styled.h4`
   color: #455a64;
+
+  :hover {
+    color: black;
+    cursor: pointer;
+  }
 `;
 
 export const CardHeader = styled.h3`
