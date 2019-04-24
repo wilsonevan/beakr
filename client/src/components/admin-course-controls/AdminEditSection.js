@@ -53,7 +53,7 @@ class AdminEditSection extends React.Component {
   };
 
   addUnit = unit => {
-    const units = [unit, ...this.state.units];
+    const units = [...this.state.units, unit];
     this.setState({ units });
   };
 
