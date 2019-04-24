@@ -108,7 +108,7 @@ class AssignmentView extends React.Component {
                             { submission.graded? "Graded" : "Not Graded" }
                           </GradedBoolean>
                           <SubmissionGrade>
-                            { submission.grade.toFixed(1) }% 
+                            { submission.graded? `${submission.grade.toFixed(1)}%` : 'Pending' } 
                           </SubmissionGrade>
                         </SubmissionBlock>
                       )
