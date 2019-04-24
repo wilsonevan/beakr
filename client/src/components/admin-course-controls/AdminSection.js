@@ -9,7 +9,7 @@ import { Icon } from "semantic-ui-react";
 
 class AdminSection extends React.Component {
   state = {
-    laoded: false,
+    loaded: false,
     opened: false,
     units: [],
   };
@@ -21,10 +21,31 @@ class AdminSection extends React.Component {
       axios
         .get(`/api/sections/${this.props.section.id}/units_ordered_by_sequence`)
         .then(res => {
-          this.setState({ units: res.data, loaded: true });
+          this.setState({ units: res.data, loaded: true }, () => {
+            if (localStorage.getItem(`section${this.props.section.id}`)  === 'true') {
+              this.setState({ opened: false }, () => {
+                this.handleClick();
+              });
+            }
+          });
         })
         .catch(err => console.log(err));
   };
+
+  // loadUnits = () => {
+  //   axios
+  //     .get(`/api/sections/${this.props.section.id}/units`)
+  //     .then(res => {
+  //       this.setState({ units: res.data, loaded: true }, () => {
+  //         if (localStorage.getItem(`section${this.props.section.id}`)  == 'true') {
+  //           this.setState({ opened: false }, () => {
+  //             this.handleClick();
+  //           });
+  //         }
+  //       });
+  //     })
+  //     .catch(err => console.log(err));
+  // };
 
   componentWillUnmount() {
     anime.remove(this.unitContainerRef.current, this.sectionRef.current);
@@ -32,6 +53,7 @@ class AdminSection extends React.Component {
 
   handleClick = event => {
     if (!this.state.opened && this.state.loaded) {
+      localStorage.setItem(`section${this.props.section.id}`, true);
       this.setState({ opened: !this.state.opened }, () => {
         anime({
           targets: this.unitContainerRef.current,
@@ -67,7 +89,10 @@ class AdminSection extends React.Component {
         opacity: "0",
         duration: `${this.state.units.length * 55}`,
         easing: "linear"
-      }).finished.then(() => this.setState({ opened: !this.state.opened }));
+      }).finished.then(() => {
+        localStorage.setItem(`section${this.props.section.id}`, false);
+        this.setState({ opened: !this.state.opened });
+      });
     }
   };
 
@@ -200,7 +225,7 @@ const UnitsContainer = styled.div`
   height: 0;
   width: 90%;
   opacity: 0;
-  box-shadow: 0 1px 1px 1px rgba(100,100,100,0.1);
+  box-shadow: 0 1px 1px 1px rgba(100, 100, 100, 0.1);
 `;
 
 export default AdminSection;
