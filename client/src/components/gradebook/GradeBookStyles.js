@@ -85,3 +85,7 @@ export const GradesContainer = styled.div`
   padding-top: 10px;
   padding-bottom: 10px;
 `;
+
+export const DropdownContainer = styled.div`
+  z-index: 100;
+`
