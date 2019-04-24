@@ -120,7 +120,8 @@ class UnitControls extends React.Component {
       .delete(`/api/unit/${unit_id}/contents/${content_id}/unit_content`)
       .then(res => {
         const materials = this.state.materials.filter(material => {
-          if (material.id !== content_id) return true;
+          if (material.id === content_id && material.material === "content") return false;
+          return true;
         });
         this.setState({ materials });
       })
@@ -133,7 +134,8 @@ class UnitControls extends React.Component {
       .delete(`/api/unit/${unit_id}/assignments/${assignment_id}/unit_assignment`)
       .then(res => {
         const materials = this.state.materials.filter(material => {
-          if (material.id !== assignment_id) return true;
+          if (material.id === assignment_id && material.material === "assignment") return false;
+          return true;
         });
         this.setState({ materials });
       })
@@ -146,7 +148,8 @@ class UnitControls extends React.Component {
     .delete(`/api/unit/${unit_id}/quizzes/${quiz_id}/unit_quiz`)
     .then(res => {
       const materials = this.state.materials.filter(material => {
-        if (material.id !== quiz_id) return true;
+        if (material.id === quiz_id && material.material === "quiz") return false;
+        return true;
       });
       this.setState({ materials });
     })
@@ -265,8 +268,8 @@ class UnitControls extends React.Component {
   };
 
   sequenceChange = (oldIndexes) => {
-    const materials = oldIndexes.map((oldIndexes, index) => {
-      let material = this.state.materials[oldIndexes];
+    const materials = oldIndexes.map((oldIndex) => {
+      let material = this.state.materials[oldIndex];
       return material;
     })
     this.setState({ materials }, () => {
@@ -560,6 +563,7 @@ const FormBottomLeft = styled.div`
   border-bottom-right-radius: 5px;
   overflow: hidden;
 `;
+
 const FormBottomRight = styled.div`
   position: relative;
   height: 32rem;

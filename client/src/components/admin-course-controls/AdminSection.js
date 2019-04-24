@@ -124,15 +124,15 @@ class AdminSection extends React.Component {
               <SectionTitle>
                 {title} {loaded && units.length === 0  && "( No Units )" }
               </SectionTitle>
-              <SectionIcon>
                 <Link
                   to={`/admin/courses/${this.props.section.course_id}/sections/${
                     this.props.section.id
                   }`}
                 >
-                  <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
+                  <SectionIcon>
+                    <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
+                  </SectionIcon>
                 </Link>
-              </SectionIcon>
             </Section>
             <UnitsContainer
               ref={this.unitContainerRef}
@@ -153,15 +153,15 @@ class AdminSection extends React.Component {
               <SectionTitle>
                 {title} {loaded && units.length === 0  && "( No Units )" }
               </SectionTitle>
-              <SectionIcon>
                 <Link
                   to={`/admin/courses/${this.props.section.course_id}/sections/${
                     this.props.section.id
                   }`}
                 >
-                  <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
+                  <SectionIcon>
+                    <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
+                  </SectionIcon>
                 </Link>
-              </SectionIcon>
             </Section>
         </>
       );
@@ -202,10 +202,6 @@ const SectionIcon = styled.div`
   top: 50%;
   padding: 1rem;
   font-size: 1.5rem;
-  // border-top-left-radius: 0;
-  // border-bottom-left-radius: 0;
-  // border-top-right-radius: 10px;
-  // border-bottom-right-radius: 10px;
   color: rgb(255,255,255);
   background-color: #2979ff;
 

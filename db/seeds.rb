@@ -73,7 +73,7 @@ puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
       )
       unit_sequence.inc()
 
-      5.times do
+      3.times do
         content = Content.create(
           title: Faker::Hacker.verb,
           body: Faker::Lorem.paragraph,

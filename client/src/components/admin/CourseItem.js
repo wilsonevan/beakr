@@ -2,10 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import axios from 'axios';
 import { ButtonRed, } from "../../styles/Components";
+import { Link } from "react-router-dom";
 
 const CourseItem = ({ result, updateSearch }) => {
-
-    
 
     const handleDelete = (result) => {
          axios.delete(`/api/courses/${result.id}`)
@@ -15,27 +14,32 @@ const CourseItem = ({ result, updateSearch }) => {
         
     }
 
-
-
     return(
-        <Item>
-            <div>
-                { result.title }
-            </div>
-            <div>
+        <ItemContainer>
+            <Link to={`/admin/courses/${result.id}`} style={{width: "100%"}} >
+                <Item>
+                    { result.title }
+                </Item>
+            </Link>
+            <ButtonContainer>
                 <ButtonRed onClick={() => handleDelete(result)}>
                     Delete
                 </ButtonRed>
-            </div>
-        </Item>
+            </ButtonContainer>
+        </ItemContainer>
     )
 }
 
 
+const ItemContainer = styled.div`
+    position: relative;
+    width: 100%;
+`
+
 const Item = styled.div`
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     text-decorattion: none;
     font-size: 1.75rem;
@@ -44,10 +48,19 @@ const Item = styled.div`
     padding: 1.5rem 2rem;
     border-bottom: 1px solid rgba(100,100,100, 0.1);
     text-align: left;
-    transition-duration: 0.1s;/////'
+    transition-duration: 0.1s;
+    cursor: pointer;
+
+    :hover {
         color: #2979ff;
         background-color: #f7f7f7;
     }
+`
+const ButtonContainer = styled.div`
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    right: 1rem;
 `
 
 
