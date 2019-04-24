@@ -94,5 +94,30 @@ const ButtonGrey = styled.button`
     color: #cecece;
   }
 `;
+const ButtonRed = styled.button`
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  padding: 1rem 1.8rem;
+  background-color: red;
+  color: white;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition-duration: 0.1s;
 
-export { Bar, ButtonBlue, ButtonGreen, ButtonGrey, };
+  :hover {
+    color: white;
+    background-color: red;
+  }
+
+  :active {
+    box-shadow: 0 0 0 3px red;
+    background-color: white;
+    color: red;
+  }
+`;
+
+export { Bar, ButtonBlue, ButtonGreen, ButtonGrey, ButtonRed };
