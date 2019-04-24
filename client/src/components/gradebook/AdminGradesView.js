@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Modal, Loader, Dimmer, Segment, } from "semantic-ui-react";
+import { Table, Modal, Loader, Dimmer, Segment } from "semantic-ui-react";
 import axios from "axios";
 import StudentGradesView from "./StudentGradesView";
 import {
@@ -8,7 +8,7 @@ import {
   ModalContainer,
   DataSummary,
   HeaderSummary,
-  LoadingSegment,
+  LoadingSegment
 } from "./GradeBookStyles";
 
 const AdminGradesView = ({ courseId }) => {
@@ -86,13 +86,9 @@ const AdminGradesView = ({ courseId }) => {
   else
     return (
       <DataSummary>
-        <Dimmer active inverted>
-          <Loader inverted>Loading</Loader>
-        </Dimmer>
+        <Loader inverted>Loading</Loader>
       </DataSummary>
     );
 };
-
-
 
 export default AdminGradesView;

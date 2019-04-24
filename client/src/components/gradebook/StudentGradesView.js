@@ -41,7 +41,9 @@ const StudentGradesView = ({ auth, student }) => {
       setActiveCourse(res.data[0]);
       res.data.map(course => {
         axios
-          .get("/api/upcoming_assignments", { params: { course_id: course.id } })
+          .get("/api/upcoming_assignments", {
+            params: { course_id: course.id }
+          })
           .then(res => {
             setUpcomingAssignments([...upcomingAssignments, ...res.data]);
           });
@@ -174,18 +176,14 @@ const StudentGradesView = ({ auth, student }) => {
         <TopContainer>
           <HeaderSummary>Upcoming Assignments</HeaderSummary>
           <DataSummary>
-            <Card.Group fluid>
-              {renderUpcomingAssignments()}
-            </Card.Group>
+            <Card.Group fluid>{renderUpcomingAssignments()}</Card.Group>
           </DataSummary>
         </TopContainer>
         <Split />
         <TopContainer>
           <HeaderSummary>Recent Assignments/Quizzes</HeaderSummary>
           <DataSummary>
-            <Card.Group fluid>
-              {renderRecentAssignments(grades)}
-            </Card.Group>
+            <Card.Group fluid>{renderRecentAssignments(grades)}</Card.Group>
           </DataSummary>
         </TopContainer>
       </SummaryContainer>
@@ -328,9 +326,7 @@ const StudentGradesView = ({ auth, student }) => {
   else
     return (
       <DataSummary>
-        <Dimmer active inverted>
-          <Loader inverted>Loading</Loader>
-        </Dimmer>
+        <Loader>Loading</Loader>
       </DataSummary>
     );
 };
