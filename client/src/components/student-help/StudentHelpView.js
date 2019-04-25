@@ -7,8 +7,8 @@ import { ButtonGreen } from "../../styles/Components";
 import { Portal, Segment, Header, Button } from "semantic-ui-react";
 
 const StudentHelpView = ({ auth }) => {
-  const [courses, setCourses] = useState("");
-  const [teachers, setTeachers] = useState("");
+  const [courses, setCourses] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [activeCourse, setActiveCourse] = useState("");
   const [body, setBody] = useState("");
   const [portalOpen, setPortalOpen] = useState(false);
@@ -71,7 +71,7 @@ const StudentHelpView = ({ auth }) => {
     );
   };
 
-  if (courses)
+  if (courses.length > 0)
     return (
       <ContainAll>
         <Portal onClose={handleClosePortal} open={portalOpen}>
