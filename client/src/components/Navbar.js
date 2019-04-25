@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../images/logo.svg";
 import "./Navbar.css";
+import { Button, Icon, Sidebar, Menu } from "semantic-ui-react";
 
 class Navbar extends React.Component {
   state = { activeItem: 0, visible: false };
@@ -44,20 +45,51 @@ class Navbar extends React.Component {
     } = this.props;
 
     if (user) {
+      const { visible } = this.state;
       return (
         <>
-          <RightMenu>
-            <NavLink to="/dashboard" onClick={() => this.activateItem(1)}>
-              <MenuItem as={this.isActive(1)}>
-                <Item>{user.admin ? "Admin Dashboard" : "Dashboard"}</Item>
-              </MenuItem>
-            </NavLink>
-            <NavLink to="/login" onClick={() => handleLogout(history)}>
-              <MenuItem>
-                <Item>Logout</Item>
-              </MenuItem>
-            </NavLink>
-          </RightMenu>
+          <div className="expanded">
+            <RightMenu>
+              <NavLink to="/dashboard" onClick={() => this.activateItem(1)}>
+                <MenuItem as={this.isActive(1)}>
+                  <Item>{user.admin ? "Admin Dashboard" : "Dashboard"}</Item>
+                </MenuItem>
+              </NavLink>
+              <NavLink to="/login" onClick={() => handleLogout(history)}>
+                <MenuItem>
+                  <Item>Logout</Item>
+                </MenuItem>
+              </NavLink>
+            </RightMenu>
+          </div>
+
+          <div className="compact">
+            <RightMenu>
+              <Item>
+                <Button compact icon onClick={this.handleMenuToggle}>
+                  <Icon name="bars" />
+                </Button>
+              </Item>
+            </RightMenu>
+            <Sidebar
+              as={Menu}
+              animation="overlay"
+              icon="labeled"
+              inverted
+              onHide={this.handleSidebarHide}
+              vertical
+              visible={visible}
+              width="thin"
+              direction="right"
+            >
+              <NavLink to="/dashboard" onClick={() => this.activateItem(1)}>
+                <Menu.Item>Dashboard</Menu.Item>
+              </NavLink>
+              <NavLink to="/login" onClick={() => handleLogout(history)}>
+                <Menu.Item>Logout</Menu.Item>
+              </NavLink>
+            </Sidebar>
+          </div>
         </>
       );
     } else {
@@ -81,21 +113,23 @@ class Navbar extends React.Component {
   };
 
   render() {
+    const { visible } = this.state;
+
     return (
       <>
-        <NavMenu borderless>
+        <Sidebar.Pushable>
           <NavLink to="/">
-            <MenuItem>
-              <Item>
+            <NavMenu borderless>
+              <MenuItem>
                 <Logo src={logo} alt="logo" className="App-logo" />
-                {(window.location.pathname == "/" && window.innerWidth > 600) && (
-                  <CompanyName>Beakr</CompanyName>
-                )}
-              </Item>
-            </MenuItem>
+              </MenuItem>
+              {this.rightNavItems()}
+            </NavMenu>
           </NavLink>
-          {this.rightNavItems()}
-        </NavMenu>
+          <Sidebar.Pusher dimmed={visible}>
+            {this.props.children}
+          </Sidebar.Pusher>
+        </Sidebar.Pushable>
       </>
     );
   }
@@ -116,7 +150,7 @@ const ActiveMenuItem = styled.li`
 
 const Item = styled.p`
   display: block;
-  color: ${window.location.pathname == "/" ? "white" : "#455a64"};
+  color: #455a64;
   text-align: center;
   padding: 10px 16px 5px 16px;
   text-decoration: none;
@@ -143,17 +177,29 @@ const RightMenu = styled.div`
   display: flex;
   justify-content: flex-end;
   padding: 2rem 2rem 1rem 2rem;
-  margin-left: 6rem;
 `;
 
-const CompanyName = styled.h1`
-  color: white !important;
-  position: absolute;
-  top: 0.8rem;
-  left: 7rem;
-  height: 4rem;
-  width: 4rem;
-`;
+// const Dropdown = styled.div`
+// 	position: relative;
+// 	display: inline-block;
+// 	// :hover{display: block;}
+// 	z-index: 1;
+// `
+
+// const DropdownItem = styled.div`
+// 	display: none;
+// 	position: absolute;
+// 	background-color: #f9f9f9;
+// 	min-width: 100px;
+// 	// box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+// 	padding: 12px 16px;
+// 	z-index: 1;
+// 	border: 1px solid green;
+
+// 	${Dropdown}:hover & {
+// 		display: block;
+// 	}
+// `
 
 const ConnectedNavbar = props => (
   <AuthConsumer>{value => <Navbar {...props} auth={value} />}</AuthConsumer>
