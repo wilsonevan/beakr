@@ -113,6 +113,7 @@ const CompanyName = styled.h1`
 const NavMenu = styled.ul`
   list-style-type: none;
   overflow: hidden;
+  margin-left: 6rem;
 `;
 
 const RightMenu = styled.div`
