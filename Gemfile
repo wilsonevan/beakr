@@ -11,10 +11,10 @@ gem 'devise_token_auth', '~> 1.0.0'
 gem 'cloudinary'
 gem "tinify"
 gem 'twilio', '~> 3.1', '>= 3.1.1'
+gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
 
 group :development, :test do
   gem 'pry'
-  gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
   gem 'rb-readline'
   gem 'dotenv-rails'
 end
