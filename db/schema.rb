@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_012506) do
     t.bigint "enrollment_id"
     t.float "grade"
     t.float "points_possible"
-    t.float "points_awarded"
+    t.float "points_awarded", default: 0.0
     t.boolean "graded"
     t.text "comment"
     t.string "questions"
@@ -194,7 +194,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_012506) do
     t.json "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "biography"
+    t.text "biography", default: ""
     t.date "birth_date"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
