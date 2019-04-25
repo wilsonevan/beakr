@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_18_225206) do
+ActiveRecord::Schema.define(version: 2019_04_24_012506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2019_04_18_225206) do
     t.text "body"
     t.string "kind"
     t.float "points_possible"
+    t.string "material", default: "assignment"
   end
 
   create_table "attendances", force: :cascade do |t|
@@ -55,12 +56,14 @@ ActiveRecord::Schema.define(version: 2019_04_18_225206) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "body"
+    t.string "material", default: "content"
   end
 
   create_table "courses", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "archived"
   end
 
   create_table "enrollments", force: :cascade do |t|
@@ -108,6 +111,7 @@ ActiveRecord::Schema.define(version: 2019_04_18_225206) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "body"
+    t.string "material", default: "quiz"
   end
 
   create_table "sections", force: :cascade do |t|

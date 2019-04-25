@@ -22,6 +22,7 @@ class Api::QuizzesController < ApplicationController
         unit_quiz_id: uq[:id],
         title: quiz[:title],
         body: quiz[:body],
+        material: quiz[:material],
         sequence: uq[:sequence],
         due_date: uq[:due_date],
         visible: uq[:visible]

@@ -12,7 +12,7 @@ class CourseWork extends React.Component {
       .get(`/api/courses/${this.props.match.params.id}`)
       .then(res => {
         this.setState({ course: res.data });
-        return axios.get(`/api/courses/${this.props.match.params.id}/sections`);
+        return axios.get(`/api/courses/${this.props.match.params.id}/sections_ordered_by_sequence`);
       })
       .then(res => {
         const sections = res.data.filter((section) => {

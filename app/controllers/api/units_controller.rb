@@ -1,9 +1,13 @@
 class Api::UnitsController < ApplicationController
-  before_action :set_section
+  before_action :set_section, except: [:update_sequence, :update_material_sequence]
   before_action :set_unit, only: [:show, :update, :destroy]
 
   def index
     render json: @section.units
+  end
+
+  def get_ordered_by_sequence
+    render( json: Unit.get_ordered_by_sequence(params[:section_id]) )
   end
 
   def show
@@ -25,6 +29,35 @@ class Api::UnitsController < ApplicationController
     else
       render json: unit.errors, status: 422
     end
+  end
+
+  def update_sequence
+    params[:units].each_with_index() {|unit, index|
+      unit  = Unit.find(unit[:id].to_i)
+      if(!unit.update(sequence: index))
+        render( json: unit.errors, status: 422 )
+      end
+    }
+    render( json: "Data Updated" )
+  end
+
+  def update_material_sequence
+    params[:materials].each_with_index() {|material, index|
+      material_instance = nil;
+
+      if(material[:material] == "content")
+        material_instance = UnitContent.find(material[:unit_content_id])
+      elsif(material[:material] == "assignment")
+        material_instance = UnitAssignment.find(material[:unit_assignment_id])
+      else(material[:material] == "quiz")
+        material_instance = UnitQuiz.find(material[:unit_quiz_id])
+      end
+
+      if(!material_instance.update(sequence: index))
+        render( json: material_instance.errors, status: 422 )
+      end
+    }
+    render( json: "Data Updated" )
   end
   
   def destroy

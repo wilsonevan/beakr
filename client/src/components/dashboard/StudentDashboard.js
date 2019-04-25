@@ -29,18 +29,19 @@ class StudentDashboard extends React.Component {
         <DashboardNav
           items={["courses", "calendar", "grades"]}
           rightItems={['help', { name: "profile", path: "/profile" }]}
-          courses={
-            <>
-              {this.state.userCourses.length > 0 ? (
-                <CoursesContainer>
-                  {this.state.userCourses.map(course => {
-                    return <CourseItem course={course} />;
-                  })}
-                </CoursesContainer>
-              ) : (
-                <></>
-              )}
-            </>
+          courses={ this.state.userCourses.length > 0
+            ? (
+                <GreenBackground>
+                  <CoursesHeading style={{color: "white !important"}}> Your Courses </CoursesHeading>
+                  <CoursesContainer>
+                    { this.state.userCourses.map(course => {
+                        return <CourseItem course={course} key={course.id} />;
+                      })
+                    }
+                  </CoursesContainer>
+                </GreenBackground>
+              )
+            : <NoCourseText>You Are Not Enrolled In A Course Yet</NoCourseText>
           }
           calendar={<Calendar />}
           grades={<StudentGradesView />}
@@ -55,21 +56,31 @@ class StudentDashboard extends React.Component {
   }
 }
 
+const GreenBackground = styled.div`
+    padding: 1.25rem 0.75rem;
+    background-color: #23a24d;
+    border-radius: 5px;
+    width: 100%;
+    margin: 0 auto;
+`
+
+const CoursesHeading = styled.h2`
+  color: white;
+  font-size: 1.8rem;
+  margin: 0;
+  padding: 0.75rem;
+`
+
 const CoursesContainer = styled.div`
-  width: 95%;
-  margin: 0 auto 3rem auto;
-  padding: 1.25rem;
+    width: 100%;
+    text-align: center;
+    border-radius: 5px;
+    overflow: hidden;
+`
+
+const NoCourseText = styled.h2`
   text-align: center;
-  background-color: #23a24d;
-  border-radius: 10px;
-`;
-
-const CourseOptions = styled.div`
-  color: #23a24d
-
-  :hover {
-    color: #41c36c;
-  }
-`;
+  margin-top: 2rem !important;
+`
 
 export default StudentDashboard;

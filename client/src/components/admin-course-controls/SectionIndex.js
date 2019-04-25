@@ -10,7 +10,7 @@ class SectionIndex extends React.Component {
     state = { sections: [] };
 
     componentDidMount() {
-        axios.get(`/api/courses/${this.props.courseId}/sections`)
+        axios.get(`/api/courses/${this.props.courseId}/sections_ordered_by_sequence`)
         .then(res => {
             this.setState({ sections: res.data });
         })
@@ -26,7 +26,11 @@ class SectionIndex extends React.Component {
         const sections = newSections.map((section) => {
           return JSON.parse(section)
         })
-        this.setState({ sections });
+        this.setState({ sections }, () => {
+            axios.put(`/api/sections/update_sequence`, {sections: sections})
+            .then((res) => console.log(res.data))
+            .catch((err) => console.log(err))
+        });
       }
 
     renderSections = () => {
@@ -45,6 +49,7 @@ class SectionIndex extends React.Component {
                     courseId={this.props.courseId}
                     addSection={this.addSection}
                 />
+                <BlueText>Click to view or drag to reorder.</BlueText>
                 <ReactSortable onChange={(newSections) => this.sequenceChange(newSections) } >
                     {this.state.sections.length > 0 && this.renderSections()}
                 </ReactSortable>
@@ -55,9 +60,21 @@ class SectionIndex extends React.Component {
 }
 
 const AdminControlsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+`;
+
+const BlueText = styled.p`
+    width: 90%;
+    margin: 0 auto 2rem auto;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    color: #2979ff;
+    font-family: "Poppins";
+    font-size: 0.7rem;
+    letter-spacing: 1px;
 `;
 
 export default SectionIndex;

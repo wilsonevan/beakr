@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-const LeftEnrollmentUser = ({result, createEnrollment, selectedCourseId, updateSearch}) => {
-    if(result.role === "student" || result.role === "staff" )
+const LeftEnrollmentUser = ({result, createEnrollment, selectedCourseId }) => {
+    if(result.role === "student" || result.admin)
         return (
             <EnrolledUserContainer>
                 { result.first_name } { result.last_name } 
-                <RoleText> { result.role } </RoleText>
+                <RoleText> { result.admin? "admin" : "student" } </RoleText>
             </EnrolledUserContainer>
         )
     else return (

@@ -5,6 +5,7 @@ import AdminCourseAttendance from './AdminCourseAttendance';
 import DashboardNav from "../DashboardNav";
 import SectionIndex from "./SectionIndex";
 import AdminGradesView from '../gradebook/AdminGradesView';
+import { Link } from 'react-router-dom'
 
 class AdminCourseControl extends React.Component {
   state = {course: null}
@@ -23,9 +24,11 @@ class AdminCourseControl extends React.Component {
     if(this.state.course) {
       return (
         <>
-          <SectionHeading>
-            {course.title && `${course.title} > Admin Controls`}
-          </SectionHeading>
+          <Link to='/dashboard'>
+            <SectionHeading>
+              {course.title && `${course.title} > Admin Controls`}
+            </SectionHeading>
+          </Link>
           <DashboardNav 
             items={["edit", {name: "view", path: `/courses/${this.props.match.params.id}`, newTab: true }, "grades", "attendance"]}
             edit={<SectionIndex courseId={course.id} />}
@@ -43,8 +46,8 @@ class AdminCourseControl extends React.Component {
 }
 
 const SectionHeading = styled.h2`
-  font-size: 1.8rem;
-  margin-bottom: 3rem;
+  font-size: 1.8rem !important;
+  margin-bottom: 1.5rem !important;
   color: #23a24d;
   letter-spacing: 2px;
   width: 80%;

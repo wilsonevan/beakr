@@ -7,9 +7,9 @@ import { Link } from "react-router-dom";
 class AssignmentBlock extends React.Component {
 
   render() {
-    const { assignment, deleteUnitAssignment, toggleAssignmentVisibility, setAssignmentDueDate, course_id, unit } = this.props;
+    const { assignment, deleteUnitAssignment, toggleAssignmentVisibility, setAssignmentDueDate, course_id, unit, index } = this.props;
     return (
-      <BlockContainer>
+      <BlockContainer data-id={index}  >
         <AssignmentBlockText
           as={Link}
           to={`/courses/${course_id}/units/${unit.id}/assignments/${assignment.id}`}

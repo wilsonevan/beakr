@@ -10,6 +10,7 @@ import AssignmentSubmissionForm from './AssignmentSubmissionForm';
 import EditAssignmentTitle from './EditAssignmentTitle';
 import EditAssignmentBody from './EditAssignmentBody';
 import UserSubmissionView from './UserSubmissionView';
+import moment from "moment";
 
 class AssignmentView extends React.Component {
   state = { 
@@ -107,7 +108,7 @@ class AssignmentView extends React.Component {
                             { submission.graded? "Graded" : "Not Graded" }
                           </GradedBoolean>
                           <SubmissionGrade>
-                            { submission.grade.toFixed(1) }% 
+                            { submission.graded? `${submission.grade.toFixed(1)}%` : 'Pending' } 
                           </SubmissionGrade>
                         </SubmissionBlock>
                       )
@@ -123,8 +124,10 @@ class AssignmentView extends React.Component {
 
   renderStudentView = () => {
     const { match, auth } = this.props
-    const { userSubmission, kind, points_possible } = this.state
-    return (
+    const { userSubmission, kind, points_possible, due_date } = this.state
+    const beforeDue = moment(Date.now()).isBefore(due_date);
+    if(due_date) {
+      if(beforeDue) return (
         userSubmission ?
           <UserSubmissionView
             kind={kind}
@@ -142,7 +145,24 @@ class AssignmentView extends React.Component {
             points_possible={points_possible}
             toggle={this.toggleUserSubmission}
           />  
+    ) 
+    else return (
+      userSubmission ?
+          <UserSubmissionView
+            kind={kind}
+            assignment_id={match.params.id} 
+            course_id={match.params.course_id}
+            user={auth.user}
+            toggleSubmission={this.toggleUserSubmission}
+          /> 
+        : 
+          <div>
+            Past due date!
+          </div> 
     )
+    } else {
+      return <h2>Assignment not yet released.</h2>
+    }
   }
 
   toggleEditingBody = () => {
@@ -219,11 +239,11 @@ class AssignmentView extends React.Component {
               :    
                 <Instructions>Points Possible: {points_possible}</Instructions>    
               }
-              <Instructions
-                dangerouslySetInnerHTML=
-                {this.createMarkup(body)}
-                style={{padding: '15px'}}
-              />
+                <Instructions
+                  dangerouslySetInnerHTML=
+                  {this.createMarkup(body)}
+                  style={{padding: '15px'}}
+                />
             </>
           )}
           { user.admin ?

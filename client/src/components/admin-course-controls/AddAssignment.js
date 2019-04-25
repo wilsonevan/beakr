@@ -3,6 +3,7 @@ import ReactQuill from 'react-quill';
 import styled from 'styled-components';
 import { ButtonGreen } from '../../styles/Components';
 import axios from 'axios';
+import { withAlert } from 'react-alert'
 
 class AddAssignment extends React.Component {
   state = {title: '', body: '', kind: 'url', points_possible: 0 }
@@ -15,14 +16,38 @@ class AddAssignment extends React.Component {
   handleQuillChange = (value) => {
     this.setState({ body: value })
   }
+
+  SuccessAlert = (message) => this.props.alert.show( message, {
+    timeout: 4000, // custom timeout just for this one alert
+    type: 'success',
+
+  })
+  ErrorAlert = (message) => this.props.alert.show( message, {
+    timeout: 4000, // custom timeout just for this one alert
+    type: 'error',
+  })
+
   
   handleSubmit = (e) => {
     const assignment = {...this.state}
     e.preventDefault()
-    axios.post('/api/assignments', assignment)
-      .then( res => {
+    switch(true) {
+      case assignment.title === '':
+        this.ErrorAlert('Please Enter a Title')
+        break
+      case assignment.body === '':
+        this.ErrorAlert('Please Enter Instructions')
+        break
+      case assignment.points_possible === 0:
+        this.ErrorAlert('Please Enter Points Possible')
+        break
+      default:
+        axios.post('/api/assignments', assignment)
+        .then( res => {
+        this.SuccessAlert('Assignment Created Successfully')
         this.setState({ title: '', body: '', kind: '', points_possible: 0})
       })
+    }
   }
 
   render() {
@@ -65,6 +90,7 @@ class AddAssignment extends React.Component {
                 Points Possible
               </h2>
               <BodyNumberInput
+                type='number'
                 name='points_possible'
                 value={points_possible}
                 onChange={this.handleChange}
@@ -173,7 +199,7 @@ const modules = {
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
     [{'list': 'ordered'}, {'list': 'bullet'}, 
      {'indent': '-1'}, {'indent': '+1'}],
-    ['color', 'background'],
+     [{'color': []}, {'background': []}],
     ['link', 'code-block', 'image', 'video'],
     ['clean']
   ]
@@ -186,4 +212,4 @@ const formats = [
   'link', 'code-block', 'image', 'video'
 ]
 
-export default AddAssignment
+export default withAlert()(AddAssignment)

@@ -3,7 +3,6 @@ import axios from "axios";
 import anime from "animejs";
 import styled from "styled-components";
 import AdminUnit from "./AdminUnit";
-import { ButtonBlue } from "../../styles/Components";
 import { Link } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
 
@@ -18,18 +17,18 @@ class AdminSection extends React.Component {
   sectionRef = React.createRef();
 
   componentDidMount = () => {
-    axios
-    .get(`/api/sections/${this.props.section.id}/units`)
-    .then(res => {
-      this.setState({ units: res.data, loaded: true }, () => {
-        if (localStorage.getItem(`section${this.props.section.id}`)  == 'true') {
-          this.setState({ opened: false }, () => {
-            this.handleClick();
+      axios
+        .get(`/api/sections/${this.props.section.id}/units_ordered_by_sequence`)
+        .then(res => {
+          this.setState({ units: res.data, loaded: true }, () => {
+            if (localStorage.getItem(`section${this.props.section.id}`)  === 'true') {
+              this.setState({ opened: false }, () => {
+                this.handleClick();
+              });
+            }
           });
-        }
-      });
-    })
-    .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
   };
 
   // loadUnits = () => {
@@ -100,7 +99,7 @@ class AdminSection extends React.Component {
     return this.state.units.map((unit, index) => {
       return (
         <AdminUnit
-          key={index}
+          key={unit.id}
           unit={unit}
           unitContainerRef={this.unitContainerRef}
           course_id={this.props.section.course_id}
@@ -124,15 +123,15 @@ class AdminSection extends React.Component {
               <SectionTitle>
                 {title} {loaded && units.length === 0  && "( No Units )" }
               </SectionTitle>
-              <SectionIcon>
                 <Link
                   to={`/admin/courses/${this.props.section.course_id}/sections/${
                     this.props.section.id
                   }`}
                 >
-                  <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
+                  <SectionIcon>
+                    <Icon name="pencil" style={{color: "white", margin: "0"}} />
+                  </SectionIcon>
                 </Link>
-              </SectionIcon>
             </Section>
             <UnitsContainer
               ref={this.unitContainerRef}
@@ -153,15 +152,15 @@ class AdminSection extends React.Component {
               <SectionTitle>
                 {title} {loaded && units.length === 0  && "( No Units )" }
               </SectionTitle>
-              <SectionIcon>
                 <Link
                   to={`/admin/courses/${this.props.section.course_id}/sections/${
                     this.props.section.id
                   }`}
                 >
-                  <Icon name="pencil" style={{color: "white", borderRadius: "100px", margin: "0"}} />
+                  <SectionIcon>
+                    <Icon name="pencil" style={{color: "white", margin: "0"}} />
+                  </SectionIcon>
                 </Link>
-              </SectionIcon>
             </Section>
         </>
       );
@@ -178,12 +177,15 @@ const Section = styled.div`
   background-color: #23a24d;
   color: white;
   cursor: pointer;
+  overflow: hidden;
   background-image: linear-gradient(
     to right,
     rgba(75, 255, 100, 0.2) 15%,
     #23a24d,
     rgba(75, 255, 100, 0.2) 85%
   );
+
+  :active { cursor: grabbing }
 `;
 
 const SectionTitle = styled.div`
@@ -197,12 +199,8 @@ const SectionIcon = styled.div`
   transform: translateY(-50%);
   right: 0rem;
   top: 50%;
-  padding: 1rem;
+  padding: 1rem 0.75rem;
   font-size: 1.5rem;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
   color: rgb(255,255,255);
   background-color: #2979ff;
 

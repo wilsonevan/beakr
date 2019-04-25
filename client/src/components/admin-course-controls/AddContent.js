@@ -3,6 +3,7 @@ import ReactQuill from 'react-quill';
 import styled from 'styled-components';
 import { ButtonGreen, } from '../../styles/Components';
 import axios from 'axios';
+import { withAlert } from 'react-alert';
 
 class AddContent extends React.Component {
   state = { title: '', body: '', };
@@ -18,18 +19,37 @@ class AddContent extends React.Component {
     this.setState({ body: value })
   }
 
+  SuccessAlert = (message) => this.props.alert.show( message, {
+    timeout: 4000, // custom timeout just for this one alert
+    type: 'success',
+
+  })
+  ErrorAlert = (message) => this.props.alert.show( message, {
+    timeout: 4000, // custom timeout just for this one alert
+    type: 'error',
+  })
+
+
   handleSubmit = (e) => {
     e.preventDefault();
+    
     const content = {...this.state}
+    if ( content.title === ''){
+      this.ErrorAlert('Please enter a title')
+    } else if ( content.body === ''){
+      this.ErrorAlert('Please Enter Content Body')
+    } else {
     axios.post('/api/contents', content)
       .then( res => {
+        this.SuccessAlert('Content Created Successfully')
         this.setState({ title: '', body: '' })
       })
+    }
   }
 
   render() {
     const { title, body } = this.state
-
+    
     return(
       <ContainAll>
         <ContentContainer>
@@ -52,6 +72,7 @@ class AddContent extends React.Component {
             value={body}
             modules={modules}
             formats={formats}
+            bounds={'.app'}
             onChange={this.handleQuillChange} 
             style={{height: '25rem', paddingBottom: '4rem'}}
           />
@@ -104,7 +125,7 @@ const modules = {
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
     [{'list': 'ordered'}, {'list': 'bullet'}, 
      {'indent': '-1'}, {'indent': '+1'}],
-    ['color', 'background'],
+    [{'color': []}, {'background': []}],
     ['link', 'code-block', 'image', 'video'],
     ['clean']
   ]
@@ -117,4 +138,4 @@ const formats = [
   'link', 'code-block', 'image', 'video'
 ]
 
-export default AddContent
+export default withAlert()(AddContent)

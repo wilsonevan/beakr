@@ -1,4 +1,45 @@
+class Timer
+  @start = nil
 
+  def self.start
+    @start = Time.now
+  end
+
+  def self.log_and_reset
+    puts "   In #{Time.now - @start} Seconds"
+    @start = Time.now
+  end
+
+  def self.stop
+    @start = nil
+  end
+end
+
+
+class Sequence 
+  def initialize()
+    @count = 0
+  end
+
+  def get
+    return @count
+  end
+
+  def inc
+    @count += 1
+  end
+
+  def reset
+    @count = 0
+  end
+end
+
+section_sequence = Sequence.new()
+unit_sequence = Sequence.new()
+material_sequence = Sequence.new()
+
+
+Timer.start
 puts "\n1) DESTROYING OLD DATA"
 
 Course.destroy_all
@@ -6,7 +47,7 @@ User.destroy_all
 Content.destroy_all
 Quiz.destroy_all
 Assignment.destroy_all
-
+Timer.log_and_reset()
 
 
 puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
@@ -18,15 +59,21 @@ puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
     section = Section.create(
       title: Faker::ProgrammingLanguage.name,
       course_id: course.id,
-      visible: true
+      visible: true,
+      sequence: section_sequence.get(),
     )
+    section_sequence.inc()
+
     5.times do
       unit = Unit.create(
         title: Faker::Hacker.noun,
         section_id: section.id,
         visible: true,
+        sequence: unit_sequence.get(),
       )
-      5.times do
+      unit_sequence.inc()
+
+      3.times do
         content = Content.create(
           title: Faker::Hacker.verb,
           body: Faker::Lorem.paragraph,
@@ -36,24 +83,26 @@ puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
           unit_id: unit.id,
           content_id: content.id,
           visible: true,
-          sequence: nil
+          sequence: material_sequence.get(),
         )
+        material_sequence.inc()
       end
       1.times do
         assignment = Assignment.create(
           title: Faker::Science.element,
           body: Faker::Movies::Ghostbusters.quote,
           kind: "url",
-          points_possible: 20
+          points_possible: 20,
         )
           
         UnitAssignment.create(
           unit_id: unit.id,
           assignment_id: assignment.id,
           visible: true,
-          sequence: nil,
+          sequence: material_sequence.get(),
           due_date: Faker::Date.forward(60)
         )
+        material_sequence.inc()
       end
       1.times do
         quiz = Quiz.create(
@@ -103,14 +152,18 @@ puts "\n2) CREATING COURSES SECTIONS UNITS AND MATERIALS "
           unit_id: unit.id,
           quiz_id: quiz.id,
           visible: true,
-          sequence: nil,
+          sequence: material_sequence.get(),
           due_date: Faker::Date.forward(60),
         )
+        material_sequence.inc()
       end
+      material_sequence.reset()
     end
+    unit_sequence.reset()
   end
+  section_sequence.reset()
 end
-
+Timer.log_and_reset
 
 
 puts "\n3) CREATING ENROLLED USERS / SUBMISSIONS / ATTENDANCES"
@@ -229,7 +282,7 @@ Course.all.each do |course|
     end
   end
 end
-
+Timer.log_and_reset
 
 
 puts "\n4) CREATING STUDENT@TEST.COM"
@@ -272,6 +325,7 @@ puts "\n4) CREATING STUDENT@TEST.COM"
     end
   end
 end
+Timer.log_and_reset
 
 
 
@@ -287,6 +341,7 @@ puts "\n5) CREATING TEST@TEST.COM"
     admin: true
   )
 end
+Timer.log_and_reset
 
 
 puts "\n6) CREATING UNENROLLED STUDENTS"
@@ -301,6 +356,8 @@ puts "\n6) CREATING UNENROLLED STUDENTS"
     admin: false
   )
 end
+Timer.log_and_reset
+Timer.stop
 
 
 puts "\n- -------------------- ----- ---- --- --- -- -- -- -- - - - -"
