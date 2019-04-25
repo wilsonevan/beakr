@@ -10,7 +10,6 @@ class ContentBlock extends React.Component {
       <BlockContainer data-id={index} >
         <ContentBlockText
           href={`/contents/${content.id}`}
-          target="_blank"
         >
           <Tag><Icon name="file alternate outline" /></Tag> {content.title}
         </ContentBlockText>
