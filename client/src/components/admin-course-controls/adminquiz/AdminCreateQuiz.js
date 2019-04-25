@@ -56,10 +56,9 @@ class AdminCreateQuiz extends React.Component {
       .then( res => {
         this.state.questions.map( question => {
           axios.post(`/api/quizzes/${res.data.id}/questions`, question)
-          this.SuccessAlert('Quiz created successfully')
         })
         this.setState({ quizValues: {title: '', body: '',}, questions: []})
-      })
+      }).then( res => this.SuccessAlert('Quiz created successfully'))
       }
     }
   }

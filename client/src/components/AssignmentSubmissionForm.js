@@ -65,12 +65,14 @@ class AssignmentSubmissionForm extends React.Component {
         )
       case 'code':
         return (
-          <Code 
-            value={code} 
-            codeChange={this.handleCodeChange}
-            height="100rem"
-            width="50rem"
-          />
+          <div>
+            <Code 
+              value={code} 
+              codeChange={this.handleCodeChange}
+              height="25rem"
+              width="50rem"
+            />
+          </div>
         ) 
       default:
         break
