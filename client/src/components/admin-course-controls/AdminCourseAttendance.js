@@ -302,7 +302,11 @@ class AdminCourseAttendance extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     const { recordDate, courseId } = this.state;
-    this.handleCreateColumn(recordDate, courseId);
+
+    if (recordDate !==  "")
+      this.handleCreateColumn(recordDate, courseId);
+    else
+      alert("Select a Date");
   };
 
   handleChange = (date) => {
