@@ -14,7 +14,7 @@ import {
   Split,
   TableHeader,
   CardHeader,
-  DropdownContainer,
+  DropdownContainer
 } from "./GradeBookStyles";
 import { Link } from "react-router-dom";
 
@@ -110,7 +110,7 @@ const StudentGradesView = ({ auth, student }) => {
       return (
         <SummaryContainer>
           <TopContainer>
-            <HeaderSummary>Recent Assignments/Quizzes</HeaderSummary>
+            <HeaderSummary>Recent Assignments</HeaderSummary>
             <DataSummary>
               <Card.Group fluid>
                 {grades.map(grade => {
@@ -324,7 +324,7 @@ const StudentGradesView = ({ auth, student }) => {
         <br />
         {renderGrades(quizGrades)}
         <br />
-        {renderRecentAssignments(allGrades)}
+        {renderRecentAssignments(assignmentGrades)}
       </>
     );
   else
