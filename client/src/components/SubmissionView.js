@@ -182,7 +182,7 @@ class SubmissionView extends React.Component {
         <SubmissionContainer>
           <GradeHeading>
             <h2 style={{margin: "0"}} >{ graded? "Graded" : <span style={{color: "#2979ff", margin: "0"}} > Not Graded </span> }</h2>
-            <GradePercent>{ grade }%</GradePercent>
+            <GradePercent>{ grade && grade.toFixed(1) }%</GradePercent>
           </GradeHeading>
           <StyledHr/>
           <Instructions 
