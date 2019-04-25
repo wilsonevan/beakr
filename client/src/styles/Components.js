@@ -33,7 +33,7 @@ const ButtonBlue = styled.button`
 
   :hover {
     color: white;
-    background-color: #1577ff;
+    background-color: #498dff;
   }
 
   :active {

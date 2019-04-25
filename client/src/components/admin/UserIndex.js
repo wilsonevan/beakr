@@ -2,7 +2,7 @@ import React from "react";
 import SearchBar from "../SearchBar";
 import styled from "styled-components";
 import UserItem from "./UserItem";
-import { ButtonGreen } from "../../styles/Components";
+import { ButtonBlue } from "../../styles/Components";
 import AddUser from "./AddUser";
 
 class UserIndex extends React.Component {
@@ -24,21 +24,24 @@ class UserIndex extends React.Component {
                     <>
                         <ListHeader>
                             All Users
-                            <ButtonGreen 
+                            <ButtonBlue 
                                 onClick={this.toggleNewUser}
-                                style={{margin: "0 1rem"}}>
+                                style={{margin: "0 2rem", padding: "0.5rem 0.75rem"}}
+                            >
                                 Add User
-                            </ButtonGreen>
+                            </ButtonBlue>
                         </ListHeader>
-                        <UsersContainer>
-                            <SearchBar 
-                                route={`/api/search_users`}
-                                width="100%"
-                                height="static"
-                                placeholder="User Name ..."
-                                render={(props) => <UserItem { ...props } />}
-                            />
-                        </UsersContainer>
+                        <GreenBackground>
+                            <UsersContainer>
+                                <SearchBar 
+                                    route={`/api/search_users`}
+                                    width="100%"
+                                    height="static"
+                                    placeholder="User Name ..."
+                                    render={(props) => <UserItem { ...props } />}
+                                />
+                            </UsersContainer>
+                        </GreenBackground>
                     </>
                 }
             </>
@@ -46,25 +49,32 @@ class UserIndex extends React.Component {
     }
 }
 
-const UsersContainer = styled.div`
-    width: 95%;
-    margin: 0 auto 3rem auto;
-    padding: 1.25rem;
-    text-align: center;
+const GreenBackground = styled.div`
+    padding: 0 0.75rem 1.25rem 0.75rem;
     background-color: #23a24d;
-    border-radius: 10px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    width: 100%;
+    margin: 0 auto;
 `
 
-const ListHeader = styled.h1`
+const UsersContainer = styled.div`
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+`
+
+const ListHeader = styled.h2`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  margin-top: 2rem !important;
-  margin-bottom: 2rem !important;
-  font-family: "Poppins";
-  font-size: 2.5rem;
-  font-weight: 600;
-  letter-spacing: 2px;
+  padding: 0.75rem 1.25rem;
+  margin: 0;
+  font-size: 2rem;
+  background-color: #23a24d;
+  color: white !important;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 `
 
 

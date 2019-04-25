@@ -407,12 +407,12 @@ class UnitControls extends React.Component {
           <FormTop>
             <h3>Unit Management</h3>
 
-            <div>
+            <FormTopButtons>
               <ButtonGreen
                 onClick={() => this.toggleEditing()}
                 style={{
                   padding: "0.5rem 0.75rem",
-                  marginLeft: "0.5rem"
+                  marginRight: "1rem"
                 }}
               >
                 Finished
@@ -422,9 +422,10 @@ class UnitControls extends React.Component {
                   name="trash alternate outline" 
                   size="large" 
                   onClick={() => deleteUnit(unit.id)}
+                  style={{margin: "0"}}
                 />
               </DeleteIcon>
-            </div>
+            </FormTopButtons>
           </FormTop>
           <FormBottom>
             <FormBottomLeft>
@@ -589,10 +590,23 @@ const SearchToggle = styled.button`
   outline: none;
 `
 
-const DeleteIcon = styled.span`
+const FormTopButtons = styled.div`
+  display: flex;
+  jsutify-content: center;
+  align-items: center;
+`
+
+const DeleteIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 100px;
+
   :hover {
-    color: #2979ff;
+    background-color: #41c36c;;
   }
 `
 
