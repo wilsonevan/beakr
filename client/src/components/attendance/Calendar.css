@@ -38,7 +38,8 @@
   box-sizing: border-box;
 }
 
-body {
+/* Commented Out Because They Conflict With Section Dropdown animations */
+/* body {
     font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
     font-size: 1em;
     font-weight: 300;
@@ -46,7 +47,7 @@ body {
     color: var(--text-color);
     background: var(--bg-color);
     position: relative;
-}
+} */
 
 header {
   display: block;
