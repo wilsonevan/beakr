@@ -122,17 +122,9 @@ class Navbar extends React.Component {
             <NavMenu borderless>
               <MenuItem>
                 <Logo src={logo} alt="logo" className="App-logo" />
-<<<<<<< HEAD
-                {(window.location.pathname == "/" && window.innerWidth > 600) && (
-                  <CompanyName>Beakr</CompanyName>
-                )}
-              </Item>
-            </MenuItem>
-=======
               </MenuItem>
               {this.rightNavItems()}
             </NavMenu>
->>>>>>> parent of d53e370... Update Navbar.js to work with homescreen
           </NavLink>
           <Sidebar.Pusher dimmed={visible}>
             {this.props.children}
