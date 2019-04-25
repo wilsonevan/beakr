@@ -183,6 +183,7 @@ const Logo = styled.img`
 const NavMenu = styled.ul`
   list-style-type: none;
   overflow: hidden;
+  margin-left: 6rem;
 `;
 
 const RightMenu = styled.div`
