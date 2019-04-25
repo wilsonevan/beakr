@@ -114,23 +114,38 @@ class Navbar extends React.Component {
 
   render() {
     const { visible } = this.state;
+    const { auth: {user}} = this.props;
 
     return (
       <>
+      {user ?
         <Sidebar.Pushable>
-          <NavLink to="/">
             <NavMenu borderless>
               <MenuItem>
                 <Logo src={logo} alt="logo" className="App-logo" />
               </MenuItem>
               {this.rightNavItems()}
             </NavMenu>
-          </NavLink>
           <Sidebar.Pusher dimmed={visible}>
             {this.props.children}
           </Sidebar.Pusher>
         </Sidebar.Pushable>
-      </>
+        :
+        <Sidebar.Pushable>
+        <NavLink to="/">
+          <NavMenu borderless>
+            <MenuItem>
+              <Logo src={logo} alt="logo" className="App-logo" />
+            </MenuItem>
+            {this.rightNavItems()}
+          </NavMenu>
+        </NavLink>
+        <Sidebar.Pusher dimmed={visible}>
+          {this.props.children}
+        </Sidebar.Pusher>
+      </Sidebar.Pushable>
+    }
+    </> 
     );
   }
 }
