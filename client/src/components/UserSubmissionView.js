@@ -53,7 +53,9 @@ class UserSubmissionView extends React.Component {
       case 'code':
         return (
           <>
-            <Code value={code} />
+            <CodeContainer>
+              <Code value={code} />
+            </CodeContainer>
             <Text 
               dangerouslySetInnerHTML=
               {this.createMarkup(body)}
@@ -150,6 +152,11 @@ class UserSubmissionView extends React.Component {
 const Text = styled.div`
   width: 100%;
   text-align: left;
+`
+
+const CodeContainer = styled.div`
+  text-align: left;
+  margin: 2rem 0;
 `
 
 export default UserSubmissionView
