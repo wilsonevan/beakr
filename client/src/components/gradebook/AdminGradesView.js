@@ -40,33 +40,36 @@ const AdminGradesView = ({ courseId }) => {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {totalGrades.map(grade => {
-                const studentGrade = grade[0];
-                return (
-                  <Modal
-                    trigger={
-                      <Table.Row>
-                        <Table.Cell singleLine>
-                          <TableHeader>
-                            {studentGrade.user_first_name}{" "}
-                            {studentGrade.user_last_name}
-                          </TableHeader>
-                        </Table.Cell>
-                        {studentGrade.grade_percent ? (
-                          <Table.Cell textAlign="center">
-                            {studentGrade.grade_percent}%
-                          </Table.Cell>
-                        ) : (
-                          <Table.Cell textAlign="center">0%</Table.Cell>
-                        )}
-                      </Table.Row>
-                    }
-                  >
-                    <ModalContainer>
-                      <StudentGradesView student={studentGrade} />
-                    </ModalContainer>
-                  </Modal>
-                );
+              {totalGrades.map(studentGrades => {
+                return studentGrades.map(studentGrade => {
+                  if (studentGrade.course_id === courseId) {
+                    return (
+                      <Modal
+                        trigger={
+                          <Table.Row>
+                            <Table.Cell singleLine>
+                              <TableHeader>
+                                {studentGrade.user_first_name}{" "}
+                                {studentGrade.user_last_name}
+                              </TableHeader>
+                            </Table.Cell>
+                            {studentGrade.grade_percent ? (
+                              <Table.Cell textAlign="center">
+                                {studentGrade.grade_percent}%
+                              </Table.Cell>
+                            ) : (
+                              <Table.Cell textAlign="center">0%</Table.Cell>
+                            )}
+                          </Table.Row>
+                        }
+                      >
+                        <ModalContainer>
+                          <StudentGradesView student={studentGrade} />
+                        </ModalContainer>
+                      </Modal>
+                    );
+                  }
+                });
               })}
             </Table.Body>
           </Table>
