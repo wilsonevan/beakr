@@ -53,7 +53,7 @@ class QuizView extends React.Component {
   handleTeacherView = () => {
     const { course_id, unit_id, id } = this.props.match.params;
     return new Promise((resolve, reject) => {
-      axios.get(`/api/quizzes/${id}/quiz_submissions`)
+      axios.get(`/api/courses/${course_id}/quizzes/${id}/get_users_submissions_by_quiz`)
       .then((res) => {
         this.setState({ submissionList: res.data });
         return axios.get(`/api/units/${unit_id}/quizzes/${id}/get_quiz_with_attrs`)

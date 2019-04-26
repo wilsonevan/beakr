@@ -23,7 +23,7 @@ class QuizSubmission < ApplicationRecord
     ", quiz_id, enrollment_id]).first()
   end
 
-  def self.get_users_submissions_by_quiz(quiz_id)
+  def self.get_users_submissions_by_quiz(quiz_id, course_id)
     User.find_by_sql(["
       SELECT 
           qs.*, 
@@ -35,7 +35,8 @@ class QuizSubmission < ApplicationRecord
       INNER JOIN users AS u
           ON e.user_id = u.id
       WHERE qs.quiz_id = ?
+      AND e.course_id = ?
       ORDER BY LOWER(u.first_name)
-    ", quiz_id])
+    ", quiz_id, course_id])
   end
 end
