@@ -14,7 +14,7 @@ class Api::QuizSubmissionsController < ApplicationController
   end
 
   def get_users_submissions_by_quiz
-    render( json: QuizSubmission.get_users_submissions_by_quiz(params[:quiz_id]) )
+    render( json: QuizSubmission.get_users_submissions_by_quiz(params[:quiz_id], params[:course_id]) )
   end
 
   def show
