@@ -65,14 +65,14 @@ class AssignmentSubmissionForm extends React.Component {
         )
       case 'code':
         return (
-          <div>
+          <CodeContainer>
             <Code 
               value={code} 
               codeChange={this.handleCodeChange}
               height="25rem"
-              width="50rem"
+              width="100%"
             />
-          </div>
+          </CodeContainer>
         ) 
       default:
         break
@@ -111,7 +111,7 @@ class AssignmentSubmissionForm extends React.Component {
 const ContainAll = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between
+  justify-content: space-between;
   background: #23a24d;
   padding: 2px; 
   border-radius: 2px;
@@ -121,7 +121,6 @@ const AssignmentContainer = styled.div`
   background: white;
   width: 100%;
   padding: 10px;
-
 `
 
 const BodyInput = styled.input`
@@ -139,6 +138,11 @@ const BodyInput = styled.input`
   :focus {
     box-shadow: 0 0 0 2px #23a24d;
   }
+`
+
+const CodeContainer = styled.div`
+  text-align: left;
+  margin: 2rem 0;
 `
 
 const modules = {
