@@ -5,6 +5,7 @@ import styled from "styled-components";
 import logo from "../images/logo.svg";
 import "./Navbar.css";
 import { Button, Icon, Sidebar, Menu } from "semantic-ui-react";
+import {GlobalColors} from '../styles/GlobalStyles'
 
 class Navbar extends React.Component {
   state = { activeItem: 0, visible: false };
@@ -158,7 +159,7 @@ const MenuItem = styled.li`
 const ActiveMenuItem = styled.li`
   float: left;
   font-size: 1.25rem;
-  border-bottom: #23a24d;
+  border-bottom: ${GlobalColors.PrimaryGreen};
   border-bottom-width: thin;
   border-bottom-style: solid;
 `;
