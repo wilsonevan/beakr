@@ -13,7 +13,7 @@ const Home = () => {
       <TopContainer>
         <HomeNav />
         <LeftTextContainer>
-          <div>
+          <InnerTextContainer>
             <PrimaryText>Beakr Bootcamp LMS</PrimaryText>
             <SecondaryText>Designed by Students, for Students</SecondaryText>
             <Link to="/register">
@@ -27,7 +27,7 @@ const Home = () => {
                 Try It Now
               </ButtonGreen>
             </Link>
-          </div>
+          </InnerTextContainer>
         </LeftTextContainer>
       </TopContainer>
       <SecondContainer>
@@ -84,6 +84,22 @@ const InnerContainer = styled.div`
   width: 100%;
 `
 
+const InnerTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 10%;
+  padding-top: 5%;
+  padding-right: 40%;
+  padding-left: 3rem;
+
+
+  @media (max-width: 600px) {
+    margin-top: 5rem;
+}
+`
+
 const SecondImage = styled.img`
 width: 70vh;
 height: auto;
@@ -95,10 +111,9 @@ height: auto;
 
 const LeftTextContainer = styled.div`
   display: flex;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   color: white;
-  margin-left: 18%;
-  margin-top: 6%;
 `;
 
 const RightTextContainer = styled.div`

@@ -20,6 +20,7 @@ import Navbar from "./components/Navbar";
 import CourseWork from "./components/course-work/CourseWork";
 import AdminCourseControls from "./components/admin-course-controls/AdminCourseControls";
 import AdminEditSection from "./components/admin-course-controls/AdminEditSection";
+import Pricing from './components/pricing/PricingView'
 import styled from "styled-components";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import AddUnitMaterial from "./components/admin-course-controls/AddUnitMaterial";
@@ -29,6 +30,7 @@ const App = () => (
     <GlobalStyles />
     <Switch>
       <Route exact path="/" component={Home} />
+      <Route exact path="/pricing" component={Pricing} />
       <FetchUser>
         <Navbar />
         <Container as={AppContainer}>
@@ -86,6 +88,7 @@ const App = () => (
 // This styling allows any App view and the Sidebar to fill up the entire page height
 const AppContainer = styled.div`
   height: 100vh;
+  margin-top: 5rem;
 `;
 
 export default App;
