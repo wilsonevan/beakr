@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 import styled from "styled-components";
 import { GlobalColors, GlobalSizes } from "../../styles/GlobalStyles";
 import { Link } from "react-router-dom";
 
-const PricingCard = ({ title, price, summary, details, color }) => {
+const OrderDetails = () => {
   return (
-    <CardContainer color={color}>
+    <Container>
       <TitleContainer color={color}>
         <CardTitle>{title.charAt(0).toUpperCase() + title.slice(1)}</CardTitle>
       </TitleContainer>
@@ -25,12 +25,13 @@ const PricingCard = ({ title, price, summary, details, color }) => {
       <Link to="/checkout">
         <LearnMore>Learn More</LearnMore>
       </Link>
-    </CardContainer>
+      
+    </Container>
   );
 };
 
-const CardContainer = styled.div`
-  display: flex;
+const Container = styled.div`
+display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
@@ -41,7 +42,7 @@ const CardContainer = styled.div`
 
   border: 1px solid ${props => props.color || GlobalColors.PrimaryBlue};
   border-radius: 10px;
-`;
+`
 
 const TitleContainer = styled.div`
   background-color: ${props => props.color || GlobalColors.PrimaryBlue};
@@ -52,9 +53,14 @@ const TitleContainer = styled.div`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 `;
+
 const CardTitle = styled.h1`
   color: ${GlobalColors.PrimaryWhite};
 `;
+
+export default OrderDetails;
+
+
 const DetailsContainer = styled.div`
   display: flex;
   flex-direction: column;

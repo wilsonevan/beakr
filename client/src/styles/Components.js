@@ -23,7 +23,7 @@ const ButtonBlue = styled.button`
   border: none;
   border-radius: 5px;
   padding: 1rem 1.8rem;
-  background-color: ${GlobalColors.PrimaryBlue};;
+  background-color: ${GlobalColors.PrimaryBlue};
   color: white;
   letter-spacing: 1.5px;
   cursor: pointer;

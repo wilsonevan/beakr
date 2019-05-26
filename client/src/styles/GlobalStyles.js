@@ -60,6 +60,7 @@ input, select, textarea {
     font-family: "Poppins", sans-serif !important;
     font-weight: 300 !important;
     letter-spacing: 1.25px !important;
+    color: ${GlobalColors.PrimaryGrey};
 }
 `;
 

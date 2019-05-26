@@ -176,7 +176,7 @@ const Navbar = props => {
           <Logo src={logo} alt="logo" className="App-logo" />
         </MenuItem>
         {compactNavMenu()}
-        {centerNavItems()}
+        {/* {centerNavItems()} */}
         {rightNavItems()}
       </NavMenu>
     </NavContainer>

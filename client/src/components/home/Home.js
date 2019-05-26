@@ -6,12 +6,13 @@ import HomeNav from "./HomeNav";
 import Footer from './Footer';
 import { ButtonGreen, ButtonBlue } from "../../styles/Components";
 import { Link } from "react-router-dom";
+import {GlobalColors, GlobalSizes} from '../../styles/GlobalStyles'
 
 const Home = () => {
   return (
     <>
       <TopContainer>
-        <HomeNav />
+        <HomeNav textColor={GlobalColors.PrimaryWhite} />
         <LeftTextContainer>
           <InnerTextContainer>
             <PrimaryText>Beakr Bootcamp LMS</PrimaryText>

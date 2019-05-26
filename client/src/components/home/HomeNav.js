@@ -16,10 +16,10 @@ const Navbar = props => {
       case "/":
         setActiveItem(1);
         break;
-      case "/how-it-works":
+      case "/features":
         setActiveItem(2);
         break;
-      case "/gifts":
+      case "/pricing":
         setActiveItem(3);
         break;
       default:
@@ -36,18 +36,23 @@ const Navbar = props => {
     return MenuItem === activeItem ? ActiveMenuItem : null;
   };
 
-  const centerNavItems = () => {
+  const centerNavItems = textColor => {
     return (
       <>
         <CenterMenu>
           <NavLink to="/">
             <MenuItem as={isActive(1)} onClick={() => activateItem(1)}>
-              <Item>Home</Item>
+              <Item textColor={textColor}>Home</Item>
+            </MenuItem>
+          </NavLink>
+          <NavLink to="/features">
+            <MenuItem as={isActive(2)} onClick={() => activateItem(2)}>
+              <Item textColor={textColor}>Features</Item>
             </MenuItem>
           </NavLink>
           <NavLink to="/pricing">
-            <MenuItem as={isActive(2)} onClick={() => activateItem(2)}>
-              <Item>Pricing</Item>
+            <MenuItem as={isActive(3)} onClick={() => activateItem(3)}>
+              <Item textColor={textColor}>Pricing</Item>
             </MenuItem>
           </NavLink>
         </CenterMenu>
@@ -55,7 +60,7 @@ const Navbar = props => {
     );
   };
 
-  const rightNavItems = () => {
+  const rightNavItems = textColor => {
     const {
       auth: { user, handleLogout },
       history
@@ -67,12 +72,14 @@ const Navbar = props => {
           <RightMenu>
             <NavLink to="/dashboard" onClick={() => activateItem(1)}>
               <MenuItem as={isActive(1)}>
-                <Item>{user.admin ? "Admin Dashboard" : "Dashboard"}</Item>
+                <Item textColor={textColor}>
+                  {user.admin ? "Admin Dashboard" : "Dashboard"}
+                </Item>
               </MenuItem>
             </NavLink>
             <NavLink to="/login" onClick={() => handleLogout(history)}>
               <MenuItem>
-                <Item>Logout</Item>
+                <Item textColor={textColor}>Logout</Item>
               </MenuItem>
             </NavLink>
           </RightMenu>
@@ -82,14 +89,14 @@ const Navbar = props => {
       return (
         <>
           <RightMenu>
-            <NavLink to="/login" onClick={() => activateItem(3)}>
-              <MenuItem as={isActive(3)}>
-                <Item>Login</Item>
+            <NavLink to="/login" onClick={() => activateItem(4)}>
+              <MenuItem as={isActive(4)}>
+                <Item textColor={textColor}>Login</Item>
               </MenuItem>
             </NavLink>
-            <NavLink to="/register" onClick={() => activateItem(4)}>
-              <MenuItem as={isActive(4)}>
-                <Item>Register</Item>
+            <NavLink to="/register" onClick={() => activateItem(5)}>
+              <MenuItem as={isActive(5)}>
+                <Item textColor={textColor}>Register</Item>
               </MenuItem>
             </NavLink>
           </RightMenu>
@@ -176,8 +183,8 @@ const Navbar = props => {
           <Logo src={logo} alt="logo" className="App-logo" />
         </MenuItem>
         {compactNavMenu()}
-        {centerNavItems()}
-        {rightNavItems()}
+        {centerNavItems(props.textColor)}
+        {rightNavItems(props.textColor)}
       </NavMenu>
     </NavContainer>
   );
@@ -187,7 +194,6 @@ const NavContainer = styled.div`
   position: absolute;
   top: 0rem;
   width: 100%;
-  padding-bottom: 5rem;
 `;
 
 const NavMenu = styled.div`
