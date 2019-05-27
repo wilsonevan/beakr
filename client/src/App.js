@@ -4,7 +4,7 @@ import React from "react";
 import Home from "./components/home/Home";
 import NoMatch from "./components/NoMatch";
 import Login from "./components/Login";
-import Register from "./components/Register";
+import Register from "./components/checkout/Register";
 import Dashboard from "./components/dashboard/Dashboard";
 import ContentView from "./components/ContentView";
 import AssignmentView from "./components/AssignmentView";

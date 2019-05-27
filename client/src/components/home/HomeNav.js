@@ -23,7 +23,7 @@ const Navbar = props => {
         setActiveItem(3);
         break;
       default:
-        setActiveItem(1);
+        setActiveItem(0);
         break;
     }
   }, []);

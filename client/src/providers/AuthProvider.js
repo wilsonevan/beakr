@@ -7,12 +7,12 @@ export const AuthConsumer = AuthContext.Consumer;
 export class AuthProvider extends React.Component {
   state = { user: null };
 
-  handleRegister = (user, history) => {
+  handleRegister = (user, setActiveItem ) => {
     axios
       .post("/api/auth", user)
       .then(res => {
         this.setState({ user: res.data.data });
-        history.push("/dashboard");
+        setActiveItem(1, true);
       })
       .catch(res => {
         alert(res);

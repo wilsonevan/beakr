@@ -6,11 +6,11 @@ const ProgressBar = props => {
   return (
     <ProgressContainer>
       {props.checkoutItems.map((item, index) => {
-        debugger
         return (
           <ProgressButton
             name={item.props.name}
-            onClick={item.props.setActiveItem(index)}
+            setActiveItem={item.props.setActiveItem}
+            index={index}
           />
         );
       })}

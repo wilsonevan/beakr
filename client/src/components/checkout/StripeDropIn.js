@@ -10,7 +10,6 @@ const StripeDropIn = () => {
     <>
       <StripeProvider apiKey="pk_test_k49hu5V9S3ZA8TIur3ANY5PT00SbZi5k0E">
         <StripeContainer>
-          <h1>Stripe Test</h1>
           <Elements>
             <StripeForm />
           </Elements>
@@ -21,12 +20,12 @@ const StripeDropIn = () => {
 };
 
 const StripeContainer = styled.div`
-  margin-top: 8rem;
+  /* margin-top: 8rem; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 80vh;
+  /* min-height: 80vh; */
 `;
 
 export default StripeDropIn;

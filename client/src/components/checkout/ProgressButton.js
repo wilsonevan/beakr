@@ -5,7 +5,7 @@ import { GlobalColors, GlobalSizes } from "../../styles/GlobalStyles";
 const ProgressButton = props => {
   return (
     <>
-      <Button>
+      <Button onClick={() => props.setActiveItem(props.index)}>
         {props.name}
       </Button>
     </>
